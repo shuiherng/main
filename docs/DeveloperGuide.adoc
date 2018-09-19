@@ -9,7 +9,7 @@ EventsCenter will no longer be handling r/w actions to disk. Instead, Logic will
 
 _Refactor-0:_
 
-The current model for new changes is `User-> UI -> Logic -> Model -> EventsCenter -> Storage`. This will be changed to `Model -> EventsCenter and Model ->Storage`
+The current model for new changes is `User-> UI -> Logic -> Model -> EventsCenter -> Storage`. This will be changed so that `Model -> EventsCenter` and `Model -> Storage` are separate.
 
 The new flow of events will be:
 
