@@ -1,4 +1,4 @@
-= AddressBook Level 4 - User Guide
+= PatientBook - User Guide
 :site-section: UserGuide
 :toc:
 :toc-title:
@@ -12,19 +12,19 @@ ifdef::env-github[]
 :tip-caption: :bulb:
 :note-caption: :information_source:
 endif::[]
-:repoURL: https://github.com/se-edu/addressbook-level4
+:repoURL: https://github.com/CS2103-AY1819S1-T12-2/main
 
-By: `Team SE-EDU`      Since: `Jun 2016`      Licence: `MIT`
+By: `Team T12-2`      Since: `Jun 2016`      Licence: `MIT`
 
 == Introduction
 
-AddressBook Level 4 (AB4) is for those who *prefer to use a desktop app for managing contacts*. More importantly, AB4 is *optimized for those who prefer to work with a Command Line Interface* (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB4 can get your contact management tasks done faster than traditional GUI apps. Interested? Jump to the <<Quick Start>> to get started. Enjoy!
+PatientBook is a desktop application for medical professionals to manage their patient information as well as scheduling their appointments. More importantly, PatientBook is optimized for those who prefer to work with a Command Line Interface (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, PatientBook will allow the user to manage and access their patient information, as well as schedule their appointments more efficiently than using a traditional GUI-based application. Refer to Section 2, “Quick Start” to begin.
 
 == Quick Start
 
 .  Ensure you have Java version `9` or later installed in your Computer.
-.  Download the latest `addressbook.jar` link:{repoURL}/releases[here].
-.  Copy the file to the folder you want to use as the home folder for your Address Book.
+.  Download the latest `patientbook.jar` link:{repoURL}/releases[here].
+.  Copy the file to the folder you want to use as the home folder for your Patient Book.
 .  Double-click the file to start the app. The GUI should appear in a few seconds.
 +
 image::Ui.png[width="790"]
@@ -33,9 +33,13 @@ image::Ui.png[width="790"]
 e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 .  Some example commands you can try:
 
-* *`list`* : lists all contacts
-* **`add`**`n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : adds a contact named `John Doe` to the Address Book.
-* **`delete`**`3` : deletes the 3rd contact shown in the current list
+* *`mode user`* or *`mode patient`* : switches to patient management mode
+* *`mode calender`* or *`mode cal`* : switches to appointment management mode
+* *`add patient`* : automatically switches to patient management mode and begins a dialog to create a new entry in the patient database
+* *`delete p301`* : deletes patient with ID '301'
+* *`delete a40`* : deletes appointment with ID '40'
+* *`delete appointment scheduled at 3pm next week`* : removes appointment scheduled for 3pm next week
+* *`make appointment at 3pm next week`* : schedules an appointment at 3pm next week
 * *`exit`* : exits the app
 
 .  Refer to <<Features>> for details of each command.
@@ -46,215 +50,231 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 ====
 *Command Format*
 
-* Words in `UPPER_CASE` are the parameters to be supplied by the user e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
-* Items in square brackets are optional e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
-* Items with `…`​ after them can be used multiple times including zero times e.g. `[t/TAG]...` can be used as `{nbsp}` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
-* Parameters can be in any order e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
+.   Commands are, in general, case sensitive.
+.   Words in `UPPER_CASE` are parameters to be supplied by the user, eg. in `add patient n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
+.   Items in square brackets are optional. +
+    e.g. `make appointment [at 3pm] [next week]` will cause the program to prompt for further details.
+.   Parameters may be specified in any order, eg. `make appointment next week at 3pm` is also acceptable.
 ====
+
+[NOTE]
+In some places in this guide, you will find that two or more commands have been placed within curly brackets and separated by forward-slashes. This indicates that the commands are equivalent. For example, `{schedule/make} appointment` indicates that `schedule appointment` and `make appointment` are both equally valid._
 
 === Viewing help : `help`
 
-Format: `help`
+*Format:* `help`
 
-=== Adding a person: `add`
+=== Switching to patient management mode : `mode {user/patient}`
 
-Adds a person to the address book +
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...`
+Switches the application to patient management mode. In this mode, you can view and manage your patient details and information. +
 
-[TIP]
-A person can have any number of tags (including 0)
-
-Examples:
-
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
+*Format:* `mode {user/patient}`
 
 === Listing all persons : `list`
 
 Shows a list of all persons in the address book. +
-Format: `list`
 
-=== Editing a person : `edit`
+*Format:* `list`
 
-Edits an existing person in the address book. +
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]...`
+=== Switching to appointment management mode : `mode {appointment/cal/calendar/appt}`
+
+Switches the application to appointment management mode. In this mode, you can view and manage your appointments scheduled. +
+
+*Format:* `mode {appointment/cal/calendar/appt}`
+
+=== Adding a patient : `add patient`
+
+Adds a new patient to the address book.
+Switches application to patient management mode automatically.
+
+*Format:* `add [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [b/BLOOD_TYPE] [t/TAG] …`
+
+[TIP]
+A person can have any number of tags, including 0
+
+Not all fields have to be filled in initially when executing the command. The program will automatically prompt for more information on the person where necessary. All fields but tags are mandatory to create a new patient record.
+
+Examples:
+
+* `add n/John Doe p/97019231 e/johnd@example.com a/51 John Street b/O-`
+* `add n/Betsy Crowe t/criminal e/betsycrowe@example.com a/Newgate Prison p/91501231 t/critical`
+
+=== Creating an appointment : `make appointment`
+
+Creates a new appointment and places it in the calendar where appropriate.
+Switches application to appointment management mode automatically. +
+
+*Format:* `{schedule/make} {appointment /appt} for {PATIENT ID/PATIENT NAME} [DATE AND TIME] [;] …`
+
+[NOTE]
+Command parses natural expressions for `[DATE AND TIME]`. Anything after the optional semicolon is saved directly as details for the appointment and will be displayed when the appointment is selected in appointment management mode.
+
+Examples:
+
+* `make appt for p1205 at 4pm next Tuesday ; Routine Checkup`
+* `schedule appointment for John Doe on 14/8/2018 at 3pm`
+
+=== Listing all persons : `list patients`
+
+Automatically switches to patient management mode, and lists all patients in the patient record. +
+
+*Format:* `list patient/patients`
+
+=== Listing all appointments : `list appointments`
+
+Automatically switches to appointment management mode, and lists all appointments from now in the record. +
+
+*Format:* `list {appointments/appointment/appt/appts} [all]`
+
+[NOTE]
+Using `all` will also display all past appointments.
+
+=== Editing patient information : `change patient`
+
+Edits an existing patient in the address book. Automatically switches to patient management mode. Restores the address book to the state before the previous _undoable_ command was executed. +
+
+*Format:* `{change/edit} patient {PATIENT_NAME/PATIENT_ID} [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG] [b/BLOOD TYPE]`
 
 ****
-* Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index *must be a positive integer* 1, 2, 3, ...
+* Edits the person specified by `PATIENT_NAME` or `PATIENT_ID`. If the application has any uncertainties, e.g. patients having the same name, a prompt will appear to select the appropriate person.
 * At least one of the optional fields must be provided.
-* Existing values will be updated to the input values.
-* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
-* You can remove all the person's tags by typing `t/` without specifying any tags after it.
+* Input values will be used to update the existing values.
+* When editing tags, all tags for the person will be removed and replaced with tags supplied.
+* You can remove all the person’s tags by typing `t/` without specifying any tags after it.
 ****
 
 Examples:
 
-* `edit 1 p/91234567 e/johndoe@example.com` +
-Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-* `edit 2 n/Betsy Crower t/` +
-Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+* `edit John Doe p/5192310 e/johnd@example.com`
+* `change p5102 n/Betsy Crower t/`
 
-=== Locating persons by name: `find`
+=== Editing an appointment : `change appointment`
 
-Finds persons whose names contain any of the given keywords. +
-Format: `find KEYWORD [MORE_KEYWORDS]`
+Automatically enters appointment management mode, then edits an existing appointment in the calendar. +
+*Format:* `{change/edit} {appointment/appt} {DATE AND TIME/APPOINTMENT_ID} NEW_DETAILS`
+
+Edits the details for the appointment.
+
+=== Locating patients by name : `find patient`
+
+Automatically enters patient management mode, then find persons whose names contain any of the given keywords. +
+
+*Format:* `find {patient/person} [MORE_KEYWORDS]`
 
 ****
-* The search is case insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
+* The search is case insensitive; e.g. 'hans' will match with 'Hans'.
+* The order of keywords does not matter; e.g. 'Hans Bo' will match with 'Bo Hans'.
 * Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+* Only full words will be matched e.g. 'Han' will not match 'Hans'.
+* Persons matching at least one keyword will be returned (i.e. 'OR' search); e.g. 'Hans Bo' will return 'Hans Gruber' as well as 'Bo Yang'.
 ****
 
 Examples:
 
-* `find John` +
-Returns `john` and `John Doe`
-* `find Betsy Tim John` +
-Returns any person having names `Betsy`, `Tim`, or `John`
+* `find patient John` +
+Returns patient 'John'.
 
-=== Deleting a person : `delete`
+* `find person Betsy Tim John` +
+Returns any person whose name contain 'Betsy', 'Tim' or 'John'.
 
-Deletes the specified person from the address book. +
-Format: `delete INDEX`
+=== Locating an appointment : `find appointment`
 
-****
-* Deletes the person at the specified `INDEX`.
-* The index refers to the index number shown in the displayed person list.
-* The index *must be a positive integer* 1, 2, 3, ...
-****
+Automatically enters appointment management mode, then finds appointments a person or in a given date range.
 
-Examples:
+*Format 1:* `find [all] {appointment/appointments/appt/appts} [for] {PATIENT_ID/PATIENT_NAME}`
 
-* `list` +
-`delete 2` +
-Deletes the 2nd person in the address book.
-* `find Betsy` +
-`delete 1` +
-Deletes the 1st person in the results of the `find` command.
+The above format finds all appointments from now for patient specified by `PATIENT_ID/PATIENT_NAME` and displays them. Including `all` will display past appointments as well.
 
-=== Selecting a person : `select`
+*Format 2:* `find {appointment/appointments/appt/appts} from [DATE_AND_TIME] {to/till} [DATE_AND_TIME]`
 
-Selects the person identified by the index number used in the displayed person list. +
-Format: `select INDEX`
-
-****
-* Selects the person and loads the Google search page the person at the specified `INDEX`.
-* The index refers to the index number shown in the displayed person list.
-* The index *must be a positive integer* `1, 2, 3, ...`
-****
+The above format locates all appointments in the given range of dates.
 
 Examples:
 
-* `list` +
-`select 2` +
-Selects the 2nd person in the address book.
-* `find Betsy` +
-`select 1` +
-Selects the 1st person in the results of the `find` command.
+* `find all appt John Doe` +
+Returns all appointments for John Doe, including past appointments.
+
+* `find appointments from last Monday till now` +
+Returns all appointments from last Monday (defaults to 12am) to the time now.
+
+=== Deleting a patient record : `delete patient`
+
+Deletes a patient. Automatically enters patient management mode. Due to the nature of medical records, patient records will only be marked as deleted, and displayed as such. They will never disappear completely. +
+
+Deleted patients will not surface on search/list commands and cannot be interacted with in future commands.
+
+*Format:* `delete {patient/person} {PATIENT_ID/PATIENT_NAME}`
+
+=== Deleting an appointment : `delete appointment`
+
+Deletes an appointment. Automatically enters appointment management mode.
+
+*Format:* `delete {appointment/appt} [APPOINTMENT_ID]`
+
+The above format searches the appointment using `find appointment` in order to delete.
+
+_In a future update, it will be possible to delete appointments via date and time._
 
 === Listing entered commands : `history`
 
-Lists all the commands that you have entered in reverse chronological order. +
-Format: `history`
+Lists all commands that you have entered in reverse chronological order.
 
-[NOTE]
-====
-Pressing the kbd:[&uarr;] and kbd:[&darr;] arrows will display the previous and next input respectively in the command box.
-====
+*Format:* `history`
 
-// tag::undoredo[]
-=== Undoing previous command : `undo`
+[TIP]
+Tip: Pressing up and down arrows will display the previous and next input respectively in the command box.
 
-Restores the address book to the state before the previous _undoable_ command was executed. +
-Format: `undo`
+=== Clearing the calendar : `clear calendar`
 
-[NOTE]
-====
-Undoable commands: those commands that modify the address book's content (`add`, `delete`, `edit` and `clear`).
-====
+Empties out all appointments scheduled from the calendar.
 
-Examples:
-
-* `delete 1` +
-`list` +
-`undo` (reverses the `delete 1` command) +
-
-* `select 1` +
-`list` +
-`undo` +
-The `undo` command fails as there are no undoable commands executed previously.
-
-* `delete 1` +
-`clear` +
-`undo` (reverses the `clear` command) +
-`undo` (reverses the `delete 1` command) +
-
-=== Redoing the previously undone command : `redo`
-
-Reverses the most recent `undo` command. +
-Format: `redo`
-
-Examples:
-
-* `delete 1` +
-`undo` (reverses the `delete 1` command) +
-`redo` (reapplies the `delete 1` command) +
-
-* `delete 1` +
-`redo` +
-The `redo` command fails as there are no `undo` commands executed previously.
-
-* `delete 1` +
-`clear` +
-`undo` (reverses the `clear` command) +
-`undo` (reverses the `delete 1` command) +
-`redo` (reapplies the `delete 1` command) +
-`redo` (reapplies the `clear` command) +
-// end::undoredo[]
-
-=== Clearing all entries : `clear`
-
-Clears all entries from the address book. +
-Format: `clear`
+*Format:* `clear {calendar/cal/appointments/appts}`
 
 === Exiting the program : `exit`
 
-Exits the program. +
-Format: `exit`
+Exits the program.
+
+*Format:* `exit`
 
 === Saving the data
 
-Address book data are saved in the hard disk automatically after any command that changes the data. +
-There is no need to save manually.
-
-// tag::dataencryption[]
-=== Encrypting data files `[coming in v2.0]`
-
-_{explain how the user can enable/disable data encryption}_
-// end::dataencryption[]
+All patient and calendar data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
 == FAQ
 
-*Q*: How do I transfer my data to another Computer? +
-*A*: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Address Book folder.
+*Q*: How do I transfer my data to another device? +
+*A*: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous PatientBook folder.
 
 == Command Summary
 
-* *Add* `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...` +
-e.g. `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
-* *Clear* : `clear`
-* *Delete* : `delete INDEX` +
-e.g. `delete 3`
-* *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]...` +
-e.g. `edit 2 n/James Lee e/jameslee@example.com`
-* *Find* : `find KEYWORD [MORE_KEYWORDS]` +
-e.g. `find James Jake`
-* *List* : `list`
-* *Help* : `help`
-* *Select* : `select INDEX` +
-e.g.`select 2`
-* *History* : `history`
-* *Undo* : `undo`
-* *Redo* : `redo`
+* *View Help* : `help` +
+
+* *Switch To Patient Management Mode:* : `mode {user/patient}` +
+
+* *Switch To Appointment Management Mode* : `mode {appointment/cal/calendar/appt}` +
+
+* *Add A Patient* : `add patient` +
+
+* *Create An Appointment* : `make appointment` +
+
+* *List All Patients* : `list patients` +
+
+* *List All Appointments* : `list appointments` +
+
+* *Edit Patient Information* : `change patient` +
+
+* *Edit Appointment Information* : `change appointment`
+
+* *Locate Patients By Name* : `find patient`
+
+* *Locate An Appointment* : `find appointment`
+
+* *Delete A Patient Record (Mark As Absent)* : `delete patient`
+
+* *Delete An Appointment* : `delete appointment`
+
+* *View Command History* : `history`
+
+* *Clear The Calendar* : `clear {cal/calendar/appointments/appts}`
+
+* *Exit The Program* : `exit`
