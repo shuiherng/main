@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]--><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="Asciidoctor 1.5.6.1"><title>AddressBook Level 4 - User Guide</title><link rel="stylesheet" href="stylesheets/gh-pages.css">
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]--><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="Asciidoctor 1.5.6.1"><title>PatientBook - User Guide</title><link rel="stylesheet" href="stylesheets/gh-pages.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css"></head><body class="article"><div id="seedu-header"><nav class="navbar navbar-lg navbar-light bg-lighter"><div class="container"><a class="navbar-brand" href="https://se-edu.github.io/"><img src="images/SeEduLogo.png" alt="SE-EDU"></a><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/addressbook-level1">AB-1</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/addressbook-level2">AB-2</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/addressbook-level3">AB-3</a></li><li class="nav-item"><a class="nav-link active" href="index.html">AB-4</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/collate">Collate</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/se-book">Book</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/learningresources">Resources</a></li></ul></div></nav></div><div id="site-header"><nav class="navbar navbar-light bg-light"><div class="container"><a class="navbar-brand" href="index.html">AddressBook-Level4</a><ul class="navbar-nav"><li class="nav-item"><a class="nav-link active" href="UserGuide.html">User Guide</a></li><li class="nav-item"><a class="nav-link" href="DeveloperGuide.html">Developer Guide</a></li><li class="nav-item"><a class="nav-link" href="LearningOutcomes.html">LOs</a></li><li class="nav-item"><a class="nav-link" href="AboutUs.html">About Us</a></li><li class="nav-item"><a class="nav-link" href="ContactUs.html">Contact Us</a></li><li class="navitem"><a class="nav-link" href="https://github.com/se-edu/addressbook-level4"><span class="fa fa-github fa-lg" aria-hidden="true"></span>&nbsp;View on GitHub</a></li></ul></div></nav></div><div id="header"><h1>AddressBook Level 4 - User Guide</h1></div><div id="content"><div id="preamble">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css"></head><body class="article"><div id="seedu-header"><nav class="navbar navbar-lg navbar-light bg-lighter"><div class="container"><a class="navbar-brand" href="https://se-edu.github.io/"><img src="images/SeEduLogo.png" alt="SE-EDU"></a><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/addressbook-level1">AB-1</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/addressbook-level2">AB-2</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/addressbook-level3">AB-3</a></li><li class="nav-item"><a class="nav-link active" href="index.html">AB-4</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/collate">Collate</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/se-book">Book</a></li><li class="nav-item"><a class="nav-link" href="https://se-edu.github.io/learningresources">Resources</a></li></ul></div></nav></div><div id="site-header"><nav class="navbar navbar-light bg-light"><div class="container"><a class="navbar-brand" href="index.html">AddressBook-Level4</a><ul class="navbar-nav"><li class="nav-item"><a class="nav-link active" href="UserGuide.html">User Guide</a></li><li class="nav-item"><a class="nav-link" href="DeveloperGuide.html">Developer Guide</a></li><li class="nav-item"><a class="nav-link" href="LearningOutcomes.html">LOs</a></li><li class="nav-item"><a class="nav-link" href="AboutUs.html">About Us</a></li><li class="nav-item"><a class="nav-link" href="ContactUs.html">Contact Us</a></li><li class="navitem"><a class="nav-link" href="https://github.com/se-edu/addressbook-level4"><span class="fa fa-github fa-lg" aria-hidden="true"></span>&nbsp;View on GitHub</a></li></ul></div></nav></div><div id="header"><h1>PatientBook - User Guide</h1></div><div id="content"><div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>By: <code>Team SE-EDU</code>      Since: <code>Jun 2016</code>      Licence: <code>MIT</code></p>
+<p>By: <code>Team T12-2</code>      Since: <code>Jun 2016</code>      Licence: <code>MIT</code></p>
 </div>
 </div>
 <div id="toc" class="toc">
@@ -14,19 +14,23 @@
 <li><a href="#Features">3. Features</a>
 <ul class="sectlevel2">
 <li><a href="#viewing-help-code-help-code">3.1. Viewing help : <code>help</code></a></li>
-<li><a href="#adding-a-person-code-add-code">3.2. Adding a person: <code>add</code></a></li>
+<li><a href="#switching-to-patient-management-mode-code-mode-user-patient-code">3.2. Switching to patient management mode : <code>mode {user/patient}</code></a></li>
 <li><a href="#listing-all-persons-code-list-code">3.3. Listing all persons : <code>list</code></a></li>
-<li><a href="#editing-a-person-code-edit-code">3.4. Editing a person : <code>edit</code></a></li>
-<li><a href="#locating-persons-by-name-code-find-code">3.5. Locating persons by name: <code>find</code></a></li>
-<li><a href="#deleting-a-person-code-delete-code">3.6. Deleting a person : <code>delete</code></a></li>
-<li><a href="#selecting-a-person-code-select-code">3.7. Selecting a person : <code>select</code></a></li>
-<li><a href="#listing-entered-commands-code-history-code">3.8. Listing entered commands : <code>history</code></a></li>
-<li><a href="#undoing-previous-command-code-undo-code">3.9. Undoing previous command : <code>undo</code></a></li>
-<li><a href="#redoing-the-previously-undone-command-code-redo-code">3.10. Redoing the previously undone command : <code>redo</code></a></li>
-<li><a href="#clearing-all-entries-code-clear-code">3.11. Clearing all entries : <code>clear</code></a></li>
-<li><a href="#exiting-the-program-code-exit-code">3.12. Exiting the program : <code>exit</code></a></li>
-<li><a href="#saving-the-data">3.13. Saving the data</a></li>
-<li><a href="#encrypting-data-files-code-coming-in-v2-0-code">3.14. Encrypting data files <code>[coming in v2.0]</code></a></li>
+<li><a href="#switching-to-appointment-management-mode-code-mode-appointment-cal-calendar-appt-code">3.4. Switching to appointment management mode : <code>mode {appointment/cal/calendar/appt}</code></a></li>
+<li><a href="#adding-a-patient-code-add-patient-code">3.5. Adding a patient : <code>add patient</code></a></li>
+<li><a href="#creating-an-appointment-code-make-appointment-code">3.6. Creating an appointment : <code>make appointment</code></a></li>
+<li><a href="#listing-all-persons-code-list-patients-code">3.7. Listing all persons : <code>list patients</code></a></li>
+<li><a href="#listing-all-appointments-code-list-appointments-code">3.8. Listing all appointments : <code>list appointments</code></a></li>
+<li><a href="#editing-patient-information-code-change-patient-code">3.9. Editing patient information : <code>change patient</code></a></li>
+<li><a href="#editing-an-appointment-code-change-appointment-code">3.10. Editing an appointment : <code>change appointment</code></a></li>
+<li><a href="#locating-patients-by-name-code-find-patient-code">3.11. Locating patients by name : <code>find patient</code></a></li>
+<li><a href="#locating-an-appointment-code-find-appointment-code">3.12. Locating an appointment : <code>find appointment</code></a></li>
+<li><a href="#deleting-a-patient-record-code-delete-patient-code">3.13. Deleting a patient record : <code>delete patient</code></a></li>
+<li><a href="#deleting-an-appointment-code-delete-appointment-code">3.14. Deleting an appointment : <code>delete appointment</code></a></li>
+<li><a href="#listing-entered-commands-code-history-code">3.15. Listing entered commands : <code>history</code></a></li>
+<li><a href="#clearing-the-calendar-code-clear-calendar-code">3.16. Clearing the calendar : <code>clear calendar</code></a></li>
+<li><a href="#exiting-the-program-code-exit-code">3.17. Exiting the program : <code>exit</code></a></li>
+<li><a href="#saving-the-data">3.18. Saving the data</a></li>
 </ul>
 </li>
 <li><a href="#faq">4. FAQ</a></li>
@@ -38,7 +42,7 @@
 <h2 id="introduction"><a class="link" href="#introduction">1. Introduction</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>AddressBook Level 4 (AB4) is for those who <strong>prefer to use a desktop app for managing contacts</strong>. More importantly, AB4 is <strong>optimized for those who prefer to work with a Command Line Interface</strong> (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB4 can get your contact management tasks done faster than traditional GUI apps. Interested? Jump to the <a href="#quick-start">Section 2, &#8220;Quick Start&#8221;</a> to get started. Enjoy!</p>
+<p>PatientBook is a desktop application for medical professionals to manage their patient information as well as scheduling their appointments. More importantly, PatientBook is optimized for those who prefer to work with a Command Line Interface (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, PatientBook will allow the user to manage and access their patient information, as well as schedule their appointments more efficiently than using a traditional GUI-based application. Refer to Section 2, “Quick Start” to begin.</p>
 </div>
 </div>
 </div>
@@ -51,10 +55,10 @@
 <p>Ensure you have Java version <code>9</code> or later installed in your Computer.</p>
 </li>
 <li>
-<p>Download the latest <code>addressbook.jar</code> <a href="https://github.com/se-edu/addressbook-level4/releases">here</a>.</p>
+<p>Download the latest <code>patientbook.jar</code> <a href="https://github.com/CS2103-AY1819S1-T12-2/main/releases">here</a>.</p>
 </li>
 <li>
-<p>Copy the file to the folder you want to use as the home folder for your Address Book.</p>
+<p>Copy the file to the folder you want to use as the home folder for your Patient Book.</p>
 </li>
 <li>
 <p>Double-click the file to start the app. The GUI should appear in a few seconds.</p>
@@ -73,13 +77,25 @@ e.g. typing <strong><code>help</code></strong> and pressing <kbd>Enter</kbd> wil
 <div class="ulist">
 <ul>
 <li>
-<p><strong><code>list</code></strong> : lists all contacts</p>
+<p><strong><code>mode user</code></strong> or <strong><code>mode patient</code></strong> : switches to patient management mode</p>
 </li>
 <li>
-<p><strong><code>add</code></strong><code>n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01</code> : adds a contact named <code>John Doe</code> to the Address Book.</p>
+<p><strong><code>mode calender</code></strong> or <strong><code>mode cal</code></strong> : switches to appointment management mode</p>
 </li>
 <li>
-<p><strong><code>delete</code></strong><code>3</code> : deletes the 3rd contact shown in the current list</p>
+<p><strong><code>add patient</code></strong> : automatically switches to patient management mode and begins a dialog to create a new entry in the patient database</p>
+</li>
+<li>
+<p><strong><code>delete p301</code></strong> : deletes patient with ID '301'</p>
+</li>
+<li>
+<p><strong><code>delete a40</code></strong> : deletes appointment with ID '40'</p>
+</li>
+<li>
+<p><strong><code>delete appointment scheduled at 3pm next week</code></strong> : removes appointment scheduled for 3pm next week</p>
+</li>
+<li>
+<p><strong><code>make appointment at 3pm next week</code></strong> : schedules an appointment at 3pm next week</p>
 </li>
 <li>
 <p><strong><code>exit</code></strong> : exits the app</p>
@@ -102,35 +118,78 @@ e.g. typing <strong><code>help</code></strong> and pressing <kbd>Enter</kbd> wil
 <div class="paragraph">
 <p><strong>Command Format</strong></p>
 </div>
-<div class="ulist">
-<ul>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p>Words in <code>UPPER_CASE</code> are the parameters to be supplied by the user e.g. in <code>add n/NAME</code>, <code>NAME</code> is a parameter which can be used as <code>add n/John Doe</code>.</p>
+<p>Commands are, in general, case sensitive.</p>
 </li>
 <li>
-<p>Items in square brackets are optional e.g <code>n/NAME [t/TAG]</code> can be used as <code>n/John Doe t/friend</code> or as <code>n/John Doe</code>.</p>
+<p>Words in <code>UPPER_CASE</code> are parameters to be supplied by the user, eg. in <code>add patient n/NAME</code>, <code>NAME</code> is a parameter which can be used as <code>add n/John Doe</code>.</p>
 </li>
 <li>
-<p>Items with <code>…</code>​ after them can be used multiple times including zero times e.g. <code>[t/TAG]&#8230;&#8203;</code> can be used as <code>&#160;</code> (i.e. 0 times), <code>t/friend</code>, <code>t/friend t/family</code> etc.</p>
+<p>Items in square brackets are optional.<br>
+e.g. <code>make appointment [at 3pm] [next week]</code> will cause the program to prompt for further details.</p>
 </li>
 <li>
-<p>Parameters can be in any order e.g. if the command specifies <code>n/NAME p/PHONE_NUMBER</code>, <code>p/PHONE_NUMBER n/NAME</code> is also acceptable.</p>
+<p>Parameters may be specified in any order, eg. <code>make appointment next week at 3pm</code> is also acceptable.</p>
 </li>
-</ul>
+</ol>
 </div>
 </div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+In some places in this guide, you will find that two or more commands have been placed within curly brackets and separated by forward-slashes. This indicates that the commands are equivalent. For example, <code>{schedule/make} appointment</code> indicates that <code>schedule appointment</code> and <code>make appointment</code> are both equally valid._
+</td>
+</tr>
+</table>
 </div>
 <div class="sect2">
 <h3 id="viewing-help-code-help-code"><a class="link" href="#viewing-help-code-help-code">3.1. Viewing help : <code>help</code></a></h3>
 <div class="paragraph">
-<p>Format: <code>help</code></p>
+<p><strong>Format:</strong> <code>help</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="adding-a-person-code-add-code"><a class="link" href="#adding-a-person-code-add-code">3.2. Adding a person: <code>add</code></a></h3>
+<h3 id="switching-to-patient-management-mode-code-mode-user-patient-code"><a class="link" href="#switching-to-patient-management-mode-code-mode-user-patient-code">3.2. Switching to patient management mode : <code>mode {user/patient}</code></a></h3>
 <div class="paragraph">
-<p>Adds a person to the address book<br>
-Format: <code>add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]&#8230;&#8203;</code></p>
+<p>Switches the application to patient management mode. In this mode, you can view and manage your patient details and information.<br></p>
+</div>
+<div class="paragraph">
+<p><strong>Format:</strong> <code>mode {user/patient}</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="listing-all-persons-code-list-code"><a class="link" href="#listing-all-persons-code-list-code">3.3. Listing all persons : <code>list</code></a></h3>
+<div class="paragraph">
+<p>Shows a list of all persons in the address book.<br></p>
+</div>
+<div class="paragraph">
+<p><strong>Format:</strong> <code>list</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="switching-to-appointment-management-mode-code-mode-appointment-cal-calendar-appt-code"><a class="link" href="#switching-to-appointment-management-mode-code-mode-appointment-cal-calendar-appt-code">3.4. Switching to appointment management mode : <code>mode {appointment/cal/calendar/appt}</code></a></h3>
+<div class="paragraph">
+<p>Switches the application to appointment management mode. In this mode, you can view and manage your appointments scheduled.<br></p>
+</div>
+<div class="paragraph">
+<p><strong>Format:</strong> <code>mode {appointment/cal/calendar/appt}</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="adding-a-patient-code-add-patient-code"><a class="link" href="#adding-a-patient-code-add-patient-code">3.5. Adding a patient : <code>add patient</code></a></h3>
+<div class="paragraph">
+<p>Adds a new patient to the address book.
+Switches application to patient management mode automatically.</p>
+</div>
+<div class="paragraph">
+<p><strong>Format:</strong> <code>add [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [b/BLOOD_TYPE] [t/TAG] …</code></p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -139,7 +198,45 @@ Format: <code>add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]&#8230;&#8203;<
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-A person can have any number of tags (including 0)
+A person can have any number of tags, including 0
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Not all fields have to be filled in initially when executing the command. The program will automatically prompt for more information on the person where necessary. All fields but tags are mandatory to create a new patient record.</p>
+</div>
+<div class="paragraph">
+<p>Examples:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>add n/John Doe p/97019231 e/johnd@example.com a/51 John Street b/O-</code></p>
+</li>
+<li>
+<p><code>add n/Betsy Crowe t/criminal e/betsycrowe@example.com a/Newgate Prison p/91501231 t/critical</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="creating-an-appointment-code-make-appointment-code"><a class="link" href="#creating-an-appointment-code-make-appointment-code">3.6. Creating an appointment : <code>make appointment</code></a></h3>
+<div class="paragraph">
+<p>Creates a new appointment and places it in the calendar where appropriate.
+Switches application to appointment management mode automatically.<br></p>
+</div>
+<div class="paragraph">
+<p><strong>Format:</strong> <code>{schedule/make} {appointment /appt} for {PATIENT ID/PATIENT NAME} [DATE AND TIME] [;] …</code></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Command parses natural expressions for <code>[DATE AND TIME]</code>. Anything after the optional semicolon is saved directly as details for the appointment and will be displayed when the appointment is selected in appointment management mode.
 </td>
 </tr>
 </table>
@@ -150,45 +247,70 @@ A person can have any number of tags (including 0)
 <div class="ulist">
 <ul>
 <li>
-<p><code>add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01</code></p>
+<p><code>make appt for p1205 at 4pm next Tuesday ; Routine Checkup</code></p>
 </li>
 <li>
-<p><code>add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal</code></p>
+<p><code>schedule appointment for John Doe on 14/8/2018 at 3pm</code></p>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="listing-all-persons-code-list-code"><a class="link" href="#listing-all-persons-code-list-code">3.3. Listing all persons : <code>list</code></a></h3>
+<h3 id="listing-all-persons-code-list-patients-code"><a class="link" href="#listing-all-persons-code-list-patients-code">3.7. Listing all persons : <code>list patients</code></a></h3>
 <div class="paragraph">
-<p>Shows a list of all persons in the address book.<br>
-Format: <code>list</code></p>
+<p>Automatically switches to patient management mode, and lists all patients in the patient record.<br></p>
+</div>
+<div class="paragraph">
+<p><strong>Format:</strong> <code>list patient/patients</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="editing-a-person-code-edit-code"><a class="link" href="#editing-a-person-code-edit-code">3.4. Editing a person : <code>edit</code></a></h3>
+<h3 id="listing-all-appointments-code-list-appointments-code"><a class="link" href="#listing-all-appointments-code-list-appointments-code">3.8. Listing all appointments : <code>list appointments</code></a></h3>
 <div class="paragraph">
-<p>Edits an existing person in the address book.<br>
-Format: <code>edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]&#8230;&#8203;</code></p>
+<p>Automatically switches to appointment management mode, and lists all appointments from now in the record.<br></p>
+</div>
+<div class="paragraph">
+<p><strong>Format:</strong> <code>list {appointments/appointment/appt/appts} [all]</code></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Using <code>all</code> will also display all past appointments.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="editing-patient-information-code-change-patient-code"><a class="link" href="#editing-patient-information-code-change-patient-code">3.9. Editing patient information : <code>change patient</code></a></h3>
+<div class="paragraph">
+<p>Edits an existing patient in the address book. Automatically switches to patient management mode. Restores the address book to the state before the previous <em>undoable</em> command was executed.<br></p>
+</div>
+<div class="paragraph">
+<p><strong>Format:</strong> <code>{change/edit} patient {PATIENT_NAME/PATIENT_ID} [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG] [b/BLOOD TYPE]</code></p>
 </div>
 <div class="sidebarblock">
 <div class="content">
 <div class="ulist">
 <ul>
 <li>
-<p>Edits the person at the specified <code>INDEX</code>. The index refers to the index number shown in the displayed person list. The index <strong>must be a positive integer</strong> 1, 2, 3, &#8230;&#8203;</p>
+<p>Edits the person specified by <code>PATIENT_NAME</code> or <code>PATIENT_ID</code>. If the application has any uncertainties, e.g. patients having the same name, a prompt will appear to select the appropriate person.</p>
 </li>
 <li>
 <p>At least one of the optional fields must be provided.</p>
 </li>
 <li>
-<p>Existing values will be updated to the input values.</p>
+<p>Input values will be used to update the existing values.</p>
 </li>
 <li>
-<p>When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.</p>
+<p>When editing tags, all tags for the person will be removed and replaced with tags supplied.</p>
 </li>
 <li>
-<p>You can remove all the person&#8217;s tags by typing <code>t/</code> without specifying any tags after it.</p>
+<p>You can remove all the person’s tags by typing <code>t/</code> without specifying any tags after it.</p>
 </li>
 </ul>
 </div>
@@ -200,40 +322,50 @@ Format: <code>edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]&#8230;
 <div class="ulist">
 <ul>
 <li>
-<p><code>edit 1 p/91234567 e/johndoe@example.com</code><br>
-Edits the phone number and email address of the 1st person to be <code>91234567</code> and <code>johndoe@example.com</code> respectively.</p>
+<p><code>edit John Doe p/5192310 e/johnd@example.com</code></p>
 </li>
 <li>
-<p><code>edit 2 n/Betsy Crower t/</code><br>
-Edits the name of the 2nd person to be <code>Betsy Crower</code> and clears all existing tags.</p>
+<p><code>change p5102 n/Betsy Crower t/</code></p>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="locating-persons-by-name-code-find-code"><a class="link" href="#locating-persons-by-name-code-find-code">3.5. Locating persons by name: <code>find</code></a></h3>
+<h3 id="editing-an-appointment-code-change-appointment-code"><a class="link" href="#editing-an-appointment-code-change-appointment-code">3.10. Editing an appointment : <code>change appointment</code></a></h3>
 <div class="paragraph">
-<p>Finds persons whose names contain any of the given keywords.<br>
-Format: <code>find KEYWORD [MORE_KEYWORDS]</code></p>
+<p>Automatically enters appointment management mode, then edits an existing appointment in the calendar.<br>
+<strong>Format:</strong> <code>{change/edit} {appointment/appt} {DATE AND TIME/APPOINTMENT_ID} NEW_DETAILS</code></p>
+</div>
+<div class="paragraph">
+<p>Edits the details for the appointment.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="locating-patients-by-name-code-find-patient-code"><a class="link" href="#locating-patients-by-name-code-find-patient-code">3.11. Locating patients by name : <code>find patient</code></a></h3>
+<div class="paragraph">
+<p>Automatically enters patient management mode, then find persons whose names contain any of the given keywords.<br></p>
+</div>
+<div class="paragraph">
+<p><strong>Format:</strong> <code>find {patient/person} [MORE_KEYWORDS]</code></p>
 </div>
 <div class="sidebarblock">
 <div class="content">
 <div class="ulist">
 <ul>
 <li>
-<p>The search is case insensitive. e.g <code>hans</code> will match <code>Hans</code></p>
+<p>The search is case insensitive; e.g. 'hans' will match with 'Hans'.</p>
 </li>
 <li>
-<p>The order of the keywords does not matter. e.g. <code>Hans Bo</code> will match <code>Bo Hans</code></p>
+<p>The order of keywords does not matter; e.g. 'Hans Bo' will match with 'Bo Hans'.</p>
 </li>
 <li>
 <p>Only the name is searched.</p>
 </li>
 <li>
-<p>Only full words will be matched e.g. <code>Han</code> will not match <code>Hans</code></p>
+<p>Only full words will be matched e.g. 'Han' will not match 'Hans'.</p>
 </li>
 <li>
-<p>Persons matching at least one keyword will be returned (i.e. <code>OR</code> search). e.g. <code>Hans Bo</code> will return <code>Hans Gruber</code>, <code>Bo Yang</code></p>
+<p>Persons matching at least one keyword will be returned (i.e. 'OR' search); e.g. 'Hans Bo' will return 'Hans Gruber' as well as 'Bo Yang'.</p>
 </li>
 </ul>
 </div>
@@ -245,38 +377,32 @@ Format: <code>find KEYWORD [MORE_KEYWORDS]</code></p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>find John</code><br>
-Returns <code>john</code> and <code>John Doe</code></p>
+<p><code>find patient John</code><br>
+Returns patient 'John'.</p>
 </li>
 <li>
-<p><code>find Betsy Tim John</code><br>
-Returns any person having names <code>Betsy</code>, <code>Tim</code>, or <code>John</code></p>
+<p><code>find person Betsy Tim John</code><br>
+Returns any person whose name contain 'Betsy', 'Tim' or 'John'.</p>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="deleting-a-person-code-delete-code"><a class="link" href="#deleting-a-person-code-delete-code">3.6. Deleting a person : <code>delete</code></a></h3>
+<h3 id="locating-an-appointment-code-find-appointment-code"><a class="link" href="#locating-an-appointment-code-find-appointment-code">3.12. Locating an appointment : <code>find appointment</code></a></h3>
 <div class="paragraph">
-<p>Deletes the specified person from the address book.<br>
-Format: <code>delete INDEX</code></p>
+<p>Automatically enters appointment management mode, then finds appointments a person or in a given date range.</p>
 </div>
-<div class="sidebarblock">
-<div class="content">
-<div class="ulist">
-<ul>
-<li>
-<p>Deletes the person at the specified <code>INDEX</code>.</p>
-</li>
-<li>
-<p>The index refers to the index number shown in the displayed person list.</p>
-</li>
-<li>
-<p>The index <strong>must be a positive integer</strong> 1, 2, 3, &#8230;&#8203;</p>
-</li>
-</ul>
+<div class="paragraph">
+<p><strong>Format 1:</strong> <code>find [all] {appointment/appointments/appt/appts} [for] {PATIENT_ID/PATIENT_NAME}</code></p>
 </div>
+<div class="paragraph">
+<p>The above format finds all appointments from now for patient specified by <code>PATIENT_ID/PATIENT_NAME</code> and displays them. Including <code>all</code> will display past appointments as well.</p>
 </div>
+<div class="paragraph">
+<p><strong>Format 2:</strong> <code>find {appointment/appointments/appt/appts} from [DATE_AND_TIME] {to/till} [DATE_AND_TIME]</code></p>
+</div>
+<div class="paragraph">
+<p>The above format locates all appointments in the given range of dates.</p>
 </div>
 <div class="paragraph">
 <p>Examples:</p>
@@ -284,182 +410,86 @@ Format: <code>delete INDEX</code></p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>list</code><br>
-<code>delete 2</code><br>
-Deletes the 2nd person in the address book.</p>
+<p><code>find all appt John Doe</code><br>
+Returns all appointments for John Doe, including past appointments.</p>
 </li>
 <li>
-<p><code>find Betsy</code><br>
-<code>delete 1</code><br>
-Deletes the 1st person in the results of the <code>find</code> command.</p>
+<p><code>find appointments from last Monday till now</code><br>
+Returns all appointments from last Monday (defaults to 12am) to the time now.</p>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="selecting-a-person-code-select-code"><a class="link" href="#selecting-a-person-code-select-code">3.7. Selecting a person : <code>select</code></a></h3>
+<h3 id="deleting-a-patient-record-code-delete-patient-code"><a class="link" href="#deleting-a-patient-record-code-delete-patient-code">3.13. Deleting a patient record : <code>delete patient</code></a></h3>
 <div class="paragraph">
-<p>Selects the person identified by the index number used in the displayed person list.<br>
-Format: <code>select INDEX</code></p>
-</div>
-<div class="sidebarblock">
-<div class="content">
-<div class="ulist">
-<ul>
-<li>
-<p>Selects the person and loads the Google search page the person at the specified <code>INDEX</code>.</p>
-</li>
-<li>
-<p>The index refers to the index number shown in the displayed person list.</p>
-</li>
-<li>
-<p>The index <strong>must be a positive integer</strong> <code>1, 2, 3, &#8230;&#8203;</code></p>
-</li>
-</ul>
-</div>
-</div>
+<p>Deletes a patient. Automatically enters patient management mode. Due to the nature of medical records, patient records will only be marked as deleted, and displayed as such. They will never disappear completely.<br></p>
 </div>
 <div class="paragraph">
-<p>Examples:</p>
+<p>Deleted patients will not surface on search/list commands and cannot be interacted with in future commands.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>list</code><br>
-<code>select 2</code><br>
-Selects the 2nd person in the address book.</p>
-</li>
-<li>
-<p><code>find Betsy</code><br>
-<code>select 1</code><br>
-Selects the 1st person in the results of the <code>find</code> command.</p>
-</li>
-</ul>
+<div class="paragraph">
+<p><strong>Format:</strong> <code>delete {patient/person} {PATIENT_ID/PATIENT_NAME}</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="listing-entered-commands-code-history-code"><a class="link" href="#listing-entered-commands-code-history-code">3.8. Listing entered commands : <code>history</code></a></h3>
+<h3 id="deleting-an-appointment-code-delete-appointment-code"><a class="link" href="#deleting-an-appointment-code-delete-appointment-code">3.14. Deleting an appointment : <code>delete appointment</code></a></h3>
 <div class="paragraph">
-<p>Lists all the commands that you have entered in reverse chronological order.<br>
-Format: <code>history</code></p>
+<p>Deletes an appointment. Automatically enters appointment management mode.</p>
 </div>
-<div class="admonitionblock note">
+<div class="paragraph">
+<p><strong>Format:</strong> <code>delete {appointment/appt} [APPOINTMENT_ID]</code></p>
+</div>
+<div class="paragraph">
+<p>The above format searches the appointment using <code>find appointment</code> in order to delete.</p>
+</div>
+<div class="paragraph">
+<p><em>In a future update, it will be possible to delete appointments via date and time.</em></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="listing-entered-commands-code-history-code"><a class="link" href="#listing-entered-commands-code-history-code">3.15. Listing entered commands : <code>history</code></a></h3>
+<div class="paragraph">
+<p>Lists all commands that you have entered in reverse chronological order.</p>
+</div>
+<div class="paragraph">
+<p><strong>Format:</strong> <code>history</code></p>
+</div>
+<div class="admonitionblock tip">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-<div class="paragraph">
-<p>Pressing the <kbd>&uarr;</kbd> and <kbd>&darr;</kbd> arrows will display the previous and next input respectively in the command box.</p>
-</div>
+Tip: Pressing up and down arrows will display the previous and next input respectively in the command box.
 </td>
 </tr>
 </table>
 </div>
 </div>
 <div class="sect2">
-<h3 id="undoing-previous-command-code-undo-code"><a class="link" href="#undoing-previous-command-code-undo-code">3.9. Undoing previous command : <code>undo</code></a></h3>
+<h3 id="clearing-the-calendar-code-clear-calendar-code"><a class="link" href="#clearing-the-calendar-code-clear-calendar-code">3.16. Clearing the calendar : <code>clear calendar</code></a></h3>
 <div class="paragraph">
-<p>Restores the address book to the state before the previous <em>undoable</em> command was executed.<br>
-Format: <code>undo</code></p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Undoable commands: those commands that modify the address book&#8217;s content (<code>add</code>, <code>delete</code>, <code>edit</code> and <code>clear</code>).</p>
-</div>
-</td>
-</tr>
-</table>
+<p>Empties out all appointments scheduled from the calendar.</p>
 </div>
 <div class="paragraph">
-<p>Examples:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>delete 1</code><br>
-<code>list</code><br>
-<code>undo</code> (reverses the <code>delete 1</code> command)<br></p>
-</li>
-<li>
-<p><code>select 1</code><br>
-<code>list</code><br>
-<code>undo</code><br>
-The <code>undo</code> command fails as there are no undoable commands executed previously.</p>
-</li>
-<li>
-<p><code>delete 1</code><br>
-<code>clear</code><br>
-<code>undo</code> (reverses the <code>clear</code> command)<br>
-<code>undo</code> (reverses the <code>delete 1</code> command)<br></p>
-</li>
-</ul>
+<p><strong>Format:</strong> <code>clear {calendar/cal/appointments/appts}</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="redoing-the-previously-undone-command-code-redo-code"><a class="link" href="#redoing-the-previously-undone-command-code-redo-code">3.10. Redoing the previously undone command : <code>redo</code></a></h3>
+<h3 id="exiting-the-program-code-exit-code"><a class="link" href="#exiting-the-program-code-exit-code">3.17. Exiting the program : <code>exit</code></a></h3>
 <div class="paragraph">
-<p>Reverses the most recent <code>undo</code> command.<br>
-Format: <code>redo</code></p>
+<p>Exits the program.</p>
 </div>
 <div class="paragraph">
-<p>Examples:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>delete 1</code><br>
-<code>undo</code> (reverses the <code>delete 1</code> command)<br>
-<code>redo</code> (reapplies the <code>delete 1</code> command)<br></p>
-</li>
-<li>
-<p><code>delete 1</code><br>
-<code>redo</code><br>
-The <code>redo</code> command fails as there are no <code>undo</code> commands executed previously.</p>
-</li>
-<li>
-<p><code>delete 1</code><br>
-<code>clear</code><br>
-<code>undo</code> (reverses the <code>clear</code> command)<br>
-<code>undo</code> (reverses the <code>delete 1</code> command)<br>
-<code>redo</code> (reapplies the <code>delete 1</code> command)<br>
-<code>redo</code> (reapplies the <code>clear</code> command)<br></p>
-</li>
-</ul>
+<p><strong>Format:</strong> <code>exit</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="clearing-all-entries-code-clear-code"><a class="link" href="#clearing-all-entries-code-clear-code">3.11. Clearing all entries : <code>clear</code></a></h3>
+<h3 id="saving-the-data"><a class="link" href="#saving-the-data">3.18. Saving the data</a></h3>
 <div class="paragraph">
-<p>Clears all entries from the address book.<br>
-Format: <code>clear</code></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="exiting-the-program-code-exit-code"><a class="link" href="#exiting-the-program-code-exit-code">3.12. Exiting the program : <code>exit</code></a></h3>
-<div class="paragraph">
-<p>Exits the program.<br>
-Format: <code>exit</code></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="saving-the-data"><a class="link" href="#saving-the-data">3.13. Saving the data</a></h3>
-<div class="paragraph">
-<p>Address book data are saved in the hard disk automatically after any command that changes the data.<br>
-There is no need to save manually.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="encrypting-data-files-code-coming-in-v2-0-code"><a class="link" href="#encrypting-data-files-code-coming-in-v2-0-code">3.14. Encrypting data files <code>[coming in v2.0]</code></a></h3>
-<div class="paragraph">
-<p><em>{explain how the user can enable/disable data encryption}</em></p>
+<p>All patient and calendar data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.</p>
 </div>
 </div>
 </div>
@@ -468,8 +498,8 @@ There is no need to save manually.</p>
 <h2 id="faq"><a class="link" href="#faq">4. FAQ</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong>Q</strong>: How do I transfer my data to another Computer?<br>
-<strong>A</strong>: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Address Book folder.</p>
+<p><strong>Q</strong>: How do I transfer my data to another device?<br>
+<strong>A</strong>: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous PatientBook folder.</p>
 </div>
 </div>
 </div>
@@ -479,44 +509,54 @@ There is no need to save manually.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Add</strong> <code>add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]&#8230;&#8203;</code><br>
-e.g. <code>add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague</code></p>
+<p><strong>View Help</strong> : <code>help</code><br></p>
 </li>
 <li>
-<p><strong>Clear</strong> : <code>clear</code></p>
+<p><strong>Switch To Patient Management Mode:</strong> : <code>mode {user/patient}</code><br></p>
 </li>
 <li>
-<p><strong>Delete</strong> : <code>delete INDEX</code><br>
-e.g. <code>delete 3</code></p>
+<p><strong>Switch To Appointment Management Mode</strong> : <code>mode {appointment/cal/calendar/appt}</code><br></p>
 </li>
 <li>
-<p><strong>Edit</strong> : <code>edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]&#8230;&#8203;</code><br>
-e.g. <code>edit 2 n/James Lee e/jameslee@example.com</code></p>
+<p><strong>Add A Patient</strong> : <code>add patient</code><br></p>
 </li>
 <li>
-<p><strong>Find</strong> : <code>find KEYWORD [MORE_KEYWORDS]</code><br>
-e.g. <code>find James Jake</code></p>
+<p><strong>Create An Appointment</strong> : <code>make appointment</code><br></p>
 </li>
 <li>
-<p><strong>List</strong> : <code>list</code></p>
+<p><strong>List All Patients</strong> : <code>list patients</code><br></p>
 </li>
 <li>
-<p><strong>Help</strong> : <code>help</code></p>
+<p><strong>List All Appointments</strong> : <code>list appointments</code><br></p>
 </li>
 <li>
-<p><strong>Select</strong> : <code>select INDEX</code><br>
-e.g.<code>select 2</code></p>
+<p><strong>Edit Patient Information</strong> : <code>change patient</code><br></p>
 </li>
 <li>
-<p><strong>History</strong> : <code>history</code></p>
+<p><strong>Edit Appointment Information</strong> : <code>change appointment</code></p>
 </li>
 <li>
-<p><strong>Undo</strong> : <code>undo</code></p>
+<p><strong>Locate Patients By Name</strong> : <code>find patient</code></p>
 </li>
 <li>
-<p><strong>Redo</strong> : <code>redo</code></p>
+<p><strong>Locate An Appointment</strong> : <code>find appointment</code></p>
+</li>
+<li>
+<p><strong>Delete A Patient Record (Mark As Absent)</strong> : <code>delete patient</code></p>
+</li>
+<li>
+<p><strong>Delete An Appointment</strong> : <code>delete appointment</code></p>
+</li>
+<li>
+<p><strong>View Command History</strong> : <code>history</code></p>
+</li>
+<li>
+<p><strong>Clear The Calendar</strong> : <code>clear {cal/calendar/appointments/appts}</code></p>
+</li>
+<li>
+<p><strong>Exit The Program</strong> : <code>exit</code></p>
 </li>
 </ul>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2018-09-19 16:45:58 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2018-09-19 16:58:20 UTC</div></div></div></body></html>
