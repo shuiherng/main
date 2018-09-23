@@ -1,23 +1,24 @@
 package seedu.address.model.person;
 
 /**
- * Represents a Person's ID in the address book.
- * ID only increases, and a person is bound to their ID forever.
+ * Represents a Person's PersonID in the address book.
+ * PersonID only increases, and a person is bound to their PersonID forever.
  */
-public class ID {
+public class PersonID {
 
-    // ID iterator
-    public static int idCounter = 0;
+    // PersonID iterator
+    private static int idCounter = 0;
 
-    public static final String ID_VALIDATION_REGEX = "^p[0-9]+$";
+    private static final String ID_VALIDATION_REGEX = "^p[0-9]+$";
     public final String value;
 
     /**
-     * Constructs a {@code ID}.
+     * Constructs a {@code PersonID}.
      */
-    public ID() {
+    public PersonID() {
         value = getNewID();
     }
+
     private static String getNewID(){
         String id = new String("p"+Integer.toString(idCounter));
         idCounter += 1;
@@ -32,8 +33,8 @@ public class ID {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof ID // instnaceof handles nulls
-                && value.equals(((ID) other).value)); // state check
+                || (other instanceof PersonID // instanceof handles nulls
+                && value.equals(((PersonID) other).value)); // state check
     }
 
     @Override

@@ -3,8 +3,8 @@ package seedu.address.model.person;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -22,7 +22,7 @@ public class Person {
 
 
     // Identity fields
-    private final ID id;
+    private final PersonID id;
 
     /*
     private final Name name;
@@ -40,7 +40,7 @@ public class Person {
      */
     public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, address, tags);
-        this.id = new ID();
+        this.id = new PersonID();
         this.attributes = new HashMap<>();
         this.attributes.put(PersonProperty.NAME, name);
         this.attributes.put(PersonProperty.PHONE, phone);
@@ -59,9 +59,10 @@ public class Person {
         */
     }
 
-    public ID getID() {
+    public PersonID getID() {
         return this.id;
     }
+
     public Name getName() {
         return (Name) this.attributes.get(PersonProperty.NAME);
     }
@@ -88,8 +89,7 @@ public class Person {
     }
 
     /**
-     * Returns true if both persons of the same name have at least one other identity field that is the same.
-     * This defines a weaker notion of equality between two persons.
+     * Returns true if both persons have the same ID, even if they have different attributes.
      */
     public boolean isSamePerson(Person otherPerson) {
         if (otherPerson == this) {
@@ -101,8 +101,7 @@ public class Person {
     }
 
     /**
-     * Returns true if both persons have the same identity and data fields.
-     * This defines a stronger notion of equality between two persons.
+     * Returns true if both persons have the same ID.
      */
     @Override
     public boolean equals(Object other) {
@@ -135,7 +134,7 @@ public class Person {
     public String toString() {
         final StringBuilder builder = new StringBuilder();
         builder.append(getName())
-                .append("[ID: ")
+                .append("[PersonID: ")
                 .append(getID())
                 .append("]")
                 .append(" Phone: ")
