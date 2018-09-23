@@ -14,13 +14,14 @@ public class ID {
 
     /**
      * Constructs a {@code ID}.
-     * @return A valid ID.
      */
     public ID() {
         value = getNewID();
     }
     private static String getNewID(){
-        return new String("p"+Integer.toString(idCounter));
+        String id = new String("p"+Integer.toString(idCounter));
+        idCounter += 1;
+        return id;
     }
 
     public static boolean isValidID(String test) { return test.matches(ID_VALIDATION_REGEX); }
