@@ -48,6 +48,8 @@ public class AddressBookTest {
         assertEquals(newData, addressBook);
     }
 
+    /*
+    // Test removed as ALICE and editedAlice have different IDs
     @Test
     public void resetData_withDuplicatePersons_throwsDuplicatePersonException() {
         // Two persons with the same identity fields
@@ -59,6 +61,7 @@ public class AddressBookTest {
         thrown.expect(DuplicatePersonException.class);
         addressBook.resetData(newData);
     }
+    */
 
     @Test
     public void hasPerson_nullPerson_throwsNullPointerException() {
@@ -78,11 +81,11 @@ public class AddressBookTest {
     }
 
     @Test
-    public void hasPerson_personWithSameIdentityFieldsInAddressBook_returnsTrue() {
+    public void hasPerson_personWithSameIdentityFieldsInAddressBook_returnsFalse() {
         addressBook.addPerson(ALICE);
         Person editedAlice = new PersonBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_HUSBAND)
                 .build();
-        assertTrue(addressBook.hasPerson(editedAlice));
+        assertFalse(addressBook.hasPerson(editedAlice)); // False as different IDs.
     }
 
     @Test

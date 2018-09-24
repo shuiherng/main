@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -19,7 +20,7 @@ public class Person {
     // Enumerated Variable to represent person attributes
     private enum PersonProperty {NAME, PHONE, EMAIL, ADDRESS, TAGS}
     private final HashMap<PersonProperty, Object> attributes;
-
+    private boolean exists;
 
     // Identity fields
     private final PersonID id;
@@ -41,6 +42,7 @@ public class Person {
     public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, address, tags);
         this.id = new PersonID();
+        this.exists = true;
         this.attributes = new HashMap<>();
         this.attributes.put(PersonProperty.NAME, name);
         this.attributes.put(PersonProperty.PHONE, phone);
@@ -62,6 +64,8 @@ public class Person {
     public PersonID getID() {
         return this.id;
     }
+
+    public boolean getExists() { return this.exists; }
 
     public Name getName() {
         return (Name) this.attributes.get(PersonProperty.NAME);
@@ -86,6 +90,30 @@ public class Person {
     @SuppressWarnings("unchecked")
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet((Set<Tag>) this.attributes.get(PersonProperty.TAGS));
+    }
+
+    /**
+     * Performs soft-remove by marking the person as non-existent
+     *
+     * Developer note: when writing unit tests, remember to do {@code undelete()} after performing this operation.
+     */
+    public void delete() {
+        if (!this.exists) {
+            throw new PersonNotFoundException();
+        }
+        this.exists = false;
+    }
+
+    /**
+     * Sets this person as exists.
+     *
+     * Developer note: when writing unit tests, remember to {@code delete} after performing this operation.
+     */
+    public void undelete() {
+        if (this.exists) {
+            throw new PersonNotFoundException();
+        }
+        this.exists = true;
     }
 
     /**
@@ -134,6 +162,7 @@ public class Person {
     public String toString() {
         final StringBuilder builder = new StringBuilder();
         builder.append(getName())
+                .append(getExists() ? "[Exists]" : "[Deleted]")
                 .append("[PersonID: ")
                 .append(getID())
                 .append("]")

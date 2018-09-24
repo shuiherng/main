@@ -7,7 +7,7 @@ import java.util.function.Predicate;
  */
 public class CalendarEventMatchesPredicate implements Predicate<CalendarEvent>{
 
-    public final String constraints;
+    private final String constraints;
 
     /**
      * Change the argument to something which is used to match with this event.
