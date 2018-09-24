@@ -53,7 +53,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     public void resetData(ReadOnlyAddressBook newData) {
         requireNonNull(newData);
 
-        setPersons(newData.getPersonList());
+        setPersons(newData.getAllPersonList());
     }
 
     //// person-level operations
@@ -88,6 +88,8 @@ public class AddressBook implements ReadOnlyAddressBook {
     /**
      * Removes {@code key} from this {@code AddressBook}.
      * {@code key} must exist in the address book.
+     *
+     * Note: Person removal is done via soft-delete
      */
     public void removePerson(Person key) {
         persons.remove(key);
@@ -97,13 +99,18 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     @Override
     public String toString() {
-        return persons.asUnmodifiableObservableList().size() + " persons";
-        // TODO: refine later
+        return getPersonList().size() + " persons (" +
+                getAllPersonList() + " including deleted entries)";
+    }
+
+    @Override
+    public ObservableList<Person> getAllPersonList() {
+        return persons.asUnmodifiableObservableList();
     }
 
     @Override
     public ObservableList<Person> getPersonList() {
-        return persons.asUnmodifiableObservableList();
+        return persons.undeletedAsUnmodifiableObservableList();
     }
 
     @Override

@@ -12,8 +12,8 @@ import javafx.scene.input.KeyCode;
 import seedu.address.logic.Logic;
 import seedu.address.logic.LogicManager;
 import seedu.address.logic.commands.ListCommand;
-import seedu.address.model.Model;
-import seedu.address.model.ModelManager;
+import seedu.address.model.AddressBookModel;
+import seedu.address.model.AddressBookModelManager;
 
 public class CommandBoxTest extends GuiUnitTest {
 
@@ -27,8 +27,8 @@ public class CommandBoxTest extends GuiUnitTest {
 
     @Before
     public void setUp() {
-        Model model = new ModelManager();
-        Logic logic = new LogicManager(model);
+        AddressBookModel addressBookModel = new AddressBookModelManager();
+        Logic logic = new LogicManager(addressBookModel);
 
         CommandBox commandBox = new CommandBox(logic);
         commandBoxHandle = new CommandBoxHandle(getChildNode(commandBox.getRoot(),

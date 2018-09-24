@@ -124,6 +124,15 @@ public class UniquePersonList implements Iterable<Person> {
         return FXCollections.unmodifiableObservableList(internalList);
     }
 
+    /**
+     * Returns only non-soft-deleted elements of the backing list as an unmodifiable {@code ObservableList}.
+     */
+    public ObservableList<Person> undeletedAsUnmodifiableObservableList() {
+        ObservableList<Person> visiblePersons = FXCollections.observableArrayList();
+        internalList.forEach((person) -> { if (person.getExists()) { visiblePersons.add(person); }});
+        return FXCollections.unmodifiableObservableList(visiblePersons);
+    }
+
     @Override
     public Iterator<Person> iterator() {
         return internalList.iterator();

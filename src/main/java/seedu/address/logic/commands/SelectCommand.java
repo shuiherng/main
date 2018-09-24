@@ -10,7 +10,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.ui.JumpToListRequestEvent;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.model.Model;
+import seedu.address.model.AddressBookModel;
 import seedu.address.model.person.Person;
 
 /**
@@ -34,10 +34,10 @@ public class SelectCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(Model model, CommandHistory history) throws CommandException {
-        requireNonNull(model);
+    public CommandResult execute(AddressBookModel addressBookModel, CommandHistory history) throws CommandException {
+        requireNonNull(addressBookModel);
 
-        List<Person> filteredPersonList = model.getFilteredPersonList();
+        List<Person> filteredPersonList = addressBookModel.getFilteredPersonList();
 
         if (targetIndex.getZeroBased() >= filteredPersonList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);

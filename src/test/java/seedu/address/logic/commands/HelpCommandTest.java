@@ -9,21 +9,21 @@ import org.junit.Test;
 
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
 import seedu.address.logic.CommandHistory;
-import seedu.address.model.Model;
-import seedu.address.model.ModelManager;
+import seedu.address.model.AddressBookModel;
+import seedu.address.model.AddressBookModelManager;
 import seedu.address.ui.testutil.EventsCollectorRule;
 
 public class HelpCommandTest {
     @Rule
     public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
 
-    private Model model = new ModelManager();
-    private Model expectedModel = new ModelManager();
+    private AddressBookModel addressBookModel = new AddressBookModelManager();
+    private AddressBookModel expectedAddressBookModel = new AddressBookModelManager();
     private CommandHistory commandHistory = new CommandHistory();
 
     @Test
     public void execute_help_success() {
-        assertCommandSuccess(new HelpCommand(), model, commandHistory, SHOWING_HELP_MESSAGE, expectedModel);
+        assertCommandSuccess(new HelpCommand(), addressBookModel, commandHistory, SHOWING_HELP_MESSAGE, expectedAddressBookModel);
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof ShowHelpRequestEvent);
         assertTrue(eventsCollectorRule.eventsCollector.getSize() == 1);
     }

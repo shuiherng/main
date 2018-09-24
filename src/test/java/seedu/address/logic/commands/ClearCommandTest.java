@@ -6,10 +6,9 @@ import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 import org.junit.Test;
 
 import seedu.address.logic.CommandHistory;
-import seedu.address.model.AddressBook;
-import seedu.address.model.Model;
-import seedu.address.model.ModelManager;
-import seedu.address.model.UserPrefs;
+import seedu.address.model.*;
+import seedu.address.model.AddressBookModel;
+import seedu.address.model.AddressBookModelManager;
 
 public class ClearCommandTest {
 
@@ -17,21 +16,21 @@ public class ClearCommandTest {
 
     @Test
     public void execute_emptyAddressBook_success() {
-        Model model = new ModelManager();
-        Model expectedModel = new ModelManager();
-        expectedModel.commitAddressBook();
+        AddressBookModel addressBookModel = new AddressBookModelManager();
+        AddressBookModel expectedAddressBookModel = new AddressBookModelManager();
+        expectedAddressBookModel.commitAddressBook();
 
-        assertCommandSuccess(new ClearCommand(), model, commandHistory, ClearCommand.MESSAGE_SUCCESS, expectedModel);
+        assertCommandSuccess(new ClearCommand(), addressBookModel, commandHistory, ClearCommand.MESSAGE_SUCCESS, expectedAddressBookModel);
     }
 
     @Test
     public void execute_nonEmptyAddressBook_success() {
-        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-        expectedModel.resetData(new AddressBook());
-        expectedModel.commitAddressBook();
+        AddressBookModel addressBookModel = new AddressBookModelManager(getTypicalAddressBook(), new UserPrefs());
+        AddressBookModel expectedAddressBookModel = new AddressBookModelManager(getTypicalAddressBook(), new UserPrefs());
+        expectedAddressBookModel.resetData(new AddressBook());
+        expectedAddressBookModel.commitAddressBook();
 
-        assertCommandSuccess(new ClearCommand(), model, commandHistory, ClearCommand.MESSAGE_SUCCESS, expectedModel);
+        assertCommandSuccess(new ClearCommand(), addressBookModel, commandHistory, ClearCommand.MESSAGE_SUCCESS, expectedAddressBookModel);
     }
 
 }
