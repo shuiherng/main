@@ -20,7 +20,7 @@ import seedu.address.model.person.Person;
 public class AddressBookModelManager extends ComponentManager implements AddressBookModel {
     private static final Logger logger = LogsCenter.getLogger(AddressBookModelManager.class);
 
-    private final VersionedAddressBook versionedAddressBook;
+    private final AddressBook addressBook;
     private final FilteredList<Person> filteredPersons;
 
     /**
@@ -32,8 +32,9 @@ public class AddressBookModelManager extends ComponentManager implements Address
 
         logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
 
-        versionedAddressBook = new VersionedAddressBook(addressBook);
-        filteredPersons = new FilteredList<>(versionedAddressBook.getAllPersonList());
+        this.addressBook = new AddressBook(addressBook);
+        // this.filteredPersons = new FilteredList<>(addressBook.getAllPersonList());
+        this.filteredPersons = new FilteredList<>(addressBook.getPersonList());
     }
 
     public AddressBookModelManager() {
@@ -48,35 +49,35 @@ public class AddressBookModelManager extends ComponentManager implements Address
     // TODO: Actually compare the two address books rather than override the old address book with the new one.
     @Override
     public void resetData(ReadOnlyAddressBook newData) {
-        versionedAddressBook.resetData(newData);
+        addressBook.resetData(newData);
         indicateAddressBookChanged();
     }
 
     @Override
     public ReadOnlyAddressBook getAddressBook() {
-        return versionedAddressBook;
+        return addressBook;
     }
 
     /** Raises an event to indicate the addressBookModel has changed */
     private void indicateAddressBookChanged() {
-        raise(new AddressBookChangedEvent(versionedAddressBook));
+        raise(new AddressBookChangedEvent(addressBook));
     }
 
     @Override
     public boolean hasPerson(Person person) {
         requireNonNull(person);
-        return versionedAddressBook.hasPerson(person);
+        return addressBook.hasPerson(person);
     }
 
     @Override
     public void deletePerson(Person target) {
-        versionedAddressBook.removePerson(target);
+        addressBook.removePerson(target);
         indicateAddressBookChanged();
     }
 
     @Override
     public void addPerson(Person person) {
-        versionedAddressBook.addPerson(person);
+        addressBook.addPerson(person);
         updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         indicateAddressBookChanged();
     }
@@ -85,7 +86,7 @@ public class AddressBookModelManager extends ComponentManager implements Address
     public void updatePerson(Person target, Person editedPerson) {
         requireAllNonNull(target, editedPerson);
 
-        versionedAddressBook.updatePerson(target, editedPerson);
+        addressBook.updatePerson(target, editedPerson);
         indicateAddressBookChanged();
     }
 
@@ -107,7 +108,7 @@ public class AddressBookModelManager extends ComponentManager implements Address
     }
 
     //=========== Undo/Redo =================================================================================
-
+    /*
     @Override
     public boolean canUndoAddressBook() {
         return versionedAddressBook.canUndo();
@@ -120,20 +121,20 @@ public class AddressBookModelManager extends ComponentManager implements Address
 
     @Override
     public void undoAddressBook() {
-        versionedAddressBook.undo();
+        addressBook.undo();
         indicateAddressBookChanged();
     }
 
     @Override
     public void redoAddressBook() {
-        versionedAddressBook.redo();
+        addressBook.redo();
         indicateAddressBookChanged();
     }
-
     @Override
     public void commitAddressBook() {
-        versionedAddressBook.commit();
+        addressBook.commit();
     }
+    */
 
     @Override
     public boolean equals(Object obj) {
@@ -149,8 +150,7 @@ public class AddressBookModelManager extends ComponentManager implements Address
 
         // state check
         AddressBookModelManager other = (AddressBookModelManager) obj;
-        return versionedAddressBook.equals(other.versionedAddressBook)
-                && filteredPersons.equals(other.filteredPersons);
+        return addressBook.equals(other.addressBook);
     }
 
 }

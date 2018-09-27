@@ -19,7 +19,6 @@ public class ClearCommand extends Command {
     public CommandResult execute(AddressBookModel addressBookModel, CommandHistory history) {
         requireNonNull(addressBookModel);
         addressBookModel.resetData(new AddressBook());
-        addressBookModel.commitAddressBook();
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }

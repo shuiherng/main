@@ -51,28 +51,4 @@ public interface AddressBookModel {
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
 
-    /**
-     * Returns true if the addressBookModel has previous address book states to restore.
-     */
-    boolean canUndoAddressBook();
-
-    /**
-     * Returns true if the addressBookModel has undone address book states to restore.
-     */
-    boolean canRedoAddressBook();
-
-    /**
-     * Restores the addressBookModel's address book to its previous state.
-     */
-    void undoAddressBook();
-
-    /**
-     * Restores the addressBookModel's address book to its previously undone state.
-     */
-    void redoAddressBook();
-
-    /**
-     * Saves the current address book state for undo/redo.
-     */
-    void commitAddressBook();
 }
