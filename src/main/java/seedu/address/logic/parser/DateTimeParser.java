@@ -29,10 +29,16 @@ public class DateTimeParser {
             return getNearFutureDateTime(currentTime);
             break;
         default:
-            printHelpInfo();     // maybe should be an error implementation
-            return currentTime;
+            return getDateTimeFromSpecified(dateTimeInput);  // user actually inputs the date (eg. 13/12/2018)
     }
 }
+
+    private Calendar getDateTimeFromSpecified(String dateTimeInput) {
+        // TO-DO
+        // create a Calendar object from the specified date input from user
+        return promptForTime(date, date);
+    }
+
     private Calendar getTomorrowDateTime(Calendar date) {
         date.add(Calendar.DATE, 1);
         return promptForTime(date, date);
