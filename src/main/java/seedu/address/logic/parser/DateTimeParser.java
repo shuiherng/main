@@ -1,16 +1,20 @@
 package seedu.address.logic.parser;
 
 import java.util.Calendar;
+import java.util.List;
+
+import javafx.util.Pair;
 
 public class DateTimeParser {
 
 
-    public Calendar parseDateTime (String dateTimeInput) {
+    public Pair<Calendar, Calendar> parseDateTime(String dateTimeInput) {
         Calendar currentTime = Calendar.getInstance();
-        Calendar resultantTime = getResultantTime (currentTime, dateTimeInput);
+        Pair<Calendar, Calendar> resultantTime = getResultantTime(currentTime, dateTimeInput);
+        return resultantTime;
     }
 
-    private Calendar getResultantTime(Calendar currentTime, String dateTimeInput) {
+    private Pair<Calendar, Calendar> getResultantTime(Calendar currentTime, String dateTimeInput) {
 
         switch (dateTimeInput) {
         case "tomorrow":
@@ -33,16 +37,16 @@ public class DateTimeParser {
         case "soon":
             return getNearFutureDateTime(currentTime);
         default:
-            return getDateTimeFromSpecified(dateTimeInput);  // user actually inputs the date (eg. 13/12/2018)
+            return getDateTimeFromSpecified(dateTimeInput); // user actually inputs the date (eg. 13/12/2018)
+        }
     }
-}
 
-    private Calendar getSingleDateTime(Calendar date, int offset) {
+    private Pair<Calendar, Calendar> getSingleDateTime(Calendar date, int offset) {
         date.add(Calendar.DATE, offset);
         return promptForTime(date, date);
     }
 
-    private Calendar getNextWeekDateTime(Calendar date) {
+    private Pair<Calendar, Calendar> getNextWeekDateTime(Calendar date) {
         // TO-DO
         // get the next week start date and end date
 
@@ -50,14 +54,14 @@ public class DateTimeParser {
 
     }
 
-    private Calendar getNextMonthDateTime(Calendar date) {
+    private Pair<Calendar, Calendar> getNextMonthDateTime(Calendar date) {
         // TO-DO
         // get the next month start date and end date
 
         return promptForTime(startDate, endDate);
     }
 
-    private Calendar getNearFutureDateTime(Calendar date) {
+    private Pair<Calendar, Calendar> getNearFutureDateTime(Calendar date) {
         Calendar copy = (Calendar) date.clone();
         date.add(Calendar.DATE, 1);
         copy.add(Calendar.DATE, 7);
@@ -65,24 +69,27 @@ public class DateTimeParser {
         return promptForTime(date, copy);
     }
 
-    private Calendar getDateTimeFromSpecified(String dateTimeInput) {
+    private Pair<Calendar, Calendar> getDateTimeFromSpecified(String dateTimeInput) {
         // TO-DO
         // check if it is really a valid specified date input
         // if yes, create a Calendar object from the specified date input from user
         return promptForTime(date, date);
     }
 
-    private Calendar promptForTime(Calendar startDate, Calendar endDate) {
+    private Pair<Calendar, Calendar> promptForTime(Calendar startDate, Calendar endDate) {
+        Calendar decidedDate;
         if (startDate.equals(endDate)) {
-            printEmptySlots(startDate); // print empty slots on that day
+            decidedDate = startDate;
         } else {
-            printAvailableDays(startDate, endDate);
-            String dayInput = askForDay();
-            // process the dayInput into a Calendar object
-            printEmptySlots(dayInput);
+            List<Calendar> availableDays = getAvailableDays(startDate, endDate);
+            decidedDate = askForDay(availableDays);
+
         }
-        String timeInput = askForTime(); // ask user for time input
+        String timeDurationInput = askForTimeDuration(decidedDate);
+        Pair<Calendar, Calendar> finalDateTime = parseTimeDurationInput(timeDurationInput, decidedDate);
+        return finalDateTime;
     }
+}
 
 
 
