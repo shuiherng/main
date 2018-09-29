@@ -15,38 +15,36 @@ public class DateTimeParser {
         switch (dateTimeInput) {
         case "tomorrow":
         case "tmr":
-            return getTomorrowDateTime(currentTime);
-            break;
+            return getSingleDateTime(currentTime, 1);
+        case "the day after tomorrow":
+        case "the day after tmr":
+        case "in two days":
+        case "in 2 days":
+            return getSingleDateTime(currentTime, 2);
+        case "in three days":
+        case "in 3 days":
+            return getSingleDateTime(currentTime, 3);
         case "next week":
             return getNextWeekDateTime(currentTime);
-            break;
         case "next month":
             return getNextMonthDateTime(currentTime);
-            break;
         case "in a few days":
         case "recently":
         case "soon":
             return getNearFutureDateTime(currentTime);
-            break;
         default:
             return getDateTimeFromSpecified(dateTimeInput);  // user actually inputs the date (eg. 13/12/2018)
     }
 }
 
-    private Calendar getDateTimeFromSpecified(String dateTimeInput) {
-        // TO-DO
-        // create a Calendar object from the specified date input from user
-        return promptForTime(date, date);
-    }
-
-    private Calendar getTomorrowDateTime(Calendar date) {
-        date.add(Calendar.DATE, 1);
+    private Calendar getSingleDateTime(Calendar date, int offset) {
+        date.add(Calendar.DATE, offset);
         return promptForTime(date, date);
     }
 
     private Calendar getNextWeekDateTime(Calendar date) {
         // TO-DO
-        // get the next week start date to end date
+        // get the next week start date and end date
 
         return promptForTime(startDate, endDate);
 
@@ -54,7 +52,7 @@ public class DateTimeParser {
 
     private Calendar getNextMonthDateTime(Calendar date) {
         // TO-DO
-        // get the next month start date to end date
+        // get the next month start date and end date
 
         return promptForTime(startDate, endDate);
     }
@@ -65,6 +63,13 @@ public class DateTimeParser {
         copy.add(Calendar.DATE, 7);
 
         return promptForTime(date, copy);
+    }
+
+    private Calendar getDateTimeFromSpecified(String dateTimeInput) {
+        // TO-DO
+        // check if it is really a valid specified date input
+        // if yes, create a Calendar object from the specified date input from user
+        return promptForTime(date, date);
     }
 
     private Calendar promptForTime(Calendar startDate, Calendar endDate) {
