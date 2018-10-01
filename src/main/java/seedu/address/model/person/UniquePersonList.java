@@ -15,10 +15,17 @@ import seedu.address.model.person.exceptions.PersonNotFoundException;
  * A list of persons that enforces uniqueness between its elements and does not allow nulls.
  * A person is considered unique by comparing using {@code Person#isSamePerson(Person)}. As such, adding and updating of
  * persons uses Person#isSamePerson(Person) for equality so as to ensure that the person being added or updated is
- * unique in terms of identity in the UniquePersonList. However, the removal of a person uses Person#equals(Object) so
- * as to ensure that the person with exactly the same fields will be removed.
+ * unique in terms of identity in the UniquePersonList. Removal of a person is done via soft-delete: setting a boolean
+ * value {@code Person.exists} as false.
  *
  * Supports a minimal set of list operations.
+ *
+ * Developer note: We have modified addressbook-level4 to use an ID-based system to distinguish between persons, so
+ * both Person#isSamePerson(Person) and Person#equals(Object) match by PersonID. However, the methods are left separate
+ * in case future developers wish to separate them again. Remember to update the behaviour for unit tests if this is
+ * the case.
+ * Important: Soft-delete is used to remove person object, but the entire list, including deleted persons are returned
+ * when requesting for the list of Persons. Therefore, it is important to omit deleted persons when printing the list.
  *
  * @see Person#isSamePerson(Person)
  */
@@ -31,7 +38,13 @@ public class UniquePersonList implements Iterable<Person> {
      */
     public boolean contains(Person toCheck) {
         requireNonNull(toCheck);
-        return internalList.stream().anyMatch(toCheck::isSamePerson);
+
+        int index = internalList.indexOf(toCheck);
+        if (index == -1) {
+            return false;
+        } else {
+            return internalList.get(index).getExists();
+        }
     }
 
     /**
@@ -69,12 +82,21 @@ public class UniquePersonList implements Iterable<Person> {
     /**
      * Removes the equivalent person from the list.
      * The person must exist in the list.
+     *
+     * Developer Note: When using this method for testing, remember to set the {@Code Person.exists} to true afterwards,
+     * or subsequent tests might add an already deleted person, and cause the tests to fail.
      */
     public void remove(Person toRemove) {
         requireNonNull(toRemove);
-        if (!internalList.remove(toRemove)) {
+        int index = internalList.indexOf(toRemove);
+        // if person doesn't exist or already deleted previously
+        if (index == -1 || !internalList.get(index).getExists()) {
             throw new PersonNotFoundException();
+        } else {
+            // performs soft delete: simply set as non-existent
+            internalList.get(index).delete();
         }
+
     }
 
     public void setPersons(UniquePersonList replacement) {
@@ -102,6 +124,15 @@ public class UniquePersonList implements Iterable<Person> {
         return FXCollections.unmodifiableObservableList(internalList);
     }
 
+    /**
+     * Returns only non-soft-deleted elements of the backing list as an unmodifiable {@code ObservableList}.
+     */
+    public ObservableList<Person> undeletedAsUnmodifiableObservableList() {
+        ObservableList<Person> visiblePersons = FXCollections.observableArrayList();
+        internalList.forEach((person) -> { if (person.getExists()) { visiblePersons.add(person); }});
+        return FXCollections.unmodifiableObservableList(visiblePersons);
+    }
+
     @Override
     public Iterator<Person> iterator() {
         return internalList.iterator();
@@ -120,7 +151,7 @@ public class UniquePersonList implements Iterable<Person> {
     }
 
     /**
-     * Returns true if {@code persons} contains only unique persons.
+     * Returns true if {@code persons} contain only unique persons.
      */
     private boolean personsAreUnique(List<Person> persons) {
         for (int i = 0; i < persons.size() - 1; i++) {

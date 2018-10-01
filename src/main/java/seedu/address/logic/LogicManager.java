@@ -10,7 +10,7 @@ import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.AddressBookParser;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.Model;
+import seedu.address.model.AddressBookModel;
 import seedu.address.model.person.Person;
 
 /**
@@ -19,12 +19,12 @@ import seedu.address.model.person.Person;
 public class LogicManager extends ComponentManager implements Logic {
     private final Logger logger = LogsCenter.getLogger(LogicManager.class);
 
-    private final Model model;
+    private final AddressBookModel addressBookModel;
     private final CommandHistory history;
     private final AddressBookParser addressBookParser;
 
-    public LogicManager(Model model) {
-        this.model = model;
+    public LogicManager(AddressBookModel addressBookModel) {
+        this.addressBookModel = addressBookModel;
         history = new CommandHistory();
         addressBookParser = new AddressBookParser();
     }
@@ -34,7 +34,7 @@ public class LogicManager extends ComponentManager implements Logic {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
         try {
             Command command = addressBookParser.parseCommand(commandText);
-            return command.execute(model, history);
+            return command.execute(addressBookModel, history);
         } finally {
             history.add(commandText);
         }
@@ -42,7 +42,7 @@ public class LogicManager extends ComponentManager implements Logic {
 
     @Override
     public ObservableList<Person> getFilteredPersonList() {
-        return model.getFilteredPersonList();
+        return addressBookModel.getFilteredPersonList();
     }
 
     @Override
