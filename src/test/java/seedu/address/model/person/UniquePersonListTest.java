@@ -16,6 +16,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import javafx.collections.ObservableList;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.testutil.PersonBuilder;
@@ -48,7 +49,7 @@ public class UniquePersonListTest {
         uniquePersonList.add(ALICE);
         Person editedAlice = new PersonBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_HUSBAND)
                 .build();
-        assertTrue(uniquePersonList.contains(editedAlice));
+        assertFalse(uniquePersonList.contains(editedAlice));
     }
 
     @Test
@@ -129,14 +130,19 @@ public class UniquePersonListTest {
     public void remove_personDoesNotExist_throwsPersonNotFoundException() {
         thrown.expect(PersonNotFoundException.class);
         uniquePersonList.remove(ALICE);
+        ALICE.undelete();
     }
 
     @Test
     public void remove_existingPerson_removesPerson() {
         uniquePersonList.add(ALICE);
         uniquePersonList.remove(ALICE);
-        UniquePersonList expectedUniquePersonList = new UniquePersonList();
-        assertEquals(expectedUniquePersonList, uniquePersonList);
+        ObservableList<Person> pList = uniquePersonList.asUnmodifiableObservableList();
+        int index = pList.indexOf(ALICE);
+        assertTrue(index != -1);
+        assertFalse(pList.get(index).getExists());
+        assertFalse(uniquePersonList.contains(ALICE));
+        ALICE.undelete();
     }
 
     @Test
@@ -176,6 +182,7 @@ public class UniquePersonListTest {
         thrown.expect(DuplicatePersonException.class);
         uniquePersonList.setPersons(listWithDuplicatePersons);
     }
+
 
     @Test
     public void asUnmodifiableObservableList_modifyList_throwsUnsupportedOperationException() {

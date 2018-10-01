@@ -35,11 +35,10 @@ import seedu.address.TestApp;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.ClearCommand;
-import seedu.address.logic.commands.FindCommand;
-import seedu.address.logic.commands.ListCommand;
-import seedu.address.logic.commands.SelectCommand;
+import seedu.address.logic.commands.FindPersonCommand;
+import seedu.address.logic.commands.ListPersonCommand;
 import seedu.address.model.AddressBook;
-import seedu.address.model.Model;
+import seedu.address.model.AddressBookModel;
 import seedu.address.testutil.TypicalPersons;
 import seedu.address.ui.BrowserPanel;
 import seedu.address.ui.CommandBox;
@@ -142,24 +141,16 @@ public abstract class AddressBookSystemTest {
      * Displays all persons in the address book.
      */
     protected void showAllPersons() {
-        executeCommand(ListCommand.COMMAND_WORD);
-        assertEquals(getModel().getAddressBook().getPersonList().size(), getModel().getFilteredPersonList().size());
+        executeCommand(ListPersonCommand.COMMAND_WORD);
+        assertEquals(getModel().getAddressBook().getAllPersonList().size(), getModel().getFilteredPersonList().size());
     }
 
     /**
      * Displays all persons with any parts of their names matching {@code keyword} (case-insensitive).
      */
     protected void showPersonsWithName(String keyword) {
-        executeCommand(FindCommand.COMMAND_WORD + " " + keyword);
-        assertTrue(getModel().getFilteredPersonList().size() < getModel().getAddressBook().getPersonList().size());
-    }
-
-    /**
-     * Selects the person at {@code index} of the displayed list.
-     */
-    protected void selectPerson(Index index) {
-        executeCommand(SelectCommand.COMMAND_WORD + " " + index.getOneBased());
-        assertEquals(index.getZeroBased(), getPersonListPanel().getSelectedCardIndex());
+        executeCommand(FindPersonCommand.COMMAND_WORD + " " + keyword);
+        assertTrue(getModel().getFilteredPersonList().size() < getModel().getAddressBook().getAllPersonList().size());
     }
 
     /**
@@ -167,20 +158,20 @@ public abstract class AddressBookSystemTest {
      */
     protected void deleteAllPersons() {
         executeCommand(ClearCommand.COMMAND_WORD);
-        assertEquals(0, getModel().getAddressBook().getPersonList().size());
+        assertEquals(0, getModel().getAddressBook().getAllPersonList().size());
     }
 
     /**
      * Asserts that the {@code CommandBox} displays {@code expectedCommandInput}, the {@code ResultDisplay} displays
-     * {@code expectedResultMessage}, the storage contains the same person objects as {@code expectedModel}
-     * and the person list panel displays the persons in the model correctly.
+     * {@code expectedResultMessage}, the storage contains the same person objects as {@code expectedAddressBookModel}
+     * and the person list panel displays the persons in the addressBookModel correctly.
      */
     protected void assertApplicationDisplaysExpected(String expectedCommandInput, String expectedResultMessage,
-            Model expectedModel) {
+            AddressBookModel expectedAddressBookModel) {
         assertEquals(expectedCommandInput, getCommandBox().getInput());
         assertEquals(expectedResultMessage, getResultDisplay().getText());
-        assertEquals(new AddressBook(expectedModel.getAddressBook()), testApp.readStorageAddressBook());
-        assertListMatching(getPersonListPanel(), expectedModel.getFilteredPersonList());
+        assertEquals(new AddressBook(expectedAddressBookModel.getAddressBook()), testApp.readStorageAddressBook());
+        assertListMatching(getPersonListPanel(), expectedAddressBookModel.getFilteredPersonList());
     }
 
     /**
@@ -284,9 +275,9 @@ public abstract class AddressBookSystemTest {
     }
 
     /**
-     * Returns a defensive copy of the current model.
+     * Returns a defensive copy of the current addressBookModel.
      */
-    protected Model getModel() {
+    protected AddressBookModel getModel() {
         return testApp.getModel();
     }
 }

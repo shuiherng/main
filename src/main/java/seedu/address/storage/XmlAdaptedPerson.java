@@ -71,7 +71,7 @@ public class XmlAdaptedPerson {
     }
 
     /**
-     * Converts this jaxb-friendly adapted person object into the model's Person object.
+     * Converts this jaxb-friendly adapted person object into the addressBookModel's Person object.
      *
      * @throws IllegalValueException if there were any data constraints violated in the adapted person
      */

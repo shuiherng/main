@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import seedu.address.logic.CommandHistory;
-import seedu.address.model.Model;
+import seedu.address.model.AddressBookModel;
 
 /**
  * Lists all the commands entered by user from the start of app launch.
@@ -18,7 +18,7 @@ public class HistoryCommand extends Command {
     public static final String MESSAGE_NO_HISTORY = "You have not yet entered any commands.";
 
     @Override
-    public CommandResult execute(Model model, CommandHistory history) {
+    public CommandResult execute(AddressBookModel addressBookModel, CommandHistory history) {
         requireNonNull(history);
         List<String> previousCommands = history.getHistory();
 
