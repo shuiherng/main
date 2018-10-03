@@ -58,7 +58,7 @@ public class AddressBookModelManager extends ComponentManager implements Address
         return addressBook;
     }
 
-    /** Raises an event to indicate the addressBookModel has changed */
+    /** Raises an event to indicate the addressBookModel has changed. */
     private void indicateAddressBookChanged() {
         raise(new AddressBookChangedEvent(addressBook));
     }
@@ -94,7 +94,7 @@ public class AddressBookModelManager extends ComponentManager implements Address
 
     /**
      * Returns an unmodifiable view of the list of {@code Person} backed by the internal list of
-     * {@code versionedAddressBook}
+     * {@code AddressBook} (was {@code versionedAddressBook}).
      */
     @Override
     public ObservableList<Person> getFilteredPersonList() {
