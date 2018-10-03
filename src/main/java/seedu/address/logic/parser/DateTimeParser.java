@@ -50,6 +50,9 @@ public class DateTimeParser {
         // TO-DO
         // get the next week start date and end date
 
+        Calendar startDate = Calendar.getInstance(); // dummy
+        Calendar endDate = Calendar.getInstance(); // dummy
+
         return promptForTime(startDate, endDate);
 
     }
@@ -57,6 +60,9 @@ public class DateTimeParser {
     private Pair<Calendar, Calendar> getNextMonthDateTime(Calendar date) {
         // TO-DO
         // get the next month start date and end date
+
+        Calendar startDate = Calendar.getInstance(); // dummy
+        Calendar endDate = Calendar.getInstance(); // dummy
 
         return promptForTime(startDate, endDate);
     }
@@ -73,6 +79,9 @@ public class DateTimeParser {
         // TO-DO
         // check if it is really a valid specified date input
         // if yes, create a Calendar object from the specified date input from user
+
+        Calendar date = Calendar.getInstance(); // dummy
+
         return promptForTime(date, date);
     }
 
@@ -81,12 +90,13 @@ public class DateTimeParser {
         if (startDate.equals(endDate)) {
             decidedDate = startDate;
         } else {
-            List<Calendar> availableDays = getAvailableDays(startDate, endDate);
-            decidedDate = askForDay(availableDays);
+            //List<Calendar> availableDays = getAvailableDays(startDate, endDate); // to put back later
+            //decidedDate = askForDay(availableDays); // to put back later
 
         }
-        String timeDurationInput = askForTimeDuration(decidedDate);
-        Pair<Calendar, Calendar> finalDateTime = parseTimeDurationInput(timeDurationInput, decidedDate);
+        //String timeDurationInput = askForTimeDuration(decidedDate); // to put back later
+        //Pair<Calendar, Calendar> finalDateTime = parseTimeDurationInput(timeDurationInput, decidedDate); // to put back later
+        Pair<Calendar, Calendar> finalDateTime = new Pair<>(Calendar.getInstance(), Calendar.getInstance()); // dummy
         return finalDateTime;
     }
 }
