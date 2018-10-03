@@ -9,7 +9,7 @@ import seedu.address.model.person.Person;
  * The API of the AddressBookModel component.
  */
 public interface AddressBookModel {
-    /** {@code Predicate} that always evaluate to true */
+    /** {@code Predicate} that always evaluates to true */
     Predicate<Person> PREDICATE_SHOW_ALL_PERSONS = unused -> true;
 
     /** Clears existing backing addressBookModel and replaces with the provided new data. */
