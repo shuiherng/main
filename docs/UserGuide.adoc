@@ -66,26 +66,26 @@ In some places in this guide, you will find that two or more commands have been 
 
 === Switching to patient management mode : `mode {user/patient}`
 
-Switches the application to patient management mode. In this mode, you can view and manage your patient details and information. +
+Switching the application to patient management mode. In this mode, you can view and manage your patient details and information. +
 
 *Format:* `mode {user/patient}`
 
 === Listing all persons : `list`
 
-Shows a list of all persons in the address book. +
+Showing a list of all persons in the address book. +
 
 *Format:* `list`
 
 === Switching to appointment management mode : `mode {appointment/cal/calendar/appt}`
 
-Switches the application to appointment management mode. In this mode, you can view and manage your appointments scheduled. +
+Switching the application to appointment management mode. In this mode, you can view and manage your appointments scheduled. +
 
 *Format:* `mode {appointment/cal/calendar/appt}`
 
 === Adding a patient : `add patient`
 
-Adds a new patient to the address book.
-Switches application to patient management mode automatically.
+Adding a new patient to the address book.
+Switching the application to patient management mode automatically.
 
 *Format:* `add [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [b/BLOOD_TYPE] [t/TAG] …`
 
@@ -101,8 +101,8 @@ Examples:
 
 === Creating an appointment : `make appointment`
 
-Creates a new appointment and places it in the calendar where appropriate.
-Switches application to appointment management mode automatically. +
+Creating a new appointment and places it in the calendar where appropriate.
+Switching the application to appointment management mode automatically. +
 
 *Format:* `{schedule/make} {appointment /appt} for {PATIENT ID/PATIENT NAME} [DATE AND TIME] [;] …`
 
@@ -116,13 +116,13 @@ Examples:
 
 === Listing all persons : `list patients`
 
-Automatically switches to patient management mode, and lists all patients in the patient record. +
+Switching to patient management mode automatically, and listing all patients in the patient record. +
 
 *Format:* `list patient/patients`
 
 === Listing all appointments : `list appointments`
 
-Automatically switches to appointment management mode, and lists all appointments from now in the record. +
+Switching to appointment management mode automatically, and listing all appointments from now in the record. +
 
 *Format:* `list {appointments/appointment/appt/appts} [all]`
 
@@ -131,12 +131,12 @@ Using `all` will also display all past appointments.
 
 === Editing patient information : `change patient`
 
-Edits an existing patient in the address book. Automatically switches to patient management mode. Restores the address book to the state before the previous _undoable_ command was executed. +
+Editing an existing patient in the address book. Automatically switching to patient management mode. Restoring the address book to the state before the previous _undoable_ command was executed. +
 
 *Format:* `{change/edit} patient {PATIENT_NAME/PATIENT_ID} [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG] [b/BLOOD TYPE]`
 
 ****
-* Edits the person specified by `PATIENT_NAME` or `PATIENT_ID`. If the application has any uncertainties, e.g. patients having the same name, a prompt will appear to select the appropriate person.
+* Editing the person specified by `PATIENT_NAME` or `PATIENT_ID`. If the application has any uncertainties, e.g. patients having the same name, a prompt will appear to select the appropriate person.
 * At least one of the optional fields must be provided.
 * Input values will be used to update the existing values.
 * When editing tags, all tags for the person will be removed and replaced with tags supplied.
@@ -150,10 +150,10 @@ Examples:
 
 === Editing an appointment : `change appointment`
 
-Automatically enters appointment management mode, then edits an existing appointment in the calendar. +
+Entering appointment management mode automatically, then editing an existing appointment in the calendar. +
 *Format:* `{change/edit} {appointment/appt} {DATE AND TIME/APPOINTMENT_ID} NEW_DETAILS`
 
-Edits the details for the appointment.
+Editing the details for the appointment.
 
 === Locating patients by name : `find patient`
 
@@ -179,7 +179,7 @@ Returns any person whose name contain 'Betsy', 'Tim' or 'John'.
 
 === Locating an appointment : `find appointment`
 
-Automatically enters appointment management mode, then finds appointments a person or in a given date range.
+Entering appointment management mode automatically, then finding appointments a person or in a given date range.
 
 *Format 1:* `find [all] {appointment/appointments/appt/appts} [for] {PATIENT_ID/PATIENT_NAME}`
 
@@ -192,14 +192,14 @@ The above format locates all appointments in the given range of dates.
 Examples:
 
 * `find all appt John Doe` +
-Returns all appointments for John Doe, including past appointments.
+Returning all appointments for John Doe, including past appointments.
 
 * `find appointments from last Monday till now` +
-Returns all appointments from last Monday (defaults to 12am) to the time now.
+Returning all appointments from last Monday (defaults to 12am) to the time now.
 
 === Deleting a patient record : `delete patient`
 
-Deletes a patient. Automatically enters patient management mode. Due to the nature of medical records, patient records will only be marked as deleted, and displayed as such. They will never disappear completely. +
+Deleting a patient. Automatically entering patient management mode. Due to the nature of medical records, patient records will only be marked as deleted, and displayed as such. They will never disappear completely. +
 
 Deleted patients will not surface on search/list commands and cannot be interacted with in future commands.
 
@@ -207,7 +207,7 @@ Deleted patients will not surface on search/list commands and cannot be interact
 
 === Deleting an appointment : `delete appointment`
 
-Deletes an appointment. Automatically enters appointment management mode.
+Deleting an appointment. Automatically entering appointment management mode.
 
 *Format:* `delete {appointment/appt} [APPOINTMENT_ID]`
 
@@ -217,7 +217,7 @@ _In a future update, it will be possible to delete appointments via date and tim
 
 === Listing entered commands : `history`
 
-Lists all commands that you have entered in reverse chronological order.
+Lists=ing all commands that you have entered in reverse chronological order.
 
 *Format:* `history`
 
@@ -226,13 +226,13 @@ Tip: Pressing up and down arrows will display the previous and next input respec
 
 === Clearing the calendar : `clear calendar`
 
-Empties out all appointments scheduled from the calendar.
+Emptying out all appointments scheduled from the calendar.
 
 *Format:* `clear {calendar/cal/appointments/appts}`
 
 === Exiting the program : `exit`
 
-Exits the program.
+Exiting the program.
 
 *Format:* `exit`
 
@@ -278,3 +278,14 @@ All patient and calendar data are saved in the hard disk automatically after any
 * *Clear The Calendar* : `clear {cal/calendar/appointments/appts}`
 
 * *Exit The Program* : `exit`
+
+== Glossary
+
+*Calendar Mode:*
+Same as `Appointment Mode`. It is the mode which allows users to view their current appointments with the patients.
+Users can switch to the Calendar mode using `mode` command by adding `calendar`, `cal`, `appointment` or `appt` after
+the command.
+
+*Patient Mode:*
+Same as `User Mode`. It is the mode which allows users to view the patients and their personal medical details .
+Users can switch to the Patient mode using `mode` command by adding `patient` or `user` after the command.
