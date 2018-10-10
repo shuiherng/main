@@ -7,7 +7,7 @@ import java.util.Calendar;
 import java.util.List;
 import static java.util.Objects.requireNonNull;
 
-public class Calender implements ReadOnlyCalendar {
+public class ModelCalendar implements ReadOnlyCalendar {
     
     private final UniqueCalendarEventList events;
 
@@ -15,12 +15,12 @@ public class Calender implements ReadOnlyCalendar {
         events = new UniqueCalendarEventList();
     }
 
-    public Calender() {}
+    public ModelCalendar() {}
 
     /**
      * Creates a Calender using the CalendarEvents in the {@code toBeCopied}
      */
-    public Calender(ReadOnlyCalendar toBeCopied) {
+    public ModelCalendar(ReadOnlyCalendar toBeCopied) {
         this();
         resetData(toBeCopied);
     }
