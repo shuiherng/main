@@ -1,7 +1,7 @@
 package seedu.address.model.event;
 
 /**
- * Represents a EventID for a CalendarEvent in the calendar for patient book.
+ * Represents a EventID for a ScheduleEvent in the calendar for patient book.
  * EventID only increases, and each event is bound to its EventID forever.
  */
 public class EventID {
