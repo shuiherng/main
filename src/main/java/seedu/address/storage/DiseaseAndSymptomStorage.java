@@ -26,17 +26,18 @@ public class DiseaseAndSymptomStorage {
 
     public static void main(String[] args) {
         DiseaseAndSymptomStorage diseaseAndSymptomStorage = new DiseaseAndSymptomStorage();
-        for (String b:diseaseAndSymptomStorage.diseases
-             ) {
+        for (String b : diseaseAndSymptomStorage.diseases
+        ) {
             System.out.println(b);
         }
     }
 
     /**
      * Read data from datasetForSymptomAndDisease.csv.
+     *
      * @return a HashMap object where key is disease and value is a list of related symptoms.
      */
-    private static HashMap<String,List<String>> readDataFromCSVFile(){
+    private static HashMap<String, List<String>> readDataFromCSVFile() {
         try {
             HashMap<String, List<String>> diseaseSymptomMatcher = new HashMap<>();
             String filePath = new File("src/main/java/seedu/address/storage/datasetForSymptomAndDisease.csv").getAbsolutePath();
@@ -47,14 +48,12 @@ public class DiseaseAndSymptomStorage {
 
             while ((nextRecord = csvReader.readNext()) != null) {
                 String disease = nextRecord[0];
-                nextRecord = ArrayUtils.remove(nextRecord,0);
+                nextRecord = ArrayUtils.remove(nextRecord, 0);
                 List<String> symptoms = Arrays.asList(nextRecord);
-                diseaseSymptomMatcher.put(disease,symptoms);
+                diseaseSymptomMatcher.put(disease, symptoms);
             }
             return diseaseSymptomMatcher;
-        }
-
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -62,19 +61,21 @@ public class DiseaseAndSymptomStorage {
 
     /**
      * Read data from datasetForSymptomAndDisease.csv.
+     *
      * @return a set of diseases in the csv file storage.
      */
-    private static Set<String> returnSetOfDiseases(){
-        HashMap<String,List<String>> diseaseSymptomMatcher = DiseaseAndSymptomStorage.readDataFromCSVFile();
+    private static Set<String> returnSetOfDiseases() {
+        HashMap<String, List<String>> diseaseSymptomMatcher = DiseaseAndSymptomStorage.readDataFromCSVFile();
         return diseaseSymptomMatcher.keySet();
     }
 
     /**
      * Read data from datasetForSymptomAndDisease.csv.
+     *
      * @return a set of symptoms in the csv file storage.
      */
-    private static Set<String> returnSetOfSymptoms(){
-        HashMap<String,List<String>> diseaseSymptomMatcher = DiseaseAndSymptomStorage.readDataFromCSVFile();
+    private static Set<String> returnSetOfSymptoms() {
+        HashMap<String, List<String>> diseaseSymptomMatcher = DiseaseAndSymptomStorage.readDataFromCSVFile();
         Collection<List<String>> values = diseaseSymptomMatcher.values();
         Set<String> symptoms = new HashSet<>();
         for (List<String> symptomList : values) {
