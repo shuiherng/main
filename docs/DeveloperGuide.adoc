@@ -1,4 +1,128 @@
 = AddressBook Level 4 - Developer Guide
+
+****
+At this time, no changes have been made to the Developer Guide. The following are changes that will be made in future versions:
+
+*Outline*
+
+EventsCenter will no longer be handling r/w actions to disk. Instead, Logic will forward all write requests to manage writing to disk separately. This refactoring has been tagged as Refactor-0.
+
+_Refactor-0:_
+
+The current model for new changes is `User-> UI -> Logic -> Model -> EventsCenter -> Storage`. This will be changed so that `Model -> EventsCenter` and `Model -> Storage` are separate.
+
+The new flow of events will be:
+
+.   deletePerson(p) references Model
+.   Model calls post(AddressBookChangedEvent) to eventcenter
+.   EventsCenter Executes handleAddressBookChangedEvent() by writing to stdout
+.   Model then calls Storage to save changes to file through storeAddressBookChangedEvent()
+.   Storage writes changes, and returns write/exit status to Model
+.   Model, which waits for this return value (Implemented as CompletableFuture object), forwards return value to EventsCenter as handle fileModification(String)
+.   EventsCenter handles file modification by writing to stdout
+
+As information in the PatientBook is sensitive, all patients and appointments must have a form of direct addressability. This is achieved through IDs. This change has been tagged as Refactor-1.
+
+_Refactor-1:_
+
+Currently, every person is handled as a person object which is passed by list reference rather than person reference. If multiple people have the same name, the wrong person may be deleted.
+
+To fix this, the current Person object implementation will be kept, except HashMap<Int, Person> will be used to store the mapping between a person's ID and information. The ID will then be passed from object to object. When listing in User mode, all Persons displayed will have their ID in front; e.g. [ID: p10512] Jeremy Tan.
+
+A similar implementation will be used for Calendar events.
+
+The IDs will follow the following format:
+
+.   Patients: character p, followed by integer. Automatically assigned when patient iscreated. PatientID will act as primary key if patient data is stored in relationaldatabase in the future.
+
+.   Appointment: character a, followed by integer. Automatically assigned whenappointment is created. AppointmentID will act as primary key if calendar data isstored in relational database in the future.
+
+Finally, PatientDisplay and CalendarDisplay will be packaged into a ResultDisplayManager, with the former two realized through the existing ResultDisplay class (which in turn contains ResultListPanel and BrowserPanel). ResultDisplayManager will handle which mode the application is currently in, as follows:
+
+.   Patient Management Mode: PatientDisplay
+.   Appointment Management Mode : CalendarDisplay
+
+*User Stories*
+
+.   As a doctor new to this software, I can view all possible operations by help command, so that Ican learn how to use it quickly.
+.   As an organized doctor, I can record health and body related information of a patient, so that Idon’t have to use pen to write it down.
+.   As a forgetful doctor, I can search the patient’s name by providing either his first name, lastname or middle name, so that I can recall his name easily.
+.   As a responsible doctor, I can edit any information of by patient by searching for his name or ID,so that I can make sure all data are updated.
+.   As a forgetful doctor, I can view the height, weight, BMI, medicine allergy and other healthrelated information of a patient by typing his name or ID, so that I can give diagnosis according to the information.
+.   As a forgetful doctor, I can view the patient name by typing a time-slot, so that I will know whowill be consulting me.
+.   As a responsible doctor, I can view the timeslot by typing a patient name or ID, so that I canaccess whether a patient is receiving enough guidance.
+.   As a busy doctor, I can view my current available time slots, so that I can make appointmentsmore easily.
+.   As an organized doctor, I can obtain an easily readable timetable for my appointments, so that Iknow how my schedule is like.
+.   As a responsible doctor, I can edit appointment details, so that in cases where there arechanges to an appointment, I can keep myself updated.
+.   As a caring doctor, I can find out the most dangerous patients using sort command, so that I cankeep track of their states actively.
+.   As an intern doctor, I can find the suggested prescription by entering the name of the disease,so that I can know how to give treatment when I forget.
+.   As an intern doctor, I can find the suggested possible diseases by entering the symptoms, sothat I can give diagnosis when I feel uncertain.
+.   As an intern doctor, I can calculate the dosing by inputting the patient’s disease and patient’s IDor name, so that I can know how to give prescription quantitatively.
+.   As a doctor who keeps learning, I can learn more about the different kinds of symptoms in thesymptom database anytime, so that I can perfect my relevant knowledge when I am free.
+.   As a responsible doctor, I can keep a record of patients who consulted me in the last week, sothat I can contact them to obtain feedback.
+.   As a time-saving doctor, I can filter my patients according to location, so that in case I need tovisit my patients, I can choose to visit those living in the same area at one go.
+.   As a forgetful doctor, I can list all the commands that I have entered by the history command,so that I can recall my previous operations.
+.   As a careful doctor, all the data will be saved in my disk automatically, so that I don’t need toworry about loss of data.
+.   As a doctor, I can receive a prompt for how to enter a command, so that if I accidentally entermy command in the wrong format, I can quickly recall the correct format.
+.   As a health-conscious doctor, I can view my workload for each week, so that I can make sure Ihave a good work-life balance.
+.   As a doctor, I can check whether a specific drug is available, so that I can ensure thatprescription I give has enough stocks.
+.   As a forward-looking doctor, I can delete the patients who have recovered, so that I don’t needto think of them anymore.
+.   As a doctor, I can enter my appointment details in natural language, so that I do not need tomemorize a strict format for this command.
+.   As a doctor, I can clear my timetable if there are many appointment changes, so that I canredesign my timetable from scratch.
+.   As a doctor, I can clear my patient book, so that I do not have to delete entry by entry.
+.   As a time-saving doctor, when I delete a specific patient, his corresponding appointment (if any)will also be cancelled from my timetable automatically, so that it saves my time from editing my timetable manually.
+.   As a diligent doctor, I can edit my saved prescriptions in case it requires an update, so that I canalways get the updated prescriptions when looking for solutions for a particular disease.
+.   As a hardworking doctor, I can print out the list of all my patients and hang it on my wall, sothat I am always motivated.
+.   As a forgetful doctor, I can append any note when I create an appointment, so that when I viewmy appointment I can quickly recall my purpose for the appointment.
+
+*Project Management*
+
+All: Refactoring code
+
+Feature 1 : ResultDisplayManager
+
+This Feature comprises the ResultDisplayManager class, which spawns PatientDisplay and Calendar Display (both of which extend ResultDisplay).
+
+* V1.0: Patients display correctly. Mark deleted patients correctly. Ensure that patient information and details show correctly in Browser panel upon selection. (Optional: appointments for a patient are listed in browser panel. Group note: this might not be feasible as it invokes functions that are usually done through CLI, unless BrowserPanel can invoke functions in its display as well. May require javascript embedding if we stick with HTML output. If we stick with java, then we have to find some way to format the output correctly)
+* V1.1: Calendar displays correctly. Possibly include grid calendar under Browser panel, then displaying patient details directly to CLI output. Application has to be manually launched in patient OR calendar management mode.
+* V1.2: Result Display Manager can switch between patient and calendar management mode correctly.
+* V1.3: Modes are identified through a mapping given by HashMap<UIMode, ResultDisplay>, with UIMode being an Enum. This facilitates future expansion as we can add more UI elemetns. Automatically switching between the two is done through an interface methods governed by:
+
+.   Switch to Patient Management mode: ResultDisplayManager.switch_ui_mode(UIMode.PATIENT)
+.   Switch to Calendar Management mode:ResultDisplayManager.switch_ui_mode(UIMode.CALENDAR)
+
+* V1.4: Complete Unit tests to ensure future updates will not break the behaviour. This can be done by ensuring that running certain commands will correctly switch between the two modes.
+
+Feature 2: Logic for adding/removing patients and appointments
+
+* V1.0: Morph existing AB4 code to accommodate patients
+* V1.1: Make a new set of storage logic to accommodate appointments
+* V1.2: Isolate Storage logic from EventsCenter as described in Refactor0. Ensure that files are written to/from storage correctly through Storage interface API calls.
+* V1.3 Complete implementation of Refactor0 so that events are logged correctly through EventsCenter API calls. Write unit tests to ascertain this behaviour.
+* V1.4: Complete unit tests to ensure that future updates will not break the behaviour.
+
+Feature 3: Storage Logic and BrowserPanel Display
+
+* V1.0 Create Storage for appointments, morph AB4 logic to accommodate two separate sets of data.
+* V1.1 Create interface API calls for I/O to storage. Create unit tests to ensure that these calls work correctly.
+* V1.2 Modify EventsCenter API calls, and create modify/create calls to accommodate new logging information for storage I/O.
+* V1.3 Format output for BrowserPanel. BrowserPanel will accept a person object (in the case of PatientDisplay) or an appointment object (in the case of Calendar display) and format the output appropriately either through Java or generating and displaying a temporary HTML document.
+
+Feature 4: Natural Language Processing for appointment dates
+
+* V1.0 – V1.1: Create DateTimeParser API with ‘DateTime parseDateTime(String dateTimeInput)’ call.
+* V1.2-V1.3: Create Unit Tests for DateTimeParser, including both commands which trigger DateTimeParser interface API calls and sample String inputs for the calls themselves.
+* V1.4: Ensure that DateTimeParser works correctly with all commands which call it, ie. Correct strings are passed in. (Coordinate with Feature 2)
+
+Feature 5: Integration of Static Dataset to map symptoms and diagnoses/prescriptions
+
+This feature will use the appointment details as the text used to map symptoms and diagnoses/prescriptions. Possible WebMD integration.
+
+* V1.0 Create database which maps common symptoms and prescriptions
+* V1.1 Implement Search/Pattern Matching: Create API call SymptomMap.getInfo(String), which returns diagnoses and recommended prescriptions.
+* V1.3 Create unit tests which ensure that the mapping is accurate and repeatable. Perform simple reduction of search terms through omission of non-essential words from symptoms, and searching for keywords, then feeding it into the API method.
+* V1.4 Create commands to instruct PatientBook to identify diagnoses and prescriptions based on symptoms given inside appointment details.
+****
 :site-section: DeveloperGuide
 :toc:
 :toc-title:

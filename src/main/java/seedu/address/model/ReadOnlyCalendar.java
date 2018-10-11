@@ -13,5 +13,4 @@ public interface ReadOnlyCalendar {
      * This list will not contain any duplicate events.
      */
     ObservableList<CalendarEvent> getAllEventList();
-
 }
