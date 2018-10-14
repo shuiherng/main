@@ -5,12 +5,15 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.HashSet;
 import java.util.Collection;
-import java.util.Arrays;
+import java.util.HashSet;
+
 
 public class DiseaseAndSymptomStorage {
     private Set<String> diseases;
@@ -19,17 +22,9 @@ public class DiseaseAndSymptomStorage {
 
     public DiseaseAndSymptomStorage() {
         this.diseases = DiseaseAndSymptomStorage.returnSetOfDiseases();
-        this.symptoms = DiseaseAndSymptomStorage.returnSetOfDiseases();
+        this.symptoms = DiseaseAndSymptomStorage.returnSetOfSymptoms();
         this.matcher = DiseaseAndSymptomStorage.readDataFromCSVFile();
         assert this.matcher != null;
-    }
-
-    public static void main(String[] args) {
-        DiseaseAndSymptomStorage diseaseAndSymptomStorage = new DiseaseAndSymptomStorage();
-        for (String b : diseaseAndSymptomStorage.diseases
-        ) {
-            System.out.println(b);
-        }
     }
 
     /**
@@ -40,7 +35,8 @@ public class DiseaseAndSymptomStorage {
     private static HashMap<String, List<String>> readDataFromCSVFile() {
         try {
             HashMap<String, List<String>> diseaseSymptomMatcher = new HashMap<>();
-            String filePath = new File("src/main/java/seedu/address/storage/datasetForSymptomAndDisease.csv").getAbsolutePath();
+            String filePath = new File("src/main/java/seedu/address/storage/datasetForSymptomAndDisease.csv")
+                    .getAbsolutePath();
             File file = new File(filePath);
             FileReader fileReader = new FileReader(file);
             CSVReader csvReader = new CSVReader(fileReader);
@@ -58,6 +54,32 @@ public class DiseaseAndSymptomStorage {
             return null;
         }
     }
+
+    /**
+     * Write data to datasetForSymptomAndDisease.csv.
+     *
+     * @param data A String object which contains a disease and its related symptoms.
+     * @return a new DiseaseAndSymptomStorage object with updated data.
+     */
+    private static DiseaseAndSymptomStorage writeDataFromCSVFile(String data) {
+        try {
+            String filePath = new File("src/main/java/seedu/address/storage/datasetForSymptomAndDisease.csv")
+                    .getAbsolutePath();
+            File file = new File(filePath);
+            FileWriter fileWriter = new FileWriter(file,true);
+
+            fileWriter.append(data);
+
+            fileWriter.flush();
+            fileWriter.close();
+
+            return new DiseaseAndSymptomStorage();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     /**
      * Read data from datasetForSymptomAndDisease.csv.
