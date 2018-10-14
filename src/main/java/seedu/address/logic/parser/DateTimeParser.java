@@ -1,11 +1,7 @@
 package seedu.address.logic.parser;
 
-import static java.util.Calendar.MONDAY;
-import static java.util.Calendar.getAvailableCalendarTypes;
-
 import java.util.Calendar;
 import java.util.List;
-
 
 import javafx.util.Pair;
 import seedu.address.model.ScheduleModel;
@@ -100,6 +96,8 @@ public class DateTimeParser {
             } else {
                 return getMonthDates(currentTime, 0);
             }
+        default:
+            // do nothing
         }
         int dayOfWeek = -1; // requires a check somewhere
         if (splitString[1].contains("Mon")) {
@@ -153,6 +151,7 @@ public class DateTimeParser {
             case "months":
             case "month":
                 return getMonthDates(currentTime, offset);
+            default:
             }
         } else if (dateInput.equals("in a few days")) {
             return getNearFutureDates(currentTime);
@@ -206,7 +205,7 @@ public class DateTimeParser {
         // TO-DO
         // check if it is really a valid specified date input
         // if yes, create a Calendar object from the specified date input from user
-        
+
         return null;
     }
 
