@@ -1,26 +1,26 @@
 package seedu.address.model;
 
 import javafx.collections.ObservableList;
-import seedu.address.model.event.CalendarEvent;
-import seedu.address.model.event.UniqueCalendarEventList;
-import java.util.Calendar;
+import seedu.address.model.event.ScheduleEvent;
+import seedu.address.model.event.UniqueScheduleEventList;
+
 import java.util.List;
 import static java.util.Objects.requireNonNull;
 
-public class ModelCalendar implements ReadOnlyCalendar {
+public class ModelSchedule implements ReadOnlySchedule {
     
-    private final UniqueCalendarEventList events;
+    private final UniqueScheduleEventList events;
 
     {
-        events = new UniqueCalendarEventList();
+        events = new UniqueScheduleEventList();
     }
 
-    public ModelCalendar() {}
+    public ModelSchedule() {}
 
     /**
      * Creates a Calender using the CalendarEvents in the {@code toBeCopied}
      */
-    public ModelCalendar(ReadOnlyCalendar toBeCopied) {
+    public ModelSchedule(ReadOnlySchedule toBeCopied) {
         this();
         resetData(toBeCopied);
     }
@@ -29,14 +29,14 @@ public class ModelCalendar implements ReadOnlyCalendar {
      * Replaces the contents of the person list with {@code persons}.
      * {@code persons} must not contain duplicate persons.
      */
-    public void setEvents(List<CalendarEvent> events) {
-        this.events.setCalendarEvents(events);
+    public void setEvents(List<ScheduleEvent> events) {
+        this.events.setScheduleEvents(events);
     }
 
     /**
      * Resets the existing data of this {@code AddressBook} with {@code newData}.
      */
-    public void resetData(ReadOnlyCalendar newData) {
+    public void resetData(ReadOnlySchedule newData) {
         requireNonNull(newData);
 
         setEvents(newData.getAllEventList());
@@ -45,7 +45,7 @@ public class ModelCalendar implements ReadOnlyCalendar {
     /**
      * Returns true if an event with the same identity as {@code event} exists in the calendar.
      */
-    public boolean hasEvent(CalendarEvent event) {
+    public boolean hasEvent(ScheduleEvent event) {
         requireNonNull(event);
         return events.contains(event);
     }
@@ -54,7 +54,7 @@ public class ModelCalendar implements ReadOnlyCalendar {
      * Adds an event to the Calendar.
      * The event must not already exist in the calendar.
      */
-    public void addEvent(CalendarEvent e) {
+    public void addEvent(ScheduleEvent e) {
         events.add(e);
     }
 
@@ -63,9 +63,9 @@ public class ModelCalendar implements ReadOnlyCalendar {
      * {@code target} must exist in the Calendar.
      * The event identity of {@code editedEvent} must not be the same as another existing event in the calendar.
      */
-    public void updateEvent(CalendarEvent target, CalendarEvent editedEvent) {
+    public void updateEvent(ScheduleEvent target, ScheduleEvent editedEvent) {
         requireNonNull(editedEvent);
-        events.setCalendarEvent(target, editedEvent);
+        events.setScheduleEvent(target, editedEvent);
     }
 
     /**
@@ -74,7 +74,7 @@ public class ModelCalendar implements ReadOnlyCalendar {
      *
      * Note: Calendar removal is done via soft-delete
      */
-    public void removeEvent(CalendarEvent key) {
+    public void removeEvent(ScheduleEvent key) {
         events.remove(key);
     }
 
@@ -84,7 +84,7 @@ public class ModelCalendar implements ReadOnlyCalendar {
     }
 
     @Override
-    public ObservableList<CalendarEvent> getAllEventList() {
+    public ObservableList<ScheduleEvent> getAllEventList() {
         return events.asUnmodifiableObservableList();
     }
 
