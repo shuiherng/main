@@ -35,7 +35,7 @@ public class DiseaseAndSymptomStorage {
     private static HashMap<String, List<String>> readDataFromCSVFile() {
         try {
             HashMap<String, List<String>> diseaseSymptomMatcher = new HashMap<>();
-            String filePath = new File("src/main/java/seedu/address/storage/datasetForSymptomAndDisease.csv")
+            String filePath = new File("src/main/resources/storage/datasetForSymptomAndDisease.csv")
                     .getAbsolutePath();
             File file = new File(filePath);
             FileReader fileReader = new FileReader(file);
@@ -63,7 +63,7 @@ public class DiseaseAndSymptomStorage {
      */
     private static DiseaseAndSymptomStorage writeDataFromCSVFile(String data) {
         try {
-            String filePath = new File("src/main/java/seedu/address/storage/datasetForSymptomAndDisease.csv")
+            String filePath = new File("src/main/resources/storage/datasetForSymptomAndDisease.csv")
                     .getAbsolutePath();
             File file = new File(filePath);
             FileWriter fileWriter = new FileWriter(file,true);
