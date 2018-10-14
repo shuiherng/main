@@ -151,6 +151,7 @@ Examples:
 === Editing an appointment : `change appointment`
 
 Entering appointment management mode automatically, then editing an existing appointment in the calendar. +
+
 *Format:* `{change/edit} {appointment/appt} {DATE AND TIME/APPOINTMENT_ID} NEW_DETAILS`
 
 Editing the details for the appointment.
