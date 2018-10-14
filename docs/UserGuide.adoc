@@ -76,11 +76,11 @@ Showing a list of all persons in the address book. +
 
 *Format:* `list`
 
-=== Switching to appointment management mode : `mode {appointment/cal/calendar/appt}`
+=== Switching to appointment management mode : `mode {appointment/cal/schedule/appt}`
 
 Switching the application to appointment management mode. In this mode, you can view and manage your appointments scheduled. +
 
-*Format:* `mode {appointment/cal/calendar/appt}`
+*Format:* `mode {appointment/cal/schedule/appt}`
 
 === Adding a patient : `add patient`
 
@@ -151,6 +151,7 @@ Examples:
 === Editing an appointment : `change appointment`
 
 Entering appointment management mode automatically, then editing an existing appointment in the calendar. +
+
 *Format:* `{change/edit} {appointment/appt} {DATE AND TIME/APPOINTMENT_ID} NEW_DETAILS`
 
 Editing the details for the appointment.
@@ -224,11 +225,11 @@ Lists=ing all commands that you have entered in reverse chronological order.
 [TIP]
 Tip: Pressing up and down arrows will display the previous and next input respectively in the command box.
 
-=== Clearing the calendar : `clear calendar`
+=== Clearing the schedule : `clear schedule`
 
 Emptying out all appointments scheduled from the calendar.
 
-*Format:* `clear {calendar/cal/appointments/appts}`
+*Format:* `clear {schedule/cal/appointments/appts}`
 
 === Exiting the program : `exit`
 
@@ -238,7 +239,7 @@ Exiting the program.
 
 === Saving the data
 
-All patient and calendar data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
+All patient and schedule data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
 == FAQ
 
@@ -251,7 +252,7 @@ All patient and calendar data are saved in the hard disk automatically after any
 
 * *Switch To Patient Management Mode:* : `mode {user/patient}` +
 
-* *Switch To Appointment Management Mode* : `mode {appointment/cal/calendar/appt}` +
+* *Switch To Appointment Management Mode* : `mode {appointment/cal/schedule/appt}` +
 
 * *Add A Patient* : `add patient` +
 
@@ -275,7 +276,7 @@ All patient and calendar data are saved in the hard disk automatically after any
 
 * *View Command History* : `history`
 
-* *Clear The Calendar* : `clear {cal/calendar/appointments/appts}`
+* *Clear The Calendar* : `clear {cal/schedule/appointments/appts}`
 
 * *Exit The Program* : `exit`
 
