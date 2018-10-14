@@ -1,20 +1,23 @@
 package seedu.address.storage;
 
-import com.opencsv.CSVReader;
-import org.apache.commons.lang3.ArrayUtils;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.Collection;
-import java.util.HashSet;
 
+import org.apache.commons.lang3.ArrayUtils;
 
+import com.opencsv.CSVReader;
+
+/**
+ * A class to access/write data of diseases and its related symptoms stored in a csv file.
+ */
 public class DiseaseAndSymptomStorage {
     private static final String pathStringForCSV = "src/main/resources/storage/datasetForSymptomAndDisease.csv";
 
@@ -25,7 +28,7 @@ public class DiseaseAndSymptomStorage {
     public DiseaseAndSymptomStorage() {
         this.diseases = DiseaseAndSymptomStorage.returnSetOfDiseases();
         this.symptoms = DiseaseAndSymptomStorage.returnSetOfSymptoms();
-        this.matcher = DiseaseAndSymptomStorage.readDataFromCSVFile();
+        this.matcher = DiseaseAndSymptomStorage.readDataFromCsvFile();
         assert this.matcher != null;
     }
 
@@ -34,7 +37,7 @@ public class DiseaseAndSymptomStorage {
      *
      * @return a HashMap object where key is disease and value is a list of related symptoms.
      */
-    private static HashMap<String, List<String>> readDataFromCSVFile() {
+    private static HashMap<String, List<String>> readDataFromCsvFile() {
         try {
             HashMap<String, List<String>> diseaseSymptomMatcher = new HashMap<>();
             String filePath = new File(pathStringForCSV)
@@ -63,12 +66,12 @@ public class DiseaseAndSymptomStorage {
      * @param data A String object which contains a disease and its related symptoms.
      * @return a new DiseaseAndSymptomStorage object with updated data.
      */
-    private static DiseaseAndSymptomStorage writeDataFromCSVFile(String data) {
+    private static DiseaseAndSymptomStorage writeDataFromCsvFile(String data) {
         try {
             String filePath = new File(pathStringForCSV)
                     .getAbsolutePath();
             File file = new File(filePath);
-            FileWriter fileWriter = new FileWriter(file,true);
+            FileWriter fileWriter = new FileWriter(file, true);
 
             fileWriter.append(data);
 
@@ -89,7 +92,7 @@ public class DiseaseAndSymptomStorage {
      * @return a set of diseases in the csv file storage.
      */
     private static Set<String> returnSetOfDiseases() {
-        HashMap<String, List<String>> diseaseSymptomMatcher = DiseaseAndSymptomStorage.readDataFromCSVFile();
+        HashMap<String, List<String>> diseaseSymptomMatcher = DiseaseAndSymptomStorage.readDataFromCsvFile();
         return diseaseSymptomMatcher.keySet();
     }
 
@@ -99,7 +102,7 @@ public class DiseaseAndSymptomStorage {
      * @return a set of symptoms in the csv file storage.
      */
     private static Set<String> returnSetOfSymptoms() {
-        HashMap<String, List<String>> diseaseSymptomMatcher = DiseaseAndSymptomStorage.readDataFromCSVFile();
+        HashMap<String, List<String>> diseaseSymptomMatcher = DiseaseAndSymptomStorage.readDataFromCsvFile();
         Collection<List<String>> values = diseaseSymptomMatcher.values();
         Set<String> symptoms = new HashSet<>();
         for (List<String> symptomList : values) {
