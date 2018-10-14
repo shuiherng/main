@@ -1,5 +1,8 @@
 package seedu.address.logic.parser;
 
+import static java.util.Calendar.MONDAY;
+import static java.util.Calendar.getAvailableCalendarTypes;
+
 import java.util.Calendar;
 import java.util.List;
 
@@ -97,10 +100,42 @@ public class DateTimeParser {
             } else {
                 return getMonthDates(currentTime, 0);
             }
-
         }
+        int dayOfWeek = -1; // requires a check somewhere
+        if (splitString[1].contains("Mon")) {
+            dayOfWeek = 0;
+        } else if (splitString[1].contains("Tue")) {
+            dayOfWeek = 1;
+        } else if (splitString[1].contains("Wed")) {
+            dayOfWeek = 3;
+        } else if (splitString[1].contains("Thu")) {
+            dayOfWeek = 4;
+        } else if (splitString[1].contains("Fri")) {
+            dayOfWeek = 5;
+        } else if (splitString[1].contains("Sat")) {
+            dayOfWeek = 6;
+        } else if (splitString[1].contains("Sun")) {
+            dayOfWeek = 7;
+        }
+        if (splitString[0].equals("next")) {
+            return getWeekDayDate(currentTime, dayOfWeek, 1);
+        } else if (splitString[0].equals("this")) {
+            return getWeekDayDate(currentTime, dayOfWeek, 0);
+        }
+        return null; // need to handle
+    }
 
-        return null;
+    private Pair<Calendar, Calendar> getWeekDayDate(Calendar currentTime, int dayOfWeek, int offset) {
+        Calendar date = (Calendar) currentTime.clone();
+        date.setFirstDayOfWeek(Calendar.MONDAY);
+        date.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        date.add(Calendar.WEEK_OF_YEAR, offset); // may need to consider the wrapping around at the year boundary
+        date.add(Calendar.DATE, dayOfWeek);
+        Calendar dateStart = (Calendar) date.clone();
+        Calendar dateEnd = (Calendar) date.clone();
+        setDateStartAndEnd(dateStart, dateEnd);
+        Pair<Calendar, Calendar> finalDate = new Pair<>(dateStart, dateEnd);
+        return finalDate;
     }
 
     private Pair<Calendar, Calendar> parseIn(Calendar currentTime, String dateInput) {
@@ -121,10 +156,8 @@ public class DateTimeParser {
             }
         } else if (dateInput.equals("in a few days")) {
             return getNearFutureDates(currentTime);
-        } else {
-            return null;
         }
-
+        return null;
     }
 
     private Pair<Calendar, Calendar> getSingleDate(Calendar currentDate, int offset) {
@@ -151,7 +184,7 @@ public class DateTimeParser {
         Calendar startDate = Calendar.getInstance(); // dummy
         Calendar endDate = Calendar.getInstance(); // dummy
 
-        return promptForTime(startDate, endDate);
+        return null;
 
     }
 
@@ -162,7 +195,7 @@ public class DateTimeParser {
         Calendar startDate = Calendar.getInstance(); // dummy
         Calendar endDate = Calendar.getInstance(); // dummy
 
-        return promptForTime(startDate, endDate);
+        return null;
     }
 
     private Pair<Calendar, Calendar> getNearFutureDates(Calendar currentDate) {
@@ -182,23 +215,9 @@ public class DateTimeParser {
 
         Calendar date = Calendar.getInstance(); // dummy
 
-        return promptForTime(date, date);
+        return null;
     }
 
-    private Pair<Calendar, Calendar> promptForTime(Calendar startDate, Calendar endDate) {
-        Calendar decidedDate;
-        if (startDate.equals(endDate)) {
-            decidedDate = startDate;
-        } else {
-            //List<Calendar> availableDays = getAvailableDays(startDate, endDate); // to put back later
-            //decidedDate = askForDay(availableDays); // to put back later
-
-        }
-        //String timeDurationInput = askForTimeDuration(decidedDate); // to put back later
-        //Pair<Calendar, Calendar> finalDateTime = parseTimeDurationInput(timeDurationInput, decidedDate); // to put back later
-        Pair<Calendar, Calendar> finalDateTime = new Pair<>(Calendar.getInstance(), Calendar.getInstance()); // dummy
-        return finalDateTime;
-    }
 }
 
 
