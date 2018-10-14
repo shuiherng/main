@@ -16,6 +16,8 @@ import java.util.HashSet;
 
 
 public class DiseaseAndSymptomStorage {
+    private static final String pathStringForCSV = "src/main/resources/storage/datasetForSymptomAndDisease.csv";
+
     private Set<String> diseases;
     private Set<String> symptoms;
     private HashMap<String, List<String>> matcher;
@@ -35,7 +37,7 @@ public class DiseaseAndSymptomStorage {
     private static HashMap<String, List<String>> readDataFromCSVFile() {
         try {
             HashMap<String, List<String>> diseaseSymptomMatcher = new HashMap<>();
-            String filePath = new File("src/main/resources/storage/datasetForSymptomAndDisease.csv")
+            String filePath = new File(pathStringForCSV)
                     .getAbsolutePath();
             File file = new File(filePath);
             FileReader fileReader = new FileReader(file);
@@ -63,7 +65,7 @@ public class DiseaseAndSymptomStorage {
      */
     private static DiseaseAndSymptomStorage writeDataFromCSVFile(String data) {
         try {
-            String filePath = new File("src/main/resources/storage/datasetForSymptomAndDisease.csv")
+            String filePath = new File(pathStringForCSV)
                     .getAbsolutePath();
             File file = new File(filePath);
             FileWriter fileWriter = new FileWriter(file,true);
