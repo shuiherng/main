@@ -15,7 +15,7 @@ public class XmlFileStorage {
     /**
      * Saves the given addressbook data to the specified file.
      */
-    public static void saveDataToFile(Path file, XmlSerializableAddressBook addressBook)
+    public static void saveAddressBookToFile(Path file, XmlSerializableAddressBook addressBook)
             throws FileNotFoundException {
         try {
             XmlUtil.saveDataToFile(file, addressBook);
@@ -27,7 +27,7 @@ public class XmlFileStorage {
     /**
      * Returns address book in the file or an empty address book
      */
-    public static XmlSerializableAddressBook loadDataFromSaveFile(Path file) throws DataConversionException,
+    public static XmlSerializableAddressBook loadAddressBookFromSaveFile(Path file) throws DataConversionException,
                                                                             FileNotFoundException {
         try {
             return XmlUtil.getDataFromFile(file, XmlSerializableAddressBook.class);
@@ -36,4 +36,24 @@ public class XmlFileStorage {
         }
     }
 
+    public static void saveScheduleToFile(Path file, XmlSerializableSchedule schedule)
+            throws FileNotFoundException {
+        try {
+            XmlUtil.saveDataToFile(file, schedule);
+        } catch (JAXBException e) {
+            throw new AssertionError("Unexpected exception " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Returns schedule in the file or an empty schedule
+     */
+    public static XmlSerializableSchedule loadScheduleFromSaveFile(Path file) throws DataConversionException,
+                                                                        FileNotFoundException {
+        try {
+            return XmlUtil.getDataFromFile(file, XmlSerializableSchedule.class);
+        } catch (JAXBException e) {
+            throw new DataConversionException(e);
+        }
+    }
 }
