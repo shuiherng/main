@@ -181,9 +181,6 @@ public class DateTimeParser {
         // TO-DO
         // get the next week start date and end date
 
-        Calendar startDate = Calendar.getInstance(); // dummy
-        Calendar endDate = Calendar.getInstance(); // dummy
-
         return null;
 
     }
@@ -191,9 +188,6 @@ public class DateTimeParser {
     private Pair<Calendar, Calendar> getMonthDates(Calendar date, int offset) {
         // TO-DO
         // get the next month start date and end date
-
-        Calendar startDate = Calendar.getInstance(); // dummy
-        Calendar endDate = Calendar.getInstance(); // dummy
 
         return null;
     }
@@ -212,9 +206,7 @@ public class DateTimeParser {
         // TO-DO
         // check if it is really a valid specified date input
         // if yes, create a Calendar object from the specified date input from user
-
-        Calendar date = Calendar.getInstance(); // dummy
-
+        
         return null;
     }
 
