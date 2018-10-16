@@ -1,10 +1,14 @@
 package seedu.address.model.person;
 
+import static java.util.Objects.requireNonNull;
 /**
  * Represents a Person's PersonID in the address book.
  * PersonID only increases, and a person is bound to their PersonID forever.
  */
 public class PersonID {
+
+    public static final String MESSAGE_PERSONID_CONSTRAINTS =
+            "Person ID should start with p, followed by a sequence of integers.";
 
     // PersonID iterator
     private static int idCounter = 0;
@@ -19,8 +23,21 @@ public class PersonID {
         value = getNewID();
     }
 
+    /**
+     * Constructs a {@code PersonID} from an existing ID.
+     */
+    public PersonID(String value) {
+        requireNonNull(value);
+
+        this.value = value;
+        int idValue = Integer.parseInt(value.substring(1, value.length()-1));
+        if (idValue >= idCounter) {
+            idCounter = idValue + 1;
+        }
+    }
+
     private static String getNewID(){
-        String id = new String("p"+Integer.toString(idCounter));
+        String id = "p"+Integer.toString(idCounter);
         idCounter += 1;
         return id;
     }
