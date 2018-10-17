@@ -13,9 +13,7 @@ import seedu.address.logic.commands.HistoryCommand;
 import seedu.address.logic.commands.ListPersonCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.AddressBookModel;
-import seedu.address.model.AddressBookModelManager;
-import seedu.address.model.UserPrefs;
+import seedu.address.model.*;
 
 
 public class LogicManagerTest {
@@ -23,7 +21,8 @@ public class LogicManagerTest {
     public ExpectedException thrown = ExpectedException.none();
 
     private AddressBookModel addressBookModel = new AddressBookModelManager();
-    private Logic logic = new LogicManager(addressBookModel);
+    private ScheduleModel scheduleModel = new ScheduleModelManager();
+    private Logic logic = new LogicManager(addressBookModel, scheduleModel);
 
     @Test
     public void execute_invalidCommandFormat_throwsParseException() {
