@@ -27,6 +27,7 @@ import seedu.address.model.UserPrefs;
 public class MainWindow extends UiPart<Stage> {
 
     private static final String FXML = "MainWindow.fxml";
+    private static final String modeTitle = " : Patient Mode";
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 
@@ -140,7 +141,7 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     private void setTitle(String appTitle) {
-        primaryStage.setTitle(appTitle);
+        primaryStage.setTitle(appTitle + modeTitle);
     }
 
     /**

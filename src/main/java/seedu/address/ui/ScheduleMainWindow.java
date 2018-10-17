@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 
 public class ScheduleMainWindow extends UiPart{
     private static final String FXML = "ScheduleMainWindow.fxml";
+    private static final String modeTitle = " : Schedule Mode";
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 
@@ -98,7 +99,7 @@ public class ScheduleMainWindow extends UiPart{
     }
 
     private void setTitle(String appTitle) {
-        primaryStage.setTitle(appTitle);
+        primaryStage.setTitle(appTitle + modeTitle);
     }
 
     /**
