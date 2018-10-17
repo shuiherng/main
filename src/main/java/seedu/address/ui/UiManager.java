@@ -36,6 +36,7 @@ public class UiManager extends ComponentManager implements Ui {
     private Config config;
     private UserPrefs prefs;
     private MainWindow mainWindow;
+    private ScheduleMainWindow scheduleMainWindow;
 
     public UiManager(Logic logic, Config config, UserPrefs prefs) {
         super();
@@ -52,6 +53,8 @@ public class UiManager extends ComponentManager implements Ui {
         primaryStage.getIcons().add(getImage(ICON_APPLICATION));
 
         try {
+            scheduleMainWindow = new ScheduleMainWindow(primaryStage, config, prefs, logic);
+            scheduleMainWindow.fillInnerParts();
             mainWindow = new MainWindow(primaryStage, config, prefs, logic);
             mainWindow.show(); //This should be called before creating other UI parts
             mainWindow.fillInnerParts();
@@ -59,6 +62,32 @@ public class UiManager extends ComponentManager implements Ui {
         } catch (Throwable e) {
             logger.severe(StringUtil.getDetails(e));
             showFatalErrorDialogAndShutdown("Fatal error during initializing", e);
+        }
+    }
+
+    @Override
+    public void switchToSchedule() {
+        logger.info("Switching to Schedule Mode");
+
+        try {
+            mainWindow.hide();
+            scheduleMainWindow.show();
+        } catch (Throwable e) {
+            logger.severe(StringUtil.getDetails(e));
+            showFatalErrorDialogAndShutdown("Fatal error during switching", e);
+        }
+    }
+
+    @Override
+    public void switchToPatient() {
+        logger.info("Switching to Patient Mode");
+
+        try {
+            scheduleMainWindow.hide();
+            mainWindow.show();
+        } catch (Throwable e) {
+            logger.severe(StringUtil.getDetails(e));
+            showFatalErrorDialogAndShutdown("Fatal error during switching", e);
         }
     }
 

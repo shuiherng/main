@@ -1,16 +1,12 @@
 package seedu.address.ui;
 
-import java.util.logging.Logger;
-
 import com.google.common.eventbus.Subscribe;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.GuiSettings;
@@ -20,14 +16,11 @@ import seedu.address.commons.events.ui.ShowHelpRequestEvent;
 import seedu.address.logic.Logic;
 import seedu.address.model.UserPrefs;
 
-/**
- * The Main Window. Provides the basic application layout containing
- * a menu bar and space where other JavaFX elements can be placed.
- */
-public class MainWindow extends UiPart<Stage> {
+import java.util.logging.Logger;
 
-    private static final String FXML = "MainWindow.fxml";
-    private static final String modeTitle = " : Patient Mode";
+public class ScheduleMainWindow extends UiPart{
+    private static final String FXML = "ScheduleMainWindow.fxml";
+    private static final String modeTitle = " : Schedule Mode";
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 
@@ -35,31 +28,14 @@ public class MainWindow extends UiPart<Stage> {
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
-    private BrowserPanel browserPanel;
-    private PersonListPanel personListPanel;
     private Config config;
     private UserPrefs prefs;
     private HelpWindow helpWindow;
 
     @FXML
-    private StackPane browserPlaceholder;
-
-    @FXML
-    private StackPane commandBoxPlaceholder;
-
-    @FXML
     private MenuItem helpMenuItem;
 
-    @FXML
-    private StackPane personListPanelPlaceholder;
-
-    @FXML
-    private StackPane resultDisplayPlaceholder;
-
-    @FXML
-    private StackPane statusbarPlaceholder;
-
-    public MainWindow(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
+    public ScheduleMainWindow(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
         super(FXML, primaryStage);
 
         // Set dependencies
@@ -72,7 +48,6 @@ public class MainWindow extends UiPart<Stage> {
         setTitle(config.getAppTitle());
         setWindowDefaultSize(prefs);
 
-        setAccelerators();
         registerAsAnEventHandler(this);
 
         helpWindow = new HelpWindow();
@@ -82,15 +57,11 @@ public class MainWindow extends UiPart<Stage> {
         return primaryStage;
     }
 
-    private void setAccelerators() {
-        setAccelerator(helpMenuItem, KeyCombination.valueOf("F1"));
-    }
-
     /**
      * Sets the accelerator of a MenuItem.
      * @param keyCombination the KeyCombination value of the accelerator
      */
-    private void setAccelerator(MenuItem menuItem, KeyCombination keyCombination) {
+ /*   private void setAccelerator(MenuItem menuItem, KeyCombination keyCombination) {
         menuItem.setAccelerator(keyCombination);
 
         /*
@@ -108,32 +79,19 @@ public class MainWindow extends UiPart<Stage> {
          * help window purposely so to support accelerators even when focus is
          * in CommandBox or ResultDisplay.
          */
-        getRoot().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+       /* getRoot().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getTarget() instanceof TextInputControl && keyCombination.match(event)) {
                 menuItem.getOnAction().handle(new ActionEvent());
                 event.consume();
             }
         });
-    }
+    }*/
 
     /**
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
-        browserPanel = new BrowserPanel();
-        browserPlaceholder.getChildren().add(browserPanel.getRoot());
 
-        personListPanel = new PersonListPanel(logic.getFilteredPersonList());
-        personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
-
-        ResultDisplay resultDisplay = new ResultDisplay();
-        resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
-
-        StatusBarFooter statusBarFooter = new StatusBarFooter(prefs.getAddressBookFilePath());
-        statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());
-
-        CommandBox commandBox = new CommandBox(logic);
-        commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
     }
 
     void hide() {
@@ -167,7 +125,7 @@ public class MainWindow extends UiPart<Stage> {
     /**
      * Opens the help window or focuses on it if it's already opened.
      */
-    @FXML
+    @javafx.fxml.FXML
     public void handleHelp() {
         if (!helpWindow.isShowing()) {
             helpWindow.show();
@@ -186,14 +144,6 @@ public class MainWindow extends UiPart<Stage> {
     @FXML
     private void handleExit() {
         raise(new ExitAppRequestEvent());
-    }
-
-    public PersonListPanel getPersonListPanel() {
-        return personListPanel;
-    }
-
-    void releaseResources() {
-        browserPanel.freeResources();
     }
 
     @Subscribe

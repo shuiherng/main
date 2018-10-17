@@ -10,6 +10,12 @@ public interface Ui {
     /** Starts the UI (and the App).  */
     void start(Stage primaryStage);
 
+    /** Switches the UI to the Schedule Mode */
+    void switchToSchedule();
+
+    /** Switches the UI to the Patient Mode */
+    void switchToPatient();
+
     /** Stops the UI. */
     void stop();
 
