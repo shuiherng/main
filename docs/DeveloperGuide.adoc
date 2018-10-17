@@ -292,19 +292,33 @@ The sections below give more details of each component.
 === UI component
 
 .Structure of the UI Component
-image::UiClassDiagram.png[width="800"]
+image::NewUiClassDiagram.png[width="800"]
 
 *API* : link:{repoURL}/src/main/java/seedu/address/ui/Ui.java[`Ui.java`]
 
-The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter`, `BrowserPanel` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class.
+The UI comprises two main interfaces:
 
-The `UI` component uses JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the link:{repoURL}/src/main/java/seedu/address/ui/MainWindow.java[`MainWindow`] is specified in link:{repoURL}/src/main/resources/view/MainWindow.fxml[`MainWindow.fxml`]
+* MainWindow: Supports patient information management
+* ScheduleMainWindow: Supports appointment management
+
+`MainWindow` is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter`, `BrowserPanel`
+ etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class.
+
+`ScheduleMainWindow` consists of parts as well, including its own copy of `CommandBox`, `ResultDisplay`,
+and a `ScheduleListPanel`.
+
+The `UI` component uses JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are
+ in the `src/main/resources/view` folder. For example, the layout of the
+ link:{repoURL}/src/main/java/seedu/address/ui/MainWindow.java[`MainWindow`] is specified in
+ link:{repoURL}/src/main/resources/view/MainWindow.fxml[`MainWindow.fxml`]
 
 The `UI` component,
 
 * Executes user commands using the `Logic` component.
-* Binds itself to some data in the `Model` so that the UI can auto-update when data in the `Model` change.
+* Binds itself to some data in a `Model` (Either `AddressBookModel` or `ScheduleModel`) so that the UI can auto-update
+when data in the `Model` changes.
 * Responds to events raised from various parts of the App and updates the UI accordingly.
+
 
 [[Design-Logic]]
 === Logic component
@@ -367,6 +381,15 @@ Classes used by multiple components are in the `seedu.addressbook.commons` packa
 == Implementation
 
 This section describes some noteworthy details on how certain features are implemented.
+
+=== On-the-fly Switching between Modes
+
+Switching between patient management and appointment management modes is implemted within the `UiManager` class.
+This class maintains an instance of both `MainWindow` and `ScheduleMainWindow` objects. A `ModeChangeEvent` will be
+raised and passed to the `EventCenter`, which calls `hide()` on the window associated with the current mode,
+and `show()` on that of the desired mode.
+
+`MainWindow`, displaying the patient management interface, is shown on application startup.
 
 // tag::undoredo[]
 === Undo/Redo feature
