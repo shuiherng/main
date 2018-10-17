@@ -1,128 +1,4 @@
-= AddressBook Level 4 - Developer Guide
-
-****
-At this time, no changes have been made to the Developer Guide. The following are changes that will be made in future versions:
-
-*Outline*
-
-EventsCenter will no longer be handling r/w actions to disk. Instead, Logic will forward all write requests to manage writing to disk separately. This refactoring has been tagged as Refactor-0.
-
-_Refactor-0:_
-
-The current model for new changes is `User-> UI -> Logic -> Model -> EventsCenter -> Storage`. This will be changed so that `Model -> EventsCenter` and `Model -> Storage` are separate.
-
-The new flow of events will be:
-
-.   deletePerson(p) references Model
-.   Model calls post(AddressBookChangedEvent) to eventcenter
-.   EventsCenter Executes handleAddressBookChangedEvent() by writing to stdout
-.   Model then calls Storage to save changes to file through storeAddressBookChangedEvent()
-.   Storage writes changes, and returns write/exit status to Model
-.   Model, which waits for this return value (Implemented as CompletableFuture object), forwards return value to EventsCenter as handle fileModification(String)
-.   EventsCenter handles file modification by writing to stdout
-
-As information in the PatientBook is sensitive, all patients and appointments must have a form of direct addressability. This is achieved through IDs. This change has been tagged as Refactor-1.
-
-_Refactor-1:_
-
-Currently, every person is handled as a person object which is passed by list reference rather than person reference. If multiple people have the same name, the wrong person may be deleted.
-
-To fix this, the current Person object implementation will be kept, except HashMap<Int, Person> will be used to store the mapping between a person's ID and information. The ID will then be passed from object to object. When listing in User mode, all Persons displayed will have their ID in front; e.g. [ID: p10512] Jeremy Tan.
-
-A similar implementation will be used for Calendar events.
-
-The IDs will follow the following format:
-
-.   Patients: character p, followed by integer. Automatically assigned when patient iscreated. PatientID will act as primary key if patient data is stored in relationaldatabase in the future.
-
-.   Appointment: character a, followed by integer. Automatically assigned whenappointment is created. AppointmentID will act as primary key if calendar data isstored in relational database in the future.
-
-Finally, PatientDisplay and CalendarDisplay will be packaged into a ResultDisplayManager, with the former two realized through the existing ResultDisplay class (which in turn contains ResultListPanel and BrowserPanel). ResultDisplayManager will handle which mode the application is currently in, as follows:
-
-.   Patient Management Mode: PatientDisplay
-.   Appointment Management Mode : CalendarDisplay
-
-*User Stories*
-
-.   As a doctor new to this software, I can view all possible operations by help command, so that Ican learn how to use it quickly.
-.   As an organized doctor, I can record health and body related information of a patient, so that Idon’t have to use pen to write it down.
-.   As a forgetful doctor, I can search the patient’s name by providing either his first name, lastname or middle name, so that I can recall his name easily.
-.   As a responsible doctor, I can edit any information of by patient by searching for his name or ID,so that I can make sure all data are updated.
-.   As a forgetful doctor, I can view the height, weight, BMI, medicine allergy and other healthrelated information of a patient by typing his name or ID, so that I can give diagnosis according to the information.
-.   As a forgetful doctor, I can view the patient name by typing a time-slot, so that I will know whowill be consulting me.
-.   As a responsible doctor, I can view the timeslot by typing a patient name or ID, so that I canaccess whether a patient is receiving enough guidance.
-.   As a busy doctor, I can view my current available time slots, so that I can make appointmentsmore easily.
-.   As an organized doctor, I can obtain an easily readable timetable for my appointments, so that Iknow how my schedule is like.
-.   As a responsible doctor, I can edit appointment details, so that in cases where there arechanges to an appointment, I can keep myself updated.
-.   As a caring doctor, I can find out the most dangerous patients using sort command, so that I cankeep track of their states actively.
-.   As an intern doctor, I can find the suggested prescription by entering the name of the disease,so that I can know how to give treatment when I forget.
-.   As an intern doctor, I can find the suggested possible diseases by entering the symptoms, sothat I can give diagnosis when I feel uncertain.
-.   As an intern doctor, I can calculate the dosing by inputting the patient’s disease and patient’s IDor name, so that I can know how to give prescription quantitatively.
-.   As a doctor who keeps learning, I can learn more about the different kinds of symptoms in thesymptom database anytime, so that I can perfect my relevant knowledge when I am free.
-.   As a responsible doctor, I can keep a record of patients who consulted me in the last week, sothat I can contact them to obtain feedback.
-.   As a time-saving doctor, I can filter my patients according to location, so that in case I need tovisit my patients, I can choose to visit those living in the same area at one go.
-.   As a forgetful doctor, I can list all the commands that I have entered by the history command,so that I can recall my previous operations.
-.   As a careful doctor, all the data will be saved in my disk automatically, so that I don’t need toworry about loss of data.
-.   As a doctor, I can receive a prompt for how to enter a command, so that if I accidentally entermy command in the wrong format, I can quickly recall the correct format.
-.   As a health-conscious doctor, I can view my workload for each week, so that I can make sure Ihave a good work-life balance.
-.   As a doctor, I can check whether a specific drug is available, so that I can ensure thatprescription I give has enough stocks.
-.   As a forward-looking doctor, I can delete the patients who have recovered, so that I don’t needto think of them anymore.
-.   As a doctor, I can enter my appointment details in natural language, so that I do not need tomemorize a strict format for this command.
-.   As a doctor, I can clear my timetable if there are many appointment changes, so that I canredesign my timetable from scratch.
-.   As a doctor, I can clear my patient book, so that I do not have to delete entry by entry.
-.   As a time-saving doctor, when I delete a specific patient, his corresponding appointment (if any)will also be cancelled from my timetable automatically, so that it saves my time from editing my timetable manually.
-.   As a diligent doctor, I can edit my saved prescriptions in case it requires an update, so that I canalways get the updated prescriptions when looking for solutions for a particular disease.
-.   As a hardworking doctor, I can print out the list of all my patients and hang it on my wall, sothat I am always motivated.
-.   As a forgetful doctor, I can append any note when I create an appointment, so that when I viewmy appointment I can quickly recall my purpose for the appointment.
-
-*Project Management*
-
-All: Refactoring code
-
-Feature 1 : ResultDisplayManager
-
-This Feature comprises the ResultDisplayManager class, which spawns PatientDisplay and Calendar Display (both of which extend ResultDisplay).
-
-* V1.0: Patients display correctly. Mark deleted patients correctly. Ensure that patient information and details show correctly in Browser panel upon selection. (Optional: appointments for a patient are listed in browser panel. Group note: this might not be feasible as it invokes functions that are usually done through CLI, unless BrowserPanel can invoke functions in its display as well. May require javascript embedding if we stick with HTML output. If we stick with java, then we have to find some way to format the output correctly)
-* V1.1: Calendar displays correctly. Possibly include grid calendar under Browser panel, then displaying patient details directly to CLI output. Application has to be manually launched in patient OR calendar management mode.
-* V1.2: Result Display Manager can switch between patient and calendar management mode correctly.
-* V1.3: Modes are identified through a mapping given by HashMap<UIMode, ResultDisplay>, with UIMode being an Enum. This facilitates future expansion as we can add more UI elemetns. Automatically switching between the two is done through an interface methods governed by:
-
-.   Switch to Patient Management mode: ResultDisplayManager.switch_ui_mode(UIMode.PATIENT)
-.   Switch to Calendar Management mode:ResultDisplayManager.switch_ui_mode(UIMode.CALENDAR)
-
-* V1.4: Complete Unit tests to ensure future updates will not break the behaviour. This can be done by ensuring that running certain commands will correctly switch between the two modes.
-
-Feature 2: Logic for adding/removing patients and appointments
-
-* V1.0: Morph existing AB4 code to accommodate patients
-* V1.1: Make a new set of storage logic to accommodate appointments
-* V1.2: Isolate Storage logic from EventsCenter as described in Refactor0. Ensure that files are written to/from storage correctly through Storage interface API calls.
-* V1.3 Complete implementation of Refactor0 so that events are logged correctly through EventsCenter API calls. Write unit tests to ascertain this behaviour.
-* V1.4: Complete unit tests to ensure that future updates will not break the behaviour.
-
-Feature 3: Storage Logic and BrowserPanel Display
-
-* V1.0 Create Storage for appointments, morph AB4 logic to accommodate two separate sets of data.
-* V1.1 Create interface API calls for I/O to storage. Create unit tests to ensure that these calls work correctly.
-* V1.2 Modify EventsCenter API calls, and create modify/create calls to accommodate new logging information for storage I/O.
-* V1.3 Format output for BrowserPanel. BrowserPanel will accept a person object (in the case of PatientDisplay) or an appointment object (in the case of Calendar display) and format the output appropriately either through Java or generating and displaying a temporary HTML document.
-
-Feature 4: Natural Language Processing for appointment dates
-
-* V1.0 – V1.1: Create DateTimeParser API with ‘DateTime parseDateTime(String dateTimeInput)’ call.
-* V1.2-V1.3: Create Unit Tests for DateTimeParser, including both commands which trigger DateTimeParser interface API calls and sample String inputs for the calls themselves.
-* V1.4: Ensure that DateTimeParser works correctly with all commands which call it, ie. Correct strings are passed in. (Coordinate with Feature 2)
-
-Feature 5: Integration of Static Dataset to map symptoms and diagnoses/prescriptions
-
-This feature will use the appointment details as the text used to map symptoms and diagnoses/prescriptions. Possible WebMD integration.
-
-* V1.0 Create database which maps common symptoms and prescriptions
-* V1.1 Implement Search/Pattern Matching: Create API call SymptomMap.getInfo(String), which returns diagnoses and recommended prescriptions.
-* V1.3 Create unit tests which ensure that the mapping is accurate and repeatable. Perform simple reduction of search terms through omission of non-essential words from symptoms, and searching for keywords, then feeding it into the API method.
-* V1.4 Create commands to instruct PatientBook to identify diagnoses and prescriptions based on symptoms given inside appointment details.
-****
+= PatientBook - Developer Guide
 :site-section: DeveloperGuide
 :toc:
 :toc-title:
@@ -137,9 +13,9 @@ ifdef::env-github[]
 :warning-caption: :warning:
 :experimental:
 endif::[]
-:repoURL: https://github.com/se-edu/addressbook-level4/tree/master
+:repoURL: https://github.com/CS2103-AY1819S1-T12-2/main
 
-By: `Team SE-EDU`      Since: `Jun 2016`      Licence: `MIT`
+By: `T12-2`      Since: `Aug 2018`      Licence: `MIT`
 
 == Setting up
 
@@ -198,9 +74,7 @@ Optionally, you can follow the <<UsingCheckstyle#, UsingCheckstyle.adoc>> docume
 
 ==== Updating documentation to match your fork
 
-After forking the repo, the documentation will still have the SE-EDU branding and refer to the `se-edu/addressbook-level4` repo.
-
-If you plan to develop this fork as a separate product (i.e. instead of contributing to `se-edu/addressbook-level4`), you should do the following:
+If you plan to develop this fork as a separate product (i.e. instead of contributing to `CS2103-AY1819-T12-2/main`), you should do the following:
 
 . Configure the <<Docs-SiteWideDocSettings, site-wide documentation settings>> in link:{repoURL}/build.gradle[`build.gradle`], such as the `site-name`, to suit your own project.
 
@@ -220,13 +94,6 @@ Optionally, you can set up AppVeyor as a second CI (see <<UsingAppVeyor#, UsingA
 [NOTE]
 Having both Travis and AppVeyor ensures your App works on both Unix-based platforms and Windows-based platforms (Travis is Unix-based and AppVeyor is Windows-based)
 
-==== Getting started with coding
-
-When you are ready to start coding,
-
-1. Get some sense of the overall design by reading <<Design-Architecture>>.
-2. Take a look at <<GetStartedProgramming>>.
-
 == Design
 
 [[Design-Architecture]]
@@ -242,13 +109,13 @@ The `.pptx` files used to create diagrams in this document can be found in the l
 
 `Main` has only one class called link:{repoURL}/src/main/java/seedu/address/MainApp.java[`MainApp`]. It is responsible for,
 
-* At app launch: Initializes the components in the correct sequence, and connects them up with each other.
-* At shut down: Shuts down the components and invokes cleanup method where necessary.
+* At app launch: Initializes the components in the correct sequence, and connecting them up with each other.
+* At shut down: Shutting down the components and invoking cleanup methods where necessary.
 
 <<Design-Commons,*`Commons`*>> represents a collection of classes used by multiple other components. Two of those classes play important roles at the architecture level.
 
 * `EventsCenter` : This class (written using https://github.com/google/guava/wiki/EventBusExplained[Google's Event Bus library]) is used by components to communicate with other components using events (i.e. a form of _Event Driven_ design)
-* `LogsCenter` : Used by many classes to write log messages to the App's log file.
+* `LogsCenter` : This class is used by many classes to write log messages to the App's log file.
 
 The rest of the App consists of four components.
 
@@ -276,7 +143,7 @@ The _Sequence Diagram_ below shows how the components interact for the scenario 
 image::SDforDeletePerson.png[width="800"]
 
 [NOTE]
-Note how the `Model` simply raises a `AddressBookChangedEvent` when the Address Book data are changed, instead of asking the `Storage` to save the updates to the hard disk.
+Note how the `AddressBookModel` simply raises a `AddressBookChangedEvent` when the Address Book data are changed, instead of asking the `Storage` to save the updates to the hard disk.
 
 The diagram below shows how the `EventsCenter` reacts to that event, which eventually results in the updates being saved to the hard disk and the status bar of the UI being updated to reflect the 'Last Updated' time.
 
@@ -284,7 +151,7 @@ The diagram below shows how the `EventsCenter` reacts to that event, which event
 image::SDforDeletePersonEventHandling.png[width="800"]
 
 [NOTE]
-Note how the event is propagated through the `EventsCenter` to the `Storage` and `UI` without `Model` having to be coupled to either of them. This is an example of how this Event Driven approach helps us reduce direct coupling between components.
+Note how the event is propagated through the `EventsCenter` to the `Storage` and `UI` without `AddressBookModel` having to be coupled to either of them. This is an example of how this Event Driven approach helps us reduce direct coupling between components.
 
 The sections below give more details of each component.
 
@@ -296,14 +163,21 @@ image::UiClassDiagram.png[width="800"]
 
 *API* : link:{repoURL}/src/main/java/seedu/address/ui/Ui.java[`Ui.java`]
 
-The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter`, `BrowserPanel` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class.
+The UI comprises two main interfaces:
+
+* MainWindow: Supports patient information management
+* ScheduleMainWindow: Supports appointment management
+
+`MainWindow` is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter`, `BrowserPanel` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class.
+
+`ScheduleMainWindow` consists of parts as well, including its own copy of `CommandBox`, `ResultDisplay`, and a `ScheduleListPanel`.
 
 The `UI` component uses JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the link:{repoURL}/src/main/java/seedu/address/ui/MainWindow.java[`MainWindow`] is specified in link:{repoURL}/src/main/resources/view/MainWindow.fxml[`MainWindow.fxml`]
 
 The `UI` component,
 
 * Executes user commands using the `Logic` component.
-* Binds itself to some data in the `Model` so that the UI can auto-update when data in the `Model` change.
+* Binds itself to some data in a `Model` (Either `AddressBookModel` or `ScheduleModel`) so that the UI can auto-update when data in the `Model` changes.
 * Responds to events raised from various parts of the App and updates the UI accordingly.
 
 [[Design-Logic]]
@@ -316,9 +190,9 @@ image::LogicClassDiagram.png[width="800"]
 *API* :
 link:{repoURL}/src/main/java/seedu/address/logic/Logic.java[`Logic.java`]
 
-.  `Logic` uses the `AddressBookParser` class to parse the user command.
+.  `Logic` uses the `AddressBookParser` and `ScheduleParser` classes to parse the user command.
 .  This results in a `Command` object which is executed by the `LogicManager`.
-.  The command execution can affect the `Model` (e.g. adding a person) and/or raise events.
+.  The command execution can affect the `Model` (e.g. adding a person or schedule event) and/or raise application events.
 .  The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
 
 Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("delete 1")` API call.
@@ -328,21 +202,23 @@ image::DeletePersonSdForLogic.png[width="800"]
 
 [[Design-Model]]
 === Model component
+[NOTE]
+The application itself utilizes an `AddressBookModel` and a `ScheduleModel` to manage patient and appointment data respectively. Due to similarities in how they are implemented, we will use `Model` to describe the functionality of both of these classes.
 
 .Structure of the Model Component
 image::ModelClassDiagram.png[width="800"]
 
-*API* : link:{repoURL}/src/main/java/seedu/address/addressBookModel/Model.java[`Model.java`]
+*API* : link:{repoURL}/src/main/java/seedu/address/model/Model.java[`Model.java`]
 
 The `Model`,
 
 * stores a `UserPref` object that represents the user's preferences.
-* stores the Address Book data.
-* exposes an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
+* stores the Address Book or Schedule data.
+* exposes an unmodifiable `ObservableList<Person>` (or `ObservableList<ScheduleEvent>` in the case of `ScheduleModel`) that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
 * does not depend on any of the other three components.
 
 [NOTE]
-As a more OOP addressBookModel, we can store a `Tag` list in `Address Book`, which `Person` can reference. This would allow `Address Book` to only require one `Tag` object per unique `Tag`, instead of each `Person` needing their own `Tag` object. An example of how such a addressBookModel may look like is given below. +
+As a more OOP model, we can store a `Tag` list in `Address Book`, which `Person` can reference. This would allow `Address Book` to only require one `Tag` object per unique `Tag`, instead of each `Person` needing their own `Tag` object. This same concept may be applied to the tags used in `ScheduleEvent`. An example of how such a model may look like is given below. +
  +
 image:ModelClassBetterOopDiagram.png[width="800"]
 
@@ -364,96 +240,109 @@ The `Storage` component,
 
 Classes used by multiple components are in the `seedu.addressbook.commons` package.
 
+[[Diagnosis-Model]]
+=== Diagnosis class
+
+The `Diagnosis` class contains an attribute `matchers`, which is a `HashMap<Disease, Set<Symptom>>` mapping diseases to their set of symptoms. `Diagnosis` supports the following methods, exposed through the `DiagnosisModel` interface:
+
+* `hasDisease(Disease disease)`: Searches the mapping to determine if `disease` exists.
+* `getSymptoms(Disease disease)`: Acquires the related symptoms of a given disease.
+* `addMatch(Disease disease, Set<Symptom> symptoms)`: Adds a mapping between a disease and a set of symptoms. If the disease already exists within the mapping, this method adds new symptoms to the existing entry.
+* `predictDisease(Set<Symptoms>)`: Finds closest matching diseases based on a given set of symptoms.
+
 == Implementation
 
 This section describes some noteworthy details on how certain features are implemented.
 
-// tag::undoredo[]
-=== Undo/Redo feature
-==== Current Implementation
+=== On-the-fly Switching between Modes
 
-The undo/redo mechanism is facilitated by `VersionedAddressBook`.
-It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`.
-Additionally, it implements the following operations:
+Switching between patient management and appointment management modes is implemted within the `UiManager` class. This class maintains an instance of both `MainWindow` and `ScheduleMainWindow` objects. A `ModeChangeEvent` will be raised and passed to the `EventCenter`, which calls `hide()` on the window associated with the current mode, and `show()` on that of the desired mode.
 
-* `VersionedAddressBook#commit()` -- Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` -- Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` -- Restores a previously undone address book state from its history.
+`MainWindow`, displaying the patient management interface, is shown on application startup.
 
-These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
+=== Natural Language Processing for Scheduling
 
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
+This feature facilitates scheduling, which enables the user to add appointments in the schedule system with user input phrased naturally and in the context of a conversation. It mainly implements a command parser which parses natural language user input, and creates the intended `ScheduleEvent` object to be stored.
 
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
+There are four steps involved in the processing of natural language commands:
 
-image::UndoRedoStartingStateListDiagram.png[width="800"]
+. High-Level Parsing: Command-specific, user inputs are broken down into sub-fields
 
-Step 2. The user executes `delete 5` command to delete the 5th person in the address book. The `delete` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
+. Low-Level Parsing: Date/time specific, where user's inputs for date and/or duration are parsed into a `Pair<Calendar, Calendar> object
+. Further Prompting: User is prompted with a list of available time slots, and required to select a specific time slot
+. Generating Event: The resulting `ScheduleEvent` object corresponding to the user input is created and sent into the Schedule to be stored.
 
-image::UndoRedoNewCommand1StateListDiagram.png[width="800"]
+The following is an example of a use case, and how the mechanism behaves:
 
-Step 3. The user executes `add n/David ...` to add a new person. The `add` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
-
-image::UndoRedoNewCommand2StateListDiagram.png[width="800"]
+. User Input: `schedule for David Lee next week`.
 
 [NOTE]
-If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
+Unlike other commands, the `schedule` command does not require prefixing each subsequent field. This is in order to simulate natural language, and eliminates the need for a prefix reference sheet when scheduling appointments for patients. The user may also choose to enter a command in a fixed format such as `schedule David Lee *on* 22/10/2018 0900 *to* 1000` to create an appointment without further prompts.
 
-Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
+. High-Level Parsing: The entire string is passed into a `ScheduleCommandParser` object, and broken down into meaningful sub-strings:
+.. `schedule` is the command word, and is discarded.
+.. `David Lee` is the name of the patient. The corresponding patient's `PersonID` will be obtained by searching through the list of patients stored in `PersonList`. Should there be multiple patients with the same name, the application will prompt the user to select the appropriate one. Once the `PersonID` is obtained, it is stored as an attribute in a new `ScheduleEvent` object.
+.. `next week` is a date/duration keyword, and is carried forward to the next step for further parsing.
 
-image::UndoRedoExecuteUndoStateListDiagram.png[width="800"]
+. Low-Level Parsing: The date/duration string is parsed and converted into a `Pair<Calendar, Calendar>` object to represent `next week`:
+.. The program executes a keyword search, and converts `next week` into a date range. For instance, if the command is executed on 16/10/2018, `next week` becomes a datetime range from 22/10/2018 0859hrs to 28/10/2018 1801hrs. This range takes into consideration the doctor's working hours.
+.. Two `Calendar` objects is created to represent the start and end datetimes. These two objects are then placed in a `Pair`.
 
-[NOTE]
-If the `currentStatePointer` is at index 0, pointing to the initial address book state, then there are no previous address book states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the undo.
+. Further Prompting: The user is presented with a list of suggested final time slots for the appointment, from which one is chosen:
+.. `DateTimeParser` finds a list of available time periods within the datetime range identified in low-level parsing, and passes the list as a `String` into `Prompt` and `UI` objects. These then display the results to the user.
 
-The following sequence diagram shows how the undo operation works:
+.. The user then inputs the desired time slot, either as a numerical selection from the displayed list, or a specified time such as `22/10/2018 9.30am - 10.30am`.
+.. The refined time selection is then converted into a `Pair<Calendar, Calendar>` object.
 
-image::UndoRedoSequenceDiagram.png[width="800"]
+. Generating Event: The `Pair` object from the previous step is added as an attribute in the `ScheduleEvent` object.
 
-The `redo` command does the opposite -- it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
+The sequence diagram below illustrates this process, showing notable steps:
 
-[NOTE]
-If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone address book states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
+image::NaturalLanguageProcessingSequenceDiagram.png[width="800"]
 
-Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
+=== Diagnosis Feature
 
-image::UndoRedoNewCommand3StateListDiagram.png[width="800"]
+The Diagnosis feature is implemented through a `Diagnosis` class, containing a `Hashmap<Disease, Set<Symptoms>>` named `matchers`. It also implements several operations which support storage and retrieval to this hashmap. These operations are exposed in the `DiagnosisModel` interface. Searching of symptoms in this class is done linearly by iterating through all keys in the set.
 
-Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. We designed it this way because it no longer makes sense to redo the `add n/David ...` command. This is the behavior that most modern desktop applications follow.
+=== Design Considerations
 
-image::UndoRedoNewCommand4StateListDiagram.png[width="800"]
+===== Aspect: Deletion
 
-The following activity diagram summarizes what happens when a user executes a new command:
+* **Alternative 1:** Deletion is accomplished via soft-delete.
+** This was chosen for deleting patients from the address book in order to ensure that a patient can never be permanently removed. Preventing deletion ensures that even deceased patients may have their information accessed, and guarantees that accidental deletion will never lead to important patient data being lost. Implementation is done via the addition of an `exists` field in the Person class.
+** Using this approach for deleting appointments from the schedule will work but is unnecessary as appointment information is not nearly as sensitive as patient data.
+* **Alternative 2:** Person deletion is accomplished via actual deletion from the person list.
+** Patient data is no longer recoverable after deletion (unless undo/redo is implemented). This is the approach chosen for deleting appointments from the schedule instead, since this information may easily be recovered and is not nearly as sensitive as a patient's medical information.
 
-image::UndoRedoActivityDiagram.png[width="650"]
+===== Aspect: Disease-symptom matching data structures
 
-==== Design Considerations
+* **Alternative 1 (current choice):** Use a `HashMap` where the key and values are the disease and set of related symptoms respectively.
+** Pros: Better performance in terms of efficiency; duplicate values are also eliminated
+** Cons: Difficult for other developers to understand
+* **Alternative 2:** Define a `Match` class with two private attributes representing the disease and set of related symptoms, then maintain a list of `Match` objects.
+** Pros: Easy for new developers to understand when disease-symptom pairs are encapsulated in an object
+** Cons: May take up more memory, leading to performance issues
 
-===== Aspect: How undo & redo executes
+// start::undoredo[]
 
-* **Alternative 1 (current choice):** Saves the entire address book.
+===== Aspect (Coming in v1.4): How undo & redo executes
+
+* **Alternative 1 (current choice):** Saves the entire address book and schedule.
 ** Pros: Easy to implement.
 ** Cons: May have performance issues in terms of memory usage.
 * **Alternative 2:** Individual command knows how to undo/redo by itself.
-** Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
+** Pros: Will use less memory (e.g. for `delete`, just save the person or event being deleted).
 ** Cons: We must ensure that the implementation of each individual command are correct.
 
-===== Aspect: Data structure to support the undo/redo commands
+===== Aspect (Coming in v1.4): Data structure to support the undo/redo commands
 
-* **Alternative 1 (current choice):** Use a list to store the history of address book states.
+* **Alternative 1 (current choice):** Use a list to store the history of address book and schedule states.
 ** Pros: Easy for new Computer Science student undergraduates to understand, who are likely to be the new incoming developers of our project.
-** Cons: Logic is duplicated twice. For example, when a new command is executed, we must remember to update both `HistoryManager` and `VersionedAddressBook`.
+** Cons: Logic is duplicated twice. For example, when a new command is executed, we must remember to update `HistoryManager`, `VersionedSchedule` and `VersionedAddressBook`.
 * **Alternative 2:** Use `HistoryManager` for undo/redo
 ** Pros: We do not need to maintain a separate list, and just reuse what is already in the codebase.
 ** Cons: Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two different things.
 // end::undoredo[]
-
-// tag::dataencryption[]
-=== [Proposed] Data Encryption
-
-_{Explain here how the data encryption feature will be implemented}_
-
-// end::dataencryption[]
 
 === Logging
 
@@ -700,7 +589,7 @@ Do take a look at <<Design-Logic>> before attempting to modify the `Logic` compo
 [discrete]
 ==== `Model` component
 
-*Scenario:* You are in charge of `addressBookModel`. One day, the `logic`-in-charge approaches you for help. He wants to implement a command such that the user is able to remove a particular tag from everyone in the address book, but the addressBookModel API does not support such a functionality at the moment. Your job is to implement an API method, so that your teammate can use your API to implement his command.
+*Scenario:* You are in charge of `model`. One day, the `logic`-in-charge approaches you for help. He wants to implement a command such that the user is able to remove a particular tag from everyone in the address book, but the model API does not support such a functionality at the moment. Your job is to implement an API method, so that your teammate can use your API to implement his command.
 
 [TIP]
 Do take a look at <<Design-Model>> before attempting to modify the `Model` component.
@@ -709,12 +598,12 @@ Do take a look at <<Design-Model>> before attempting to modify the `Model` compo
 +
 ****
 * Hints
-** The link:{repoURL}/src/main/java/seedu/address/addressBookModel/Model.java[`Model`] and the link:{repoURL}/src/main/java/seedu/address/addressBookModel/AddressBook.java[`AddressBook`] API need to be updated.
+** The link:{repoURL}/src/main/java/seedu/address/model/Model.java[`Model`] and the link:{repoURL}/src/main/java/seedu/address/model/AddressBook.java[`AddressBook`] API need to be updated.
 ** Think about how you can use SLAP to design the method. Where should we place the main logic of deleting tags?
-**  Find out which of the existing API methods in  link:{repoURL}/src/main/java/seedu/address/addressBookModel/AddressBook.java[`AddressBook`] and link:{repoURL}/src/main/java/seedu/address/addressBookModel/person/Person.java[`Person`] classes can be used to implement the tag removal logic. link:{repoURL}/src/main/java/seedu/address/addressBookModel/AddressBook.java[`AddressBook`] allows you to update a person, and link:{repoURL}/src/main/java/seedu/address/addressBookModel/person/Person.java[`Person`] allows you to update the tags.
+**  Find out which of the existing API methods in  link:{repoURL}/src/main/java/seedu/address/model/AddressBook.java[`AddressBook`] and link:{repoURL}/src/main/java/seedu/address/model/person/Person.java[`Person`] classes can be used to implement the tag removal logic. link:{repoURL}/src/main/java/seedu/address/model/AddressBook.java[`AddressBook`] allows you to update a person, and link:{repoURL}/src/main/java/seedu/address/model/person/Person.java[`Person`] allows you to update the tags.
 * Solution
-** Implement a `removeTag(Tag)` method in link:{repoURL}/src/main/java/seedu/address/addressBookModel/AddressBook.java[`AddressBook`]. Loop through each person, and remove the `tag` from each person.
-** Add a new API method `deleteTag(Tag)` in link:{repoURL}/src/main/java/seedu/address/addressBookModel/ModelManager.java[`ModelManager`]. Your link:{repoURL}/src/main/java/seedu/address/addressBookModel/ModelManager.java[`ModelManager`] should call `AddressBook#removeTag(Tag)`.
+** Implement a `removeTag(Tag)` method in link:{repoURL}/src/main/java/seedu/address/model/AddressBook.java[`AddressBook`]. Loop through each person, and remove the `tag` from each person.
+** Add a new API method `deleteTag(Tag)` in link:{repoURL}/src/main/java/seedu/address/model/ModelManager.java[`ModelManager`]. Your link:{repoURL}/src/main/java/seedu/address/model/ModelManager.java[`ModelManager`] should call `AddressBook#removeTag(Tag)`.
 ** Add new tests for each of the new public methods that you have added.
 ** See this https://github.com/se-edu/addressbook-level4/pull/790[PR] for the full solution.
 ****
@@ -874,11 +763,11 @@ Let's add a placeholder on all our link:{repoURL}/src/main/java/seedu/address/ui
 . Modify link:{repoURL}/src/test/java/guitests/guihandles/PersonCardHandle.java[`PersonCardHandle`] so that future tests can read the contents of the remark label.
 
 ===== [Step 4] Model: Add `Remark` class
-We have to properly encapsulate the remark in our link:{repoURL}/src/main/java/seedu/address/addressBookModel/person/Person.java[`Person`] class. Instead of just using a `String`, let's follow the conventional class structure that the codebase already uses by adding a `Remark` class.
+We have to properly encapsulate the remark in our link:{repoURL}/src/main/java/seedu/address/model/person/Person.java[`Person`] class. Instead of just using a `String`, let's follow the conventional class structure that the codebase already uses by adding a `Remark` class.
 
 **Main:**
 
-. Add `Remark` to addressBookModel component (you can copy from link:{repoURL}/src/main/java/seedu/address/addressBookModel/person/Address.java[`Address`], remove the regex and change the names accordingly).
+. Add `Remark` to model component (you can copy from link:{repoURL}/src/main/java/seedu/address/model/person/Address.java[`Address`], remove the regex and change the names accordingly).
 . Modify `RemarkCommand` to now take in a `Remark` instead of a `String`.
 
 **Tests:**
@@ -886,13 +775,13 @@ We have to properly encapsulate the remark in our link:{repoURL}/src/main/java/s
 . Add test for `Remark`, to test the `Remark#equals()` method.
 
 ===== [Step 5] Model: Modify `Person` to support a `Remark` field
-Now we have the `Remark` class, we need to actually use it inside link:{repoURL}/src/main/java/seedu/address/addressBookModel/person/Person.java[`Person`].
+Now we have the `Remark` class, we need to actually use it inside link:{repoURL}/src/main/java/seedu/address/model/person/Person.java[`Person`].
 
 **Main:**
 
-. Add `getRemark()` in link:{repoURL}/src/main/java/seedu/address/addressBookModel/person/Person.java[`Person`].
+. Add `getRemark()` in link:{repoURL}/src/main/java/seedu/address/model/person/Person.java[`Person`].
 . You may assume that the user will not be able to use the `add` and `edit` commands to modify the remarks field (i.e. the person will be created without a remark).
-. Modify link:{repoURL}/src/main/java/seedu/address/addressBookModel/util/SampleDataUtil.java/[`SampleDataUtil`] to add remarks for the sample data (delete your `addressBook.xml` so that the application will load the sample data when you launch it.)
+. Modify link:{repoURL}/src/main/java/seedu/address/model/util/SampleDataUtil.java/[`SampleDataUtil`] to add remarks for the sample data (delete your `addressBook.xml` so that the application will load the sample data when you launch it.)
 
 ===== [Step 6] Storage: Add `Remark` field to `XmlAdaptedPerson` class
 We now have `Remark` s for `Person` s, but they will be gone when we exit the application. Let's modify link:{repoURL}/src/main/java/seedu/address/storage/XmlAdaptedPerson.java[`XmlAdaptedPerson`] to include a `Remark` field so that it will be saved.
@@ -906,7 +795,7 @@ We now have `Remark` s for `Person` s, but they will be gone when we exit the ap
 . Fix `invalidAndValidPersonAddressBook.xml`, `typicalPersonsAddressBook.xml`, `validAddressBook.xml` etc., such that the XML tests will not fail due to a missing `<remark>` element.
 
 ===== [Step 6b] Test: Add withRemark() for `PersonBuilder`
-Since `Person` can now have a `Remark`, we should add a helper method to link:{repoURL}/src/test/java/seedu/address/testutil/PersonBuilder.java[`PersonBuilder`], so that users are able to create remarks when building a link:{repoURL}/src/main/java/seedu/address/addressBookModel/person/Person.java[`Person`].
+Since `Person` can now have a `Remark`, we should add a helper method to link:{repoURL}/src/test/java/seedu/address/testutil/PersonBuilder.java[`PersonBuilder`], so that users are able to create remarks when building a link:{repoURL}/src/main/java/seedu/address/model/person/Person.java[`Person`].
 
 **Tests:**
 
@@ -1088,3 +977,110 @@ _{ more test cases ... }_
 .. _{explain how to simulate a missing/corrupted file and the expected behavior}_
 
 _{ more test cases ... }_
+Welcome to AsciiDocLIVE!
+------------------------
+
+AsciiDocLIVE is a *free online http://www.methods.co.nz/asciidoc/[AsciiDoc^]
+editor*.
+
+* Just type AsciiDoc source text into the *left* pane,
+* ...and the live preview appears in the *right* pane!
+
+What's AsciiDoc?
+~~~~~~~~~~~~~~~~~
+
+AsciiDoc is a human-readable text document format for writing notes,
+documentation, articles, books, ebooks, slideshows, web pages, man pages and
+blogs, and more. AsciiDoc files can be translated to many formats including
+HTML, PDF, EPUB, and man page.
+
+To learn more, visit the AsciiDoc home page at
+http://www.methods.co.nz/asciidoc/[^].
+
+About AsciiDocLIVE
+~~~~~~~~~~~~~~~~~~
+AsciiDocLIVE is currently in *beta* stage. This means there are likely a _lot_
+of bugs, and even more ways to make it better.
+
+If you have any questions, suggestions or other feedback, please
+feel free to
+https://github.com/jichu4n/asciidoclive/issues/new[create an issue on pass:[<i class="fa fa-github"></i>] GitHub^].
+Hope
+to hear from you soon!
+
+
+[[cheat-sheet]]
+AsciiDoc Mini Cheat Sheet
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To help you get started, here're some snippets from the
+http://powerman.name/doc/asciidoc[AsciiDoc Cheet Sheet^]. Feel free to poke
+around :)
+
+Text Styles
+^^^^^^^^^^^
+* normal, _italic_, *bold*, +mono+.
+* ``double quoted'', `single quoted'.
+* normal, ^super^, ~sub~.
+* `passthru *bold*`
+
+Tables
+^^^^^^
+.An example table
+[options="header,footer"]
+|=======================
+|Col 1|Col 2      |Col 3
+|1    |Item 1     |a
+|2    |Item 2     |b
+|3    |Item 3     |c
+|6    |Three items|d
+|=======================
+
+Lists
+^^^^^
+
+* Q: How did the programmer die in the shower?
+  A: He read the shampoo instructions:
+
+  . Lather, rinse.
+  . Repeat.
+
+* There are only 10 kinds of people in this world:
+  - Those who understand binary.
+  - Those who don't.
+
+Misc
+^^^^
+
+* Code listings:
++
+[source,python]
+-----------------
+#!/usr/bin/env python
+import antigravity
+try:
+  antigravity.fly()
+except FlytimeError as e:
+  # um...not sure what to do now.
+  pass
+-----------------
+
+* Quotes:
++
+[quote,"Charles Dickens","A Tale of Two Cities"]
+It was the best of times, it was the worst of times, it was the age of wisdom,
+it was the age of foolishness...
+
+* Links:
+** http://asciidoclive.com/[AsciiDocLIVE^] is awesome!
+
+* Images:
++
+image:https://i.imgur.com/AEkqoRn.jpg[alt="not bad.",width=128,height=128]
+
+* Videos:
++
+video::th_H1gixMEE[youtube]
+
+* Pass-through: pass:[<div align="center"><b>pass through content</b></div>]
+
