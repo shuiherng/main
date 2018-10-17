@@ -297,6 +297,7 @@ Unlike other commands, the `schedule` command does not require prefixing each su
 . Generating Event: The `Pair` object from the previous step is added as an attribute in the `ScheduleEvent` object.
 
 The sequence diagram below illustrates this process, showing notable steps:
+
 image::NaturalLanguageProcessingSequenceDiagram.png[width="800"]
 
 === Diagnosis Feature
