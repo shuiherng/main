@@ -64,6 +64,5 @@
             </AnchorPane>
         </items>
       </SplitPane>
-      <Label text="Label" />
    </children>
 </AnchorPane>

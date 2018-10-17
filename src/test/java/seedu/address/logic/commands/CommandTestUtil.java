@@ -136,5 +136,4 @@ public class CommandTestUtil {
         Person firstPerson = model.getFilteredPersonList().get(0);
         model.deletePerson(firstPerson);
     }
-
 }

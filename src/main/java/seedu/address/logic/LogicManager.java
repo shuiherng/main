@@ -8,9 +8,10 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.logic.parser.AddressBookParser;
+import seedu.address.logic.parser.PatientBookParser;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.AddressBookModel;
+import seedu.address.model.ScheduleModel;
 import seedu.address.model.person.Person;
 
 /**
@@ -20,20 +21,22 @@ public class LogicManager extends ComponentManager implements Logic {
     private final Logger logger = LogsCenter.getLogger(LogicManager.class);
 
     private final AddressBookModel addressBookModel;
+    private final ScheduleModel scheduleModel;
     private final CommandHistory history;
-    private final AddressBookParser addressBookParser;
+    private final PatientBookParser patientBookParser;
 
-    public LogicManager(AddressBookModel addressBookModel) {
+    public LogicManager(AddressBookModel addressBookModel, ScheduleModel scheduleModel) {
         this.addressBookModel = addressBookModel;
+        this.scheduleModel = scheduleModel;
         history = new CommandHistory();
-        addressBookParser = new AddressBookParser();
+        patientBookParser = new PatientBookParser();
     }
 
     @Override
     public CommandResult execute(String commandText) throws CommandException, ParseException {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
         try {
-            Command command = addressBookParser.parseCommand(commandText);
+            Command command = patientBookParser.parseCommand(commandText);
             return command.execute(addressBookModel, history);
         } finally {
             history.add(commandText);
