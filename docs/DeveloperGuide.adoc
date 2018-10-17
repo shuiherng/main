@@ -235,7 +235,54 @@ Classes used by multiple components are in the `seedu.addressbook.commons` packa
 
 This section describes some noteworthy details on how certain features are implemented.
 
+// tag::diagnosis[]
+=== Diagnosis
+
+==== Current Implementation
+
+The diagnosis feature is facilitated by `Diagnosis` class. This class contains a private final attribute called
+`matchers` of type `HashMap<Disease, Set<Symptom>>`. Additionally, it implements the following operations:
+
+* `Diagnosis#hasDisease(Disease disease)` – Check if the application contains the disease input by users.
+* `Diagnosis#getSymptoms(Disease disease)` – Get all the related symptoms of a disease input by users
+* `Diagnosis#addMatcher(Matcher matcher)` – Store a particular disease-symptom matcher input by users.
+* `Diagnosis#resetMatchers(HashMap<Disease, Set<Symptom>> matchers)` – Reset the private attribute with another
+    `matchers`.
+* `Diagnosis#predictDisease(Set<Symptom>)` – Predict a disease for symptoms input by users.
+
+These operations are exposed in the DiagnosisModel interface as `DiagnosisModel# hasDisease(Disease disease)`,
+`DiagnosisModel#getSymptoms(Disease disease)`, `DiagnosisModel#addMatcher(Matcher matcher)`,
+`DiagnosisModel#resetMatchers(HashMap<Disease, Set<Symptom>> matchers)` and
+`DiagnosisModel#predictDisease(Set<Symptom>)` respectively.
+
+Given below is an example usage scenario and how the diagnosis mechanism behaves at each step.
+
+Step 1. The user launches the application for the first time. The `Diagnosis` will be initialized with a
+`HashMap<Disease,Set<Symptom>> matchers` stored in the database.
+
+Step 2. The user executes `disease Influenza` command to get symptoms of “Influenza” stored in the patient book.
+The `disease` command calls `DiagnosisModel#hasDisease(Disease disease)` first, if the return `Boolean` value is false,
+the user will be notified with a message stating: “The disease you are looking for is not in our record,
+please add it with `addDisease` Command”. If the return value is true, it will continue to
+call `DiagnosisModel#getSymptoms(Disease disease)` and get all the symptoms related to “Influenza” in a `Set<Symptom>`.
+
+Step 3. If the disease is not present in the database record, the user can execute
+`addDisease dis/Influenza sym/ncoordination sym/fever sym/pleuritic pain…` command to insert
+a disease-symptom matcher into the database record. Now, the `addDisease` command calls
+`DiagnosisModel#addMatcher(Matcher matcher)`. Inside the method, `Diagnosis#addMatcher(Matcher matcher)` will be
+invoked and will return a new `matchers` of type `HashMap`. Upon successful return, the system will continue to
+call `DiagnosisModel#resetMatchers(HashMap<Disease, Set<Symptom>> matchers>)` to update the
+private attribute `matchers`.
+
+Step 4. Now the user decides to execute the command `predict` to search for a disease in database
+that matches with input symptoms. This command calls `DiasnosisModel#predictDisease(Set<Symptom>)`
+which runs a searching algorithm to check if such diseases exist. The method returns a `set` of all
+potential diseases or `null` if it does not exist.
+
+// end::diagnosis[]
+
 ==== Design Considerations
+
 ===== Aspect: Deletion
 
 * **Alternative 1:** Deletion is accomplished via soft-delete.
@@ -265,6 +312,26 @@ This section describes some noteworthy details on how certain features are imple
 ** Cons: Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two different things.
 
 // end::undoredo[]
+
+===== Aspect: Disease-symptom matching data structures
+
+* **Alternative 1 (current choice):** Use a `HashMap` where the `key` and `value` are the disease and set of
+related symptoms respectively.
+** Pros: Better performance in terms of efficiency; duplicate values are also eliminated.
+** Cons: Difficult for other developers to understand.
+* **Alternative 2:** Define a `Match` class with two private attributes representing the disease and a set of
+related symptoms, then maintain a `list` of `Match` objects.
+** Pros: Easy for new developers to understand when disease-symptom pairs are encapsulated in an object.
+** Cons: May take up more memory, leading to performance issues.
+
+===== Aspect: Searching algorithm to support disease prediction operation
+
+* **Alternative 1 (current choice):** Do a linear search to find if a disease that matches all symptoms exists.
+** Pros: Easy to implement and easy for new developers to understand.
+** Cons: May have performance issues in terms of lower efficiency.
+* **Alternative 2:**
+** Pros:
+** Cons:
 
 === Logging
 
