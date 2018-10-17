@@ -443,6 +443,64 @@ We are using `java.util.logging` package for logging. The `LogsCenter` class is 
 
 Certain properties of the application can be controlled (e.g App name, logging level) through the configuration file (default: `config.json`).
 
+=== Drug Database Search
+
+This feature allows the user to view pharmacological information about medical drugs currently licensed for sale
+in Singapore. It has been partially implemented, but remains in the form of unused code modules at this time.
+
+==== Currently Implemented
+
+The implementation is contained within a single code module, "DrugSearchUtility.java",
+which accesses a static database stored in "datasetForDrugs.csv", formatted in UTF-8.
+
+The database contains several categories of pharmacological metadata about each medical drug licensed for
+sale in Singapore as of September, 2018.
+
+The feature has been implemented using the OpenCSV library, which offers tools for manipulating
+.csv (Comma Separated Values) files.
+
+A keyword is provided by the user as input to the `search()` function of the program.
+This input keyword is first matched against a predetermined set of "generic" keywords which occur
+very commonly in the names of drugs, and would therefore make for an unsuitable search query
+(as it would match tens or even hundreds of drugs). For example,
+they keywords "tablet" or "injection" would be rejected as search queries,
+because they would produce hundreds of results.
+
+If the keyword passes the above check, it is then iteratively compared against all the
+entries in the drug database, and metadata of the drugs whose names contain the keyword
+are added to a cache.
+
+Finally certain metadata about each of the cached drugs - Name, Classification and Active Ingredients -
+are appended successively to a String, and the String is returned. Along with each drug, a message
+is also appended indicating the drug's index in the cache, allowing the user to enter
+another command (referring to the index number of a particular search result) in order
+to see the entire pharmacological data (seven categories) for that particular drug. This has
+been done to ensure that search results are not excessively long and verbose.
+
+The cache is flushed at the initiation of a new search.
+
+==== To Be Implemented
+
+*Commands:* Commands for accessing the database have yet to be incorporated into the program.
+
+These commands will be `drug [keyword]` (to query the database for drugs matching
+the given keyword, and `moreinfo [index]` (to view full pharmacological metadata about
+any drug from the search results).
+
+*Link With Symptom Matcher:* The feature may be integrated with the Symptom Matching feature,
+allowing the user to see recommended prescriptions for a given symptom.
+
+*Logging And Exception Handling:* The feature currently has it's own log file for errors. This will be modified so
+as to use the integrated central logging feature in Patient Book as a whole. Exception handling
+will be modified in this way too.
+
+
+
+
+
+
+
+
 == Documentation
 
 We use asciidoc for writing documentation.
