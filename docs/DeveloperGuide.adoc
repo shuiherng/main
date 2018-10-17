@@ -258,6 +258,8 @@ and `show()` on that of the desired mode.
 
 `MainWindow`, displaying the patient management interface, is shown on application startup.
 
+// tag::nlp[]
+
 === Natural Language Processing for Scheduling
 
 This feature facilitates scheduling, which enables the user to add appointments in the schedule system with user input phrased in natural language, and does so in a conversational process. It mainly implements a command parser which parses natural language user input, and creates the intended `ScheduleEvent` object to be stored.
@@ -346,8 +348,6 @@ that matches with input symptoms. This command calls `DiasnosisModel#predictDise
 which runs a searching algorithm to check if such diseases exist. The method returns a `set` of all
 potential diseases or `null` if it does not exist.
 
-// end::diagnosis[]
-
 ==== Design Considerations
 
 ===== Aspect: Disease-symptom matching data structures
@@ -370,17 +370,40 @@ related symptoms, then maintain a `list` of `Match` objects.
 ** Pros:
 ** Cons:
 
-===== Aspect: Deletion
+// end::diagnosis[]
+
+// tag::delete[]
+=== Deletion of Entries from Working Dataset
+
+==== Current Implementation
+
+Instances of `Person` are currently being deleted via soft-delete: setting the instance variable `exists` to `false`.
+
+Instances of `ScheduleEvent` are currently being deleted directly: removing the objects themselves altogether from the
+data structure encapsulated within `Schedule`.
+
+==== Design Considerations
+
+===== Aspect: Deletion of Person or ScheduleEvent Entries
 
 * **Alternative 1:** Deletion is accomplished via soft-delete.
 ** This was chosen for deleting patients from the address book in order to ensure that a patient can never be permanently removed. Preventing deletion ensures that even deceased patients may have their information accessed, and guarantees that accidental deletion will never lead to important patient data being lost. Implementation is done via the addition of an `exists` field in the Person class.
 ** Using this approach for deleting appointments from the schedule will work but is unnecessary as appointment information is not nearly as sensitive as patient data.
 * **Alternative 2:** Person deletion is accomplished via actual deletion from the person list.
 ** Patient data is no longer recoverable after deletion (unless undo/redo is implemented). This is the approach chosen for deleting appointments from the schedule instead, since this information may easily be recovered and is not nearly as sensitive as a patient's medical information.
+// end::delete[]
 
 // tag::undoredo[]
+=== Undo/Redo (Coming in v1.4)
 
-===== Aspect (Coming in v1.4): How undo & redo executes
+==== Proposed Implementation
+
+Undo/Redo is accomplished using `VersionedAddressBook` and `VersionedSchedule`. This is encapsulated in the
+`ApplicationDataState` class.
+
+==== Design Considerations
+
+===== Aspect : How undo & redo executes
 
 * **Alternative 1 (current choice):** Saves the entire address book and schedule.
 ** Pros: Easy to implement.
@@ -389,7 +412,7 @@ related symptoms, then maintain a `list` of `Match` objects.
 ** Pros: Will use less memory (e.g. for `delete`, just save the person or event being deleted).
 ** Cons: We must ensure that the implementation of each individual command are correct.
 
-===== Aspect (Coming in v1.4): Data structure to support the undo/redo commands
+===== Aspect: Data structure to support the undo/redo commands
 
 * **Alternative 1 (current choice):** Use a list to store the history of address book and schedule states.
 ** Pros: Easy for new Computer Science student undergraduates to understand, who are likely to be the new incoming developers of our project.
