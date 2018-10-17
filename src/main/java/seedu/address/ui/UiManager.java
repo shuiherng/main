@@ -36,6 +36,7 @@ public class UiManager extends ComponentManager implements Ui {
     private Config config;
     private UserPrefs prefs;
     private MainWindow mainWindow;
+    private ScheduleMainWindow scheduleMainWindow;
 
     public UiManager(Logic logic, Config config, UserPrefs prefs) {
         super();
