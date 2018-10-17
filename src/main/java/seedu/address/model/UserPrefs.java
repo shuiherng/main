@@ -12,7 +12,8 @@ import seedu.address.commons.core.GuiSettings;
 public class UserPrefs {
 
     private GuiSettings guiSettings;
-    private Path addressBookFilePath = Paths.get("data" , "addressbook.xml");
+    private Path addressBookFilePath = Paths.get("addressBookData" , "addressbook.xml");
+    private Path scheduleFilePath = Paths.get("scheduleData", "schedule.xml");
 
     public UserPrefs() {
         setGuiSettings(500, 500, 0, 0);
@@ -38,6 +39,10 @@ public class UserPrefs {
         this.addressBookFilePath = addressBookFilePath;
     }
 
+    public Path getScheduleFilePath() { return scheduleFilePath; }
+
+    public void setScheduleFilePath(Path scheduleFilePath) { this.scheduleFilePath = scheduleFilePath; }
+
     @Override
     public boolean equals(Object other) {
         if (other == this) {
@@ -50,19 +55,21 @@ public class UserPrefs {
         UserPrefs o = (UserPrefs) other;
 
         return Objects.equals(guiSettings, o.guiSettings)
-                && Objects.equals(addressBookFilePath, o.addressBookFilePath);
+                && Objects.equals(addressBookFilePath, o.addressBookFilePath)
+                && Objects.equals(scheduleFilePath, o.scheduleFilePath);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(guiSettings, addressBookFilePath);
+        return Objects.hash(guiSettings, addressBookFilePath, scheduleFilePath);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Gui Settings : " + guiSettings.toString());
-        sb.append("\nLocal data file location : " + addressBookFilePath);
+        sb.append("\nLocal address book data file location : " + addressBookFilePath);
+        sb.append("\nLocal schedule data file location : " + scheduleFilePath);
         return sb.toString();
     }
 

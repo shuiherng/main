@@ -2,6 +2,7 @@ package seedu.address;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.text.ParseException;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -23,12 +24,7 @@ import seedu.address.logic.LogicManager;
 import seedu.address.model.*;
 import seedu.address.model.AddressBookModelManager;
 import seedu.address.model.util.SampleDataUtil;
-import seedu.address.storage.AddressBookStorage;
-import seedu.address.storage.JsonUserPrefsStorage;
-import seedu.address.storage.Storage;
-import seedu.address.storage.StorageManager;
-import seedu.address.storage.UserPrefsStorage;
-import seedu.address.storage.XmlAddressBookStorage;
+import seedu.address.storage.*;
 import seedu.address.ui.Ui;
 import seedu.address.ui.UiManager;
 
@@ -45,13 +41,14 @@ public class MainApp extends Application {
     protected Logic logic;
     protected Storage storage;
     protected AddressBookModel addressBookModel;
+    protected ScheduleModel scheduleModel;
     protected Config config;
     protected UserPrefs userPrefs;
 
 
     @Override
     public void init() throws Exception {
-        logger.info("=============================[ Initializing AddressBook ]===========================");
+        logger.info("=============================[ Initializing PatientBook ]===========================");
         super.init();
 
         AppParameters appParameters = AppParameters.parse(getParameters());
@@ -60,17 +57,47 @@ public class MainApp extends Application {
         UserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(config.getUserPrefsFilePath());
         userPrefs = initPrefs(userPrefsStorage);
         AddressBookStorage addressBookStorage = new XmlAddressBookStorage(userPrefs.getAddressBookFilePath());
-        storage = new StorageManager(addressBookStorage, userPrefsStorage);
+        ScheduleStorage scheduleStorage = new XmlScheduleStorage(userPrefs.getScheduleFilePath());
+        storage = new StorageManager(addressBookStorage, scheduleStorage, userPrefsStorage);
 
         initLogging(config);
 
         addressBookModel = initModelManager(storage, userPrefs);
+        scheduleModel = initScheduleModel(storage, userPrefs);
 
-        logic = new LogicManager(addressBookModel);
+        logic = new LogicManager(addressBookModel, scheduleModel);
 
         ui = new UiManager(logic, config, userPrefs);
 
         initEventsCenter();
+    }
+    /**
+     * Returns a {@code ScheduleModelManager} with the data from [@code storage}'s scheduel and {@code userPrefs}. <br>
+     * The data fromthe sample schedule will be used instead if {@code storage}'s schedule is not found,
+     * or an empty schedule will be used instead if errors occur when reading {@code storage}'s schedule.
+     */
+    private ScheduleModel initScheduleModel(Storage storage, UserPrefs userPrefs){
+        Optional<ReadOnlySchedule> scheduleOptional;
+        ReadOnlySchedule initialData;
+
+        try {
+            scheduleOptional = storage.readSchedule();
+            if (!scheduleOptional.isPresent()) {
+                logger.info("Data file not found. Will be staring with sample Schedule.");
+            }
+            initialData = scheduleOptional.orElseGet(SampleDataUtil::getSampleSchedule);
+        } catch (DataConversionException e) {
+            logger.warning("Data file not in the correct format. Will be starting with an empty Schedule.");
+            initialData = new Schedule();
+        } catch (IOException e) {
+            logger.warning("Error reading from file. Will be starting with an empty schedule.");
+            initialData = new Schedule();
+        } catch (ParseException e) {
+            logger.warning("Error parsing dates from file. Will be starting with an empty schedule.");
+            initialData = new Schedule();
+        }
+
+        return new ScheduleModelManager(initialData, userPrefs);
     }
 
     /**
@@ -84,11 +111,11 @@ public class MainApp extends Application {
         try {
             addressBookOptional = storage.readAddressBook();
             if (!addressBookOptional.isPresent()) {
-                logger.info("Data file not found. Will be starting with a sample AddressBook");
+                logger.info("Data file not found. Will be starting with a sample AddressBook.");
             }
             initialData = addressBookOptional.orElseGet(SampleDataUtil::getSampleAddressBook);
         } catch (DataConversionException e) {
-            logger.warning("Data file not in the correct format. Will be starting with an empty AddressBook");
+            logger.warning("Data file not in the correct format. Will be starting with an empty AddressBook.");
             initialData = new AddressBook();
         } catch (IOException e) {
             logger.warning("Problem while reading from the file. Will be starting with an empty AddressBook");
@@ -176,7 +203,7 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        logger.info("Starting AddressBook " + MainApp.VERSION);
+        logger.info("Starting PatientBook " + MainApp.VERSION);
         ui.start(primaryStage);
     }
 
