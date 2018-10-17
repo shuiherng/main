@@ -53,11 +53,11 @@ public class UiManager extends ComponentManager implements Ui {
         primaryStage.getIcons().add(getImage(ICON_APPLICATION));
 
         try {
+            scheduleMainWindow = new ScheduleMainWindow(primaryStage, config, prefs, logic);
+            scheduleMainWindow.fillInnerParts();
             mainWindow = new MainWindow(primaryStage, config, prefs, logic);
             mainWindow.show(); //This should be called before creating other UI parts
             mainWindow.fillInnerParts();
-            scheduleMainWindow = new ScheduleMainWindow(primaryStage, config, prefs, logic);
-            scheduleMainWindow.fillInnerParts();
 
         } catch (Throwable e) {
             logger.severe(StringUtil.getDetails(e));
