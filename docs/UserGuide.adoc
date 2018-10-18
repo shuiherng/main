@@ -38,8 +38,8 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 * *`add patient`* : automatically switches to patient management mode and begins a dialog to create a new entry in the patient database
 * *`delete p301`* : deletes patient with ID '301'
 * *`delete a40`* : deletes appointment with ID '40'
-* *`delete appointment scheduled at 3pm next week`* : removes appointment scheduled for 3pm next week
-* *`make appointment at 3pm next week`* : schedules an appointment at 3pm next week
+* *`delete appointment scheduled at 3pm next Tuesday`* : removes appointment scheduled for 3pm next Tuesday
+* *`schedule for Lee next week`* : schedules an appointment next week
 * *`exit`* : exits the app
 
 .  Refer to <<Features>> for details of each command.
@@ -129,16 +129,24 @@ Creates a new appointment and places it in the schedule. If necessary, switches 
 [NOTE]
 This command does not require prefixing each field. If multiple users match the name provided, a prompt will be displayed to determine who the appointment is scheduled for. The program will also automatically prompt for refinement of input time where appropriate.
 
-Some examples of natural expressions which are accepted by the program include (but are not limited to):
+Natural expressions which are accepted by the program include:
 
 * tomorrow/tmr
-* soon
-* in 4 day(s)
-* in seven week(s)
-* in a few months
+* the day after tomorrow/tmr
+* in * day(s)
+* in * week(s)
+* in * month(s)
 * this/next week
-* this/next Tuesday
-* 22/3/2019
+* this/next month
+* this/next Monday/Tuesday/Wednesday/Thursday/Friday/Saturday/Sunday
+* soon
+* recently
+* in a few days
+* DD/MM/YYYY
+[NOTE]
+Asterisk (*) denotes any positive integer number.
+[NOTE]
+Abbreviated forms for days of week are also accepted, eg. Mon
 
 Example interaction with user:
 
@@ -159,12 +167,12 @@ Select patient corresponding to 'David Lee':
 ```
 From 22/10/2018 to 28/10/2018, you have empty time slots during:
    1) 22/10/2018 MON: 9:00 to 18:00
-   2) 23/10/2018 TUE: 10:00 to 11:00 and 13:00 to 15:00 and 17:00 to 18:00
-   3) 24/10/2018 WED: 9:00 to 12:00 and 14:00 to 18:00
+   2) 24/10/2018 WED: 10:00 to 11:00 and 13:00 to 15:00 and 17:00 to 18:00
+   3) 26/10/2018 FRI: 9:00 to 12:00 and 14:00 to 18:00
 
-   Select available timeslot or enter date and time range:
+   Enter selected time slot:
 ```
-3) Further input: `22/10/2018 9:30 to 10:30`. Program parses the input, and creates an appointment with the following output displayed to the user:
+3) User further input: `22/10/2018 9:30 to 10:30`. Program parses the input, and creates an appointment with the following output displayed to the user:
 ```
 Appointment created for [p301] David Jonathan Lee
     Date:        22/10/2018
