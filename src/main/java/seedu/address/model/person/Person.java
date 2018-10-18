@@ -39,8 +39,9 @@ public class Person {
      *
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, address, tags);
+
+    public Person(PersonID personID, Name name, Phone phone, Email email, Address address, boolean exists, Set<Tag> tags) {
+        requireAllNonNull(personID, name, phone, email, address, tags);
         this.id = new PersonID();
         this.exists = true;
         this.attributes = new HashMap<>();
@@ -51,15 +52,12 @@ public class Person {
 
         Set<Tag> personTags = new HashSet<>(tags); // adds all tags into here
         this.attributes.put(PersonProperty.TAGS, personTags);
-
-        /*
-        this.name = name;
-        this.phone = phone;
-        this.email = email;
-        this.address = address;
-        this.tags.addAll(tags);
-        */
     }
+
+    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
+        this(new PersonID(), name, phone, email, address, true, tags);
+    }
+
 
     public PersonID getID() {
         return this.id;

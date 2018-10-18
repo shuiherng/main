@@ -2,10 +2,12 @@ package seedu.address.model.event;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 import javafx.util.Pair;
@@ -19,6 +21,13 @@ import seedu.address.model.tag.Tag;
  */
 public class ScheduleEvent {
 
+    // Standard datetime String format to be used by this application
+    public static final SimpleDateFormat sdf;
+
+    static {
+        sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+    }
+
     // Enumerated Variable to represent calendar event attributes
     private enum ScheduleEventProperty {
         DATETIME, PERSONID, DETAILS, TAGS}
@@ -29,12 +38,15 @@ public class ScheduleEvent {
     private final EventID id;
 
     /**
-     *
      * Every field must be present and not null.
      */
     public ScheduleEvent(Pair<Calendar, Calendar> date, PersonID personID, String details, Set<Tag> tags) {
-        requireAllNonNull(date, personID, details, tags);
-        this.id = new EventID();
+        this(new EventID(), date, personID, details, tags);
+    }
+
+    public ScheduleEvent(EventID eventID, Pair<Calendar, Calendar> date, PersonID personID, String details, Set<Tag> tags) {
+        requireAllNonNull(eventID, date, personID, details, tags);
+        this.id = eventID;
         this.attributes = new HashMap<>();
 
         Pair<Calendar, Calendar> scheduleEventDate = new Pair<>(date.getKey(), date.getValue());
@@ -108,9 +120,9 @@ public class ScheduleEvent {
         builder.append("ScheduleEvent (Appointment) for PersonID: ")
                 .append(getID())
                 .append(" for daterange ")
-                .append(getDate().getKey())
+                .append(sdf.format(getDate().getKey().getTime()))
                 .append(" to ")
-                .append(getDate().getValue())
+                .append(sdf.format(getDate().getValue().getTime()))
                 .append("\nDetails: ")
                 .append(getDetails())
                 .append("\nTags: ");

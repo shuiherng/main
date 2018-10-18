@@ -14,6 +14,8 @@ import seedu.address.logic.LogicManager;
 import seedu.address.logic.commands.ListPersonCommand;
 import seedu.address.model.AddressBookModel;
 import seedu.address.model.AddressBookModelManager;
+import seedu.address.model.ScheduleModel;
+import seedu.address.model.ScheduleModelManager;
 
 public class CommandBoxTest extends GuiUnitTest {
 
@@ -28,7 +30,8 @@ public class CommandBoxTest extends GuiUnitTest {
     @Before
     public void setUp() {
         AddressBookModel addressBookModel = new AddressBookModelManager();
-        Logic logic = new LogicManager(addressBookModel);
+        ScheduleModel scheduleModel = new ScheduleModelManager();
+        Logic logic = new LogicManager(addressBookModel, scheduleModel);
 
         CommandBox commandBox = new CommandBox(logic);
         commandBoxHandle = new CommandBoxHandle(getChildNode(commandBox.getRoot(),
