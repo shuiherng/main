@@ -274,9 +274,9 @@ Lists all commands that you have entered in reverse chronological order.
 [TIP]
 Tip: Pressing up and down arrows will display the previous and next input respectively in the command box.
 
-=== Clear the calendar : `clear calendar`
+=== Clear the Schedule : `clear schedule`
 
-*Format:* `clear appointments`
+*Format:* `clear {appointments/schedule}`
 
 Empties out all appointments scheduled from the calendar.
 
@@ -285,10 +285,6 @@ Empties out all appointments scheduled from the calendar.
 *Format:* `exit`
 
 Exits the program.
-
-=== Save the data
-
-All patient and schedule data is saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
 == FAQ
 
@@ -299,21 +295,21 @@ All patient and schedule data is saved in the hard disk automatically after any 
 
 * *View Help* : `help` +
 
-* *Switch To Patient Management Mode:* : `mode {user/patient}` +
+* *Switch To Patient Management Mode:* : `mode patient` +
 
-* *Switch To Appointment Management Mode* : `mode {appointment/cal/calendar/appt}` +
+* *Switch To Appointment Management Mode* : `mode appointment` +
 
 * *Add A Patient* : `add patient` +
 
-* *Create An Appointment* : `make appointment` +
+* *Create An Appointment* : `add appointment` +
 
 * *List All Patients* : `list patients` +
 
 * *List All Appointments* : `list appointments` +
 
-* *Edit Patient Information* : `change patient` +
+* *Edit Patient Information* : `edit patient` +
 
-* *Edit Appointment Information* : `change appointment`
+* *Edit Appointment Information* : `edit appointment`
 
 * *Locate Patients By Name* : `find patient`
 
@@ -325,7 +321,7 @@ All patient and schedule data is saved in the hard disk automatically after any 
 
 * *View Command History* : `history`
 
-* *Clear The Calendar* : `clear {cal/calendar/appointments/appts}`
+* *Clear The Schedule* : `clear schedule`
 
 * *Exit The Program* : `exit`
 
