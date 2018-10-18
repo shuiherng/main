@@ -10,10 +10,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.opencsv.CSVReader;
+import seedu.address.model.symptom.Disease;
+import seedu.address.model.symptom.Symptom;
 
 /**
  * A class to access/write data of diseases and its related symptoms stored in a csv file.
@@ -21,9 +24,9 @@ import com.opencsv.CSVReader;
 public class DiseaseAndSymptomStorage {
     private static final String pathStringForCSV = "src/main/resources/storage/datasetForSymptomAndDisease.csv";
 
-    private Set<String> diseases;
-    private Set<String> symptoms;
-    private HashMap<String, List<String>> matcher;
+    private Set<Disease> diseases;
+    private Set<Symptom> symptoms;
+    private HashMap<Disease, List<Symptom>> matcher;
 
     public DiseaseAndSymptomStorage() {
         this.diseases = DiseaseAndSymptomStorage.returnSetOfDiseases();
@@ -32,14 +35,28 @@ public class DiseaseAndSymptomStorage {
         assert this.matcher != null;
     }
 
+
+    public Set<Disease> getDiseases() {
+        return diseases;
+    }
+
+    public Set<Symptom> getSymptoms() {
+        return symptoms;
+    }
+
+    public HashMap<Disease, List<Symptom>> getMatcher() {
+        return matcher;
+    }
+
+
     /**
      * Read data from datasetForSymptomAndDisease.csv.
      *
      * @return a HashMap object where key is disease and value is a list of related symptoms.
      */
-    private static HashMap<String, List<String>> readDataFromCsvFile() {
+    private static HashMap<Disease, List<Symptom>> readDataFromCsvFile() {
         try {
-            HashMap<String, List<String>> diseaseSymptomMatcher = new HashMap<>();
+            HashMap<Disease, List<Symptom>> diseaseSymptomMatcher = new HashMap<>();
             String filePath = new File(pathStringForCSV)
                     .getAbsolutePath();
             File file = new File(filePath);
@@ -48,9 +65,10 @@ public class DiseaseAndSymptomStorage {
             String[] nextRecord;
 
             while ((nextRecord = csvReader.readNext()) != null) {
-                String disease = nextRecord[0];
+                Disease disease = new Disease(nextRecord[0]);
                 nextRecord = ArrayUtils.remove(nextRecord, 0);
-                List<String> symptoms = Arrays.asList(nextRecord);
+                List<String> symptomsList = Arrays.asList(nextRecord);
+                List<Symptom> symptoms = symptomsList.stream().map(x -> new Symptom(x)).collect(Collectors.toList());
                 diseaseSymptomMatcher.put(disease, symptoms);
             }
             return diseaseSymptomMatcher;
@@ -91,8 +109,8 @@ public class DiseaseAndSymptomStorage {
      *
      * @return a set of diseases in the csv file storage.
      */
-    private static Set<String> returnSetOfDiseases() {
-        HashMap<String, List<String>> diseaseSymptomMatcher = DiseaseAndSymptomStorage.readDataFromCsvFile();
+    private static Set<Disease> returnSetOfDiseases() {
+        HashMap<Disease, List<Symptom>> diseaseSymptomMatcher = DiseaseAndSymptomStorage.readDataFromCsvFile();
         return diseaseSymptomMatcher.keySet();
     }
 
@@ -101,11 +119,11 @@ public class DiseaseAndSymptomStorage {
      *
      * @return a set of symptoms in the csv file storage.
      */
-    private static Set<String> returnSetOfSymptoms() {
-        HashMap<String, List<String>> diseaseSymptomMatcher = DiseaseAndSymptomStorage.readDataFromCsvFile();
-        Collection<List<String>> values = diseaseSymptomMatcher.values();
-        Set<String> symptoms = new HashSet<>();
-        for (List<String> symptomList : values) {
+    private static Set<Symptom> returnSetOfSymptoms() {
+        HashMap<Disease, List<Symptom>> diseaseSymptomMatcher = DiseaseAndSymptomStorage.readDataFromCsvFile();
+        Collection<List<Symptom>> values = diseaseSymptomMatcher.values();
+        Set<Symptom> symptoms = new HashSet<>();
+        for (List<Symptom> symptomList : values) {
             symptoms.addAll(symptomList);
         }
         return symptoms;

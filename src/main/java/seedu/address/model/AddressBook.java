@@ -16,18 +16,17 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     private final UniquePersonList persons;
 
-    /*
-     * The 'unusual' code block below is an non-static initialization block, sometimes used to avoid duplication
-     * between constructors. See https://docs.oracle.com/javase/tutorial/java/javaOO/initial.html
-     *
-     * Note that non-static init blocks are not recommended to use. There are other ways to avoid duplication
-     *   among constructors.
-     */
-    {
-        persons = new UniquePersonList();
-    }
+        /*
+        * The 'unusual' code block below is an non-static initialization block, sometimes used to avoid duplication
+        * between constructors. See https://docs.oracle.com/javase/tutorial/java/javaOO/initial.html
+        *
+        * Note that non-static init blocks are not recommended to use. There are other ways to avoid duplication
+        *   among constructors.
+        */ {
+        persons = new UniquePersonList(); }
 
-    public AddressBook() {}
+    public AddressBook() {
+    }
 
     /**
      * Creates an AddressBook using the Persons in the {@code toBeCopied}
@@ -89,7 +88,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     /**
      * Removes {@code key} from this {@code AddressBook}.
      * {@code key} must exist in the address book.
-     *
+     * <p>
      * Note: Person removal is done via soft-delete
      */
     public void removePerson(Person key) {
@@ -100,8 +99,10 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     @Override
     public String toString() {
-        return getPersonList().size() + " persons (" +
-                getAllPersonList() + " including deleted entries)";
+        return getPersonList().size()
+                + " persons ("
+                + getAllPersonList()
+                + " including deleted entries)";
     }
 
     @Override

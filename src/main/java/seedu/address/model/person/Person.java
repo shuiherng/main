@@ -18,7 +18,7 @@ import seedu.address.model.tag.Tag;
 public class Person {
 
     // Enumerated Variable to represent person attributes
-    private enum PersonProperty {NAME, PHONE, EMAIL, ADDRESS, TAGS}
+    private enum PersonProperty { NAME, PHONE, EMAIL, ADDRESS, TAGS }
     private final HashMap<PersonProperty, Object> attributes;
     private boolean exists;
 

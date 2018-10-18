@@ -21,6 +21,7 @@ public class AddressBookModelManager extends ComponentManager implements Address
     private static final Logger logger = LogsCenter.getLogger(AddressBookModelManager.class);
 
     private final AddressBook addressBook;
+
     private final FilteredList<Person> filteredPersons;
 
     /**
@@ -106,6 +107,7 @@ public class AddressBookModelManager extends ComponentManager implements Address
         requireNonNull(predicate);
         filteredPersons.setPredicate(predicate);
     }
+
 
     //=========== Undo/Redo =================================================================================
     /*
