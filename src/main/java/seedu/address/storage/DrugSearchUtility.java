@@ -1,8 +1,5 @@
 package seedu.address.storage;
 
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -12,6 +9,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 
 /**
  * For searching through "src/main/resources/storage/datasetForDrugs.csv"
@@ -20,9 +19,12 @@ import java.util.ArrayList;
  */
 
 public class DrugSearchUtility {
-    private static final String DATASET_PATH = "./src/main/resources/storage/datasetForDrugs.csv"; //filepath to drug dataset
+    //filepath to drug dataset
 
-    private static ArrayList<String[]> resultsCache = new ArrayList<>(); //cached results of most recent keyword search
+    private static final String DATASET_PATH = "./src/main/resources/storage/datasetForDrugs.csv";
+
+    //cached results of most recent keyword search
+    private static ArrayList<String[]> resultsCache = new ArrayList<>();
 
     /**
      * keywords too generic to search for, as they will match tens of drugs
@@ -53,7 +55,7 @@ public class DrugSearchUtility {
         for (String i: tooGeneric) {
             if (i.toLowerCase().contains(keyword.toLowerCase())) {
                 return "Your entered keyword " + keyword + " is too generic, and will lead to too many results."
-                + "Try a longer keyword, or a more specific one.";
+                        + "Try a longer keyword, or a more specific one.";
             }
         }
 
@@ -61,24 +63,24 @@ public class DrugSearchUtility {
             Reader reader = Files.newBufferedReader(Paths.get(DATASET_PATH));
             CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
 
-           String nextRecord[];
-           while ((nextRecord = csvReader.readNext()) != null) {
-               if(nextRecord[1].toLowerCase().contains(keyword.toLowerCase())) {
+            String nextRecord[];
+            while ((nextRecord = csvReader.readNext()) != null) {
+                if (nextRecord[1].toLowerCase().contains(keyword.toLowerCase())) {
                    resultsCache.add(nextRecord);
-               }
-           }
+                }
+            }
 
-           for (int i = 0; i < resultsCache.size(); i++) {
-               String[] currentRecord = resultsCache.get(i);
-               results = results.concat("\nName: " + currentRecord[1]);
-               results = results.concat("\nActive Ingredient(s): " +
-                       currentRecord[10].replace("&&",", "));
-               results = results.concat("\nClassification: " + currentRecord[4]);
-               results = results.concat("\n(for more information, enter \"moreinfo " + (i + 1) + "\"");
-               results = results.concat("\n\n");
-           }
+            for (int i = 0; i < resultsCache.size(); i++) {
+                String[] currentRecord = resultsCache.get(i);
+                results = results.concat("\nName: " + currentRecord[1]);
+                results = results.concat("\nActive Ingredient(s): "
+                       + currentRecord[10].replace("&&",", "));
+                results = results.concat("\nClassification: " + currentRecord[4]);
+                results = results.concat("\n(for more information, enter \"moreinfo " + (i + 1) + "\"");
+                results = results.concat("\n\n");
+            }
 
-           return results;
+            return results;
         }
 
         catch (Exception e) {
@@ -106,7 +108,7 @@ public class DrugSearchUtility {
         index--;
         String record[] = resultsCache.get(index);
         results = results.concat("\nName: " + record[1]);
-        results = results.concat("\nActive Ingredient(s): " + record[10].replace("&&",", "));
+        results = results.concat("\nActive Ingredient(s): " + record[10].replace("&&", ", "));
         results = results.concat("\nStrengths Available: " + record[11].replace("&&", ", "));
         results = results.concat("\nDosage Form: " + record[6]);
         results = results.concat("\nAdministration : " + record[7].replace("&&", ", "));

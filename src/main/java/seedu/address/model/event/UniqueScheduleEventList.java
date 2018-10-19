@@ -13,16 +13,17 @@ import seedu.address.model.event.exceptions.ScheduleEventNotFoundException;
 
 /**
  * A list of calendar events that enforces uniqueness between its elements and does not allow nulls.
- * A calendar is considered unique by comparing using {@code ScheduleEvent#isSameEvent(ScheduleEvent)}. As such, adding
- * and updating of calendar events uses ScheduleEvent#isSameEvent(ScheduleEvent) for equality so as to ensure that the
- * calendar event being added or updated is unique in terms of identity in the UniqueScheduleEventList. Removal of a calendar
- * event uses ScheduleEvent#equals(Object) to ensure that the correct event is removed.
+ * A calendar is considered unique by comparing using {@code ScheduleEvent#isSameEvent(ScheduleEvent)}.
+ * As such, adding and updating of calendar events uses ScheduleEvent#isSameEvent(ScheduleEvent)
+ * for equality so as to ensure that the calendar event being added or updated is unique in
+ * terms of identity in the UniqueScheduleEventList. Removal of a calendar event uses
+ * ScheduleEvent#equals(Object) to ensure that the correct event is removed.
  *
  * Supports a minimal set of list operations.
  *
  * Developer note: Since we're using an ID-based system to distinguish between calendar events, both
- * ScheduleEvent#isSameEvent(ScheduleEvent) and ScheduleEvent#equals(Object) match the events by ID. However, the
- * methods are left separate so future developers can utilize them.
+ * ScheduleEvent#isSameEvent(ScheduleEvent) and ScheduleEvent#equals(Object) match the events by ID.
+ * However, the methods are left separate so future developers can utilize them.
  *
  * @see ScheduleEvent#isSameEvent(ScheduleEvent)
  */

@@ -45,9 +45,9 @@ public class Person {
      * Every field must be present and not null.
      */
 
-    public Person(PersonId personID, Name name, Phone phone, Email email,
+    public Person(PersonId personId, Name name, Phone phone, Email email,
                   Address address, boolean exists, Set<Tag> tags) {
-        requireAllNonNull(personID, name, phone, email, address, tags);
+        requireAllNonNull(personId, name, phone, email, address, tags);
         this.id = new PersonId();
         this.exists = true;
         this.attributes = new HashMap<>();
@@ -65,7 +65,7 @@ public class Person {
     }
 
 
-    public PersonId getID() {
+    public PersonId getId() {
         return this.id;
     }
 
@@ -129,7 +129,7 @@ public class Person {
         }
 
         return otherPerson != null
-                && otherPerson.getID().equals(getID());
+                && otherPerson.getId().equals(getId());
     }
 
     /**
@@ -146,7 +146,7 @@ public class Person {
         }
 
         Person otherPerson = (Person) other;
-        return otherPerson.getID().equals(getID());
+        return otherPerson.getId().equals(getId());
         /*
                 && otherPerson.getName().equals(getName())
                 && otherPerson.getPhone().equals(getPhone())
@@ -168,7 +168,7 @@ public class Person {
         builder.append(getName())
                 .append(getExists() ? "[Exists]" : "[Deleted]")
                 .append("[PersonId: ")
-                .append(getID())
+                .append(getId())
                 .append("]")
                 .append(" Phone: ")
                 .append(getPhone())

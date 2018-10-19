@@ -68,7 +68,7 @@ public class XmlAdaptedPerson {
      * @param source future changes to this will not affect the created XmlAdaptedPerson
      */
     public XmlAdaptedPerson(Person source) {
-        personId = source.getID().toString();
+        personId = source.getId().toString();
         name = source.getName().fullName;
         phone = source.getPhone().value;
         email = source.getEmail().value;
@@ -82,7 +82,8 @@ public class XmlAdaptedPerson {
     /**
      * Converts this jaxb-friendly adapted person object into the addressBookModel's Person object.
      *
-     * @throws IllegalValueException if there were any data constraints violated in the adapted person
+     * @throws IllegalValueException if there were any data constraints violated in the
+     * adapted person.
      */
     public Person toModelType() throws IllegalValueException {
         final List<Tag> personTags = new ArrayList<>();
@@ -100,7 +101,8 @@ public class XmlAdaptedPerson {
         final PersonId modelPersonId = new PersonId(personId);
 
         if (name == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
+            throw new IllegalValueException(
+                    String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
         }
         if (!Name.isValidName(name)) {
             throw new IllegalValueException(Name.MESSAGE_NAME_CONSTRAINTS);
@@ -108,7 +110,8 @@ public class XmlAdaptedPerson {
         final Name modelName = new Name(name);
 
         if (phone == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Phone.class.getSimpleName()));
+            throw new IllegalValueException(
+                    String.format(MISSING_FIELD_MESSAGE_FORMAT, Phone.class.getSimpleName()));
         }
         if (!Phone.isValidPhone(phone)) {
             throw new IllegalValueException(Phone.MESSAGE_PHONE_CONSTRAINTS);
@@ -116,7 +119,8 @@ public class XmlAdaptedPerson {
         final Phone modelPhone = new Phone(phone);
 
         if (email == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Email.class.getSimpleName()));
+            throw new IllegalValueException(
+                    String.format(MISSING_FIELD_MESSAGE_FORMAT, Email.class.getSimpleName()));
         }
         if (!Email.isValidEmail(email)) {
             throw new IllegalValueException(Email.MESSAGE_EMAIL_CONSTRAINTS);
@@ -141,7 +145,8 @@ public class XmlAdaptedPerson {
         final boolean modelExists = exists.equals("true");
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelPersonId, modelName, modelPhone, modelEmail, modelAddress, modelExists, modelTags);
+        return new Person(modelPersonId, modelName, modelPhone,
+                modelEmail, modelAddress, modelExists, modelTags);
     }
 
     @Override

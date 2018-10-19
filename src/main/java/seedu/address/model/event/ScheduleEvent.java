@@ -45,19 +45,19 @@ public class ScheduleEvent {
     /**
      * Every field must be present and not null.
      */
-    public ScheduleEvent(Pair<Calendar, Calendar> date, PersonId personID, String details, Set<Tag> tags) {
-        this(new EventId(), date, personID, details, tags);
+    public ScheduleEvent(Pair<Calendar, Calendar> date, PersonId personId, String details, Set<Tag> tags) {
+        this(new EventId(), date, personId, details, tags);
     }
 
-    public ScheduleEvent(EventId eventID, Pair<Calendar, Calendar> date,
-                         PersonId personID, String details, Set<Tag> tags) {
-        requireAllNonNull(eventID, date, personID, details, tags);
-        this.id = eventID;
+    public ScheduleEvent(EventId eventId, Pair<Calendar, Calendar> date,
+                         PersonId personId, String details, Set<Tag> tags) {
+        requireAllNonNull(eventId, date, personId, details, tags);
+        this.id = eventId;
         this.attributes = new HashMap<>();
 
         Pair<Calendar, Calendar> scheduleEventDate = new Pair<>(date.getKey(), date.getValue());
         this.attributes.put(ScheduleEventProperty.DATETIME, scheduleEventDate);
-        this.attributes.put(ScheduleEventProperty.PERSONID, personID);
+        this.attributes.put(ScheduleEventProperty.PERSONID, personId);
         this.attributes.put(ScheduleEventProperty.DETAILS, details);
 
         Set<Tag> calendarEventTags = new HashSet<>(tags); // adds all tags into here

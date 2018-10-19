@@ -2,8 +2,11 @@ package seedu.address.ui;
 
 import com.google.common.eventbus.Subscribe;
 
+import java.util.logging.Logger;
+
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -14,8 +17,6 @@ import seedu.address.commons.events.ui.AppointmentPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.JumpToListRequestEvent;
 // import seedu.address.model.Schedule;
 import seedu.address.model.event.ScheduleEvent;
-
-import java.util.logging.Logger;
 
 /**
  * Panel containing the list of schedule events.
