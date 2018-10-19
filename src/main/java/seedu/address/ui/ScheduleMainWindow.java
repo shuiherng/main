@@ -1,12 +1,12 @@
 package seedu.address.ui;
 
 import com.google.common.eventbus.Subscribe;
-import javafx.event.ActionEvent;
+// import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextInputControl;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
+// import javafx.scene.control.TextInputControl;
+// import javafx.scene.input.KeyCombination;
+// import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.GuiSettings;
@@ -57,11 +57,11 @@ public class ScheduleMainWindow extends UiPart{
         return primaryStage;
     }
 
-    /**
+    /*
      * Sets the accelerator of a MenuItem.
      * @param keyCombination the KeyCombination value of the accelerator
-     */
- /*   private void setAccelerator(MenuItem menuItem, KeyCombination keyCombination) {
+
+   private void setAccelerator(MenuItem menuItem, KeyCombination keyCombination) {
         menuItem.setAccelerator(keyCombination);
 
         /*
@@ -125,7 +125,7 @@ public class ScheduleMainWindow extends UiPart{
     /**
      * Opens the help window or focuses on it if it's already opened.
      */
-    @javafx.fxml.FXML
+    @FXML
     public void handleHelp() {
         if (!helpWindow.isShowing()) {
             helpWindow.show();
