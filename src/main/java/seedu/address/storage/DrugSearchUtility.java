@@ -66,7 +66,7 @@ public class DrugSearchUtility {
             String[] nextRecord;
             while ((nextRecord = csvReader.readNext()) != null) {
                 if (nextRecord[1].toLowerCase().contains(keyword.toLowerCase())) {
-                   resultsCache.add(nextRecord);
+                    resultsCache.add(nextRecord);
                 }
             }
 
@@ -74,7 +74,7 @@ public class DrugSearchUtility {
                 String[] currentRecord = resultsCache.get(i);
                 results = results.concat("\nName: " + currentRecord[1]);
                 results = results.concat("\nActive Ingredient(s): "
-                       + currentRecord[10].replace("&&",", "));
+                       + currentRecord[10].replace("&&", ", "));
                 results = results.concat("\nClassification: " + currentRecord[4]);
                 results = results.concat("\n(for more information, enter \"moreinfo " + (i + 1) + "\"");
                 results = results.concat("\n\n");
@@ -106,7 +106,7 @@ public class DrugSearchUtility {
         }
 
         index--;
-        String record[] = resultsCache.get(index);
+        String[] record = resultsCache.get(index);
         results = results.concat("\nName: " + record[1]);
         results = results.concat("\nActive Ingredient(s): " + record[10].replace("&&", ", "));
         results = results.concat("\nStrengths Available: " + record[11].replace("&&", ", "));

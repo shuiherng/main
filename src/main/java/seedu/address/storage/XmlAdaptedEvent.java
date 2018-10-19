@@ -11,13 +11,14 @@ import java.util.stream.Collectors;
 
 import javafx.util.Pair;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.event.EventId;
 import seedu.address.model.event.ScheduleEvent;
 import seedu.address.model.person.PersonId;
 import seedu.address.model.tag.Tag;
 
-import javax.xml.bind.annotation.XmlElement;
 
 /**
  * JAXB-friendly version of the Event.
