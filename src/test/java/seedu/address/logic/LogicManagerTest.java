@@ -13,7 +13,11 @@ import seedu.address.logic.commands.HistoryCommand;
 import seedu.address.logic.commands.ListPersonCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.*;
+import seedu.address.model.AddressBookModel;
+import seedu.address.model.AddressBookModelManager;
+import seedu.address.model.ScheduleModel;
+import seedu.address.model.ScheduleModelManager;
+import seedu.address.model.UserPrefs;
 
 
 public class LogicManagerTest {
