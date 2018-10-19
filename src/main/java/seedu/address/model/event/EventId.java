@@ -21,7 +21,7 @@ public class EventId {
      * Constructs a {@code EventId}
      */
     public EventId() {
-        value = getNewID();
+        value = getNewId();
     }
 
     /**
@@ -37,13 +37,13 @@ public class EventId {
         }
     }
 
-    private static String getNewID() {
+    private static String getNewId() {
         String id = "e" + Integer.toString(idCounter);
         idCounter += 1;
         return id;
     }
 
-    public static boolean isValidID(String test) {
+    public static boolean isValidId(String test) {
         return test.matches(ID_VALIDATION_REGEX);
     }
 

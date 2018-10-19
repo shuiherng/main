@@ -30,9 +30,9 @@ public class DrugSearchUtility {
      * keywords too generic to search for, as they will match tens of drugs
      */
     private static String[] tooGeneric = {
-            "capsule", "cream", "emulsi", "gel", "hydrochloride",
-            "injection", "lotion", "ointment", "paste", "patch", "pill", "powder",
-            "solution", "supposit", "syrup", "tablet"
+        "capsule", "cream", "emulsi", "gel", "hydrochloride",
+        "injection", "lotion", "ointment", "paste", "patch", "pill", "powder",
+        "solution", "supposit", "syrup", "tablet"
     };
 
     /*
@@ -63,7 +63,7 @@ public class DrugSearchUtility {
             Reader reader = Files.newBufferedReader(Paths.get(DATASET_PATH));
             CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
 
-            String nextRecord[];
+            String[] nextRecord;
             while ((nextRecord = csvReader.readNext()) != null) {
                 if (nextRecord[1].toLowerCase().contains(keyword.toLowerCase())) {
                    resultsCache.add(nextRecord);

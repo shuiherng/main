@@ -11,13 +11,13 @@ import java.util.stream.Collectors;
 
 import javafx.util.Pair;
 
-import javax.xml.bind.annotation.XmlElement;
-
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.event.EventId;
 import seedu.address.model.event.ScheduleEvent;
 import seedu.address.model.person.PersonId;
 import seedu.address.model.tag.Tag;
+
+import javax.xml.bind.annotation.XmlElement;
 
 /**
  * JAXB-friendly version of the Event.
@@ -97,7 +97,7 @@ public class XmlAdaptedEvent {
             throw new IllegalValueException(
                     String.format(MISSING_FIELD_MESSAGE_FORMAT, EventId.class.getSimpleName()));
         }
-        if (!EventId.isValidID(eventId)) {
+        if (!EventId.isValidId(eventId)) {
             throw new IllegalValueException(EventId.MESSAGE_EVENTID_CONSTRAINTS);
         }
         final EventId modelEventId = new EventId(eventId);
