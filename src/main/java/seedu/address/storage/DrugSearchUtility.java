@@ -3,11 +3,13 @@ package seedu.address.storage;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringWriter;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ public class DrugSearchUtility {
     /*
      * For writing to error log.
      */
+
     private static FileWriter f = setF();
     private static PrintWriter errorLog = new PrintWriter(new BufferedWriter(f));
 
@@ -86,6 +89,7 @@ public class DrugSearchUtility {
             StringWriter s = new StringWriter();
             PrintWriter p = new PrintWriter(s);
             e.printStackTrace(p);
+
             errorLog.print("--------------------\n" + p.toString() + "\n--------------------\n");
 
             return "There was an error. Please try again with a different keyword.";
