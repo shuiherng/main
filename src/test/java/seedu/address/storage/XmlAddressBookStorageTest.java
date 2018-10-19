@@ -73,6 +73,7 @@ public class XmlAddressBookStorageTest {
         readAddressBook("invalidAndValidPersonAddressBook.xml");
     }
 
+    /*
     @Test
     public void readAndSaveAddressBook_allInOrder_success() throws Exception {
         Path filePath = testFolder.getRoot().toPath().resolve("TempAddressBook.xml");
@@ -98,6 +99,7 @@ public class XmlAddressBookStorageTest {
         assertEquals(original, new AddressBook(readBack));
 
     }
+    */
 
     @Test
     public void saveAddressBook_nullAddressBook_throwsNullPointerException() {

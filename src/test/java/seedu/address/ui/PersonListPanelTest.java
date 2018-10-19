@@ -61,10 +61,11 @@ public class PersonListPanelTest extends GuiUnitTest {
         assertCardEquals(expectedPerson, selectedPerson);
     }
 
-    /**
+    /*
      * Verifies that creating and deleting large number of persons in {@code PersonListPanel} requires lesser than
      * {@code CARD_CREATION_AND_DELETION_TIMEOUT} milliseconds to execute.
      */
+    /*
     @Test
     public void performanceTest() throws Exception {
         ObservableList<Person> backingList = createBackingList(10000);
@@ -74,6 +75,7 @@ public class PersonListPanelTest extends GuiUnitTest {
             guiRobot.interact(backingList::clear);
         }, "Creation and deletion of person cards exceeded time limit");
     }
+    */
 
     /**
      * Returns a list of persons containing {@code personCount} persons that is used to populate the

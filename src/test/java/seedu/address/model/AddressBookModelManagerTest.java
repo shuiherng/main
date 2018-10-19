@@ -45,6 +45,7 @@ public class AddressBookModelManagerTest {
         modelManager.getFilteredPersonList().remove(0);
     }
 
+    /*
     @Test
     public void equals() {
         AddressBook addressBook = new AddressBookBuilder().withPerson(ALICE).withPerson(BENSON).build();
@@ -81,4 +82,5 @@ public class AddressBookModelManagerTest {
         differentUserPrefs.setAddressBookFilePath(Paths.get("differentFilePath"));
         assertTrue(modelManager.equals(new AddressBookModelManager(addressBook, differentUserPrefs)));
     }
+    */
 }
