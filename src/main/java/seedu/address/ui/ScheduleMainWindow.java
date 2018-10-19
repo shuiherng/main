@@ -1,5 +1,7 @@
 package seedu.address.ui;
 
+import java.util.logging.Logger;
+
 import com.google.common.eventbus.Subscribe;
 
 // import javafx.event.ActionEvent;
@@ -10,8 +12,6 @@ import javafx.scene.control.MenuItem;
 // import javafx.scene.input.KeyCombination;
 // import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-
-import java.util.logging.Logger;
 
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.GuiSettings;

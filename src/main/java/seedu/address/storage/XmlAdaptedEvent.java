@@ -9,9 +9,9 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javafx.util.Pair;
-
 import javax.xml.bind.annotation.XmlElement;
+
+import javafx.util.Pair;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.event.EventId;
@@ -85,8 +85,8 @@ public class XmlAdaptedEvent {
     /**
      * Exports the data to an object acceptable by the application.
      * @return ScheduleEvent type object
-     * @throws IllegalValueException
-     * @throws ParseException
+     * @throws IllegalValueException illegal value
+     * @throws ParseException parse exception
      */
     public ScheduleEvent toModelType() throws IllegalValueException, ParseException {
         final List<Tag> eventTags = new ArrayList<>();
