@@ -75,7 +75,8 @@ public class CommandTestUtil {
      * - the {@code actualModel} matches {@code expectedModel} <br>
      * - the {@code actualCommandHistory} remains unchanged.
      */
-    public static void assertCommandSuccess(Command command, AddressBookModel actualModel, CommandHistory actualCommandHistory,
+    public static void assertCommandSuccess(Command command, AddressBookModel actualModel,
+                                            CommandHistory actualCommandHistory,
                                             String expectedMessage, AddressBookModel expectedModel) {
         CommandHistory expectedCommandHistory = new CommandHistory(actualCommandHistory);
         try {
