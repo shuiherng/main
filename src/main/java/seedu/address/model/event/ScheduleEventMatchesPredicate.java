@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 /**
  * Tests that a {@code ScheduleEvent}'s {@code Date} satisfies the constraints given.
  */
-public class ScheduleEventMatchesPredicate implements Predicate<ScheduleEvent>{
+public class ScheduleEventMatchesPredicate implements Predicate<ScheduleEvent> {
 
     private final String constraints;
 
@@ -13,7 +13,9 @@ public class ScheduleEventMatchesPredicate implements Predicate<ScheduleEvent>{
      * Change the argument to something which is used to match with this event.
      * It's currently set to String
      */
-    public ScheduleEventMatchesPredicate(String constraints) { this.constraints = constraints; }
+    public ScheduleEventMatchesPredicate(String constraints) {
+        this.constraints = constraints;
+    }
 
 
     /**

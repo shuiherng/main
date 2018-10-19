@@ -17,13 +17,18 @@ import seedu.address.model.tag.Tag;
  */
 public class Person {
 
-    // Enumerated Variable to represent person attributes
-    private enum PersonProperty {NAME, PHONE, EMAIL, ADDRESS, TAGS}
+    /**
+     * Enumerated Variable to represent person attributes
+     */
+    private enum PersonProperty {
+        NAME, PHONE, EMAIL, ADDRESS, TAGS
+    }
+
     private final HashMap<PersonProperty, Object> attributes;
     private boolean exists;
 
     // Identity fields
-    private final PersonID id;
+    private final PersonId id;
 
     /*
     private final Name name;
@@ -40,9 +45,10 @@ public class Person {
      * Every field must be present and not null.
      */
 
-    public Person(PersonID personID, Name name, Phone phone, Email email, Address address, boolean exists, Set<Tag> tags) {
+    public Person(PersonId personID, Name name, Phone phone, Email email,
+                  Address address, boolean exists, Set<Tag> tags) {
         requireAllNonNull(personID, name, phone, email, address, tags);
-        this.id = new PersonID();
+        this.id = new PersonId();
         this.exists = true;
         this.attributes = new HashMap<>();
         this.attributes.put(PersonProperty.NAME, name);
@@ -55,11 +61,11 @@ public class Person {
     }
 
     public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
-        this(new PersonID(), name, phone, email, address, true, tags);
+        this(new PersonId(), name, phone, email, address, true, tags);
     }
 
 
-    public PersonID getID() {
+    public PersonId getID() {
         return this.id;
     }
 
@@ -161,7 +167,7 @@ public class Person {
         final StringBuilder builder = new StringBuilder();
         builder.append(getName())
                 .append(getExists() ? "[Exists]" : "[Deleted]")
-                .append("[PersonID: ")
+                .append("[PersonId: ")
                 .append(getID())
                 .append("]")
                 .append(" Phone: ")

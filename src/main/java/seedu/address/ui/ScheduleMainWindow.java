@@ -1,6 +1,7 @@
 package seedu.address.ui;
 
 import com.google.common.eventbus.Subscribe;
+
 // import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
@@ -8,6 +9,7 @@ import javafx.scene.control.MenuItem;
 // import javafx.scene.input.KeyCombination;
 // import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
@@ -18,7 +20,10 @@ import seedu.address.model.UserPrefs;
 
 import java.util.logging.Logger;
 
-public class ScheduleMainWindow extends UiPart{
+/**
+ * Encapsulates schedule main window.
+ */
+public class ScheduleMainWindow extends UiPart {
     private static final String FXML = "ScheduleMainWindow.fxml";
     private static final String modeTitle = " : Schedule Mode";
 
@@ -64,7 +69,7 @@ public class ScheduleMainWindow extends UiPart{
    private void setAccelerator(MenuItem menuItem, KeyCombination keyCombination) {
         menuItem.setAccelerator(keyCombination);
 
-        /*
+
          * TODO: the code below can be removed once the bug reported here
          * https://bugs.openjdk.java.net/browse/JDK-8131666
          * is fixed in later version of SDK.
@@ -78,8 +83,8 @@ public class ScheduleMainWindow extends UiPart{
          * For now, we add following event filter to capture such key events and open
          * help window purposely so to support accelerators even when focus is
          * in CommandBox or ResultDisplay.
-         */
-       /* getRoot().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+
+        getRoot().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getTarget() instanceof TextInputControl && keyCombination.match(event)) {
                 menuItem.getOnAction().handle(new ActionEvent());
                 event.consume();

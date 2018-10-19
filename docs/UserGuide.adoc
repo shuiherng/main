@@ -161,7 +161,7 @@ Select patient corresponding to 'David Lee':
    1) [p301]    David Jonathan Lee
    2) [p1015]   David Lee Ze Gang
 
-   Select via list entry or personID:
+   Select via list entry or personId:
 ```
 2) Once `David Lee` is matched to a unique name in the patient list, the program will display output similar to the following:
 ```

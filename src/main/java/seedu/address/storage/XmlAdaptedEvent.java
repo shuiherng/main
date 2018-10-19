@@ -2,21 +2,22 @@ package seedu.address.storage;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import java.util.Calendar;
 import javafx.util.Pair;
-import javax.xml.bind.annotation.XmlElement;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.event.EventID;
-import seedu.address.model.person.PersonID;
+import seedu.address.model.event.EventId;
+import seedu.address.model.person.PersonId;
 import seedu.address.model.event.ScheduleEvent;
 import seedu.address.model.tag.Tag;
+
+import javax.xml.bind.annotation.XmlElement;
 
 /**
  * JAXB-friendly version of the Event.
@@ -26,7 +27,7 @@ public class XmlAdaptedEvent {
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Event's %s field is missing!";
 
     @XmlElement(required = true)
-    private String eventID;
+    private String eventId;
 
     @XmlElement(required = true)
     private String datetimeStart;
@@ -35,7 +36,7 @@ public class XmlAdaptedEvent {
     private String datetimeEnd;
 
     @XmlElement(required = true)
-    private String personID;
+    private String personId;
 
     @XmlElement(required = true)
     private String details;
@@ -52,11 +53,12 @@ public class XmlAdaptedEvent {
     /**
      * Construcst an {@code XmlAdaptedEvent} with the given event details.
      */
-    public XmlAdaptedEvent(String eventID, String datetimeStart, String datetimeEnd, String personID, String details, List<XmlAdaptedTag> tagged) {
-        this.eventID = eventID;
+    public XmlAdaptedEvent(String eventId, String datetimeStart, String datetimeEnd, String personId,
+                           String details, List<XmlAdaptedTag> tagged) {
+        this.eventId = eventId;
         this.datetimeStart = datetimeStart;
         this.datetimeEnd = datetimeEnd;
-        this.personID = personID;
+        this.personId = personId;
         this.details = details;
         if (tagged != null) {
             this.tagged = new ArrayList<>(tagged);
@@ -69,55 +71,63 @@ public class XmlAdaptedEvent {
      * @param source future changes to this will not affect the created XmlAdaptedEvent
      */
     public XmlAdaptedEvent(ScheduleEvent source) {
-        eventID = source.getID().toString();
-        datetimeStart = ScheduleEvent.sdf.format(source.getDate().getKey().getTime());
-        datetimeEnd = ScheduleEvent.sdf.format(source.getDate().getValue().getTime());
-        personID = source.getPersonID().toString();
+        eventId = source.getId().toString();
+        datetimeStart = ScheduleEvent.SDF.format(source.getDate().getKey().getTime());
+        datetimeEnd = ScheduleEvent.SDF.format(source.getDate().getValue().getTime());
+        personId = source.getPersonId().toString();
         details = source.getDetails();
         tagged = source.getTags().stream()
                 .map(XmlAdaptedTag::new)
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Exports the data to an object acceptable by the application.
+     * @return ScheduleEvent type object
+     * @throws IllegalValueException
+     * @throws ParseException
+     */
     public ScheduleEvent toModelType() throws IllegalValueException, ParseException {
         final List<Tag> eventTags = new ArrayList<>();
         for (XmlAdaptedTag tag : tagged) {
             eventTags.add(tag.toModelType());
         }
 
-        if (eventID == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, EventID.class.getSimpleName()));
+        if (eventId == null) {
+            throw new IllegalValueException(
+                    String.format(MISSING_FIELD_MESSAGE_FORMAT, EventId.class.getSimpleName()));
         }
-        if (!EventID.isValidID(eventID)) {
-            throw new IllegalValueException(EventID.MESSAGE_EVENTID_CONSTRAINTS);
+        if (!EventId.isValidID(eventId)) {
+            throw new IllegalValueException(EventId.MESSAGE_EVENTID_CONSTRAINTS);
         }
-        final EventID modelEventID = new EventID(eventID);
+        final EventId modelEventId = new EventId(eventId);
 
         if (datetimeStart == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, "Calendar Start"));
         }
-        if (ScheduleEvent.sdf.parse(datetimeStart) == null) {
+        if (ScheduleEvent.SDF.parse(datetimeStart) == null) {
             throw new IllegalValueException("Unable to parse datetime start");
         }
         if (datetimeEnd == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, "Calendar End"));
         }
-        if (ScheduleEvent.sdf.parse(datetimeEnd) == null) {
+        if (ScheduleEvent.SDF.parse(datetimeEnd) == null) {
             throw new IllegalValueException("Unable to parse datetime end");
         }
         Calendar startTime = Calendar.getInstance();
-        startTime.setTime(ScheduleEvent.sdf.parse(datetimeStart));
+        startTime.setTime(ScheduleEvent.SDF.parse(datetimeStart));
         Calendar endTime = Calendar.getInstance();
-        endTime.setTime(ScheduleEvent.sdf.parse(datetimeEnd));
+        endTime.setTime(ScheduleEvent.SDF.parse(datetimeEnd));
         final Pair<Calendar, Calendar> modelCalendarPair = new Pair<>(startTime, endTime);
 
-        if (personID == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, PersonID.class.getSimpleName()));
+        if (personId == null) {
+            throw new IllegalValueException(
+                    String.format(MISSING_FIELD_MESSAGE_FORMAT, PersonId.class.getSimpleName()));
         }
-        if (!PersonID.isValidID(personID)) {
-            throw new IllegalValueException(PersonID.MESSAGE_PERSONID_CONSTRAINTS);
+        if (!PersonId.isValidId(personId)) {
+            throw new IllegalValueException(PersonId.MESSAGE_PERSONID_CONSTRAINTS);
         }
-        final PersonID modelPersonID = new PersonID(personID);
+        final PersonId modelPersonId = new PersonId(personId);
 
         if (details == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, "Details"));
@@ -125,7 +135,7 @@ public class XmlAdaptedEvent {
         final String modelDetails = details;
 
         final Set<Tag> modelTags = new HashSet<>(eventTags);
-        return new ScheduleEvent(modelEventID, modelCalendarPair, modelPersonID, modelDetails, modelTags);
+        return new ScheduleEvent(modelEventId, modelCalendarPair, modelPersonId, modelDetails, modelTags);
     }
 
     @Override
@@ -139,10 +149,10 @@ public class XmlAdaptedEvent {
         }
 
         XmlAdaptedEvent otherEvent = (XmlAdaptedEvent) other;
-        return Objects.equals(eventID, otherEvent.eventID)
+        return Objects.equals(eventId, otherEvent.eventId)
                 && Objects.equals(datetimeStart, otherEvent.datetimeStart)
                 && Objects.equals(datetimeEnd, otherEvent.datetimeEnd)
-                && Objects.equals(personID, otherEvent.personID)
+                && Objects.equals(personId, otherEvent.personId)
                 && Objects.equals(details, otherEvent.details)
                 && tagged.equals(otherEvent.tagged);
     }
