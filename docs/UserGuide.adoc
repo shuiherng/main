@@ -18,7 +18,7 @@ By: `Team T12-2`      Since: `Jun 2016`      Licence: `MIT`
 
 == Introduction
 
-PatientBook is a desktop application for medical professionals to manage their patient information and appointment schedule. It is optimized for users who prefer working with a Command Line Interface (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, PatientBook will allow you to manage and access your patient information, as well as schedule their appointments more efficiently than using a traditional GUI-based application. Refer to Section 2, “Quick Start” to begin.
+PatientBook is a desktop application for medical professionals to manage their patient information as well as scheduling their appointments. More importantly, PatientBook is optimized for those who prefer to work with a Command Line Interface (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, PatientBook will allow the user to manage and access their patient information, as well as schedule their appointments more efficiently than using a traditional GUI-based application. Refer to Section 2, “Quick Start” to begin.
 
 == Quick Start
 
@@ -38,8 +38,8 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 * *`add patient`* : automatically switches to patient management mode and begins a dialog to create a new entry in the patient database
 * *`delete p301`* : deletes patient with ID '301'
 * *`delete a40`* : deletes appointment with ID '40'
-* *`delete appointment scheduled at 3pm next Tuesday`* : removes appointment scheduled for 3pm next Tuesday
-* *`schedule for Lee next week`* : schedules an appointment next week
+* *`delete appointment scheduled at 3pm next week`* : removes appointment scheduled for 3pm next week
+* *`make appointment at 3pm next week`* : schedules an appointment at 3pm next week
 * *`exit`* : exits the app
 
 .  Refer to <<Features>> for details of each command.
@@ -53,167 +53,114 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 .   Commands are, in general, case sensitive.
 .   Words in `UPPER_CASE` are parameters to be supplied by the user, eg. in `add patient n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
 .   Items in square brackets are optional. +
-    e.g. `make appointment [at 3pm] [next week]` may be entered as `make appointment`, and the program will prompt for the details as required.
-.   Parameters may be specified in any order, eg. `make appointment next week at 3pm` is also acceptable for the abovementioned command.
+    e.g. `make appointment [at 3pm] [next week]` will cause the program to prompt for further details.
+.   Parameters may be specified in any order, eg. `make appointment next week at 3pm` is also acceptable.
 ====
 
 [NOTE]
-In some places in this guide, you will find that two or more commands have been placed within curly brackets and separated by forward-slashes. This indicates that the commands are equivalent. For example, `{schedule/make} appointment` indicates that `schedule appointment` and `make appointment` are both equally valid.
+In some places in this guide, you will find that two or more commands have been placed within curly brackets and separated by forward-slashes. This indicates that the commands are equivalent. For example, `{schedule/make} appointment` indicates that `schedule appointment` and `make appointment` are both equally valid._
 
-=== View help : `help`
+=== Viewing help : `help`
 
 *Format:* `help`
 
-Opens this user guide to display information on how to use PatientBook.
+=== Switching to patient management mode : `mode {user/patient}`
 
-=== Switch to patient management mode : `mode patient`
+Switching the application to patient management mode. In this mode, you can view and manage your patient details and information. +
 
-*Format:* `mode {patient/user}`
+*Format:* `mode {user/patient}`
 
-Switches the application to patient management mode. In this mode, you can view and manage patients’ data.
+=== Listing all persons : `list`
 
-=== Switch to appointment management mode : `mode appointment`
+Showing a list of all persons in the address book. +
 
-*Format:* `mode {appointment/calendar}`
+*Format:* `list`
 
-Switches the application to appointment management mode. In this mode, you can view and manage your patient's appointments.
+=== Switching to appointment management mode : `mode {appointment/cal/calendar/appt}`
 
-=== List all patients : `list patients`
+Switching the application to appointment management mode. In this mode, you can view and manage your appointments scheduled. +
 
-*Format:* `list {patients/users}`
+*Format:* `mode {appointment/cal/calendar/appt}`
 
-Shows a list of all persons in the address book.
+=== Adding a patient : `add patient`
 
-=== List all appointments : `list appointments`
+Adding a new patient to the address book.
+Switching the application to patient management mode automatically.
 
-*Format:* `list {appointments/schedule} [all]`
-
-Shows a list of all future appointments scheduled. Using `all` will add past appointments in the list as well.
-
-=== Add a patient : `add patient`
-
-*Format:* `add {patient/user} [parameter/value]`
-
-Adds a new patient to the address book. If necessary, switches the application to patient management mode.
-
-You may add any number of parameter-value arguments to this command as long as the parameters are unique (with the exception of tag); the table below lists valid parameters for this command:
-
-.Valid parameters for a patient record
-[width="80%",cols="2, 10",options="header"]
-|=========================================================
-|Parameter | Description
-|`a/` | Address
-|`e/` | Email
-|`n/` | Name
-|`p/` | Phone number
-|`t/` | Tag
-|=========================================================
+*Format:* `add [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [b/BLOOD_TYPE] [t/TAG] …`
 
 [TIP]
-A person can have any number of tags, or none at all.
+A person can have any number of tags, including 0
 
-The program will require all fields (except `t/`, representing tags) to be filled in before a patient record can be created. Missing fields will be prompted for by the application automatically.
+Not all fields have to be filled in initially when executing the command. The program will automatically prompt for more information on the person where necessary. All fields but tags are mandatory to create a new patient record.
 
 Examples:
 
 * `add n/John Doe p/97019231 e/johnd@example.com a/51 John Street b/O-`
-* `add n/Betsy Crowe t/criminal e/betsycrowe@example.com a/Newgate Prison t/critical`
-** Program will prompt for this patient's phone number before a record is created
+* `add n/Betsy Crowe t/criminal e/betsycrowe@example.com a/Newgate Prison p/91501231 t/critical`
 
-=== Create an appointment : `schedule`
+=== Creating an appointment : `make appointment`
 
-*Format:* `schedule for [name] [natural expression for duration/date]`
+Creating a new appointment and places it in the calendar where appropriate.
+Switching the application to appointment management mode automatically. +
 
-Creates a new appointment and places it in the schedule. If necessary, switches the application to appointment management mode.
-
-[NOTE]
-This command does not require prefixing each field. If multiple users match the name provided, a prompt will be displayed to determine who the appointment is scheduled for. The program will also automatically prompt for refinement of input time where appropriate.
-
-Natural expressions which are accepted by the program include:
-
-* tomorrow/tmr
-* the day after tomorrow/tmr
-* in * day(s)
-* in * week(s)
-* in * month(s)
-* this/next week
-* this/next month
-* this/next Monday/Tuesday/Wednesday/Thursday/Friday/Saturday/Sunday
-* soon
-* recently
-* in a few days
-* DD/MM/YYYY
-[NOTE]
-Asterisk (*) denotes any positive integer number.
-[NOTE]
-Abbreviated forms for days of week are also accepted, eg. Mon
-
-Example interaction with user:
-
-Command entered: `schedule for David Lee next week`
-// we require explicit numbering because the numbering system stops searching for further indices past
-// a fenced code block.
-
-1) If there are multiple individuals named `David Lee` in the patient records, the program will request for a specific name in a form similar to the following:
-
-```
-Select patient corresponding to 'David Lee':
-   1) [p301]    David Jonathan Lee
-   2) [p1015]   David Lee Ze Gang
-
-   Select via list entry or personId:
-```
-2) Once `David Lee` is matched to a unique name in the patient list, the program will display output similar to the following:
-```
-From 22/10/2018 to 28/10/2018, you have empty time slots during:
-   1) 22/10/2018 MON: 9:00 to 18:00
-   2) 24/10/2018 WED: 10:00 to 11:00 and 13:00 to 15:00 and 17:00 to 18:00
-   3) 26/10/2018 FRI: 9:00 to 12:00 and 14:00 to 18:00
-
-   Enter selected time slot:
-```
-3) User further input: `22/10/2018 9:30 to 10:30`. Program parses the input, and creates an appointment with the following output displayed to the user:
-```
-Appointment created for [p301] David Jonathan Lee
-    Date:        22/10/2018
-    Start Time:  9:30 am
-    End Time:    10:30 am
-```
-
-=== Edit patient information : `edit patient`
-
-Edits an existing patient in the address book. Automatically switches to patient management mode if necessary.
-
-*Format:* `edit patient [name] [new parameters]`
-
-The application will look up patient which match `[name]`, and prompt the user to select the desired patient for modification if more than one is found. Valid parameters are given in the same format as `add patient`.
+*Format:* `{schedule/make} {appointment /appt} for {PATIENT ID/PATIENT NAME} [DATE AND TIME] [;] …`
 
 [NOTE]
-If tags (denoted by parameters beginning with `t/`) are given, all tags will be overwritten with the new tag(s) provided. To remove all tags, use `t/` without any tag name.
+Command parses natural expressions for `[DATE AND TIME]`. Anything after the optional semicolon is saved directly as details for the appointment and will be displayed when the appointment is selected in appointment management mode.
+
+Examples:
+
+* `make appt for p1205 at 4pm next Tuesday ; Routine Checkup`
+* `schedule appointment for John Doe on 14/8/2018 at 3pm`
+
+=== Listing all persons : `list patients`
+
+Switching to patient management mode automatically, and listing all patients in the patient record. +
+
+*Format:* `list patient/patients`
+
+=== Listing all appointments : `list appointments`
+
+Switching to appointment management mode automatically, and listing all appointments from now in the record. +
+
+*Format:* `list {appointments/appointment/appt/appts} [all]`
+
+[NOTE]
+Using `all` will also display all past appointments.
+
+=== Editing patient information : `change patient`
+
+Editing an existing patient in the address book. Automatically switching to patient management mode. Restoring the address book to the state before the previous _undoable_ command was executed. +
+
+*Format:* `{change/edit} patient {PATIENT_NAME/PATIENT_ID} [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG] [b/BLOOD TYPE]`
+
+****
+* Editing the person specified by `PATIENT_NAME` or `PATIENT_ID`. If the application has any uncertainties, e.g. patients having the same name, a prompt will appear to select the appropriate person.
+* At least one of the optional fields must be provided.
+* Input values will be used to update the existing values.
+* When editing tags, all tags for the person will be removed and replaced with tags supplied.
+* You can remove all the person’s tags by typing `t/` without specifying any tags after it.
+****
 
 Examples:
 
 * `edit John Doe p/5192310 e/johnd@example.com`
 * `change p5102 n/Betsy Crower t/`
 
-=== Edit an appointment : `edit appointment`
+=== Editing an appointment : `change appointment`
 
-*Format:* `edit appointment [appointment ID] [new appointment details]`
+Entering appointment management mode automatically, then editing an existing appointment in the calendar. +
 
-Edits an existing appointment in the calendar. Automatically switches to appointment management mode if necessary.
+*Format:* `{change/edit} {appointment/appt} {DATE AND TIME/APPOINTMENT_ID} NEW_DETAILS`
 
-The command accepts `[new appointment details]` as a natural expression denoting the new date and time for the appointment. Refer to `add appointment` for sample expressions.
+Editing the details for the appointment.
 
-Examples:
+=== Locating patients by name : `find patient`
 
-* `edit appointment a1031 next Tuesday at 3pm`
-* `edit appointment a41032 30/10/2019 4pm-5:30pm`
+Automatically enters patient management mode, then find persons whose names contain any of the given keywords. +
 
-=== Locate patients by name : `find patient`
-
-*Format:* `find patient [keywords]`
-
-Finds patients whose names contain any of the given `[keywords]`. Automatically switches to patient management mode if necessary.
+*Format:* `find {patient/person} [MORE_KEYWORDS]`
 
 ****
 * The search is case insensitive; e.g. 'hans' will match with 'Hans'.
@@ -228,19 +175,20 @@ Examples:
 * `find patient John` +
 Returns patient 'John'.
 
-* `find patient Betsy Tim John` +
+* `find person Betsy Tim John` +
 Returns any person whose name contain 'Betsy', 'Tim' or 'John'.
 
-=== Locate an appointment : `find appointment`
+=== Locating an appointment : `find appointment`
 
-*Format:* `find [all] appointments [Patient] [natural expression]`
+Entering appointment management mode automatically, then finding appointments a person or in a given date range.
 
-*Alternative Format:* `find [all] appointments [Patient] from [natural expression] to [natural expression]`
+*Format 1:* `find [all] {appointment/appointments/appt/appts} [for] {PATIENT_ID/PATIENT_NAME}`
 
-* The command only shows future appointments by default.
-* Using `[all]` will include all past appointments in the results.
-* The `[Patient]` parameter is optional, and will filter appointments scheduled for the given patient if it is present.
-* The natural expression follows the same form as that used in `add appointment`, except a date range is also supported to bound the search.
+The above format finds all appointments from now for patient specified by `PATIENT_ID/PATIENT_NAME` and displays them. Including `all` will display past appointments as well.
+
+*Format 2:* `find {appointment/appointments/appt/appts} from [DATE_AND_TIME] {to/till} [DATE_AND_TIME]`
+
+The above format locates all appointments in the given range of dates.
 
 Examples:
 
@@ -250,49 +198,48 @@ Returning all appointments for John Doe, including past appointments.
 * `find appointments from last Monday till now` +
 Returning all appointments from last Monday (defaults to 12am) to the time now.
 
-=== Delete a patient record : `delete patient`
+=== Deleting a patient record : `delete patient`
 
-*Format:* `delete patient [patient id]`
-
-Deletes a patient. Automatically switches to patient management mode if necessary.
-
-This command will *only* accept a patient ID to prevent accidental deletion.
-
-[NOTE]
-Due to the sensitive nature of medical information, patient records will only be marked as deleted, and displayed as such. They will never disappear completely. +
+Deleting a patient. Automatically entering patient management mode. Due to the nature of medical records, patient records will only be marked as deleted, and displayed as such. They will never disappear completely. +
 
 Deleted patients will not surface on search/list commands and cannot be interacted with in future commands.
 
+*Format:* `delete {patient/person} {PATIENT_ID/PATIENT_NAME}`
 
+=== Deleting an appointment : `delete appointment`
 
-=== Delete an appointment : `delete appointment`
+Deleting an appointment. Automatically entering appointment management mode.
 
-*Format:* `delete appointment [appointment id]`
+*Format:* `delete {appointment/appt} [APPOINTMENT_ID]`
 
-Deletes an appointment. Automatically switches to appointment management mode if necessary.
+The above format searches the appointment using `find appointment` in order to delete.
 
-This command will *only* accept a appointment IDs to prevent accidental deletion.
+_In a future update, it will be possible to delete appointments via date and time._
 
-=== List entered commands : `history`
+=== Listing entered commands : `history`
+
+Lists=ing all commands that you have entered in reverse chronological order.
 
 *Format:* `history`
-
-Lists all commands that you have entered in reverse chronological order.
 
 [TIP]
 Tip: Pressing up and down arrows will display the previous and next input respectively in the command box.
 
-=== Clear the Schedule : `clear schedule`
+=== Clearing the calendar : `clear calendar`
 
-*Format:* `clear {appointments/schedule}`
+Emptying out all appointments scheduled from the calendar.
 
-Empties out all appointments scheduled from the calendar.
+*Format:* `clear {calendar/cal/appointments/appts}`
 
-=== Exit the program : `exit`
+=== Exiting the program : `exit`
+
+Exiting the program.
 
 *Format:* `exit`
 
-Exits the program.
+=== Saving the data
+
+All patient and calendar data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
 == FAQ
 
@@ -303,21 +250,21 @@ Exits the program.
 
 * *View Help* : `help` +
 
-* *Switch To Patient Management Mode:* : `mode patient` +
+* *Switch To Patient Management Mode:* : `mode {user/patient}` +
 
-* *Switch To Appointment Management Mode* : `mode appointment` +
+* *Switch To Appointment Management Mode* : `mode {appointment/cal/calendar/appt}` +
 
 * *Add A Patient* : `add patient` +
 
-* *Create An Appointment* : `add appointment` +
+* *Create An Appointment* : `make appointment` +
 
 * *List All Patients* : `list patients` +
 
 * *List All Appointments* : `list appointments` +
 
-* *Edit Patient Information* : `edit patient` +
+* *Edit Patient Information* : `change patient` +
 
-* *Edit Appointment Information* : `edit appointment`
+* *Edit Appointment Information* : `change appointment`
 
 * *Locate Patients By Name* : `find patient`
 
@@ -329,7 +276,7 @@ Exits the program.
 
 * *View Command History* : `history`
 
-* *Clear The Schedule* : `clear schedule`
+* *Clear The Calendar* : `clear {cal/calendar/appointments/appts}`
 
 * *Exit The Program* : `exit`
 
