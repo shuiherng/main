@@ -45,7 +45,7 @@ public class XmlScheduleStorage implements ScheduleStorage {
                                                                             ParseException {
         requireNonNull(filePath);
 
-        if(!Files.exists(filePath)) {
+        if (!Files.exists(filePath)) {
             logger.info("Schedule file " + filePath + " not found");
             return Optional.empty();
         }
@@ -65,7 +65,7 @@ public class XmlScheduleStorage implements ScheduleStorage {
     }
 
     /**
-     * Similar to {@link #saveSchedule(ReadOnlySchedule}}
+     * saves schedule to file
      * @param filePath location of the data. Cannot be null
      */
     public void saveSchedule(ReadOnlySchedule schedule, Path filePath) throws IOException {

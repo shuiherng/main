@@ -6,14 +6,16 @@ import com.google.common.eventbus.Subscribe;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
+
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.AppointmentPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.JumpToListRequestEvent;
-import seedu.address.model.Schedule;
+// import seedu.address.model.Schedule;
 import seedu.address.model.event.ScheduleEvent;
 
 /**
@@ -24,7 +26,7 @@ public class AppointmentPanel extends UiPart<Region> {
     private final Logger logger = LogsCenter.getLogger(AppointmentPanel.class);
 
     @FXML
-    private ListView<ScheduleEvent> AppointmentView ;
+    private ListView<ScheduleEvent> appointmentView;
 
     public AppointmentPanel(ObservableList<ScheduleEvent> scheduleEventList) {
         super(FXML);
@@ -32,14 +34,21 @@ public class AppointmentPanel extends UiPart<Region> {
         registerAsAnEventHandler(this);
     }
 
+    /**
+     * Sets connections
+     * @param scheduleEventList schedule event list
+     */
     private void setConnections(ObservableList<ScheduleEvent> scheduleEventList) {
-        AppointmentView.setItems(scheduleEventList);
-        AppointmentView.setCellFactory(listView -> new AppointmentViewCell());
+        appointmentView.setItems(scheduleEventList);
+        appointmentView.setCellFactory(listView -> new AppointmentViewCell());
         setEventHandlerForSelectionChangeEvent();
     }
 
+    /**
+     * Event handler
+     */
     private void setEventHandlerForSelectionChangeEvent() {
-        AppointmentView.getSelectionModel().selectedItemProperty()
+        appointmentView.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
                     if (newValue != null) {
                         logger.fine("Selection in appointment panel changed to : '" + newValue + "'");
@@ -53,8 +62,8 @@ public class AppointmentPanel extends UiPart<Region> {
      */
     private void scrollTo(int index) {
         Platform.runLater(() -> {
-            AppointmentView.scrollTo(index);
-            AppointmentView.getSelectionModel().clearAndSelect(index);
+            appointmentView.scrollTo(index);
+            appointmentView.getSelectionModel().clearAndSelect(index);
         });
     }
 

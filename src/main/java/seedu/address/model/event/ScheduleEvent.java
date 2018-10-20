@@ -10,9 +10,10 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+
 import javafx.util.Pair;
 
-import seedu.address.model.person.PersonID;
+import seedu.address.model.person.PersonId;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -22,52 +23,64 @@ import seedu.address.model.tag.Tag;
 public class ScheduleEvent {
 
     // Standard datetime String format to be used by this application
-    public static final SimpleDateFormat sdf;
+    public static final SimpleDateFormat SDF;
 
     static {
-        sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+        SDF = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
     }
 
-    // Enumerated Variable to represent calendar event attributes
+    /**
+     * Enumerated Variable to represent calendar event attributes
+     */
     private enum ScheduleEventProperty {
-        DATETIME, PERSONID, DETAILS, TAGS}
+        DATETIME, PERSONID, DETAILS, TAGS
+    }
+
     private final HashMap<ScheduleEventProperty, Object> attributes;
 
 
     // Identity fields
-    private final EventID id;
+    private final EventId id;
 
     /**
      * Every field must be present and not null.
      */
-    public ScheduleEvent(Pair<Calendar, Calendar> date, PersonID personID, String details, Set<Tag> tags) {
-        this(new EventID(), date, personID, details, tags);
+    public ScheduleEvent(Pair<Calendar, Calendar> date, PersonId personId, String details, Set<Tag> tags) {
+        this(new EventId(), date, personId, details, tags);
     }
 
-    public ScheduleEvent(EventID eventID, Pair<Calendar, Calendar> date, PersonID personID, String details, Set<Tag> tags) {
-        requireAllNonNull(eventID, date, personID, details, tags);
-        this.id = eventID;
+    public ScheduleEvent(EventId eventId, Pair<Calendar, Calendar> date,
+                         PersonId personId, String details, Set<Tag> tags) {
+        requireAllNonNull(eventId, date, personId, details, tags);
+        this.id = eventId;
         this.attributes = new HashMap<>();
 
         Pair<Calendar, Calendar> scheduleEventDate = new Pair<>(date.getKey(), date.getValue());
         this.attributes.put(ScheduleEventProperty.DATETIME, scheduleEventDate);
-        this.attributes.put(ScheduleEventProperty.PERSONID, personID);
+        this.attributes.put(ScheduleEventProperty.PERSONID, personId);
         this.attributes.put(ScheduleEventProperty.DETAILS, details);
 
         Set<Tag> calendarEventTags = new HashSet<>(tags); // adds all tags into here
         this.attributes.put(ScheduleEventProperty.TAGS, calendarEventTags);
     }
 
-    public EventID getID() { return this.id; }
+
+    public EventId getId() {
+        return this.id;
+    }
 
     public Pair<Calendar, Calendar> getDate() {
         Pair<?, ?> returnedDate = (Pair<?, ?>) this.attributes.get(ScheduleEventProperty.DATETIME);
         return (new Pair<>((Calendar) returnedDate.getKey(), (Calendar) returnedDate.getValue()));
     }
 
-    public PersonID getPersonID() { return (PersonID) this.attributes.get(ScheduleEventProperty.PERSONID); }
+    public PersonId getPersonId() {
+        return (PersonId) this.attributes.get(ScheduleEventProperty.PERSONID);
+    }
 
-    public String getDetails() { return (String) this.attributes.get(ScheduleEventProperty.DETAILS); }
+    public String getDetails() {
+        return (String) this.attributes.get(ScheduleEventProperty.DETAILS);
+    }
 
     /**
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
@@ -87,7 +100,7 @@ public class ScheduleEvent {
         }
 
         return otherEvent != null
-                && otherEvent.getID().equals(getID());
+                && otherEvent.getId().equals(getId());
     }
 
     /**
@@ -104,7 +117,7 @@ public class ScheduleEvent {
         }
 
         ScheduleEvent otherEvent = (ScheduleEvent) other;
-        return otherEvent.getID().equals(getID());
+        return otherEvent.getId().equals(getId());
 
     }
 
@@ -117,12 +130,12 @@ public class ScheduleEvent {
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
-        builder.append("ScheduleEvent (Appointment) for PersonID: ")
-                .append(getID())
+        builder.append("ScheduleEvent (Appointment) for PersonId: ")
+                .append(getId())
                 .append(" for daterange ")
-                .append(sdf.format(getDate().getKey().getTime()))
+                .append(SDF.format(getDate().getKey().getTime()))
                 .append(" to ")
-                .append(sdf.format(getDate().getValue().getTime()))
+                .append(SDF.format(getDate().getValue().getTime()))
                 .append("\nDetails: ")
                 .append(getDetails())
                 .append("\nTags: ");

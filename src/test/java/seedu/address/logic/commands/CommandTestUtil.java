@@ -75,7 +75,8 @@ public class CommandTestUtil {
      * - the {@code actualModel} matches {@code expectedModel} <br>
      * - the {@code actualCommandHistory} remains unchanged.
      */
-    public static void assertCommandSuccess(Command command, AddressBookModel actualModel, CommandHistory actualCommandHistory,
+    public static void assertCommandSuccess(Command command, AddressBookModel actualModel,
+                                            CommandHistory actualCommandHistory,
                                             String expectedMessage, AddressBookModel expectedModel) {
         CommandHistory expectedCommandHistory = new CommandHistory(actualCommandHistory);
         try {
@@ -95,7 +96,8 @@ public class CommandTestUtil {
      * - the address book and the filtered person list in the {@code actualModel} remain unchanged <br>
      * - {@code actualCommandHistory} remains unchanged.
      */
-    public static void assertCommandFailure(Command command, AddressBookModel actualModel, CommandHistory actualCommandHistory,
+    public static void assertCommandFailure(Command command, AddressBookModel actualModel,
+                                            CommandHistory actualCommandHistory,
                                             String expectedMessage) {
         // we are unable to defensively copy the model for comparison later, so we can
         // only do so by copying its components.

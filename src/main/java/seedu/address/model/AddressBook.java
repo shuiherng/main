@@ -100,8 +100,8 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     @Override
     public String toString() {
-        return getPersonList().size() + " persons (" +
-                getAllPersonList() + " including deleted entries)";
+        return getPersonList().size() + " persons ("
+                + getAllPersonList() + " including deleted entries)";
     }
 
     @Override
