@@ -1,9 +1,12 @@
 package seedu.address.logic.parser;
 
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+
 import java.util.Calendar;
 import java.util.List;
 
 import javafx.util.Pair;
+import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.ScheduleModel;
 import seedu.address.model.event.ScheduleEvent;
 
@@ -26,7 +29,7 @@ public class DateTimeParser {
      * @param dateInput User's initial date input in natural expressions or in a fixed format (DD/MM/YYYY).
      * @return The time slot intended by the user, represented by a Pair of Calendar objects.
      */
-    public Pair<Calendar, Calendar> parseDateTime(String dateInput) {
+    public Pair<Calendar, Calendar> parseDateTime(String dateInput) throws ParseException {
         Pair<Calendar, Calendar> resultantDateInterval = parseDate(dateInput);
         Pair<Calendar, Calendar> resultantTimeSlot = parseTime(resultantDateInterval);
         return resultantTimeSlot;
@@ -37,7 +40,7 @@ public class DateTimeParser {
      * @param input Input string for date(s).
      * @return The date interval meant by the string input, represented as a Pair of Calendar objects.
      */
-    private Pair<Calendar, Calendar> parseDate(String input) {
+    private Pair<Calendar, Calendar> parseDate(String input) throws ParseException {
         Calendar currentTime = Calendar.getInstance();
         Pair<Calendar, Calendar> resultantDateInterval = getResultantDate(currentTime, input);
         return resultantDateInterval;
@@ -94,7 +97,7 @@ public class DateTimeParser {
      * @param dateInput Input string, possibly phrased in natural expressions.
      * @return Date range intended by the input string.
      */
-    private Pair<Calendar, Calendar> getResultantDate(Calendar currentTime, String dateInput) {
+    private Pair<Calendar, Calendar> getResultantDate(Calendar currentTime, String dateInput) throws ParseException {
 
         if (dateInput.startsWith("in")) {
             return parseIn(currentTime, dateInput);
@@ -112,10 +115,15 @@ public class DateTimeParser {
         case "soon":
             return getNearFutureDates(currentTime);
         default:
-            return getDateFromSpecified(dateInput); // user actually inputs the date (eg. 13/12/2018)
+            if (isValidDateFormat(dateInput)) {
+                return getDateFromSpecified(dateInput); // user actually inputs the date (eg. 13/12/2018)
+            } else {
+                return null; // invalid input
+            }
         }
 
     }
+
 
     /**
      * Parser "this ..." or "next ..." commands.
@@ -233,7 +241,8 @@ public class DateTimeParser {
     }
 
     /**
-     * Applies working hours on a given date.
+     * Applies working hours on two given dates.
+     * The start date will be set to 8:59 while the end date will be set to 18:01
      * @param start The start time.
      * @param end The end time.
      */
@@ -251,11 +260,16 @@ public class DateTimeParser {
      * @return The dates intended with working hours applied.
      */
     private Pair<Calendar, Calendar> getWeekDates(Calendar currentDate, int offset) {
-        // TO-DO
-        // get the next week start date and end date
-
-        return null;
-
+        Calendar weekOffset = (Calendar) currentDate.clone();
+        weekOffset.setFirstDayOfWeek(Calendar.MONDAY);
+        weekOffset.add(Calendar.WEEK_OF_YEAR, offset);
+        Calendar dateStart = (Calendar) weekOffset.clone();
+        Calendar dateEnd = (Calendar) weekOffset.clone();
+        dateStart.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        dateStart.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        setDateStartAndEnd(dateStart, dateEnd);
+        Pair<Calendar, Calendar> finalDate = new Pair<>(dateStart, dateEnd);
+        return finalDate;
     }
 
     /**
@@ -265,10 +279,15 @@ public class DateTimeParser {
      * @return The dates intended with working hours applied.
      */
     private Pair<Calendar, Calendar> getMonthDates(Calendar currentDate, int offset) {
-        // TO-DO
-        // get the next month start date and end date
-
-        return null;
+        Calendar dateStart = (Calendar) currentDate.clone();
+        dateStart.add(Calendar.MONTH, offset);
+        dateStart.set(Calendar.DAY_OF_MONTH, 1); // set to 1st day of the month
+        Calendar dateEnd = (Calendar) dateStart.clone();
+        dateEnd.add(Calendar.MONTH, 1); // add one extra month to the end date
+        dateEnd.add(Calendar.DAY_OF_MONTH, -1); // subtract one day to get the last day of the previous month
+        setDateStartAndEnd(dateStart, dateEnd);
+        Pair<Calendar, Calendar> finalDate = new Pair<>(dateStart, dateEnd);
+        return finalDate;
     }
 
     /**
@@ -299,6 +318,23 @@ public class DateTimeParser {
         return null;
     }
 
+    /**
+     *
+     * @param dateInput
+     * @return
+     * @throws ParseException
+     */
+    private boolean isValidDateFormat(String dateInput) throws ParseException {
+        String[] splitString = dateInput.split("/");
+        try {
+            int day = Integer.parseInt(splitString[0]);
+            int month = Integer.parseInt(splitString[1]);
+            int year = Integer.parseInt(splitString[2]);
+        } catch (NumberFormatException e) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT), e); // maybe print how to use also?
+        }
+        return false;
+    }
 }
 
 
