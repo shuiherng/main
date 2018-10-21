@@ -35,8 +35,8 @@ import seedu.address.TestApp;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.ClearCommand;
-import seedu.address.logic.commands.FindPersonCommand;
-import seedu.address.logic.commands.ListPersonCommand;
+import seedu.address.logic.commands.FindCommand;
+import seedu.address.logic.commands.ListCommand;
 import seedu.address.model.AddressBook;
 import seedu.address.model.AddressBookModel;
 import seedu.address.testutil.TypicalPersons;
@@ -141,7 +141,7 @@ public abstract class AddressBookSystemTest {
      * Displays all persons in the address book.
      */
     protected void showAllPersons() {
-        executeCommand(ListPersonCommand.COMMAND_WORD);
+        executeCommand(ListCommand.COMMAND_WORD);
         assertEquals(getModel().getAddressBook().getAllPersonList().size(), getModel().getFilteredPersonList().size());
     }
 
@@ -149,7 +149,7 @@ public abstract class AddressBookSystemTest {
      * Displays all persons with any parts of their names matching {@code keyword} (case-insensitive).
      */
     protected void showPersonsWithName(String keyword) {
-        executeCommand(FindPersonCommand.COMMAND_WORD + " " + keyword);
+        executeCommand(FindCommand.COMMAND_WORD + " " + keyword);
         assertTrue(getModel().getFilteredPersonList().size() < getModel().getAddressBook().getAllPersonList().size());
     }
 
