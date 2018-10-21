@@ -8,7 +8,13 @@ import seedu.address.model.event.ScheduleEvent;
  */
 public class ScheduleCommandParser {
 
-    public ScheduleEvent parse (String input, ScheduleModel model) {
+    private ScheduleModel model;
+
+    public ScheduleCommandParser(ScheduleModel model) {
+        this.model = model;
+    }
+
+    public ScheduleEvent parse(String input) {
         return null;
     }
 }
