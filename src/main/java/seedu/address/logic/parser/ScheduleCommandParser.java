@@ -10,7 +10,7 @@ public class ScheduleCommandParser {
 
     private ScheduleModel model;
 
-    public ScheduleCommandParser(ScheduleModel model) {
+    public ScheduleCommandParser (ScheduleModel model) {
         this.model = model;
     }
 

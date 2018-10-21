@@ -2,7 +2,12 @@ package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javafx.util.Pair;
@@ -18,6 +23,9 @@ import seedu.address.model.event.ScheduleEvent;
  */
 public class DateTimeParser {
 
+    private static final String MESSAGE_CORRECT_FORMAT = "Please enter date/duration in natural expressions or "
+            + "in DD/MM/YYYY format.\n"
+            + "Refer to User Guide for the complete list of accepted natural expressions.";
     private ScheduleModel scheduleModel;
 
     public DateTimeParser (ScheduleModel model) {
@@ -82,9 +90,17 @@ public class DateTimeParser {
             return scheduleEvent.getDate().getKey().after(resultantDateInterval.getKey())
                     && scheduleEvent.getDate().getValue().before(resultantDateInterval.getValue());
         });
-        // after and before here are strictly
-        // this probably means I need to set my date start time at 8:59 and end at 18:01
         List<ScheduleEvent> scheduledAppointments = scheduleModel.getFilteredEventList();
+        List<Pair<Calendar, Calendar>> emptySlots = new ArrayList<>();
+        ScheduleEvent firstSchedule = scheduledAppointments.get(0);
+
+        for (int i = 0; i < scheduledAppointments.size() - 1; i++) {
+            Calendar currentEnd = scheduledAppointments.get(i).getDate().getValue();
+            Calendar nextStart = scheduledAppointments.get(i + 1).getDate().getKey();
+            if (currentEnd.before(nextStart)) {
+                emptySlots.add(new Pair<>(currentEnd, nextStart));
+            }
+        }
         StringBuilder availableTime = new StringBuilder();
         // TO-DO
         // now need to find the complement of scheduledAppointments;
@@ -118,7 +134,7 @@ public class DateTimeParser {
             if (isValidDateFormat(dateInput)) {
                 return getDateFromSpecified(dateInput); // user actually inputs the date (eg. 13/12/2018)
             } else {
-                return null; // invalid input
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_CORRECT_FORMAT));
             }
         }
 
@@ -191,8 +207,7 @@ public class DateTimeParser {
         Calendar dateStart = (Calendar) date.clone();
         Calendar dateEnd = (Calendar) date.clone();
         setDateStartAndEnd(dateStart, dateEnd);
-        Pair<Calendar, Calendar> finalDate = new Pair<>(dateStart, dateEnd);
-        return finalDate;
+        return new Pair<>(dateStart, dateEnd);
     }
 
     /**
@@ -236,8 +251,7 @@ public class DateTimeParser {
         dateStart.add(Calendar.DATE, offset);
         dateEnd.add(Calendar.DATE, offset);
         setDateStartAndEnd(dateStart, dateEnd);
-        Pair<Calendar, Calendar> date = new Pair<>(dateStart, dateEnd);
-        return date;
+        return new Pair<>(dateStart, dateEnd);
     }
 
     /**
@@ -268,8 +282,7 @@ public class DateTimeParser {
         dateStart.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         dateStart.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
         setDateStartAndEnd(dateStart, dateEnd);
-        Pair<Calendar, Calendar> finalDate = new Pair<>(dateStart, dateEnd);
-        return finalDate;
+        return new Pair<>(dateStart, dateEnd);
     }
 
     /**
@@ -286,8 +299,7 @@ public class DateTimeParser {
         dateEnd.add(Calendar.MONTH, 1); // add one extra month to the end date
         dateEnd.add(Calendar.DAY_OF_MONTH, -1); // subtract one day to get the last day of the previous month
         setDateStartAndEnd(dateStart, dateEnd);
-        Pair<Calendar, Calendar> finalDate = new Pair<>(dateStart, dateEnd);
-        return finalDate;
+        return new Pair<>(dateStart, dateEnd);
     }
 
     /**
@@ -301,8 +313,7 @@ public class DateTimeParser {
         startDate.add(Calendar.DATE, 1);
         endDate.add(Calendar.DATE, 7);
         setDateStartAndEnd(startDate, endDate);
-        Pair<Calendar, Calendar> dateDuration = new Pair<>(startDate, endDate);
-        return dateDuration;
+        return new Pair<>(startDate, endDate);
     }
 
     /**
@@ -310,30 +321,56 @@ public class DateTimeParser {
      * @param dateTimeInput The specified date input in DD/MM/YYYY format
      * @return The date intended with working hours applied.
      */
-    private Pair<Calendar, Calendar> getDateFromSpecified(String dateTimeInput) {
-        // TO-DO
-        // check if it is really a valid specified date input
-        // if yes, create a Calendar object from the specified date input from user
-
-        return null;
+    private Pair<Calendar, Calendar> getDateFromSpecified(String dateTimeInput) throws ParseException {
+        try {
+            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            Date date = formatter.parse(dateTimeInput);
+            Calendar finalDate = new GregorianCalendar();
+            finalDate.setTime(date);
+            Calendar dateStart = (Calendar) finalDate.clone();
+            Calendar dateEnd = (Calendar) finalDate.clone();
+            setDateStartAndEnd(dateStart, dateEnd);
+            return new Pair<>(dateStart, dateEnd);
+        } catch (java.text.ParseException e) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_CORRECT_FORMAT));
+        }
     }
 
     /**
-     *
-     * @param dateInput
-     * @return
-     * @throws ParseException
+     * Checks if the input string has valid numbers for each field in DD/MM/YYYY format, where
+     * year must be a positive integer, month must range from 1 to 12, and day must be a positive integer not greater
+     * than the maximum number of days in that month.
+     * @param dateInput Input string.
      */
-    private boolean isValidDateFormat(String dateInput) throws ParseException {
+    private boolean isValidDateFormat(String dateInput) {
         String[] splitString = dateInput.split("/");
+        if (splitString.length != 3) {
+            return false;
+        }
         try {
             int day = Integer.parseInt(splitString[0]);
             int month = Integer.parseInt(splitString[1]);
             int year = Integer.parseInt(splitString[2]);
+            if (year < 0) {
+                return false;
+            }
+            if (month <= 0 || month > 12) {
+                return false;
+            }
+            if (day <= 0) {
+                return false;
+            }
+            Calendar testCalendar = Calendar.getInstance();
+            testCalendar.set(Calendar.YEAR, year);
+            testCalendar.set(Calendar.MONTH, month - 1); // MONTH is zero-based
+            int maxDays = testCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+            if (day > maxDays) {
+                return false;
+            }
+            return true;
         } catch (NumberFormatException e) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT), e); // maybe print how to use also?
+            return false;
         }
-        return false;
     }
 }
 
