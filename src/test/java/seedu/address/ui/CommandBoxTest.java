@@ -11,7 +11,7 @@ import guitests.guihandles.CommandBoxHandle;
 import javafx.scene.input.KeyCode;
 import seedu.address.logic.Logic;
 import seedu.address.logic.LogicManager;
-import seedu.address.logic.commands.ListPersonCommand;
+import seedu.address.logic.commands.ListCommand;
 import seedu.address.model.AddressBookModel;
 import seedu.address.model.AddressBookModelManager;
 import seedu.address.model.ScheduleModel;
@@ -19,7 +19,7 @@ import seedu.address.model.ScheduleModelManager;
 
 public class CommandBoxTest extends GuiUnitTest {
 
-    private static final String COMMAND_THAT_SUCCEEDS = ListPersonCommand.COMMAND_WORD;
+    private static final String COMMAND_THAT_SUCCEEDS = ListCommand.COMMAND_WORD;
     private static final String COMMAND_THAT_FAILS = "invalid command";
 
     private ArrayList<String> defaultStyleOfCommandBox;

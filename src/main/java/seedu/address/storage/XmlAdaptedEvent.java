@@ -52,7 +52,7 @@ public class XmlAdaptedEvent {
     public XmlAdaptedEvent() {}
 
     /**
-     * Construcst an {@code XmlAdaptedEvent} with the given event details.
+     * Constructs an {@code XmlAdaptedEvent} with the given event details.
      */
     public XmlAdaptedEvent(String eventId, String datetimeStart, String datetimeEnd, String personId,
                            String details, List<XmlAdaptedTag> tagged) {
