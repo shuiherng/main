@@ -99,15 +99,11 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     @Override
     public String toString() {
-<<<<<<< HEAD
+
         return getPersonList().size()
                 + " persons ("
                 + getAllPersonList()
                 + " including deleted entries)";
-=======
-        return getPersonList().size() + " persons ("
-                + getAllPersonList() + " including deleted entries)";
->>>>>>> 22874bd6617fd051bc0d7c68ec610e2e8ad65524
     }
 
     @Override
