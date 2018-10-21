@@ -5,12 +5,7 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 
 public class Symptom {
 
-    public static final String MESSAGE_SYMPTOM_CONSTRAINTS =
-            "symptoms can take any values, and it should not be blank";
-
-    public static final String SYMPTOM_VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum} ]*";
-
-    public final String value;
+    private final String value;
 
     /**
      * Constructs an {@code Symptom}.
@@ -19,15 +14,7 @@ public class Symptom {
      */
     public Symptom(String symptom) {
         requireNonNull(symptom);
-        checkArgument(isValidSymptom(symptom), MESSAGE_SYMPTOM_CONSTRAINTS);
         value = symptom;
-    }
-
-    /**
-     * Returns true if a given string is a valid symptom.
-     */
-    public static boolean isValidSymptom(String test) {
-        return test.matches(SYMPTOM_VALIDATION_REGEX);
     }
 
     @Override
