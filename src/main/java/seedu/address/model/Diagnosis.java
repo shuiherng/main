@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.io.File;
 import java.io.FileReader;
@@ -40,7 +41,7 @@ public class Diagnosis {
      * @param disease disease for checking.
      * @return a boolean value for the check.
      */
-    private boolean hasDisease(Disease disease) {
+    public boolean hasDisease(Disease disease) {
         requireNonNull(disease);
         Set<Disease> diseases = this.matcher.keySet();
         return diseases.contains(disease);
@@ -69,7 +70,7 @@ public class Diagnosis {
      */
     public void addMatcher(Disease disease, Set<Symptom> symptoms) {
         requireNonNull(disease);
-        requireNonNull(symptoms);
+        requireAllNonNull(symptoms);
         boolean hasDisease = this.hasDisease(disease);
         if (hasDisease) {
             //todo: prompt user.
@@ -84,6 +85,7 @@ public class Diagnosis {
      * @return a set of qualified diseases.
      */
     public Set<Disease> predictDisease(Set<Symptom> symptoms) {
+        requireAllNonNull(symptoms);
         return null;
     }
 
