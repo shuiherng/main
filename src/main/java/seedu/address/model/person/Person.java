@@ -41,7 +41,6 @@ public class Person {
     */
 
     /**
-     *
      * Every field must be present and not null.
      */
 
@@ -69,7 +68,9 @@ public class Person {
         return this.id;
     }
 
-    public boolean getExists() { return this.exists; }
+    public boolean getExists() {
+        return this.exists;
+    }
 
     public Name getName() {
         return (Name) this.attributes.get(PersonProperty.NAME);
@@ -98,7 +99,7 @@ public class Person {
 
     /**
      * Performs soft-remove by marking the person as non-existent
-     *
+     * <p>
      * Developer note: when writing unit tests, remember to do {@code undelete()} after performing this operation.
      */
     public void delete() {
@@ -110,7 +111,7 @@ public class Person {
 
     /**
      * Sets this person as exists.
-     *
+     * <p>
      * Developer note: when writing unit tests, remember to {@code delete} after performing this operation.
      */
     public void undelete() {
