@@ -1,8 +1,10 @@
 package seedu.address.model.symptom;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.commons.util.AppUtil.checkArgument;
 
+/**
+ * Represents symptom.
+ */
 public class Symptom {
 
     private final String value;
