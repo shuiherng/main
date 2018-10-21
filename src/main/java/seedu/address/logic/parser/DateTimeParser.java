@@ -29,6 +29,8 @@ public class DateTimeParser {
     private static final String MESSAGE_CORRECT_FORMAT = "Please enter date/duration in natural expressions or "
             + "in DD/MM/YYYY format.\n"
             + "Refer to User Guide for the complete list of accepted natural expressions.\n";
+    private static final String MESSAGE_NO_SLOTS = "No time slots available!\n";
+    private static final String MESSAGE_HAVE_SLOTS = "You have time slots availalble during:\n";
     private ScheduleModel scheduleModel;
 
     public DateTimeParser (ScheduleModel model) {
@@ -55,6 +57,8 @@ public class DateTimeParser {
      */
     private Pair<Calendar, Calendar> parseDate(String input) throws ParseException {
         Calendar currentTime = Calendar.getInstance();
+        currentTime.set(Calendar.SECOND, 0);
+        currentTime.set(Calendar.MILLISECOND, 0);
         Pair<Calendar, Calendar> resultantDateInterval = getResultantDate(currentTime, input);
         return resultantDateInterval;
 
@@ -328,15 +332,19 @@ public class DateTimeParser {
 
     /**
      * Applies working hours on two given dates.
-     * The start date will be set to 8:59 while the end date will be set to 18:01
+     * The start date will be set to 9:00 while the end date will be set to 18:00
      * @param start The start time.
      * @param end The end time.
      */
     private void setDateStartAndEnd(Calendar start, Calendar end) {
-        start.set(Calendar.HOUR, 8);
-        start.set(Calendar.MINUTE, 59);
+        start.set(Calendar.HOUR, 9);
+        start.set(Calendar.MINUTE, 0);
+        start.set(Calendar.SECOND, 0);
+        start.set(Calendar.MILLISECOND, 0);
         end.set(Calendar.HOUR, 18);
-        end.set(Calendar.MINUTE, 1);
+        end.set(Calendar.MINUTE, 0);
+        end.set(Calendar.SECOND, 0);
+        end.set(Calendar.MILLISECOND, 0);
     }
 
     /**
@@ -365,28 +373,46 @@ public class DateTimeParser {
         });
         List<ScheduleEvent> scheduledAppointments = scheduleModel.getFilteredEventList();
         List<Pair<Calendar, Calendar>> emptySlots = new ArrayList<>();
+        // what about completely empty days?
         Calendar firstScheduleStart = scheduledAppointments.get(0).getDate().getKey();
-        Calendar dayStartOfficially = (Calendar) resultantDateInterval.getKey().clone(); // day starts at 8:59
-        dayStartOfficially.add(Calendar.MINUTE, 1); // now day starts at 9:00
-        if (firstScheduleStart.after(dayStartOfficially)) {
-            emptySlots.add(new Pair<>(dayStartOfficially, firstScheduleStart));
+        Calendar firstDayStart = (Calendar) firstScheduleStart.clone();
+        firstDayStart.set(Calendar.HOUR, 9);
+        firstDayStart.set(Calendar.MINUTE, 0);
+        if (firstScheduleStart.after(firstDayStart)) {
+            emptySlots.add(new Pair<>(firstDayStart, firstScheduleStart));
         }
-        // wrap around across day!
         for (int i = 0; i < scheduledAppointments.size() - 1; i++) {
             Calendar currentEnd = scheduledAppointments.get(i).getDate().getValue();
             Calendar nextStart = scheduledAppointments.get(i + 1).getDate().getKey();
-            if (currentEnd.before(nextStart)) {
+            if (nextStart.get(Calendar.DATE) != currentEnd.get(Calendar.DATE)) {
+                // the next appointment is on a different date already
+                // the remaining (if applicable) current day will be free all the way till day end
+                Calendar dayEnd = (Calendar) currentEnd.clone();
+                dayEnd.set(Calendar.HOUR, 18);
+                dayEnd.set(Calendar.MINUTE, 0);
+                if (currentEnd.before(dayEnd)) {
+                    emptySlots.add(new Pair<>(currentEnd, dayEnd));
+                }
+                // also, on the day where the next appointment is,
+                // the time preceding (if applicable) the start of the next appointment will be free
+                Calendar dayStart = (Calendar) nextStart.clone();
+                dayStart.set(Calendar.HOUR, 9);
+                dayStart.set(Calendar.MINUTE, 0);
+                if (nextStart.after(dayStart)) {
+                    emptySlots.add(new Pair<>(dayStart, nextStart));
+                }
+            } else if (currentEnd.before(nextStart)) {
                 emptySlots.add(new Pair<>(currentEnd, nextStart));
             }
         }
         Calendar lastScheduleEnd = scheduledAppointments.get(scheduledAppointments.size() - 1).getDate().getValue();
-        Calendar dayEndOfficially = (Calendar) resultantDateInterval.getValue().clone(); // day ends at 18:01
-        dayEndOfficially.add(Calendar.MINUTE, -1); // now day ends at 18:00
-        if (lastScheduleEnd.before(dayEndOfficially)) {
-            emptySlots.add(new Pair<>(lastScheduleEnd, dayEndOfficially));
+        Calendar lastDayEnd = (Calendar) lastScheduleEnd.clone();
+        lastDayEnd.set(Calendar.HOUR, 18);
+        lastDayEnd.set(Calendar.MINUTE, 0);
+        if (lastScheduleEnd.before(lastDayEnd)) {
+            emptySlots.add(new Pair<>(lastScheduleEnd, lastDayEnd));
         }
         return emptySlots;
-
     }
 
     /**
@@ -395,8 +421,11 @@ public class DateTimeParser {
      * @return String representation of the given list of slots.
      */
     private String slotsListToString(List<Pair<Calendar, Calendar>> slots) {
-
+        if (slots.isEmpty()) {
+            return MESSAGE_NO_SLOTS;
+        }
         StringBuilder availableTimeBuilder = new StringBuilder();
+        availableTimeBuilder.append(MESSAGE_HAVE_SLOTS);
         DateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
         DateFormat timeFormatter = new SimpleDateFormat("kk:mm");
         int datePointer = -1; // initialize to -1 such that the if block will always be executed in the first iteration
@@ -407,14 +436,14 @@ public class DateTimeParser {
                 // a new date
                 Date formattableDate = slots.get(j).getKey().getTime();
                 String formattedDate = dateFormatter.format(formattableDate);
-                availableTimeBuilder.append(formattedDate + ": \n");
+                availableTimeBuilder.append("\n" + formattedDate + ": \n");
                 datePointer = slotStart.get(Calendar.DATE);
             }
             Date formattableStartTime = slotStart.getTime();
             Date formattableEndTime = slotsEnd.getTime();
             String start = timeFormatter.format(formattableStartTime);
             String end = timeFormatter.format(formattableEndTime);
-            availableTimeBuilder.append(start + " to " + end + "\n");
+            availableTimeBuilder.append(start + " - " + end + "\n");
         }
         return availableTimeBuilder.toString();
     }
