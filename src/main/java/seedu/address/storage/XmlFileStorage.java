@@ -36,6 +36,12 @@ public class XmlFileStorage {
         }
     }
 
+    /**
+     * saves schedule to file given by pat
+     * @param file file path
+     * @param schedule schedule to be saved
+     * @throws FileNotFoundException
+     */
     public static void saveScheduleToFile(Path file, XmlSerializableSchedule schedule)
             throws FileNotFoundException {
         try {

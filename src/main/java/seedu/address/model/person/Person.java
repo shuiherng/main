@@ -17,13 +17,23 @@ import seedu.address.model.tag.Tag;
  */
 public class Person {
 
+<<<<<<< HEAD
     // Enumerated Variable to represent person attributes
     private enum PersonProperty { NAME, PHONE, EMAIL, ADDRESS, TAGS }
+=======
+    /**
+     * Enumerated Variable to represent person attributes
+     */
+    private enum PersonProperty {
+        NAME, PHONE, EMAIL, ADDRESS, TAGS
+    }
+
+>>>>>>> 22874bd6617fd051bc0d7c68ec610e2e8ad65524
     private final HashMap<PersonProperty, Object> attributes;
     private boolean exists;
 
     // Identity fields
-    private final PersonID id;
+    private final PersonId id;
 
     /*
     private final Name name;
@@ -40,9 +50,10 @@ public class Person {
      * Every field must be present and not null.
      */
 
-    public Person(PersonID personID, Name name, Phone phone, Email email, Address address, boolean exists, Set<Tag> tags) {
-        requireAllNonNull(personID, name, phone, email, address, tags);
-        this.id = new PersonID();
+    public Person(PersonId personId, Name name, Phone phone, Email email,
+                  Address address, boolean exists, Set<Tag> tags) {
+        requireAllNonNull(personId, name, phone, email, address, tags);
+        this.id = new PersonId();
         this.exists = true;
         this.attributes = new HashMap<>();
         this.attributes.put(PersonProperty.NAME, name);
@@ -55,11 +66,11 @@ public class Person {
     }
 
     public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
-        this(new PersonID(), name, phone, email, address, true, tags);
+        this(new PersonId(), name, phone, email, address, true, tags);
     }
 
 
-    public PersonID getID() {
+    public PersonId getId() {
         return this.id;
     }
 
@@ -123,7 +134,7 @@ public class Person {
         }
 
         return otherPerson != null
-                && otherPerson.getID().equals(getID());
+                && otherPerson.getId().equals(getId());
     }
 
     /**
@@ -140,7 +151,7 @@ public class Person {
         }
 
         Person otherPerson = (Person) other;
-        return otherPerson.getID().equals(getID());
+        return otherPerson.getId().equals(getId());
         /*
                 && otherPerson.getName().equals(getName())
                 && otherPerson.getPhone().equals(getPhone())
@@ -161,8 +172,8 @@ public class Person {
         final StringBuilder builder = new StringBuilder();
         builder.append(getName())
                 .append(getExists() ? "[Exists]" : "[Deleted]")
-                .append("[PersonID: ")
-                .append(getID())
+                .append("[PersonId: ")
+                .append(getId())
                 .append("]")
                 .append(" Phone: ")
                 .append(getPhone())

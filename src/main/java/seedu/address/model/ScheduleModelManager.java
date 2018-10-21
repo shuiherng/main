@@ -14,6 +14,9 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.ScheduleChangedEvent;
 import seedu.address.model.event.ScheduleEvent;
 
+/**
+ * Actual schedule model manager for handling schedule in the application.
+ */
 public class ScheduleModelManager extends ComponentManager implements ScheduleModel {
     private static final Logger logger = LogsCenter.getLogger(ScheduleModelManager.class);
 
@@ -33,7 +36,9 @@ public class ScheduleModelManager extends ComponentManager implements ScheduleMo
         this.filteredScheduleEventList = new FilteredList<>(schedule.getAllEventList());
     }
 
-    public ScheduleModelManager() { this(new Schedule(), new UserPrefs()); }
+    public ScheduleModelManager() {
+        this(new Schedule(), new UserPrefs());
+    }
 
     /**
      * Overwrites existing schedule with the new one.
@@ -46,7 +51,9 @@ public class ScheduleModelManager extends ComponentManager implements ScheduleMo
     }
 
     @Override
-    public ReadOnlySchedule getSchedule() { return schedule; }
+    public ReadOnlySchedule getSchedule() {
+        return schedule;
+    }
 
     /** Raises an event to indicate the calendarModel has changed. */
     private void indicateScheduleChanged() {

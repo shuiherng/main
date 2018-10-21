@@ -109,7 +109,11 @@ public class AddressBookTest {
         @Override
         public ObservableList<Person> getPersonList() {
             ObservableList<Person> visiblePersons = FXCollections.observableArrayList();
-            persons.forEach((person) -> { if (person.getExists()) { visiblePersons.add(person); }});
+            persons.forEach((person) -> {
+                if (person.getExists()) {
+                    visiblePersons.add(person);
+                }
+            });
             return visiblePersons;
         }
     }

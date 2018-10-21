@@ -31,8 +31,13 @@ public class FindPersonCommand extends Command {
         requireNonNull(addressBookModel);
         addressBookModel.updateFilteredPersonList(predicate);
         return new CommandResult(
+<<<<<<< HEAD
                 String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, addressBookModel.getFilteredPersonList()
                         .size()));
+=======
+                String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW,
+                        addressBookModel.getFilteredPersonList().size()));
+>>>>>>> 22874bd6617fd051bc0d7c68ec610e2e8ad65524
     }
 
     @Override

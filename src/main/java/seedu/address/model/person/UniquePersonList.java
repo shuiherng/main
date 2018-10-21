@@ -21,7 +21,7 @@ import seedu.address.model.person.exceptions.PersonNotFoundException;
  * Supports a minimal set of list operations.
  *
  * Developer note: We have modified addressbook-level4 to use an ID-based system to distinguish between persons, so
- * both Person#isSamePerson(Person) and Person#equals(Object) match by PersonID. However, the methods are left separate
+ * both Person#isSamePerson(Person) and Person#equals(Object) match by PersonId. However, the methods are left separate
  * in case future developers wish to separate them again. Remember to update the behaviour for unit tests if this is
  * the case.
  * Important: Soft-delete is used to remove person object, but the entire list, including deleted persons are returned
@@ -129,7 +129,11 @@ public class UniquePersonList implements Iterable<Person> {
      */
     public ObservableList<Person> undeletedAsUnmodifiableObservableList() {
         ObservableList<Person> visiblePersons = FXCollections.observableArrayList();
-        internalList.forEach((person) -> { if (person.getExists()) { visiblePersons.add(person); }});
+        internalList.forEach((person) -> {
+            if (person.getExists()) {
+                visiblePersons.add(person);
+            }
+        });
         return FXCollections.unmodifiableObservableList(visiblePersons);
     }
 

@@ -33,7 +33,7 @@ public class AppointmentCard extends UiPart<Region> {
     @FXML
     private Label datetime;
     @FXML
-    private Label personID;
+    private Label personId;
     @FXML
     private Label details;
     @FXML
@@ -43,9 +43,9 @@ public class AppointmentCard extends UiPart<Region> {
         super(FXML);
         this.event = event;
         id.setText(displayedIndex + ". ");
-        name.setText(null);//TODO
+        name.setText(null); //TODO
         datetime.setText(event.getDate().toString());
-        personID.setText(event.getID().value);
+        personId.setText(event.getId().value);
         details.setText(event.getDetails());
         event.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }

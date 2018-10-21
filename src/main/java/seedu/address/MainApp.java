@@ -21,10 +21,24 @@ import seedu.address.commons.util.ConfigUtil;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.Logic;
 import seedu.address.logic.LogicManager;
-import seedu.address.model.*;
+import seedu.address.model.AddressBook;
+import seedu.address.model.AddressBookModel;
 import seedu.address.model.AddressBookModelManager;
+import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.ReadOnlySchedule;
+import seedu.address.model.Schedule;
+import seedu.address.model.ScheduleModel;
+import seedu.address.model.ScheduleModelManager;
+import seedu.address.model.UserPrefs;
 import seedu.address.model.util.SampleDataUtil;
-import seedu.address.storage.*;
+import seedu.address.storage.AddressBookStorage;
+import seedu.address.storage.JsonUserPrefsStorage;
+import seedu.address.storage.ScheduleStorage;
+import seedu.address.storage.Storage;
+import seedu.address.storage.StorageManager;
+import seedu.address.storage.UserPrefsStorage;
+import seedu.address.storage.XmlAddressBookStorage;
+import seedu.address.storage.XmlScheduleStorage;
 import seedu.address.ui.Ui;
 import seedu.address.ui.UiManager;
 
@@ -76,7 +90,7 @@ public class MainApp extends Application {
      * The data fromthe sample schedule will be used instead if {@code storage}'s schedule is not found,
      * or an empty schedule will be used instead if errors occur when reading {@code storage}'s schedule.
      */
-    private ScheduleModel initScheduleModel(Storage storage, UserPrefs userPrefs){
+    private ScheduleModel initScheduleModel(Storage storage, UserPrefs userPrefs) {
         Optional<ReadOnlySchedule> scheduleOptional;
         ReadOnlySchedule initialData;
 
@@ -101,7 +115,8 @@ public class MainApp extends Application {
     }
 
     /**
-     * Returns a {@code AddressBookModelManager} with the data from {@code storage}'s address book and {@code userPrefs}. <br>
+     * Returns a {@code AddressBookModelManager} with the data from {@code storage}'s address book and {@code userPrefs}
+     * . <br>
      * The data from the sample address book will be used instead if {@code storage}'s address book is not found,
      * or an empty address book will be used instead if errors occur when reading {@code storage}'s address book.
      */

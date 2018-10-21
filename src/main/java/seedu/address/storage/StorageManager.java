@@ -105,7 +105,8 @@ public class StorageManager extends ComponentManager implements Storage {
     }
 
     @Override
-    public Optional<ReadOnlySchedule> readSchedule(Path filePath) throws DataConversionException, IOException, ParseException  {
+    public Optional<ReadOnlySchedule> readSchedule(Path filePath)
+            throws DataConversionException, IOException, ParseException {
         logger.fine("Attempting to read schedule from file: " + filePath);
         return scheduleStorage.readSchedule(filePath);
     }
