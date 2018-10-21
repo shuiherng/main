@@ -1,16 +1,20 @@
 package seedu.address.logic.parser;
 
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+
 import java.util.Calendar;
 import java.util.List;
 
 import javafx.util.Pair;
+import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.ScheduleModel;
 import seedu.address.model.event.ScheduleEvent;
 
-// TODO: @kumuwu pls fix the javadoc comments
 
 /**
- * Date Time parser for scheduler commands
+ * Parses date time input arguments and creates the corresponding Calendar objects
+ * to represent the start time and end time of an appointment.
+ * Accepts date time input in natural expression forms and in fixed format.
  */
 public class DateTimeParser {
 
@@ -21,22 +25,22 @@ public class DateTimeParser {
     }
 
     /**
-     * Generates datetime range from given input.
-     * @param dateInput date input
-     * @return datetime range
+     * Generates the intended time duration from given user input.
+     * @param dateInput User's initial date input in natural expressions or in a fixed format (DD/MM/YYYY).
+     * @return The time slot intended by the user, represented by a Pair of Calendar objects.
      */
-    public Pair<Calendar, Calendar> parseDateTime(String dateInput) {
+    public Pair<Calendar, Calendar> parseDateTime(String dateInput) throws ParseException {
         Pair<Calendar, Calendar> resultantDateInterval = parseDate(dateInput);
         Pair<Calendar, Calendar> resultantTimeSlot = parseTime(resultantDateInterval);
         return resultantTimeSlot;
     }
 
     /**
-     * Parses date from string.
-     * @param input Input string
-     * @return Date range
+     * Parses date from input string.
+     * @param input Input string for date(s).
+     * @return The date interval meant by the string input, represented as a Pair of Calendar objects.
      */
-    private Pair<Calendar, Calendar> parseDate(String input) {
+    private Pair<Calendar, Calendar> parseDate(String input) throws ParseException {
         Calendar currentTime = Calendar.getInstance();
         Pair<Calendar, Calendar> resultantDateInterval = getResultantDate(currentTime, input);
         return resultantDateInterval;
@@ -44,22 +48,23 @@ public class DateTimeParser {
     }
 
     /**
-     * Refines the datetime interval and prepares it for insertion into the schedule.
-     * @param resultantDateInterval date time input.
-     * @return refined
+     * Refines the datetime interval into a specific time slot on a day.
+     * @param resultantDateInterval Date interval.
+     * @return The refined final time slot ready to be inserted into the schedule.
      */
     private Pair<Calendar, Calendar> parseTime(Pair<Calendar, Calendar> resultantDateInterval) {
         String timeSlot = promptForTimeSlot(resultantDateInterval);
         // TO-DO
         // now do the parsing from the string input to Pair<Calendar, Calendar>
         // the final Pair of Calendar should be ready to be put into a ScheduleEvent;
-        return new Pair<Calendar, Calendar>(Calendar.getInstance(), Calendar.getInstance()); // dummy
+        return null;
     }
 
     /**
-     * Requests for a more refined time slot input.
-     * @param resultantDateInterval date interval
-     * @return time slot
+     * Prompts the user for a refined time slot input, by providing a list of available time slots
+     * during a given date interval.
+     * @param resultantDateInterval Date interval.
+     * @return The user's further input for a refined time slot during the date interval.
      */
     private String promptForTimeSlot(Pair<Calendar, Calendar> resultantDateInterval) {
         String availableTime = getAvailableTimeBetween(resultantDateInterval);
@@ -68,9 +73,9 @@ public class DateTimeParser {
     }
 
     /**
-     * Gets available time slots for date interval given
-     * @param resultantDateInterval date interval to find time slots
-     * @return string representing available time slots
+     * Gets available time slots for a given date interval.
+     * @param resultantDateInterval Date interval.
+     * @return Available time slots during the date interval, represented as a String.
      */
     private String getAvailableTimeBetween(Pair<Calendar, Calendar> resultantDateInterval) {
         scheduleModel.updateFilteredEventList((scheduleEvent) -> {
@@ -87,12 +92,12 @@ public class DateTimeParser {
     }
 
     /**
-     * Finds a date range which satisfies the input string and current calendar time.
-     * @param currentTime current time
-     * @param dateInput input string
-     * @return date range
+     * Finds the date range intended from a given date/duration input and the current time.
+     * @param currentTime Current time.
+     * @param dateInput Input string, possibly phrased in natural expressions.
+     * @return Date range intended by the input string.
      */
-    private Pair<Calendar, Calendar> getResultantDate(Calendar currentTime, String dateInput) {
+    private Pair<Calendar, Calendar> getResultantDate(Calendar currentTime, String dateInput) throws ParseException {
 
         if (dateInput.startsWith("in")) {
             return parseIn(currentTime, dateInput);
@@ -110,16 +115,22 @@ public class DateTimeParser {
         case "soon":
             return getNearFutureDates(currentTime);
         default:
-            return getDateFromSpecified(dateInput); // user actually inputs the date (eg. 13/12/2018)
+            if (isValidDateFormat(dateInput)) {
+                return getDateFromSpecified(dateInput); // user actually inputs the date (eg. 13/12/2018)
+            } else {
+                return null; // invalid input
+            }
         }
 
     }
 
+
     /**
-     * Parser for "this or next" (week) style commands
-     * @param currentTime current datetime
-     * @param dateInput input string
-     * @return datetime range
+     * Parser "this ..." or "next ..." commands.
+     * eg. "this week" "next month" "next Thur".
+     * @param currentTime Current time.
+     * @param dateInput Input string.
+     * @return Date range intended by the input string.
      */
     private Pair<Calendar, Calendar> parseThisOrNext(Calendar currentTime, String dateInput) {
         String[] splitString = dateInput.split("\\s+");
@@ -165,11 +176,11 @@ public class DateTimeParser {
     }
 
     /**
-     * returns day of the week given the input string
-     * @param currentTime
-     * @param dayOfWeek
-     * @param offset
-     * @return datetime range
+     * Gets the date from a given day of the week and offset from the current week.
+     * @param currentTime Current time.
+     * @param dayOfWeek Day of the week, where 0 represents Monday and 6 represents Sunday.
+     * @param offset Offset from the current week, where 0 represents the current weeek, 1 represents the next week etc.
+     * @return The date intended with working hours applied.
      */
     private Pair<Calendar, Calendar> getWeekDayDate(Calendar currentTime, int dayOfWeek, int offset) {
         Calendar date = (Calendar) currentTime.clone();
@@ -185,10 +196,10 @@ public class DateTimeParser {
     }
 
     /**
-     * parses in * days/weeks/month input
-     * @param currentTime current datetime
-     * @param dateInput input string
-     * @return datetime range
+     * Parses "in * day(s)/week(s)/month(s)" commands.
+     * @param currentTime Current time.
+     * @param dateInput Input string.
+     * @return Date range intended by the input string.
      */
     private Pair<Calendar, Calendar> parseIn(Calendar currentTime, String dateInput) {
         String[] splitString = dateInput.split("\\s+");
@@ -214,10 +225,10 @@ public class DateTimeParser {
     }
 
     /**
-     * gets datetime range for a single date
-     * @param currentDate current datetime
-     * @param offset offset from current date(?)
-     * @return datetime range
+     * Gets the date from the current time and offset from the current date.
+     * @param currentDate Current time.
+     * @param offset Offset from the current date.
+     * @return The date intended with working hours applied.
      */
     private Pair<Calendar, Calendar> getSingleDate(Calendar currentDate, int offset) {
         Calendar dateStart = (Calendar) currentDate.clone();
@@ -230,9 +241,10 @@ public class DateTimeParser {
     }
 
     /**
-     * Operating hours (?) (set to static?)
-     * @param start start time
-     * @param end end time
+     * Applies working hours on two given dates.
+     * The start date will be set to 8:59 while the end date will be set to 18:01
+     * @param start The start time.
+     * @param end The end time.
      */
     private void setDateStartAndEnd(Calendar start, Calendar end) {
         start.set(Calendar.HOUR, 8);
@@ -242,36 +254,46 @@ public class DateTimeParser {
     }
 
     /**
-     * get week dates
-     * @param date date
-     * @param offset offset
-     * @return datetime range
+     * Gets the dates for an entire week from the current time and an offset from the current week.
+     * @param currentDate Current time.
+     * @param offset Offset from the current week.
+     * @return The dates intended with working hours applied.
      */
-    private Pair<Calendar, Calendar> getWeekDates(Calendar date, int offset) {
-        // TO-DO
-        // get the next week start date and end date
-
-        return null;
-
+    private Pair<Calendar, Calendar> getWeekDates(Calendar currentDate, int offset) {
+        Calendar weekOffset = (Calendar) currentDate.clone();
+        weekOffset.setFirstDayOfWeek(Calendar.MONDAY);
+        weekOffset.add(Calendar.WEEK_OF_YEAR, offset);
+        Calendar dateStart = (Calendar) weekOffset.clone();
+        Calendar dateEnd = (Calendar) weekOffset.clone();
+        dateStart.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        dateStart.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        setDateStartAndEnd(dateStart, dateEnd);
+        Pair<Calendar, Calendar> finalDate = new Pair<>(dateStart, dateEnd);
+        return finalDate;
     }
 
     /**
-     * get month dates
-     * @param date date
-     * @param offset offset
-     * @return datetime range
+     * Gets the dates for an entire month from the current time and an offset from the current month.
+     * @param currentDate Current time.
+     * @param offset Offset from the current month.
+     * @return The dates intended with working hours applied.
      */
-    private Pair<Calendar, Calendar> getMonthDates(Calendar date, int offset) {
-        // TO-DO
-        // get the next month start date and end date
-
-        return null;
+    private Pair<Calendar, Calendar> getMonthDates(Calendar currentDate, int offset) {
+        Calendar dateStart = (Calendar) currentDate.clone();
+        dateStart.add(Calendar.MONTH, offset);
+        dateStart.set(Calendar.DAY_OF_MONTH, 1); // set to 1st day of the month
+        Calendar dateEnd = (Calendar) dateStart.clone();
+        dateEnd.add(Calendar.MONTH, 1); // add one extra month to the end date
+        dateEnd.add(Calendar.DAY_OF_MONTH, -1); // subtract one day to get the last day of the previous month
+        setDateStartAndEnd(dateStart, dateEnd);
+        Pair<Calendar, Calendar> finalDate = new Pair<>(dateStart, dateEnd);
+        return finalDate;
     }
 
     /**
-     * get near future dates
-     * @param currentDate current datetime
-     * @return datetime range
+     * Gets the dates for the next seven days from the current time.
+     * @param currentDate Current time.
+     * @return The dates intended with working hours applied.
      */
     private Pair<Calendar, Calendar> getNearFutureDates(Calendar currentDate) {
         Calendar startDate = (Calendar) currentDate.clone();
@@ -284,9 +306,9 @@ public class DateTimeParser {
     }
 
     /**
-     * get date time from specified input
-     * @param dateTimeInput date time input
-     * @return datetime range
+     * Gets the date from a specified date input in a fixed DD/MM/YYYY format
+     * @param dateTimeInput The specified date input in DD/MM/YYYY format
+     * @return The date intended with working hours applied.
      */
     private Pair<Calendar, Calendar> getDateFromSpecified(String dateTimeInput) {
         // TO-DO
@@ -296,6 +318,23 @@ public class DateTimeParser {
         return null;
     }
 
+    /**
+     *
+     * @param dateInput
+     * @return
+     * @throws ParseException
+     */
+    private boolean isValidDateFormat(String dateInput) throws ParseException {
+        String[] splitString = dateInput.split("/");
+        try {
+            int day = Integer.parseInt(splitString[0]);
+            int month = Integer.parseInt(splitString[1]);
+            int year = Integer.parseInt(splitString[2]);
+        } catch (NumberFormatException e) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT), e); // maybe print how to use also?
+        }
+        return false;
+    }
 }
 
 

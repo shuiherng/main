@@ -15,7 +15,9 @@ public class ModeCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Switch between the patient mode and the appointment mode.\n"
             + "Parameters: MODE\n"
+
             + "Example: " + COMMAND_WORD + " patient";
+
 
     public static final String MESSAGE_CANNOT_SWITCH = "You are already in this mode.\n";
 
