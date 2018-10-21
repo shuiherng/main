@@ -7,7 +7,7 @@ import java.util.Scanner;
  */
 public class Prompt {
 
-    public static final String LEADING_MESSAGE = "Please enter a time slot: ";
+    public static final String LEADING_MESSAGE = "Please enter a time slot here: ";
 
     /**
      * Gets more input from the user
