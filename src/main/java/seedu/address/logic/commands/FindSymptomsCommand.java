@@ -3,11 +3,10 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import seedu.address.logic.CommandHistory;
-import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBookModel;
 
 /**
- * blabla
+ * Finds and lists all related symptoms of a disease in database.
  */
 public class FindSymptomsCommand extends Command {
 
@@ -15,11 +14,14 @@ public class FindSymptomsCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all symptoms related to a disease "
             + "(case-insensitive) and displays them as a list with index numbers.\n"
-            + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
-            + "Example: " + COMMAND_WORD + " alice bob charlie";
+            + "Parameter: DISEASE\n"
+            + "Example: " + COMMAND_WORD + " insufficiency renal";
+
+    public FindSymptomsCommand() {
+    }
 
     @Override
-    public CommandResult execute(AddressBookModel addressBookModel, CommandHistory history) throws CommandException {
+    public CommandResult execute(AddressBookModel addressBookModel, CommandHistory history) {
         requireNonNull(addressBookModel);
         return null;
     }
