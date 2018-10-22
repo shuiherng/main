@@ -17,6 +17,7 @@ import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.*;
 import seedu.address.logic.parser.ScheduleCommandParser;
+import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.AddressBookModel;
 import seedu.address.model.ScheduleModel;
 import seedu.address.model.event.ScheduleEvent;
@@ -56,7 +57,7 @@ public class AddCommand extends Command {
             + "natural datetime expression";
 
     public static final String MESSAGE_SUCCESS_ADDRESSBOOK = "New person added: %1$s";
-    public static final String MESSAGE_SUCCESS_SCHEDULE = "New schedule event added: %l$s";
+    public static final String MESSAGE_SUCCESS_SCHEDULE = "New schedule event added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
 
     private final String addType;
@@ -86,24 +87,28 @@ public class AddCommand extends Command {
                 throw new CommandException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
             }
 
-            Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
-            Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
-            Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
-            Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
-            Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
-
-            Person person = new Person(name, phone, email, address, tagList);
-            if (addressBookModel.hasPerson(person)) {
-                throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+            try {
+                Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
+                Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
+                Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
+                Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
+                Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+                Person person = new Person(name, phone, email, address, tagList);
+                if (addressBookModel.hasPerson(person)) {
+                    throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+                }
+                addressBookModel.addPerson(person);
+                return new CommandResult(String.format(MESSAGE_SUCCESS_ADDRESSBOOK, person));
+            } catch (ParseException e) {
+                throw new CommandException("Unexpected Error: unacceptable values should have been prompted for.", e);
             }
-            addressBookModel.addPerson(person);
-            return new CommandResult(String.format(MESSAGE_SUCCESS_ADDRESSBOOK, person));
-
         } else if (addType.equals("appointment")) {
             // adds an event into the schedule
             ScheduleEvent newEvent = new ScheduleCommandParser(scheduleModel).parse(args);
+            scheduleModel.addEvent(newEvent);
+            return new CommandResult(String.format(MESSAGE_SUCCESS_SCHEDULE, newEvent));
         } else {
-            throw new CommandException("Unexpected Values: should have been caught elsewhere were present")
+            throw new CommandException("Unexpected Values: should have been caught elsewhere were present");
         }
 
 
