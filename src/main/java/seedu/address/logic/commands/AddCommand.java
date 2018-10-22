@@ -102,8 +102,10 @@ public class AddCommand extends Command {
         } else if (addType.equals("appointment")) {
             // adds an event into the schedule
             ScheduleEvent newEvent = new ScheduleCommandParser(scheduleModel).parse(args);
+            scheduleModel.addEvent(newEvent);
+            return new CommandResult(String.format(MESSAGE_SUCCESS_SCHEDULE, newEvent));
         } else {
-            throw new CommandException("Unexpected Values: should have been caught elsewhere were present")
+            throw new CommandException("Unexpected Values: should have been caught elsewhere were present");
         }
 
 

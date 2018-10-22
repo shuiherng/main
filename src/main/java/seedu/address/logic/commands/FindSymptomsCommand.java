@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import seedu.address.logic.CommandHistory;
 import seedu.address.model.AddressBookModel;
+import seedu.address.model.ScheduleModel;
 
 /**
  * Finds and lists all related symptoms of a disease in database.
@@ -21,7 +22,8 @@ public class FindSymptomsCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(AddressBookModel addressBookModel, CommandHistory history) {
+    public CommandResult execute(AddressBookModel addressBookModel,
+                                 ScheduleModel scheduleModel, CommandHistory history) {
         requireNonNull(addressBookModel);
         return null;
     }
