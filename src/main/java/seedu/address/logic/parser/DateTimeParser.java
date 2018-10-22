@@ -26,8 +26,10 @@ public class DateTimeParser {
     private static final String MESSAGE_CORRECT_FORMAT = "Please enter date/duration in natural expressions or "
             + "in DD/MM/YYYY format.\n"
             + "Refer to User Guide for the complete list of accepted natural expressions.\n";
+    private static final String MESSAGE_CORRECT_FORMAT_PROMPT = "Please enter time slot in DD/MM/YYYY hh:mm - hh:mm";
     private static final String MESSAGE_NO_SLOTS = "No time slots available!\n";
     private static final String MESSAGE_HAVE_SLOTS = "You have time slots available during:\n";
+    private static final String MESSAGE_INVALID_TIME_SLOT = "Invalid time slot! \n%1$s";
     private ScheduleModel scheduleModel;
 
     public DateTimeParser (ScheduleModel model) {
@@ -64,12 +66,9 @@ public class DateTimeParser {
      * @param resultantDateInterval Date interval.
      * @return The refined final time slot ready to be inserted into the schedule.
      */
-    private Pair<Calendar, Calendar> refineTime(Pair<Calendar, Calendar> resultantDateInterval) {
-        String timeSlot = promptForTimeSlot(resultantDateInterval);
-        // TO-DO
-        // now do the parsing from the string input to Pair<Calendar, Calendar>
-        // the final Pair of Calendar should be ready to be put into a ScheduleEvent;
-        return null;
+    private Pair<Calendar, Calendar> refineTime(Pair<Calendar, Calendar> resultantDateInterval) throws ParseException {
+        String timeSlotInput = promptForTimeSlot(resultantDateInterval);
+        return parseTimeSlot(timeSlotInput);
     }
 
     /**
@@ -281,7 +280,7 @@ public class DateTimeParser {
             finalDate.setTime(date);
             Calendar dateStart = (Calendar) finalDate.clone();
             Calendar dateEnd = (Calendar) finalDate.clone();
-            setDateStartAndEnd(dateStart, dateEnd);
+            setDateStartAndEnd(dateStart, dateEnd); // apply working hours by default
             return new Pair<>(dateStart, dateEnd);
         } catch (java.text.ParseException e) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_CORRECT_FORMAT));
@@ -482,6 +481,73 @@ public class DateTimeParser {
         return availableTimeBuilder.toString();
     }
 
+    /**
+     * Parses the user input for the final chosen time slot.
+     * The current implementation assumes user input in DD/MM/YYYY hh:mm - hh:mm format
+     * @param timeSlotInput User input for final time slot.
+     * @return The final Pair of Calendar objects ready to be stored into a ScheduleEvent object.
+     */
+    private Pair<Calendar, Calendar> parseTimeSlot(String timeSlotInput) throws ParseException {
+        String[] splitString = timeSlotInput.split("\\s+");
+        String ddmmyyyy = splitString[0];
+        String startTime = splitString[1];
+        String endTime = splitString[3];
+        if (!isValidDateFormat(ddmmyyyy)) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_CORRECT_FORMAT_PROMPT));
+        }
+        Pair<Calendar, Calendar> timeSlot = getDateFromSpecified(ddmmyyyy);
+        if (!isValidTimeFormat(startTime) || !isValidTimeFormat(endTime)) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_CORRECT_FORMAT_PROMPT));
+        }
+        setSlotStartAndEnd(timeSlot, startTime, endTime);
+        if (!timeSlot.getKey().before(timeSlot.getValue())) {
+            throw new ParseException(String.format(MESSAGE_INVALID_TIME_SLOT, MESSAGE_CORRECT_FORMAT_PROMPT));
+        }
+        return timeSlot;
+    }
+
+    /**
+     * Checks if the input string has valid numbers for each field in hh:mm format, where
+     * hour must be between 9 and 18 inclusive, and minute must be between 0 and 59 inclusive.
+     * @param time Input string.
+     */
+    private boolean isValidTimeFormat(String time) {
+        String[] splitString = time.split(":");
+        if (splitString.length != 2) {
+            return false;
+        }
+        try {
+            int hour = Integer.parseInt(splitString[0]);
+            int minute = Integer.parseInt(splitString[1]);
+            if (hour < 9 || hour > 18) {
+                return false;
+            }
+            if (minute < 0 || minute > 59) {
+                return false;
+            }
+            if (hour == 18 && minute != 0) {
+                return false;
+            }
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Sets the hour and minute fields in the given time slot according to string inputs.
+     * @param timeSlot The time slot to be set.
+     * @param startTime The start time for the time slot, in hh:mm format.
+     * @param endTime The end time for the time slot, in hh:mm format.
+     */
+    private void setSlotStartAndEnd(Pair<Calendar, Calendar> timeSlot, String startTime, String endTime) {
+        String[] startHourMin = startTime.split(":");
+        String[] endHourMin = endTime.split(":");
+        timeSlot.getKey().set(Calendar.HOUR, Integer.parseInt(startHourMin[0]));
+        timeSlot.getKey().set(Calendar.MINUTE, Integer.parseInt(startHourMin[1]));
+        timeSlot.getValue().set(Calendar.HOUR, Integer.parseInt(endHourMin[0]));
+        timeSlot.getValue().set(Calendar.MINUTE, Integer.parseInt(startHourMin[1]));
+    }
 }
 
 
