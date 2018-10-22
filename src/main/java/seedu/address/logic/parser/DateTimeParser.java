@@ -1,6 +1,7 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.ScheduleCommandParser.MESSAGE_CORRECT_FORMAT;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,9 +24,7 @@ import seedu.address.model.event.ScheduleEvent;
  */
 public class DateTimeParser {
 
-    private static final String MESSAGE_CORRECT_FORMAT = "Please enter date/duration in natural expressions or "
-            + "in DD/MM/YYYY format.\n"
-            + "Refer to User Guide for the complete list of accepted natural expressions.\n";
+
     private static final String MESSAGE_CORRECT_FORMAT_PROMPT = "Please enter time slot in DD/MM/YYYY hh:mm - hh:mm";
     private static final String MESSAGE_NO_SLOTS = "No time slots available!\n";
     private static final String MESSAGE_HAVE_SLOTS = "You have time slots available during:\n";
