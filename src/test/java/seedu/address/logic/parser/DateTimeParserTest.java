@@ -1,27 +1,27 @@
+
 package seedu.address.logic.parser;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.Calendar;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Before;
 import org.junit.Test;
 
+import seedu.address.commons.util.Pair;
+import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.ScheduleModelManager;
 
 public class DateTimeParserTest {
 
-    private DateTimeParser parser = new DateTimeParser(new ScheduleModelManager());
-
     private static final String VALID_TOMORROW = "tomorrow";
     private static final String VALID_THE_DAY_AFTER_TOMORROW = "the day after tomorrow";
-    private static final String VALID_IN_SOME_SMALL_DAYS= "in 5 days";
-    private static final String VALID_IN_SOME_BIG_DAYS= "in 365 days";
-    private static final String VALID_IN_SOME_SMALL_WEEKS= "in 3 weeks";
-    private static final String VALID_IN_SOME_BIG_WEEKS= "in 100 weeks";
-    private static final String VALID_IN_SOME_SMALL_MONTHS= "in 2 months";
-    private static final String VALID_IN_SOME_BIG_MONTHS= "in 99 months";
+    private static final String VALID_IN_SOME_SMALL_DAYS = "in 5 days";
+    private static final String VALID_IN_SOME_BIG_DAYS = "in 365 days";
+    private static final String VALID_IN_SOME_SMALL_WEEKS = "in 3 weeks";
+    private static final String VALID_IN_SOME_BIG_WEEKS = "in 100 weeks";
+    private static final String VALID_IN_SOME_SMALL_MONTHS = "in 2 months";
+    private static final String VALID_IN_SOME_BIG_MONTHS = "in 99 months";
     private static final String VALID_THIS_WEEKDAY = "this Friday";
     private static final String VALID_NEXT_WEEKDAY = "next Monday";
     private static final String VALID_THIS_WEEK = "this week";
@@ -36,9 +36,9 @@ public class DateTimeParserTest {
     private static final String INVALID_FORMAT_SPECIFIED = "13.12.2018";
     private static final String INVALID_DAY_NUMBER_SPECIFIED = "33/12/2018";
     private static final String INVALID_MONTH_NUMBER_SPECIFIED = "13/13/2018";
-    private static final String INVALID_NON_INTEGER_NUMBER= "in 0.8 days";
+    private static final String INVALID_NON_INTEGER_NUMBER = "in 0.8 days";
     private static final String INVALID_CAPITALIZED = "neXt Month";
-    private static final String INVALID_RANDOM= "elephant";
+    private static final String INVALID_RANDOM = "elephant";
 
     private static final String REFINED_VALID_TIME_SLOT = "13/12/2018 9:30 - 10:30";
     private static final String REFINED_INVALID_TOO_EARLY = "13/12/2018 8:30 - 10:30";
@@ -47,6 +47,7 @@ public class DateTimeParserTest {
     private static final String REFINED_INVALID_FORMAT_TIME_SLOT = "13.12.2018 10:30 - 9:30";
     private static final String REFINED_INVALID_FORMAT_WRONG_SEQUENCE_TIME_SLOT = "10:30 - 9:30 13.12.2018";
 
+    private DateTimeParser parser = new DateTimeParser(new ScheduleModelManager());
     private Calendar actualCurrentTime;
     private Calendar convenientTime;
     private Calendar wrapAroundWeekTime;
@@ -67,7 +68,7 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void parseDate_validInput_atConvenientTime() {
+    public void parseDate_validInput_atConvenientTime() throws ParseException {
         // testing "tomorrow"
         Calendar expectedCalendarStart = (Calendar) actualCurrentTime.clone();
         Calendar expectedCalendarEnd = (Calendar) actualCurrentTime.clone();
@@ -75,9 +76,7 @@ public class DateTimeParserTest {
         expectedCalendarEnd.set(2018, 10, 9, 18, 0, 0);
         expectedCalendarStart.set(Calendar.MILLISECOND, 0);
         expectedCalendarEnd.set(Calendar.MILLISECOND, 0);
-        assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd),  )
-
-
+        assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd), parser.parseDate(VALID_TOMORROW, convenientTime));
     }
 
     @Test

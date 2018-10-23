@@ -5,7 +5,7 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 import java.util.Arrays;
 import java.util.Calendar;
 
-import javafx.util.Pair;
+import seedu.address.commons.util.Pair;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.ScheduleModel;
 import seedu.address.model.event.ScheduleEvent;
@@ -67,7 +67,7 @@ public class ScheduleCommandParser {
             recoveredDateInputBuilder.append(" ");
         }
 
-        Pair<Calendar, Calendar> time = new DateTimeParser(model).parseDateTime(recoveredDateInputBuilder.toString());
+        Pair<Calendar> time = new DateTimeParser(model).parseDateTime(recoveredDateInputBuilder.toString());
 
         // what do I do with the name????
         //List<String> nameKeywords = Arrays.asList(splitString).subList(1, dateIndex);
