@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import seedu.address.commons.core.Messages;
 import seedu.address.logic.CommandHistory;
 import seedu.address.model.AddressBookModel;
+import seedu.address.model.DiagnosisModel;
 import seedu.address.model.ScheduleModel;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 
@@ -29,7 +30,7 @@ public class FindCommand extends Command {
 
     @Override
     public CommandResult execute(AddressBookModel addressBookModel, ScheduleModel scheduleModel,
-                                 CommandHistory history) {
+                                 DiagnosisModel diagnosisModel, CommandHistory history) {
         requireNonNull(addressBookModel);
         requireNonNull(scheduleModel);
         addressBookModel.updateFilteredPersonList(predicate);

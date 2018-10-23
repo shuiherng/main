@@ -11,6 +11,8 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.PatientBookParser;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.AddressBookModel;
+import seedu.address.model.Diagnosis;
+import seedu.address.model.DiagnosisModel;
 import seedu.address.model.ScheduleModel;
 import seedu.address.model.event.ScheduleEvent;
 import seedu.address.model.person.Person;
@@ -23,12 +25,14 @@ public class LogicManager extends ComponentManager implements Logic {
 
     private final AddressBookModel addressBookModel;
     private final ScheduleModel scheduleModel;
+    private final DiagnosisModel diagnosisModel;
     private final CommandHistory history;
     private final PatientBookParser patientBookParser;
 
-    public LogicManager(AddressBookModel addressBookModel, ScheduleModel scheduleModel) {
+    public LogicManager(AddressBookModel addressBookModel, ScheduleModel scheduleModel, DiagnosisModel diagnosisModel) {
         this.addressBookModel = addressBookModel;
         this.scheduleModel = scheduleModel;
+        this.diagnosisModel = diagnosisModel;
         history = new CommandHistory();
         patientBookParser = new PatientBookParser();
     }
@@ -38,7 +42,7 @@ public class LogicManager extends ComponentManager implements Logic {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
         try {
             Command command = patientBookParser.parseCommand(commandText);
-            return command.execute(addressBookModel, scheduleModel, history);
+            return command.execute(addressBookModel, scheduleModel, diagnosisModel, history);
         } finally {
             history.add(commandText);
         }

@@ -5,6 +5,7 @@ import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_PERSONS;
 
 import seedu.address.logic.CommandHistory;
 import seedu.address.model.AddressBookModel;
+import seedu.address.model.DiagnosisModel;
 import seedu.address.model.ScheduleModel;
 
 /**
@@ -19,7 +20,7 @@ public class ListCommand extends Command {
 
     @Override
     public CommandResult execute(AddressBookModel addressBookModel, ScheduleModel scheduleModel,
-                                 CommandHistory history) {
+                                 DiagnosisModel diagnosisModel, CommandHistory history) {
         requireNonNull(addressBookModel);
         requireNonNull(scheduleModel);
         addressBookModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
