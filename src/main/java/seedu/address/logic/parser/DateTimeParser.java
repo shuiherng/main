@@ -67,7 +67,7 @@ public class DateTimeParser {
      */
     private Pair<Calendar, Calendar> refineTime(Pair<Calendar, Calendar> resultantDateInterval) throws ParseException {
         String timeSlotInput = promptForTimeSlot(resultantDateInterval);
-        return parseTimeSlot(timeSlotInput);
+        return parseTimeSlot(timeSlotInput.trim());
     }
 
     /**
