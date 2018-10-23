@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import seedu.address.logic.CommandHistory;
 import seedu.address.model.AddressBookModel;
+import seedu.address.model.DiagnosisModel;
 import seedu.address.model.ScheduleModel;
 
 /**
@@ -23,7 +24,7 @@ public class FindSymptomsCommand extends Command {
 
     @Override
     public CommandResult execute(AddressBookModel addressBookModel,
-                                 ScheduleModel scheduleModel, CommandHistory history) {
+                                 ScheduleModel scheduleModel, DiagnosisModel diagnosisModel, CommandHistory history) {
         requireNonNull(addressBookModel);
         return null;
     }
