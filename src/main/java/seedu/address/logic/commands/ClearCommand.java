@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import seedu.address.logic.CommandHistory;
 import seedu.address.model.AddressBook;
 import seedu.address.model.AddressBookModel;
+import seedu.address.model.DiagnosisModel;
 import seedu.address.model.ScheduleModel;
 
 /**
@@ -18,7 +19,7 @@ public class ClearCommand extends Command {
 
     @Override
     public CommandResult execute(AddressBookModel addressBookModel, ScheduleModel scheduleModel,
-                                 CommandHistory history) {
+                                 DiagnosisModel diagnosisModel, CommandHistory history) {
         requireNonNull(addressBookModel);
         requireNonNull(scheduleModel);
         addressBookModel.resetData(new AddressBook());

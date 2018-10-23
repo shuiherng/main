@@ -7,6 +7,7 @@ import java.util.List;
 
 import seedu.address.logic.CommandHistory;
 import seedu.address.model.AddressBookModel;
+import seedu.address.model.DiagnosisModel;
 import seedu.address.model.ScheduleModel;
 
 /**
@@ -20,7 +21,7 @@ public class HistoryCommand extends Command {
 
     @Override
     public CommandResult execute(AddressBookModel addressBookModel, ScheduleModel scheduleModel,
-                                 CommandHistory history) {
+                                 DiagnosisModel diagnosisModel, CommandHistory history) {
         requireNonNull(history);
         List<String> previousCommands = history.getHistory();
 
