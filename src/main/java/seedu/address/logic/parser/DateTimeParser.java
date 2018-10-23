@@ -42,7 +42,7 @@ public class DateTimeParser {
      * @throws ParseException if the user input is not an accepted natural expression or not in the expected format.
      */
     public Pair<Calendar, Calendar> parseDateTime(String dateInput) throws ParseException {
-        Pair<Calendar, Calendar> resultantDateInterval = parseDate(dateInput);
+        Pair<Calendar, Calendar> resultantDateInterval = parseDate(dateInput.trim());
         Pair<Calendar, Calendar> resultantTimeSlot = refineTime(resultantDateInterval);
         return resultantTimeSlot;
     }
