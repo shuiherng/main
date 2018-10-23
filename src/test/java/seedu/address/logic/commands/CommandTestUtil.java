@@ -17,6 +17,8 @@ import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.AddressBookModel;
+import seedu.address.model.DiagnosisModel;
+import seedu.address.model.ScheduleModel;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
@@ -76,11 +78,13 @@ public class CommandTestUtil {
      * - the {@code actualCommandHistory} remains unchanged.
      */
     public static void assertCommandSuccess(Command command, AddressBookModel actualModel,
+                                            ScheduleModel scheduleModel,
                                             CommandHistory actualCommandHistory,
+                                            DiagnosisModel diagnosisModel,
                                             String expectedMessage, AddressBookModel expectedModel) {
         CommandHistory expectedCommandHistory = new CommandHistory(actualCommandHistory);
         try {
-            CommandResult result = command.execute(actualModel, actualCommandHistory);
+            CommandResult result = command.execute(actualModel, scheduleModel, diagnosisModel, actualCommandHistory);
             assertEquals(expectedMessage, result.feedbackToUser);
             assertEquals(expectedModel, actualModel);
             assertEquals(expectedCommandHistory, actualCommandHistory);
@@ -97,6 +101,8 @@ public class CommandTestUtil {
      * - {@code actualCommandHistory} remains unchanged.
      */
     public static void assertCommandFailure(Command command, AddressBookModel actualModel,
+                                            ScheduleModel scheduleModel,
+                                            DiagnosisModel diagnosisModel,
                                             CommandHistory actualCommandHistory,
                                             String expectedMessage) {
         // we are unable to defensively copy the model for comparison later, so we can
@@ -107,7 +113,7 @@ public class CommandTestUtil {
         CommandHistory expectedCommandHistory = new CommandHistory(actualCommandHistory);
 
         try {
-            command.execute(actualModel, actualCommandHistory);
+            command.execute(actualModel, scheduleModel, diagnosisModel, actualCommandHistory);
             throw new AssertionError("The expected CommandException was not thrown.");
         } catch (CommandException e) {
             assertEquals(expectedMessage, e.getMessage());
