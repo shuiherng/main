@@ -9,6 +9,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBookModel;
+import seedu.address.model.DiagnosisModel;
 import seedu.address.model.ScheduleModel;
 import seedu.address.model.person.Person;
 
@@ -34,7 +35,7 @@ public class DeleteCommand extends Command {
 
     @Override
     public CommandResult execute(AddressBookModel addressBookModel, ScheduleModel scheduleModel,
-                                 CommandHistory history) throws CommandException {
+                                 DiagnosisModel diagnosisModel, CommandHistory history) throws CommandException {
         requireNonNull(addressBookModel);
         requireNonNull(scheduleModel);
         List<Person> lastShownList = addressBookModel.getFilteredPersonList();

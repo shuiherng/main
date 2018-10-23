@@ -8,17 +8,16 @@ import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_TAG;
 
-import java.util.Calendar;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import javafx.util.Pair;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.*;
 import seedu.address.logic.parser.ScheduleCommandParser;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.AddressBookModel;
+import seedu.address.model.DiagnosisModel;
 import seedu.address.model.ScheduleModel;
 import seedu.address.model.event.ScheduleEvent;
 import seedu.address.model.person.Address;
@@ -73,7 +72,7 @@ public class AddCommand extends Command {
 
     @Override
     public CommandResult execute(AddressBookModel addressBookModel, ScheduleModel scheduleModel,
-                                 CommandHistory history) throws CommandException {
+                                 DiagnosisModel diagnosisModel, CommandHistory history) throws CommandException {
         requireNonNull(addressBookModel);
         requireNonNull(scheduleModel);
 

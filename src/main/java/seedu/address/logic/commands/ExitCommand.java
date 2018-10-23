@@ -4,6 +4,7 @@ import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
 import seedu.address.logic.CommandHistory;
 import seedu.address.model.AddressBookModel;
+import seedu.address.model.DiagnosisModel;
 import seedu.address.model.ScheduleModel;
 
 /**
@@ -17,7 +18,7 @@ public class ExitCommand extends Command {
 
     @Override
     public CommandResult execute(AddressBookModel addressBookModel, ScheduleModel scheduleModel,
-                                 CommandHistory history) {
+                                 DiagnosisModel diagnosisModel, CommandHistory history) {
         EventsCenter.getInstance().post(new ExitAppRequestEvent());
         return new CommandResult(MESSAGE_EXIT_ACKNOWLEDGEMENT);
     }

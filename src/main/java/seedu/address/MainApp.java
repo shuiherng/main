@@ -21,15 +21,7 @@ import seedu.address.commons.util.ConfigUtil;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.Logic;
 import seedu.address.logic.LogicManager;
-import seedu.address.model.AddressBook;
-import seedu.address.model.AddressBookModel;
-import seedu.address.model.AddressBookModelManager;
-import seedu.address.model.ReadOnlyAddressBook;
-import seedu.address.model.ReadOnlySchedule;
-import seedu.address.model.Schedule;
-import seedu.address.model.ScheduleModel;
-import seedu.address.model.ScheduleModelManager;
-import seedu.address.model.UserPrefs;
+import seedu.address.model.*;
 import seedu.address.model.util.SampleDataUtil;
 import seedu.address.storage.AddressBookStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
@@ -56,6 +48,7 @@ public class MainApp extends Application {
     protected Storage storage;
     protected AddressBookModel addressBookModel;
     protected ScheduleModel scheduleModel;
+    protected DiagnosisModel diagnosisModel;
     protected Config config;
     protected UserPrefs userPrefs;
 
@@ -79,7 +72,7 @@ public class MainApp extends Application {
         addressBookModel = initModelManager(storage, userPrefs);
         scheduleModel = initScheduleModel(storage, userPrefs);
 
-        logic = new LogicManager(addressBookModel, scheduleModel);
+        logic = new LogicManager(addressBookModel, scheduleModel, diagnosisModel);
 
         ui = new UiManager(logic, config, userPrefs);
 
