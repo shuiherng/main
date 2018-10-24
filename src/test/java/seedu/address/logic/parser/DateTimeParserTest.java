@@ -70,6 +70,7 @@ public class DateTimeParserTest {
     @Test
     public void parseDate_validInput_atConvenientTime() throws ParseException {
         // testing "tomorrow"
+        // no wrap around
         Calendar expectedCalendarStart = (Calendar) actualCurrentTime.clone();
         Calendar expectedCalendarEnd = (Calendar) actualCurrentTime.clone();
         expectedCalendarStart.set(2018, 10, 9, 9, 0, 0);
@@ -77,6 +78,14 @@ public class DateTimeParserTest {
         expectedCalendarStart.set(Calendar.MILLISECOND, 0);
         expectedCalendarEnd.set(Calendar.MILLISECOND, 0);
         assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd), parser.parseDate(VALID_TOMORROW, convenientTime));
+
+        // testing "the day after tomorrow"
+        // no wrap around
+        expectedCalendarStart.set(2018, 10, 10, 9, 0, 0);
+        expectedCalendarEnd.set(2018, 10, 10, 18, 0, 0);
+        expectedCalendarStart.set(Calendar.MILLISECOND, 0);
+        expectedCalendarEnd.set(Calendar.MILLISECOND, 0);
+        assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd), parser.parseDate(VALID_THE_DAY_AFTER_TOMORROW, convenientTime));
     }
 
     @Test
