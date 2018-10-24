@@ -11,6 +11,7 @@ import javafx.scene.control.MenuItem;
 // import javafx.scene.control.TextInputControl;
 // import javafx.scene.input.KeyCombination;
 // import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import seedu.address.commons.core.Config;
@@ -34,12 +35,25 @@ public class ScheduleMainWindow extends UiPart {
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
+    private AppointmentPanel appointmentPanel;
     private Config config;
     private UserPrefs prefs;
     private HelpWindow helpWindow;
 
     @FXML
+    private StackPane commandBoxPlaceholder;
+
+    @FXML
     private MenuItem helpMenuItem;
+
+    @FXML
+    private StackPane appointmentPanelPlaceholder;
+
+    @FXML
+    private StackPane resultDisplayPlaceholder;
+
+    @FXML
+    private StackPane statusbarPlaceholder;
 
     public ScheduleMainWindow(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
         super(FXML, primaryStage);
@@ -97,7 +111,17 @@ public class ScheduleMainWindow extends UiPart {
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
+       // appointmentPanel = new AppointmentPanel(logic.getFilteredEventList());
+       // appointmentPanelPlaceholder.getChildren().add(appointmentPanel.getRoot());
 
+        ResultDisplay resultDisplay = new ResultDisplay();
+        resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
+
+        StatusBarFooter statusBarFooter = new StatusBarFooter(prefs.getAddressBookFilePath());
+        statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());
+
+        CommandBox commandBox = new CommandBox(logic);
+        commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
     }
 
     void hide() {
@@ -150,6 +174,10 @@ public class ScheduleMainWindow extends UiPart {
     @FXML
     private void handleExit() {
         raise(new ExitAppRequestEvent());
+    }
+
+    public AppointmentPanel getAppointmentPanel() {
+        return appointmentPanel ;
     }
 
     @Subscribe

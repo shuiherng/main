@@ -21,8 +21,8 @@ public class Prompt {
      * @param messageToUser message to be displayed
      * @return input by the user
      */
-    public String promptForMoreInput (String messageToUser) throws Exception {
-        promptWindow = mainApp.showPromptWindow(LEADING_MESSAGE+messageToUser);
+    public String promptForMoreInput (String messageToUser) throws PromptException {
+        promptWindow = mainApp.showPromptWindow(LEADING_MESSAGE + messageToUser);
         if (promptWindow.isEnterClicked()) {
             return promptWindow.getInput();
         } else {
