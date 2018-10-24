@@ -14,8 +14,6 @@ import seedu.address.model.ScheduleModel;
 public class HelpCommand extends Command {
 
     public static final String COMMAND_WORD = "help";
-    private boolean test;
-    private MainApp mainApp = new MainApp();
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Shows program usage instructions.\n"
             + "Example: " + COMMAND_WORD;
@@ -26,7 +24,6 @@ public class HelpCommand extends Command {
     public CommandResult execute(AddressBookModel addressBookModel, ScheduleModel scheduleModel,
                                  DiagnosisModel diagnosisModel, CommandHistory history) {
         EventsCenter.getInstance().post(new ShowHelpRequestEvent());
-        test = mainApp.showPromptWindow("Hello");
         return new CommandResult(SHOWING_HELP_MESSAGE);
     }
 }
