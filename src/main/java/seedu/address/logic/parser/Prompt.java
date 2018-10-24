@@ -1,5 +1,10 @@
 package seedu.address.logic.parser;
 
+import seedu.address.MainApp;
+import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.logic.parser.exceptions.PromptException;
+import seedu.address.ui.PromptWindow;
+
 import java.util.Scanner;
 
 /**
@@ -7,17 +12,21 @@ import java.util.Scanner;
  */
 public class Prompt {
 
-    public static final String LEADING_MESSAGE = "Please enter a time slot here: ";
+    public static final String LEADING_MESSAGE = "Please enter a time slot : ";
+    private MainApp mainApp = new MainApp();
+    private PromptWindow promptWindow;
 
     /**
      * Gets more input from the user
      * @param messageToUser message to be displayed
      * @return input by the user
      */
-    public String promptForMoreInput (String messageToUser) {
-        Scanner in = new Scanner(System.in); // need to connect to UI later
-        System.out.println(LEADING_MESSAGE + messageToUser);
-        return in.nextLine(); // commandBox.getTextField()
+    public String promptForMoreInput (String messageToUser) throws Exception {
+        promptWindow = mainApp.showPromptWindow(LEADING_MESSAGE+messageToUser);
+        if (promptWindow.isEnterClicked()) {
+            return promptWindow.getInput();
+        } else {
+            throw new PromptException();
+        }
     }
-
 }
