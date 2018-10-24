@@ -202,7 +202,7 @@ public class DateTimeParser {
         Calendar dateStart = (Calendar) weekOffset.clone();
         Calendar dateEnd = (Calendar) weekOffset.clone();
         dateStart.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        dateStart.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        dateEnd.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
         setDateStartAndEnd(dateStart, dateEnd);
         return new Pair<>(dateStart, dateEnd);
     }
