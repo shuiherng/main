@@ -111,8 +111,8 @@ public class ScheduleMainWindow extends UiPart {
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
-        appointmentPanel = new AppointmentPanel(logic.getFilteredEventList());
-        appointmentPanelPlaceholder.getChildren().add(appointmentPanel.getRoot());
+       // appointmentPanel = new AppointmentPanel(logic.getFilteredEventList());
+       // appointmentPanelPlaceholder.getChildren().add(appointmentPanel.getRoot());
 
         ResultDisplay resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
