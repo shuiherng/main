@@ -1,5 +1,6 @@
 package seedu.address.logic.commands;
 
+import seedu.address.MainApp;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
 import seedu.address.logic.CommandHistory;
@@ -11,6 +12,8 @@ import seedu.address.model.AddressBookModel;
 public class HelpCommand extends Command {
 
     public static final String COMMAND_WORD = "help";
+    private boolean test;
+    private MainApp mainApp = new MainApp();
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Shows program usage instructions.\n"
             + "Example: " + COMMAND_WORD;
@@ -20,6 +23,7 @@ public class HelpCommand extends Command {
     @Override
     public CommandResult execute(AddressBookModel addressBookModel, CommandHistory history) {
         EventsCenter.getInstance().post(new ShowHelpRequestEvent());
+        test = mainApp.showPromptWindow("Hello");
         return new CommandResult(SHOWING_HELP_MESSAGE);
     }
 }

@@ -5,11 +5,16 @@ import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.Optional;
 import java.util.logging.Logger;
+import java.io.*;
 
 import com.google.common.eventbus.Subscribe;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.EventsCenter;
@@ -39,6 +44,8 @@ import seedu.address.storage.StorageManager;
 import seedu.address.storage.UserPrefsStorage;
 import seedu.address.storage.XmlAddressBookStorage;
 import seedu.address.storage.XmlScheduleStorage;
+import seedu.address.ui.MainWindow;
+import seedu.address.ui.PromptWindow;
 import seedu.address.ui.Ui;
 import seedu.address.ui.UiManager;
 
@@ -58,7 +65,6 @@ public class MainApp extends Application {
     protected ScheduleModel scheduleModel;
     protected Config config;
     protected UserPrefs userPrefs;
-
 
     @Override
     public void init() throws Exception {
@@ -220,6 +226,44 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) {
         logger.info("Starting PatientBook " + MainApp.VERSION);
         ui.start(primaryStage);
+    }
+
+    /**
+     * Opens a prompt window to display the available time slot. If the user
+     * clicks Enter, the command of the user is saved as a string and true
+     * is returned.
+     *
+     * @param input the available time slot to be displayed
+     * @return true if the user clicked Enter, false otherwise.
+     */
+    public PromptWindow showPromptWindow (String input) {
+        try {
+            // Load the fxml file and create a new stage for the Prompt Window.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("main/out/production/resources/view/PromptWindow.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+          //  C:\Users\lixin\Desktop\main\src\main\resources\view\PromptWindow.fxml
+            // Create the Prompt Window Stage.
+            Stage PromptStage = new Stage();
+            PromptStage.setTitle("Prompt Window");
+            PromptStage.initModality(Modality.WINDOW_MODAL);
+            PromptStage.initOwner(null);
+            Scene scene = new Scene(page);
+            PromptStage.setScene(scene);
+
+            // Set the input into the controller.
+            PromptWindow controller = loader.getController();
+            controller.setPromptStage(PromptStage);
+            controller.setDisplay(input);
+
+            // Show the dialog and wait until the user closes it
+            PromptStage.show();
+
+            return controller;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new PromptWindow();
+        }
     }
 
     @Override
