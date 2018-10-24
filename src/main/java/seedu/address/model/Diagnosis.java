@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -51,21 +52,28 @@ public class Diagnosis {
      * Gets all related symptoms of a disease.
      *
      * @param disease disease input.
-     * @return a set of all symptoms.
+     * @return a list of all symptoms.
      */
-    public Set<Symptom> getSymptoms(Disease disease) {
+    public List<Symptom> getSymptoms(Disease disease) {
         requireNonNull(disease);
-        boolean hasDisease = this.hasDisease(disease);
-        if (!hasDisease) {
-            //todo:prompt users.
-        }
-        return matcher.get(disease);
+        Set<Symptom> symptoms = matcher.get(disease);
+        return new ArrayList<>(symptoms);
+    }
+
+    /**
+     * Gets all diseases stored in patient book.
+     *
+     * @return a list all diseases.
+     */
+    public List<Disease> getDiseases() {
+        Set<Disease> diseases = matcher.keySet();
+        return new ArrayList<>(diseases);
     }
 
     /**
      * Adds a disease and its related symptoms into the database
      *
-     * @param disease disease input.
+     * @param disease  disease input.
      * @param symptoms related symptoms.
      */
     public void addMatcher(Disease disease, Set<Symptom> symptoms) {
@@ -82,15 +90,16 @@ public class Diagnosis {
      * Predicts a disease with a given set of symptoms.
      *
      * @param symptoms symptoms input.
-     * @return a set of qualified diseases.
+     * @return a list of qualified diseases.
      */
-    public Set<Disease> predictDisease(Set<Symptom> symptoms) {
+    public List<Disease> predictDisease(Set<Symptom> symptoms) {
         requireAllNonNull(symptoms);
         return null;
     }
 
     /**
      * Gets the data from CSV storage file.
+     *
      * @return a HashMap object which its key is the disease and value is its related symptoms.
      */
     private static HashMap<Disease, Set<Symptom>> readDataFromCsvFile() {
@@ -122,6 +131,7 @@ public class Diagnosis {
 
     /**
      * Writes new data to CSV storage file.
+     *
      * @return a new ashMap object which its key is the disease and value is its related symptoms.
      */
     private static HashMap<Disease, Set<Symptom>> writeDataFromCsvFile(Disease disease, Set<Symptom> symptoms) {
@@ -147,6 +157,7 @@ public class Diagnosis {
 
     /**
      * Formats the string with disease and related symptoms so that it can be written to CSV file.
+     *
      * @param diseaseString
      * @param symptoms
      * @return

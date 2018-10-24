@@ -23,6 +23,7 @@ public class ListCommand extends Command {
                                  DiagnosisModel diagnosisModel, CommandHistory history) {
         requireNonNull(addressBookModel);
         requireNonNull(scheduleModel);
+        requireNonNull(diagnosisModel);
         addressBookModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         return new CommandResult(MESSAGE_SUCCESS);
     }

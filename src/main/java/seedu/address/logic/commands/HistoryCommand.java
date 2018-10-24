@@ -23,6 +23,9 @@ public class HistoryCommand extends Command {
     public CommandResult execute(AddressBookModel addressBookModel, ScheduleModel scheduleModel,
                                  DiagnosisModel diagnosisModel, CommandHistory history) {
         requireNonNull(history);
+        requireNonNull(diagnosisModel);
+        requireNonNull(addressBookModel);
+        requireNonNull(scheduleModel);
         List<String> previousCommands = history.getHistory();
 
         if (previousCommands.isEmpty()) {

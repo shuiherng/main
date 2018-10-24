@@ -3,6 +3,7 @@ package seedu.address.model;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.List;
 import java.util.Set;
 
 import seedu.address.model.symptom.Disease;
@@ -26,9 +27,14 @@ public class DiagnosisModelManager implements DiagnosisModel {
     }
 
     @Override
-    public Set<Symptom> getSymptoms(Disease disease) {
+    public List<Symptom> getSymptoms(Disease disease) {
         requireNonNull(disease);
         return diagnosis.getSymptoms(disease);
+    }
+
+    @Override
+    public List<Disease> getDiseases() {
+        return diagnosis.getDiseases();
     }
 
     @Override
@@ -39,7 +45,7 @@ public class DiagnosisModelManager implements DiagnosisModel {
     }
 
     @Override
-    public Set<Disease> predictDisease(Set<Symptom> symptoms) {
+    public List<Disease> predictDisease(Set<Symptom> symptoms) {
         requireAllNonNull(symptoms);
         return diagnosis.predictDisease(symptoms);
     }

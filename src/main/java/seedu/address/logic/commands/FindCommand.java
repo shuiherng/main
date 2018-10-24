@@ -33,6 +33,7 @@ public class FindCommand extends Command {
                                  DiagnosisModel diagnosisModel, CommandHistory history) {
         requireNonNull(addressBookModel);
         requireNonNull(scheduleModel);
+        requireNonNull(diagnosisModel);
         addressBookModel.updateFilteredPersonList(predicate);
         return new CommandResult(
 
