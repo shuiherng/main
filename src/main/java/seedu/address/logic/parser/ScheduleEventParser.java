@@ -4,26 +4,32 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 import seedu.address.commons.util.Pair;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.logic.parser.exceptions.PromptException;
+import seedu.address.model.AddressBookModel;
 import seedu.address.model.ScheduleModel;
 import seedu.address.model.event.ScheduleEvent;
+import seedu.address.model.person.PersonId;
 
 
 /**
  * Parses input arguments and creates a new ScheduleEvent object
  */
-public class ScheduleCommandParser {
+public class ScheduleEventParser {
 
     public static final String MESSAGE_CORRECT_FORMAT = "Expected format: schedule for [name] [date/duration].\n"
             + "Please enter date/duration in natural expressions or in DD/MM/YYYY format.\n"
             + "Refer to User Guide for the complete list of accepted natural expressions.\n";
-    private ScheduleModel model;
+    private ScheduleModel scheduleModel;
+    private AddressBookModel addressBookModel;
 
 
-    public ScheduleCommandParser (ScheduleModel model) {
-        this.model = model;
+    public ScheduleEventParser(AddressBookModel addressBookModel, ScheduleModel scheduleModel) {
+        this.scheduleModel = scheduleModel;
+        this.addressBookModel = addressBookModel;
     }
 
     /**
@@ -32,53 +38,89 @@ public class ScheduleCommandParser {
      * @return The ScheduleEvent intended
      */
     public ScheduleEvent parse(String input) throws ParseException {
-        String[] splitString = input.split("\\s+");
-        ScheduleEvent appointment;
-        if (splitString[0].equals("for")) {
-            appointment = generateScheduleEvent(splitString);
-        } else {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_CORRECT_FORMAT));
-        }
-        return appointment;
+        String[] splitInput = input.split("\\s+");
+        int dateInputStartAt = breakdownInput(splitInput);
+        String nameInput = generateNameInput(splitInput, dateInputStartAt);
+        String dateInput = generateDateInput(splitInput, dateInputStartAt);
+        Pair<Calendar> timeSlot = parseDateInput(dateInput);
+        PersonId patient = parseNameInput(nameInput);
+        return null;
     }
-
 
     /**
      *
-     * @param splitString
+     * @param input
      * @return
+     * @throws ParseException
      */
-    private ScheduleEvent generateScheduleEvent(String[] splitString) throws ParseException {
-        assert splitString[0].equals("for");
-        int dateIndex = -1; // the index at which date/time input starts in the string array
-        for (int i = 2; i < splitString.length; i++) { // loop starts at 2 as name is at least one string long
-            if (isSomeDateInput(splitString, i)) {
-                dateIndex = i;
-                break;
+    private int breakdownInput(String[] input) throws ParseException {
+        if (input[0].equals("for")) {
+            for (int i = 2; i < input.length; i++) { // loop starts at 2 as name is at least one string long
+                if (isSomeDateInput(input, i)) {
+                    return i;
+                }
             }
         }
-        if (dateIndex == -1) { // no valid input for date found
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_CORRECT_FORMAT));
-        }
-        // recover the date input back to a single string
+        throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_CORRECT_FORMAT));
+    }
+
+    /**
+     *
+     * @param input
+     * @param dateInputStartAt
+     * @return
+     */
+    private String generateDateInput(String[] input, int dateInputStartAt) {
         StringBuilder recoveredDateInputBuilder = new StringBuilder();
-        for (int j = dateIndex; j < splitString.length; j++) {
-            recoveredDateInputBuilder.append(splitString[j]);
+        for (int j = dateInputStartAt; j < input.length; j++) {
+            recoveredDateInputBuilder.append(input[j]);
             recoveredDateInputBuilder.append(" ");
         }
+        return recoveredDateInputBuilder.toString();
+    }
 
-        Pair<Calendar> time = new DateTimeParser(model).parseDateTime(recoveredDateInputBuilder.toString());
-
-        // what do I do with the name????
-        //List<String> nameKeywords = Arrays.asList(splitString).subList(1, dateIndex);
-        /*
-        // recover the name input back to a single string
+    /**
+     *
+     * @param input
+     * @param dateInputStartAt
+     * @return
+     */
+    private String generateNameInput(String[] input, int dateInputStartAt) {
         StringBuilder recoveredNameInputBuilder = new StringBuilder();
-        for (int k = 1; k < dateIndex; k++) {
-            recoveredNameInputBuilder.append(splitString[k]);
+        for (int k = 1; k < dateInputStartAt; k++) {
+            recoveredNameInputBuilder.append(input[k]);
             recoveredNameInputBuilder.append(" ");
         }
-        */
+        return recoveredNameInputBuilder.toString();
+    }
+
+    /**
+     *
+     * @param dateInput
+     * @return
+     * @throws ParseException
+     */
+    private Pair<Calendar> parseDateInput(String dateInput) throws ParseException {
+        try {
+            Calendar currentTime = Calendar.getInstance();
+            DateTimeParser dateTimeParser = new DateTimeParser();
+            Pair<Calendar> dateInterval = dateTimeParser.parseDate(dateInput, currentTime);
+            List<ScheduleEvent> scheduledAppts = getAppointmentsBetween(dateInterval);
+            String availableTimeSlots = dateTimeParser.getAvailableTimeSlotsBetween(scheduledAppts, dateInterval);
+            String timeSlotInput = new Prompt().promptForMoreInput(availableTimeSlots);
+            Pair<Calendar> timeSlot = dateTimeParser.parseTimeSlot(timeSlotInput.trim());
+            return timeSlot;
+        } catch (ParseException | PromptException e) {
+            throw new ParseException("AHH");
+        }
+    }
+
+    /**
+     *
+     * @param nameInput
+     * @return
+     */
+    private PersonId parseNameInput(String nameInput) {
         return null;
     }
 
@@ -154,4 +196,13 @@ public class ScheduleCommandParser {
         }
         return false;
     }
+
+    private List<ScheduleEvent> getAppointmentsBetween(Pair<Calendar> dateInterval) {
+        scheduleModel.updateFilteredEventList((scheduleEvent) -> {
+            return !scheduleEvent.getDate().getKey().before(dateInterval.getKey())
+                    && !scheduleEvent.getDate().getValue().after(dateInterval.getValue());
+        });
+        return scheduleModel.getFilteredEventList();
+    }
+
 }

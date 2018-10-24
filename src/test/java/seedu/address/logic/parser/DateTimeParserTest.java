@@ -47,7 +47,7 @@ public class DateTimeParserTest {
     private static final String REFINED_INVALID_FORMAT_TIME_SLOT = "13.12.2018 10:30 - 9:30";
     private static final String REFINED_INVALID_FORMAT_WRONG_SEQUENCE_TIME_SLOT = "10:30 - 9:30 13.12.2018";
 
-    private DateTimeParser parser = new DateTimeParser(new ScheduleModelManager());
+    private DateTimeParser parser = new DateTimeParser();
     private Calendar actualCurrentTime;
     private Calendar convenientTime;
     private Calendar wrapAroundWeekTime;

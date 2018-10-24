@@ -1,7 +1,7 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.parser.ScheduleCommandParser.MESSAGE_CORRECT_FORMAT;
+import static seedu.address.logic.parser.ScheduleEventParser.MESSAGE_CORRECT_FORMAT;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -13,8 +13,6 @@ import java.util.List;
 
 import seedu.address.commons.util.Pair;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.logic.parser.exceptions.PromptException;
-import seedu.address.model.ScheduleModel;
 import seedu.address.model.event.ScheduleEvent;
 
 
@@ -31,24 +29,6 @@ public class DateTimeParser {
     private static final String MESSAGE_NO_SLOTS = "No time slots available!\n";
     private static final String MESSAGE_HAVE_SLOTS = "You have time slots available during:\n";
     private static final String MESSAGE_INVALID_TIME_SLOT = "Invalid time slot! \n%1$s";
-    private ScheduleModel scheduleModel;
-
-    public DateTimeParser (ScheduleModel model) {
-        this.scheduleModel = model;
-    }
-
-    /**
-     * Generates the intended time duration from given user input.
-     * @param dateInput User's initial date input in natural expressions or in a fixed format (DD/MM/YYYY).
-     * @return The time slot intended by the user, represented by a Pair of Calendar objects.
-     * @throws ParseException if the user input is not an accepted natural expression or not in the expected format.
-     */
-    public Pair<Calendar> parseDateTime(String dateInput) throws ParseException {
-        Calendar currentTime = getCurrentTime();
-        Pair<Calendar> resultantDateInterval = parseDate(dateInput.trim(), currentTime);
-        Pair<Calendar> resultantTimeSlot = refineTime(resultantDateInterval);
-        return resultantTimeSlot;
-    }
 
     /**
      * Parses date from input string.
@@ -57,20 +37,11 @@ public class DateTimeParser {
      * @throws ParseException if the user input is not an accepted natural expression or not in the expected format.
      */
     public Pair<Calendar> parseDate(String input, Calendar currentTime) throws ParseException {
-        Pair<Calendar> resultantDateInterval = getResultantDate(currentTime, input);
+        zeroOutExtraPrecision(currentTime);
+        Pair<Calendar> resultantDateInterval = getResultantDate(currentTime, input.trim());
         return resultantDateInterval;
-
     }
 
-    /**
-     * Refines the datetime interval into a specific time slot on a day.
-     * @param resultantDateInterval Date interval.
-     * @return The refined final time slot ready to be inserted into the schedule.
-     */
-    private Pair<Calendar> refineTime(Pair<Calendar> resultantDateInterval) throws ParseException {
-        String timeSlotInput = promptForTimeSlot(resultantDateInterval);
-        return parseTimeSlot(timeSlotInput.trim());
-    }
 
     /**
      * Finds the date range intended from a given date/duration input and the current time.
@@ -103,7 +74,6 @@ public class DateTimeParser {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_CORRECT_FORMAT));
             }
         }
-
     }
 
     /**
@@ -326,75 +296,34 @@ public class DateTimeParser {
     }
 
     /**
-     * Gets the current time when the program executes this method.
-     * Seconds and Milliseconds are zeroed out as precision is only required up to minute.
-     * @return The current time
-     */
-    private Calendar getCurrentTime() {
-        Calendar currentTime = Calendar.getInstance();
-        currentTime.set(Calendar.SECOND, 0);
-        currentTime.set(Calendar.MILLISECOND, 0);
-        return currentTime;
-    }
-
-    /**
-     * Applies working hours on two given dates.
-     * The start date will be set to 9:00 while the end date will be set to 18:00
-     * @param start The start time.
-     * @param end The end time.
-     */
-    private void setDateStartAndEnd(Calendar start, Calendar end) {
-        start.set(Calendar.HOUR_OF_DAY, 9);
-        start.set(Calendar.MINUTE, 0);
-        start.set(Calendar.SECOND, 0);
-        start.set(Calendar.MILLISECOND, 0);
-        end.set(Calendar.HOUR_OF_DAY, 18);
-        end.set(Calendar.MINUTE, 0);
-        end.set(Calendar.SECOND, 0);
-        end.set(Calendar.MILLISECOND, 0);
-    }
-
-    /**
      * Prompts the user for a refined time slot input, by providing a list of available time slots
      * during a given date interval.
-     * @param resultantDateInterval Date interval.
      * @return The user's further input for a refined time slot during the date interval.
      */
-    private String promptForTimeSlot(Pair<Calendar> resultantDateInterval) throws ParseException {
-        List<Pair<Calendar>> availableTimeList = getAvailableTimeBetween(resultantDateInterval);
-        String availableTimeString = slotsListToString(availableTimeList);
-        Prompt prompt = new Prompt();
-        try {
-            return prompt.promptForMoreInput(availableTimeString);
-        } catch (PromptException e) {
-            throw new ParseException("DUMMY");
-        }
+    public String getAvailableTimeSlotsBetween(List<ScheduleEvent> scheduledAppointments, Pair<Calendar> dateInterval) {
+        List<Pair<Calendar>> availableTimeList = getSlotsAsList(scheduledAppointments, dateInterval);
+        return slotsListToString(availableTimeList);
     }
 
     /**
      * Gets available time slots for a given date interval.
      * A time period is considered available when the doctor does not have an appointment during it.
-     * @param resultantDateInterval Date interval.
      * @return Available time slots during the date interval, represented as a list, unsorted due to implementation.
      */
-    private List<Pair<Calendar>> getAvailableTimeBetween(Pair<Calendar> resultantDateInterval) {
-        scheduleModel.updateFilteredEventList((scheduleEvent) -> {
-            return !scheduleEvent.getDate().getKey().before(resultantDateInterval.getKey())
-                    && !scheduleEvent.getDate().getValue().after(resultantDateInterval.getValue());
-        });
-        List<ScheduleEvent> scheduledAppointments = scheduleModel.getFilteredEventList();
+    private List<Pair<Calendar>> getSlotsAsList(List<ScheduleEvent> scheduledAppts, Pair<Calendar> dateInterval) {
+
         List<Pair<Calendar>> emptySlots = new ArrayList<>();
-        if (!scheduledAppointments.isEmpty()) {
-            Calendar firstScheduleStart = scheduledAppointments.get(0).getDate().getKey();
+        if (!scheduledAppts.isEmpty()) {
+            Calendar firstScheduleStart = scheduledAppts.get(0).getDate().getKey();
             Calendar firstDayStart = (Calendar) firstScheduleStart.clone();
             firstDayStart.set(Calendar.HOUR_OF_DAY, 9);
             firstDayStart.set(Calendar.MINUTE, 0);
             if (firstScheduleStart.after(firstDayStart)) {
                 emptySlots.add(new Pair<>(firstDayStart, firstScheduleStart));
             }
-            for (int i = 0; i < scheduledAppointments.size() - 1; i++) {
-                Calendar currentEnd = scheduledAppointments.get(i).getDate().getValue();
-                Calendar nextStart = scheduledAppointments.get(i + 1).getDate().getKey();
+            for (int i = 0; i < scheduledAppts.size() - 1; i++) {
+                Calendar currentEnd = scheduledAppts.get(i).getDate().getValue();
+                Calendar nextStart = scheduledAppts.get(i + 1).getDate().getKey();
                 if (nextStart.get(Calendar.DATE) != currentEnd.get(Calendar.DATE)) {
                     // the next appointment is on a different date already
                     // the remaining (if applicable) current day will be free all the way till day end
@@ -416,7 +345,7 @@ public class DateTimeParser {
                     emptySlots.add(new Pair<>(currentEnd, nextStart));
                 }
             }
-            Calendar lastScheduleEnd = scheduledAppointments.get(scheduledAppointments.size() - 1).getDate().getValue();
+            Calendar lastScheduleEnd = scheduledAppts.get(scheduledAppts.size() - 1).getDate().getValue();
             Calendar lastDayEnd = (Calendar) lastScheduleEnd.clone();
             lastDayEnd.set(Calendar.HOUR_OF_DAY, 18);
             lastDayEnd.set(Calendar.MINUTE, 0);
@@ -425,12 +354,12 @@ public class DateTimeParser {
             }
         }
         // Now need to find days when there is no scheduled appointment, ie. the day is completely empty
-        Calendar dayPointer = (Calendar) resultantDateInterval.getKey().clone();
+        Calendar dayPointer = (Calendar) dateInterval.getKey().clone();
         // since the maximum interval is one month, using DAY_OF_YEAR will always be safe
-        while (!dayPointer.after(resultantDateInterval.getValue())) {
+        while (!dayPointer.after(dateInterval.getValue())) {
             boolean isEmptyDay = true;
-            if (!scheduledAppointments.isEmpty()) {
-                for (ScheduleEvent appt: scheduledAppointments) {
+            if (!scheduledAppts.isEmpty()) {
+                for (ScheduleEvent appt: scheduledAppts) {
                     if (appt.getDate().getKey().get(Calendar.DAY_OF_YEAR) == dayPointer.get(Calendar.DAY_OF_YEAR)) {
                         isEmptyDay = false;
                         break;
@@ -553,6 +482,32 @@ public class DateTimeParser {
         timeSlot.getValue().set(Calendar.HOUR_OF_DAY, Integer.parseInt(endHourMin[0]));
         timeSlot.getValue().set(Calendar.MINUTE, Integer.parseInt(startHourMin[1]));
     }
+
+    /**
+     * Seconds and Milliseconds of the given Calendar object are zeroed out as precision is only required up to minute.
+     */
+    private void zeroOutExtraPrecision(Calendar calendar) {
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+    }
+
+    /**
+     * Applies working hours on two given dates.
+     * The start date will be set to 9:00 while the end date will be set to 18:00
+     * @param start The start time.
+     * @param end The end time.
+     */
+    private void setDateStartAndEnd(Calendar start, Calendar end) {
+        start.set(Calendar.HOUR_OF_DAY, 9);
+        start.set(Calendar.MINUTE, 0);
+        start.set(Calendar.SECOND, 0);
+        start.set(Calendar.MILLISECOND, 0);
+        end.set(Calendar.HOUR_OF_DAY, 18);
+        end.set(Calendar.MINUTE, 0);
+        end.set(Calendar.SECOND, 0);
+        end.set(Calendar.MILLISECOND, 0);
+    }
+
 }
 
 
