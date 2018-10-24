@@ -10,11 +10,13 @@ import org.junit.rules.ExpectedException;
 
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.HistoryCommand;
-import seedu.address.logic.commands.ListPersonCommand;
+import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.AddressBookModel;
 import seedu.address.model.AddressBookModelManager;
+import seedu.address.model.DiagnosisModel;
+import seedu.address.model.DiagnosisModelManager;
 import seedu.address.model.ScheduleModel;
 import seedu.address.model.ScheduleModelManager;
 import seedu.address.model.UserPrefs;
@@ -26,7 +28,8 @@ public class LogicManagerTest {
 
     private AddressBookModel addressBookModel = new AddressBookModelManager();
     private ScheduleModel scheduleModel = new ScheduleModelManager();
-    private Logic logic = new LogicManager(addressBookModel, scheduleModel);
+    private DiagnosisModel diagnosisModel = new DiagnosisModelManager();
+    private Logic logic = new LogicManager(addressBookModel, scheduleModel, diagnosisModel);
 
     @Test
     public void execute_invalidCommandFormat_throwsParseException() {
@@ -44,8 +47,8 @@ public class LogicManagerTest {
 
     @Test
     public void execute_validCommand_success() {
-        String listCommand = ListPersonCommand.COMMAND_WORD;
-        assertCommandSuccess(listCommand, ListPersonCommand.MESSAGE_SUCCESS, addressBookModel);
+        String listCommand = ListCommand.COMMAND_WORD;
+        assertCommandSuccess(listCommand, ListCommand.MESSAGE_SUCCESS, addressBookModel);
         assertHistoryCorrect(listCommand);
     }
 

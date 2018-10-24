@@ -3,6 +3,8 @@ package seedu.address.logic.commands;
 import seedu.address.logic.CommandHistory;
 // import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBookModel;
+import seedu.address.model.DiagnosisModel;
+import seedu.address.model.ScheduleModel;
 
 /**
  * Switch between Patient Mode and Calender Mode
@@ -21,7 +23,8 @@ public class ModeCommand extends Command {
     public static final String MESSAGE_CANNOT_SWITCH = "You are already in this mode.\n";
 
     @Override
-    public CommandResult execute(AddressBookModel addressBookModel, CommandHistory history) {
+    public CommandResult execute(AddressBookModel addressBookModel, ScheduleModel scheduleModel,
+                                 DiagnosisModel diagnosisModel, CommandHistory history) {
         return null;
     }
 }

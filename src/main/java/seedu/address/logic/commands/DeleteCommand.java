@@ -9,12 +9,14 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBookModel;
+import seedu.address.model.DiagnosisModel;
+import seedu.address.model.ScheduleModel;
 import seedu.address.model.person.Person;
 
 /**
  * Deletes a person identified using it's displayed index from the address book.
  */
-public class DeletePersonCommand extends Command {
+public class DeleteCommand extends Command {
 
     public static final String COMMAND_WORD = "delete";
 
@@ -27,13 +29,15 @@ public class DeletePersonCommand extends Command {
 
     private final Index targetIndex;
 
-    public DeletePersonCommand(Index targetIndex) {
+    public DeleteCommand(Index targetIndex) {
         this.targetIndex = targetIndex;
     }
 
     @Override
-    public CommandResult execute(AddressBookModel addressBookModel, CommandHistory history) throws CommandException {
+    public CommandResult execute(AddressBookModel addressBookModel, ScheduleModel scheduleModel,
+                                 DiagnosisModel diagnosisModel, CommandHistory history) throws CommandException {
         requireNonNull(addressBookModel);
+        requireNonNull(scheduleModel);
         List<Person> lastShownList = addressBookModel.getFilteredPersonList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
@@ -48,7 +52,7 @@ public class DeletePersonCommand extends Command {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof DeletePersonCommand // instanceof handles nulls
-                && targetIndex.equals(((DeletePersonCommand) other).targetIndex)); // state check
+                || (other instanceof DeleteCommand // instanceof handles nulls
+                && targetIndex.equals(((DeleteCommand) other).targetIndex)); // state check
     }
 }
