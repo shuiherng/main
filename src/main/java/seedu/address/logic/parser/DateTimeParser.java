@@ -13,6 +13,7 @@ import java.util.List;
 
 import seedu.address.commons.util.Pair;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.logic.parser.exceptions.PromptException;
 import seedu.address.model.ScheduleModel;
 import seedu.address.model.event.ScheduleEvent;
 
@@ -359,11 +360,15 @@ public class DateTimeParser {
      * @param resultantDateInterval Date interval.
      * @return The user's further input for a refined time slot during the date interval.
      */
-    private String promptForTimeSlot(Pair<Calendar> resultantDateInterval) {
+    private String promptForTimeSlot(Pair<Calendar> resultantDateInterval) throws ParseException {
         List<Pair<Calendar>> availableTimeList = getAvailableTimeBetween(resultantDateInterval);
         String availableTimeString = slotsListToString(availableTimeList);
         Prompt prompt = new Prompt();
-        return prompt.promptForMoreInput(availableTimeString);
+        try {
+            return prompt.promptForMoreInput(availableTimeString);
+        } catch (PromptException e) {
+            throw new ParseException("DUMMY");
+        }
     }
 
     /**
