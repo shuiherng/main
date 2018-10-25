@@ -60,4 +60,11 @@ public interface AddressBookModel {
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
 
+    /**
+     * Internally used function to get a list of persons without updating the UI.
+     * @param predicate Predicate to match.
+     * @return list of persons.
+     */
+    ObservableList<Person> internalGetFromPersonList(Predicate<Person> predicate);
+
 }

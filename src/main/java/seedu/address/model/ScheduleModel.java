@@ -52,4 +52,11 @@ public interface ScheduleModel {
      */
     void updateFilteredEventList(Predicate<ScheduleEvent> predicate);
 
+    /**
+     * Internally used function to get a list of persons without updating the UI.
+     * @param predicate predicate to match.
+     * @return list of filtered schedule events.
+     */
+    ObservableList<ScheduleEvent> internalGetFromEventList(Predicate<ScheduleEvent> predicate);
+
 }

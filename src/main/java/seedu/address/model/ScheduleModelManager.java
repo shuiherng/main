@@ -106,6 +106,16 @@ public class ScheduleModelManager extends ComponentManager implements ScheduleMo
     }
 
     @Override
+    public ObservableList<ScheduleEvent> internalGetFromEventList(Predicate<ScheduleEvent> predicate) {
+        requireNonNull(predicate);
+
+        FilteredList<ScheduleEvent> tempList = new FilteredList<>(schedule.getAllEventList());
+        tempList.setPredicate(predicate);
+
+        return FXCollections.unmodifiableObservableList(tempList);
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (obj == this) {
             return true;
