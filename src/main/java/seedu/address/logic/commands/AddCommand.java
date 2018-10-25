@@ -10,6 +10,7 @@ import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_TAG;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -122,9 +123,13 @@ public class AddCommand extends Command {
             }
         } else if (addType.equals("appointment")) {
             // adds an event into the schedule
-            ScheduleEvent newEvent = new ScheduleCommandParser(scheduleModel).parse(args);
-            scheduleModel.addEvent(newEvent);
-            return new CommandResult(String.format(MESSAGE_SUCCESS_SCHEDULE, newEvent));
+            try {
+                ScheduleEvent newEvent = new ScheduleCommandParser(scheduleModel).parse(args);
+                scheduleModel.addEvent(newEvent);
+                return new CommandResult(String.format(MESSAGE_SUCCESS_SCHEDULE, newEvent));
+            } catch (ParseException e) {
+                throw new CommandException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+            }
         } else if (addType.equals("disease")) {
             // adds a disease into the addressbook
             ArgumentMultimap argMultimap =
@@ -136,7 +141,11 @@ public class AddCommand extends Command {
             }
 
             try {
-                Disease disease = ParserUtil.parseDisease(argMultimap.getValue(PREFIX_DISEASE).get());
+                Optional<String> diseaseValue = argMultimap.getValue(PREFIX_DISEASE);
+                if (!diseaseValue.isPresent()) {
+                    throw new CommandException("No disease value when parsing (parsing performed during execution).");
+                }
+                Disease disease = ParserUtil.parseDisease(diseaseValue.get());
                 Set<Symptom> symptomSet = ParserUtil.parseSymptoms(argMultimap.getAllValues(PREFIX_SYMPTOM));
                 if (diagnosisModel.hasDisease(disease)) {
                     throw new CommandException(MESSAGE_DUPLICATE_DISEASE);
@@ -147,7 +156,7 @@ public class AddCommand extends Command {
                 throw new CommandException("Unexpected Error: unacceptable values should have been prompted for.", e);
             }
         } else {
-            throw new CommandException("Unexpected Values: should have been caught elsewhere were present");
+            throw new CommandException("Unexpected Values: should have been caught in AddCommandParser.");
         }
 
 

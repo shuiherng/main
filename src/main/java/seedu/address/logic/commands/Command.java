@@ -15,13 +15,16 @@ public abstract class Command {
      * Executes the command and returns the result message.
      *
      * @param addressBookModel {@code AddressBookModel} which the command should operate on.
-     * @param diagnosisModel
+     * @param scheduleModel    {@code ScheduleModel} which the command should operate on.
+     * @param diagnosisModel   {@code DiagnosisModel} which the command should operate on.
      * @param history          {@code CommandHistory} which the command should operate on.
      * @return feedback message of the operation result for display
      * @throws CommandException If an error occurs during command execution.
      */
     public abstract CommandResult execute(AddressBookModel addressBookModel,
-                                          ScheduleModel scheduleModel, DiagnosisModel diagnosisModel, CommandHistory history)
+                                          ScheduleModel scheduleModel,
+                                          DiagnosisModel diagnosisModel,
+                                          CommandHistory history)
             throws CommandException;
 
 }
