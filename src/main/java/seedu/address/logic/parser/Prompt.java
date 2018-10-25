@@ -12,7 +12,7 @@ import java.util.Scanner;
  */
 public class Prompt {
 
-    public static final String LEADING_MESSAGE = "Please enter a time slot : ";
+
     private MainApp mainApp = new MainApp();
     private PromptWindow promptWindow;
 
@@ -21,8 +21,8 @@ public class Prompt {
      * @param messageToUser message to be displayed
      * @return input by the user
      */
-    public String promptForMoreInput (String messageToUser) throws PromptException {
-        promptWindow = mainApp.showPromptWindow(LEADING_MESSAGE + messageToUser);
+    public String promptForMoreInput (String leadingMessage, String messageToUser) throws PromptException {
+        promptWindow = mainApp.showPromptWindow(leadingMessage + messageToUser);
         if (promptWindow.isEnterClicked()) {
             return promptWindow.getInput();
         } else {

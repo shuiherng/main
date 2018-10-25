@@ -18,7 +18,7 @@ public class AddCommandParser implements Parser<AddCommand> {
      */
     public AddCommand parse(String args) throws ParseException {
 
-        String[] argSplit = args.split(" ", 2);
+        String[] argSplit = args.trim().split(" ", 2);
 
         String cmdType = argSplit[0];
         args = argSplit[1];

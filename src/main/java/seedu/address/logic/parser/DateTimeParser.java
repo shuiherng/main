@@ -1,7 +1,7 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.parser.ScheduleEventParser.MESSAGE_CORRECT_FORMAT;
+import static seedu.address.logic.parser.ScheduleEventParser.MESSAGE_SCHEDULE_FORMAT;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -25,7 +25,8 @@ import seedu.address.model.event.ScheduleEvent;
 public class DateTimeParser {
 
 
-    private static final String MESSAGE_CORRECT_FORMAT_PROMPT = "Please enter time slot in DD/MM/YYYY hh:mm - hh:mm";
+    private static final String MESSAGE_SCHEDULE_PROMPT_FORMAT = "Expected format: DD/MM/YYYY hh:mm - hh:mm\n"
+            + "Eg. 13/12/2018 13:30 - 14:30\n";
     private static final String MESSAGE_NO_SLOTS = "No time slots available!\n";
     private static final String MESSAGE_HAVE_SLOTS = "You have time slots available during:\n";
     private static final String MESSAGE_INVALID_TIME_SLOT = "Invalid time slot! \n%1$s";
@@ -71,7 +72,7 @@ public class DateTimeParser {
             if (isValidDateFormat(dateInput)) {
                 return getDateFromSpecified(dateInput); // user actually inputs the date (eg. 13/12/2018)
             } else {
-                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_CORRECT_FORMAT));
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_SCHEDULE_FORMAT));
             }
         }
     }
@@ -254,7 +255,7 @@ public class DateTimeParser {
             setDateStartAndEnd(dateStart, dateEnd); // apply working hours by default
             return new Pair<>(dateStart, dateEnd);
         } catch (java.text.ParseException e) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_CORRECT_FORMAT));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_SCHEDULE_FORMAT));
         }
     }
 
@@ -427,15 +428,15 @@ public class DateTimeParser {
         String startTime = splitString[1];
         String endTime = splitString[3];
         if (!isValidDateFormat(ddmmyyyy)) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_CORRECT_FORMAT_PROMPT));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_SCHEDULE_PROMPT_FORMAT));
         }
         Pair<Calendar> timeSlot = getDateFromSpecified(ddmmyyyy);
         if (!isValidTimeFormat(startTime) || !isValidTimeFormat(endTime)) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_CORRECT_FORMAT_PROMPT));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_SCHEDULE_PROMPT_FORMAT));
         }
         setSlotStartAndEnd(timeSlot, startTime, endTime);
         if (!timeSlot.getKey().before(timeSlot.getValue())) {
-            throw new ParseException(String.format(MESSAGE_INVALID_TIME_SLOT, MESSAGE_CORRECT_FORMAT_PROMPT));
+            throw new ParseException(String.format(MESSAGE_INVALID_TIME_SLOT, MESSAGE_SCHEDULE_PROMPT_FORMAT));
         }
         return timeSlot;
     }

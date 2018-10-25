@@ -12,6 +12,8 @@ import seedu.address.logic.parser.exceptions.PromptException;
 import seedu.address.model.AddressBookModel;
 import seedu.address.model.ScheduleModel;
 import seedu.address.model.event.ScheduleEvent;
+import seedu.address.model.person.MatchPersonPredicate;
+import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonId;
 
 
@@ -20,9 +22,12 @@ import seedu.address.model.person.PersonId;
  */
 public class ScheduleEventParser {
 
-    public static final String MESSAGE_CORRECT_FORMAT = "Expected format: schedule for [name] [date/duration].\n"
+    public static final String MESSAGE_SCHEDULE_FORMAT = "Expected format: schedule for [name] [date/duration].\n"
             + "Please enter date/duration in natural expressions or in DD/MM/YYYY format.\n"
             + "Refer to User Guide for the complete list of accepted natural expressions.\n";
+    public static final String MESSAGE_PROMPT_NOTES = "Any additional notes?\n";
+    public static final String MESSAGE_PROMPT_TIMESLOT = "Please enter a time slot in DD/MM/YYYY hh:mm - hh:mm: \n";
+    public static final String MESSAGE_PROMPT_ID = "Please enter the ID of the patient you want to schedule for: \n";
     private ScheduleModel scheduleModel;
     private AddressBookModel addressBookModel;
 
@@ -40,10 +45,11 @@ public class ScheduleEventParser {
     public ScheduleEvent parse(String input) throws ParseException {
         String[] splitInput = input.split("\\s+");
         int dateInputStartAt = breakdownInput(splitInput);
-        String nameInput = generateNameInput(splitInput, dateInputStartAt);
+        String[] nameInput = generateNameInput(splitInput, dateInputStartAt);
         String dateInput = generateDateInput(splitInput, dateInputStartAt);
         Pair<Calendar> timeSlot = parseDateInput(dateInput);
         PersonId patient = parseNameInput(nameInput);
+        String notes = promptForNotes();
         return null;
     }
 
@@ -61,7 +67,7 @@ public class ScheduleEventParser {
                 }
             }
         }
-        throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_CORRECT_FORMAT));
+        throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_SCHEDULE_FORMAT));
     }
 
     /**
@@ -85,13 +91,8 @@ public class ScheduleEventParser {
      * @param dateInputStartAt
      * @return
      */
-    private String generateNameInput(String[] input, int dateInputStartAt) {
-        StringBuilder recoveredNameInputBuilder = new StringBuilder();
-        for (int k = 1; k < dateInputStartAt; k++) {
-            recoveredNameInputBuilder.append(input[k]);
-            recoveredNameInputBuilder.append(" ");
-        }
-        return recoveredNameInputBuilder.toString();
+    private String[] generateNameInput(String[] input, int dateInputStartAt) {
+        return Arrays.copyOfRange(input, 1, dateInputStartAt);
     }
 
     /**
@@ -107,7 +108,7 @@ public class ScheduleEventParser {
             Pair<Calendar> dateInterval = dateTimeParser.parseDate(dateInput, currentTime);
             List<ScheduleEvent> scheduledAppts = getAppointmentsBetween(dateInterval);
             String availableTimeSlots = dateTimeParser.getAvailableTimeSlotsBetween(scheduledAppts, dateInterval);
-            String timeSlotInput = new Prompt().promptForMoreInput(availableTimeSlots);
+            String timeSlotInput = new Prompt().promptForMoreInput(MESSAGE_PROMPT_TIMESLOT, availableTimeSlots);
             Pair<Calendar> timeSlot = dateTimeParser.parseTimeSlot(timeSlotInput.trim());
             return timeSlot;
         } catch (ParseException | PromptException e) {
@@ -120,10 +121,51 @@ public class ScheduleEventParser {
      * @param nameInput
      * @return
      */
-    private PersonId parseNameInput(String nameInput) {
-        return null;
+    private PersonId parseNameInput(String[] nameInput) throws ParseException {
+        try {
+            List<Person> nameMatchedPersons = addressBookModel.internalGetFromPersonList
+                    (new MatchPersonPredicate(Arrays.asList(nameInput)));
+            String personsToDisplay = displayPersonListAsString (nameMatchedPersons);
+            String personIdInput = new Prompt().promptForMoreInput(MESSAGE_PROMPT_ID, personsToDisplay);
+            List<Person> finalizedPerson = addressBookModel.internalGetFromPersonList
+                    (new MatchPersonPredicate(Arrays.asList(personIdInput)));
+            if (finalizedPerson.size() == 1) {
+                return finalizedPerson.get(0).getId();
+            }
+            throw new ParseException("AHH");
+        } catch (PromptException e) {
+            throw new ParseException("AHH");
+        }
     }
 
+    /**
+     *
+     * @param nameMatchedPersons
+     * @return
+     */
+    private String displayPersonListAsString(List<Person> nameMatchedPersons) {
+        StringBuilder personsBuilder = new StringBuilder();
+        for (Person person: nameMatchedPersons) {
+            personsBuilder.append(person.getId());
+            personsBuilder.append(" ");
+            personsBuilder.append(person.getName());
+            personsBuilder.append("\n");
+        }
+        return personsBuilder.toString().trim();
+    }
+
+    /**
+     *
+     * @return
+     * @throws ParseException
+     */
+    private String promptForNotes() throws ParseException {
+        try {
+            return new Prompt().promptForMoreInput(MESSAGE_PROMPT_NOTES, "");
+        } catch (PromptException e) {
+            throw new ParseException("AHH");
+        }
+    }
     /**
      *
      * @param splitString
