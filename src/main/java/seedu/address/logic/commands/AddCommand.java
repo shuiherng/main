@@ -152,7 +152,7 @@ public class AddCommand extends Command {
                     throw new CommandException(MESSAGE_DUPLICATE_DISEASE);
                 }
                 diagnosisModel.addMatcher(disease, symptomSet);
-                return new CommandResult(String.format(MESSAGE_SUCCESS_ADDRESSBOOK, disease));
+                return new CommandResult(String.format(MESSAGE_SUCCESS_DIAGNOSIS, disease));
             } catch (ParseException e) {
                 throw new CommandException("Unexpected Error: unacceptable values should have been prompted for.", e);
             }

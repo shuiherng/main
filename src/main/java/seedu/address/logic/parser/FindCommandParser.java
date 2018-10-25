@@ -22,7 +22,7 @@ public class FindCommandParser implements Parser<FindCommand> {
         String cmdType = argSplit[0];
         args = argSplit[1];
 
-        if (!cmdType.equals("patient") && !cmdType.equals("appointment") && !cmdType.equals("symptoms")) {
+        if (!cmdType.equals("patient") && !cmdType.equals("appointment") && !cmdType.equals("symptom")) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
         /*

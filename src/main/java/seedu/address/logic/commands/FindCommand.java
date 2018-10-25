@@ -2,6 +2,8 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Arrays;
+
 import seedu.address.commons.core.Messages;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -10,10 +12,8 @@ import seedu.address.model.DiagnosisModel;
 import seedu.address.model.ScheduleModel;
 import seedu.address.model.event.ScheduleEventMatchesPredicate;
 import seedu.address.model.person.MatchPersonPredicate;
+import seedu.address.model.symptom.Disease;
 import seedu.address.model.symptom.Symptom;
-import seedu.address.model.symptom.DiseaseMatchesPredicate;
-
-import java.util.Arrays;
 
 /**
  * Finds and lists all persons in address book whose name contains any of the argument keywords.
@@ -23,10 +23,20 @@ public class FindCommand extends Command {
 
     public static final String COMMAND_WORD = "find";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names contain any of "
-            + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
-            + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
-            + "Example: " + COMMAND_WORD + " alice bob charlie";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + "use 'find patient' or 'find symptom' "
+            + "to find all persons whose names contain any of "
+            + "the specified keywords (case-insensitive) or to find all symptoms related to a disease "
+            + "and displays them as a list with index numbers.\n"
+            + "Parameters to find persons: KEYWORD [MORE_KEYWORDS]...\n"
+            + "Example: "
+            + COMMAND_WORD
+            + " patient"
+            + " alice bob charlie\n"
+            + "Parameter to find symptoms: DISEASE\n"
+            + "Example: "
+            + COMMAND_WORD
+            + " symptom"
+            + " influenza\n";
 
     private final String cmdType;
     private final String searchString;
@@ -57,9 +67,14 @@ public class FindCommand extends Command {
             scheduleModel.updateFilteredEventList(new ScheduleEventMatchesPredicate(searchString));
             cmdResult = String.format(Messages.MESSAGE_EVENTS_LISTED_OVERVIEW,
                     scheduleModel.getFilteredEventList().size());
-        } else if (this.cmdType.equals("symptoms")) {
-            Symptom[] symptomList = diagnosisModel.getDiseases(new DiseaseMatchesPredicate(searchString));
-            cmdResult = "Found the following diseases matching the symptoms:\n" + Arrays.toString(symptomList);
+        } else if (this.cmdType.equals("symptom")) {
+            Disease disease = new Disease(searchString.trim().toLowerCase());
+            if (!diagnosisModel.hasDisease(disease)) {
+                throw new CommandException("Unexpected Error: disease is not present in our record, "
+                        + "please add the disease and its related symptoms into the record");
+            }
+            Symptom[] symptomList = diagnosisModel.getSymptoms(disease);
+            cmdResult = "Found the following symptoms matching the disease:\n" + Arrays.toString(symptomList);
         } else {
             throw new CommandException("Unexpected Values: Should have been caught in FindCommandParser.");
         }
