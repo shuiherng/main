@@ -73,6 +73,7 @@ public class EditCommand extends Command {
                                  DiagnosisModel diagnosisModel, CommandHistory history) throws CommandException {
         requireNonNull(addressBookModel);
         requireNonNull(scheduleModel);
+        requireNonNull(diagnosisModel);
         List<Person> lastShownList = addressBookModel.getFilteredPersonList();
 
         if (index.getZeroBased() >= lastShownList.size()) {

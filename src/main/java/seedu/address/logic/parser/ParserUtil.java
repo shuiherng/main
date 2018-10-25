@@ -13,6 +13,8 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.symptom.Disease;
+import seedu.address.model.symptom.Symptom;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -121,4 +123,41 @@ public class ParserUtil {
         }
         return tagSet;
     }
+
+    /**
+     * Parses {@code String disease} into a {@code Disease}.
+     * Leading and trailing whitespaces will be trimmed.
+     * String will be converted to lower case.
+     */
+    public static Disease parseDisease(String disease) throws ParseException {
+        requireNonNull(disease);
+        disease = disease.toLowerCase();
+        String trimmedDisease = disease.trim();
+        return new Disease(trimmedDisease);
+    }
+
+    /**
+     * Parses {@code String symptom} into a {@code Symptom}.
+     * Leading and trailing whitespaces will be trimmed.
+     * String will be converted to lower case.
+     */
+    public static Symptom parseSymptom(String symptom) throws ParseException {
+        requireNonNull(symptom);
+        symptom = symptom.toLowerCase();
+        String trimmedSymptom = symptom.trim();
+        return new Symptom(trimmedSymptom);
+    }
+
+    /**
+     * Parses {@code Collection<String> tags} into a {@code Set<Symptom>}.
+     */
+    public static Set<Symptom> parseSymptoms(Collection<String> symptoms) throws ParseException {
+        requireNonNull(symptoms);
+        final Set<Symptom> symptomSet = new HashSet<>();
+        for (String symptomName : symptoms) {
+            symptomSet.add(parseSymptom(symptomName));
+        }
+        return symptomSet;
+    }
+
 }

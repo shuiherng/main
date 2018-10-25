@@ -22,6 +22,7 @@ public class ClearCommand extends Command {
                                  DiagnosisModel diagnosisModel, CommandHistory history) {
         requireNonNull(addressBookModel);
         requireNonNull(scheduleModel);
+        requireNonNull(diagnosisModel);
         addressBookModel.resetData(new AddressBook());
         return new CommandResult(MESSAGE_SUCCESS);
     }

@@ -1,5 +1,6 @@
 package seedu.address.model;
 
+import java.util.List;
 import java.util.Set;
 
 import seedu.address.model.symptom.Disease;
@@ -22,9 +23,15 @@ public interface DiagnosisModel {
      * Gets all related symptoms of a disease.
      *
      * @param disease disease input.
-     * @return a set of all symptoms.
+     * @return a list of all symptoms.
      */
-    Set<Symptom> getSymptoms(Disease disease);
+    List<Symptom> getSymptoms(Disease disease);
+
+    /**
+     * Gets all diseases stored in patient book.
+     * @return a list all diseases.
+     */
+    List<Disease> getDiseases();
 
     /**
      * Adds a disease and its related symptoms into the database
@@ -38,8 +45,8 @@ public interface DiagnosisModel {
      * Predicts a disease with a given set of symptoms.
      *
      * @param symptoms symptoms input.
-     * @return a set of qualified diseases.
+     * @return a list of qualified diseases.
      */
-    Set<Disease> predictDisease(Set<Symptom> symptoms);
+    List<Disease> predictDisease(Set<Symptom> symptoms);
 
 }

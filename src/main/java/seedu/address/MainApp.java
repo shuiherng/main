@@ -77,6 +77,7 @@ public class MainApp extends Application {
 
         addressBookModel = initModelManager(storage, userPrefs);
         scheduleModel = initScheduleModel(storage, userPrefs);
+        diagnosisModel = new DiagnosisModelManager();
 
         logic = new LogicManager(addressBookModel, scheduleModel, diagnosisModel);
 

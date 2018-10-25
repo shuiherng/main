@@ -2,6 +2,8 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.DiseaseMatcherCliSyntax.PREFIX_DISEASE;
+import static seedu.address.logic.parser.DiseaseMatcherCliSyntax.PREFIX_SYMPTOM;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_NAME;
@@ -25,6 +27,8 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.symptom.Disease;
+import seedu.address.model.symptom.Symptom;
 import seedu.address.model.tag.Tag;
 
 
@@ -35,8 +39,8 @@ public class AddCommand extends Command {
 
     public static final String COMMAND_WORD = "add";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Use 'add patient' or "
-            + "'add appointment' to add a patient or appointment respectively. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Use 'add patient' , 'add appointment' or "
+            + "'add disease' to add a patient, appointment and disease respectively. "
             + "\n"
             + "Parameters to add persons: "
             + PREFIX_NAME + "NAME "
@@ -45,6 +49,7 @@ public class AddCommand extends Command {
             + PREFIX_ADDRESS + "ADDRESS "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " "
+            + "patient "
             + PREFIX_NAME + "John Doe "
             + PREFIX_PHONE + "98765432 "
             + PREFIX_EMAIL + "johnd@example.com "
@@ -53,11 +58,23 @@ public class AddCommand extends Command {
             + PREFIX_TAG + "owesMoney"
             + "\n"
             + "Parameters to add appointment: "
-            + "natural datetime expression";
+            + "natural datetime expression"
+            + "Parameters to add disease: "
+            + PREFIX_DISEASE + "DISEASE "
+            + "[" + PREFIX_SYMPTOM + "SYMPTOM]...\n"
+            + "Example: " + COMMAND_WORD + " "
+            + "disease "
+            + PREFIX_DISEASE + "acne "
+            + PREFIX_SYMPTOM + "pustules "
+            + PREFIX_SYMPTOM + "blackheads "
+            + "\n";
+
 
     public static final String MESSAGE_SUCCESS_ADDRESSBOOK = "New person added: %1$s";
     public static final String MESSAGE_SUCCESS_SCHEDULE = "New schedule event added: %1$s";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
+    public static final String MESSAGE_SUCCESS_DIAGNOSIS = "New disease matcher added: %1$s";
+    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the patient book";
+    public static final String MESSAGE_DUPLICATE_DISEASE = "This disease already exists in the patient book";
 
     private final String addType;
     private final String args;
@@ -75,11 +92,13 @@ public class AddCommand extends Command {
                                  DiagnosisModel diagnosisModel, CommandHistory history) throws CommandException {
         requireNonNull(addressBookModel);
         requireNonNull(scheduleModel);
+        requireNonNull(diagnosisModel);
 
         if (addType.equals("patient")) {
             // adds a patient into the addressbook
             ArgumentMultimap argMultimap =
-                    ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
+                    ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE,
+                            PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
 
             if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS, PREFIX_PHONE, PREFIX_EMAIL)
                     || !argMultimap.getPreamble().isEmpty()) {
@@ -106,11 +125,30 @@ public class AddCommand extends Command {
             ScheduleEvent newEvent = new ScheduleCommandParser(scheduleModel).parse(args);
             scheduleModel.addEvent(newEvent);
             return new CommandResult(String.format(MESSAGE_SUCCESS_SCHEDULE, newEvent));
+        } else if (addType.equals("disease")) {
+            // adds a disease into the addressbook
+            ArgumentMultimap argMultimap =
+                    ArgumentTokenizer.tokenize(args, PREFIX_DISEASE, PREFIX_SYMPTOM);
+
+            if (!arePrefixesPresent(argMultimap, PREFIX_DISEASE, PREFIX_SYMPTOM)
+                    || !argMultimap.getPreamble().isEmpty()) {
+                throw new CommandException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+            }
+
+            try {
+                Disease disease = ParserUtil.parseDisease(argMultimap.getValue(PREFIX_DISEASE).get());
+                Set<Symptom> symptomSet = ParserUtil.parseSymptoms(argMultimap.getAllValues(PREFIX_SYMPTOM));
+                if (diagnosisModel.hasDisease(disease)) {
+                    throw new CommandException(MESSAGE_DUPLICATE_DISEASE);
+                }
+                diagnosisModel.addMatcher(disease, symptomSet);
+                return new CommandResult(String.format(MESSAGE_SUCCESS_ADDRESSBOOK, disease));
+            } catch (ParseException e) {
+                throw new CommandException("Unexpected Error: unacceptable values should have been prompted for.", e);
+            }
         } else {
             throw new CommandException("Unexpected Values: should have been caught elsewhere were present");
         }
-
-
 
 
     }
