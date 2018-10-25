@@ -41,7 +41,7 @@ public class AddCommand extends Command {
     public static final String COMMAND_WORD = "add";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Use 'add patient' , 'add appointment' or "
-            + "'add disease' to add a patient, appointment and disease respectively. "
+            + "'add disease' to add a patient, appointment or disease respectively. "
             + "\n"
             + "Parameters to add persons: "
             + PREFIX_NAME + "NAME "

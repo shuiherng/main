@@ -9,12 +9,11 @@ import seedu.address.model.AddressBookModel;
 import seedu.address.model.DiagnosisModel;
 import seedu.address.model.ScheduleModel;
 import seedu.address.model.event.ScheduleEventMatchesPredicate;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.MatchPersonPredicate;
 import seedu.address.model.symptom.Symptom;
 import seedu.address.model.symptom.DiseaseMatchesPredicate;
 
 import java.util.Arrays;
-import java.util.function.Predicate;
 
 /**
  * Finds and lists all persons in address book whose name contains any of the argument keywords.
@@ -32,7 +31,7 @@ public class FindCommand extends Command {
     private final String cmdType;
     private final String searchString;
 
-    /* public FindCommand(NameContainsKeywordsPredicate predicate) {
+    /* public FindCommand(MatchPersonPredicate predicate) {
         this.predicate = predicate;
     } */
     public FindCommand(String cmdType, String searchString) {
@@ -51,7 +50,7 @@ public class FindCommand extends Command {
         if (this.cmdType.equals("patient")) {
             String[] nameKeywords = searchString.split("\\s+");
 
-            addressBookModel.updateFilteredPersonList(new NameContainsKeywordsPredicate(Arrays.asList(nameKeywords)));
+            addressBookModel.updateFilteredPersonList(new MatchPersonPredicate(Arrays.asList(nameKeywords)));
             cmdResult = String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW,
                     addressBookModel.getFilteredPersonList().size());
         } else if (this.cmdType.equals("appointment")) {
