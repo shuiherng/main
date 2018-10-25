@@ -27,6 +27,7 @@ public class ScheduleEvent {
 
     static {
         SDF = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+        SDF = new SimpleDateFormat("dd/MM/yyyy hh:mm - hh:mm");
     }
 
     /**

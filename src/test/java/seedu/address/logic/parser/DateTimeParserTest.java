@@ -93,6 +93,7 @@ public class DateTimeParserTest {
         expectedCalendarStart.set(2018, 9, 29, 9, 0, 0);
         expectedCalendarEnd.set(2018, 10, 4, 18, 0, 0);
         assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd), parser.parseDate(VALID_IN_SOME_SMALL_WEEKS, dummyCurrentTime));
+        // there is still a bug when tried with 11/11
     }
 
     @Test
