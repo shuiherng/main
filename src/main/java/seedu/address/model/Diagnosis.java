@@ -52,22 +52,34 @@ public class Diagnosis {
      * Gets all related symptoms of a disease.
      *
      * @param disease disease input.
-     * @return a list of all symptoms.
+     * @return an array of all symptoms.
      */
-    public List<Symptom> getSymptoms(Disease disease) {
+    public Symptom[] getSymptoms(Disease disease) {
         requireNonNull(disease);
         Set<Symptom> symptoms = matcher.get(disease);
-        return new ArrayList<>(symptoms);
+        Symptom[] symptomArray = new Symptom[symptoms.size()];
+        int i = 0;
+        for (Symptom symptom : symptoms) {
+            symptomArray[i] = symptom;
+            i++;
+        }
+        return symptomArray;
     }
 
     /**
      * Gets all diseases stored in patient book.
      *
-     * @return a list all diseases.
+     * @return an array all diseases.
      */
-    public List<Disease> getDiseases() {
+    public Disease[] getDiseases() {
         Set<Disease> diseases = matcher.keySet();
-        return new ArrayList<>(diseases);
+        Disease[] diseasesArray = new Disease[diseases.size()];
+        int i = 0;
+        for (Disease disease : diseases) {
+            diseasesArray[i] = disease;
+            i++;
+        }
+        return diseasesArray;
     }
 
     /**
