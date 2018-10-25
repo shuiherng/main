@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import seedu.address.commons.util.Pair;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.ScheduleModelManager;
+
 
 public class DateTimeParserTest {
 
@@ -20,7 +20,7 @@ public class DateTimeParserTest {
     private static final String VALID_IN_SOME_BIG_DAYS = "in 365 days";
     private static final String VALID_IN_SOME_SMALL_WEEKS = "in 3 weeks";
     private static final String VALID_IN_SOME_BIG_WEEKS = "in 100 weeks";
-    private static final String VALID_IN_SOME_SMALL_MONTHS = "in 2 months";
+    private static final String VALID_IN_SOME_SMALL_MONTHS = "in 5 months";
     private static final String VALID_IN_SOME_BIG_MONTHS = "in 99 months";
     private static final String VALID_THIS_WEEKDAY = "this Friday";
     private static final String VALID_NEXT_WEEKDAY = "next Monday";
@@ -47,74 +47,78 @@ public class DateTimeParserTest {
     private static final String REFINED_INVALID_FORMAT_TIME_SLOT = "13.12.2018 10:30 - 9:30";
     private static final String REFINED_INVALID_FORMAT_WRONG_SEQUENCE_TIME_SLOT = "10:30 - 9:30 13.12.2018";
 
-    private DateTimeParser parser = new DateTimeParser(new ScheduleModelManager());
+    private DateTimeParser parser = new DateTimeParser();
     private Calendar actualCurrentTime;
-    private Calendar convenientTime;
-    private Calendar wrapAroundWeekTime;
-    private Calendar wrapAroundMonthTime;
-    private Calendar wrapAroundYearTime;
+    private Calendar dummyCurrentTime;
+    private Calendar expectedCalendarStart;
+    private Calendar expectedCalendarEnd;
 
     @Before
-    public void createCurrentTimeCalendars() {
+    public void initializeCalendars() {
         actualCurrentTime = Calendar.getInstance();
-        convenientTime = (Calendar) actualCurrentTime.clone();
-        wrapAroundWeekTime = (Calendar) actualCurrentTime.clone();
-        wrapAroundMonthTime = (Calendar) actualCurrentTime.clone();
-        wrapAroundYearTime = (Calendar) actualCurrentTime.clone();
-        convenientTime.set(2018, 10, 8, 12, 13, 20); // no possible wrap around
-        wrapAroundWeekTime.set(2018, 10, 14, 12, 13, 20); // need to wrap around week
-        wrapAroundMonthTime.set(2018, 10, 31, 12, 13, 20); // need to wrap around month
-        wrapAroundYearTime.set(2018, 12, 30, 12, 13, 20); // need to wrap around year
+        actualCurrentTime.setFirstDayOfWeek(Calendar.MONDAY);
+        dummyCurrentTime = (Calendar) actualCurrentTime.clone();
+        expectedCalendarStart = (Calendar) actualCurrentTime.clone();
+        expectedCalendarEnd = (Calendar) actualCurrentTime.clone();
+        zeroOutMilliseconds(expectedCalendarStart, expectedCalendarEnd);
+        dummyCurrentTime.set(2018, 9, 11, 12, 13, 20);
     }
 
     @Test
-    public void parseDate_validInput_atConvenientTime() throws ParseException {
+    public void parseDate_validInput_noWrapAround() throws ParseException {
         // testing "tomorrow"
         // no wrap around
-        Calendar expectedCalendarStart = (Calendar) actualCurrentTime.clone();
-        Calendar expectedCalendarEnd = (Calendar) actualCurrentTime.clone();
-        expectedCalendarStart.set(2018, 10, 9, 9, 0, 0);
-        expectedCalendarEnd.set(2018, 10, 9, 18, 0, 0);
-        expectedCalendarStart.set(Calendar.MILLISECOND, 0);
-        expectedCalendarEnd.set(Calendar.MILLISECOND, 0);
-        assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd), parser.parseDate(VALID_TOMORROW, convenientTime));
+        expectedCalendarStart.set(2018, 9, 12, 9, 0, 0);
+        expectedCalendarEnd.set(2018, 9, 12, 18, 0, 0);
+        assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd), parser.parseDate(VALID_TOMORROW, dummyCurrentTime));
 
         // testing "the day after tomorrow"
         // no wrap around
-        expectedCalendarStart.set(2018, 10, 10, 9, 0, 0);
-        expectedCalendarEnd.set(2018, 10, 10, 18, 0, 0);
-        expectedCalendarStart.set(Calendar.MILLISECOND, 0);
-        expectedCalendarEnd.set(Calendar.MILLISECOND, 0);
-        assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd), parser.parseDate(VALID_THE_DAY_AFTER_TOMORROW, convenientTime));
+        expectedCalendarStart.set(2018, 9, 13, 9, 0, 0);
+        expectedCalendarEnd.set(2018, 9, 13, 18, 0, 0);
+        assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd), parser.parseDate(VALID_THE_DAY_AFTER_TOMORROW, dummyCurrentTime));
     }
 
     @Test
-    public void parseDate_validInput_atWrapAroundWeekTime() {
+    public void parseDate_validInput_wrapAroundWeek() throws ParseException {
+        // testing "in 5 days"
+        expectedCalendarStart.set(2018, 9, 16, 9, 0, 0);
+        expectedCalendarEnd.set(2018, 9, 16, 18, 0, 0);
+        assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd), parser.parseDate(VALID_IN_SOME_SMALL_DAYS, dummyCurrentTime));
+    }
+
+    @Test
+    public void parseDate_validInput_wrapAroundMonth() throws ParseException {
+        // testing "in 3 weeks"
+        expectedCalendarStart.set(2018, 9, 29, 9, 0, 0);
+        expectedCalendarEnd.set(2018, 10, 4, 18, 0, 0);
+        assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd), parser.parseDate(VALID_IN_SOME_SMALL_WEEKS, dummyCurrentTime));
+        // there is still a bug when tried with 11/11
+    }
+
+    @Test
+    public void parseDate_validInput_wrapAroundYear() {
 
     }
 
     @Test
-    public void parseDate_validInput_atWrapAroundMonthTime() {
+    public void parseTimeSlot_validInput() {
 
     }
 
     @Test
-    public void parseDate_validInput_atWrapAroundYearTime() {
+    public void parseTimeSlot_invalidInput_throwsParseException() {
 
     }
 
-
-    @Test
-    public void parseRefinedTime_validInput() {
-
-    }
-
-    @Test
-    public void parseRefinedTime_invalidInput_throwsParseException() {
-
-    }
     @Test
     public void parseDate_invalidInput_throwsParseException() {
 
+    }
+
+    private void zeroOutMilliseconds(Calendar... calendars) {
+        for (Calendar calendar: calendars) {
+            calendar.set(Calendar.MILLISECOND, 0);
+        }
     }
 }

@@ -70,6 +70,7 @@ public class PatientBookParserTest {
         assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD + " 3") instanceof ExitCommand);
     }
 
+    /*
     @Test
     public void parseCommand_find() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
@@ -78,6 +79,7 @@ public class PatientBookParserTest {
                         + keywords.stream().collect(Collectors.joining(" ")));
         assertEquals(new FindCommand(new MatchPersonPredicate(keywords)), command);
     }
+    */
 
     @Test
     public void parseCommand_help() throws Exception {

@@ -7,7 +7,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 
@@ -26,7 +25,7 @@ public class ScheduleEvent {
     public static final SimpleDateFormat SDF;
 
     static {
-        SDF = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+        SDF = new SimpleDateFormat("dd/MM/yyyy hh:mm - hh:mm");
     }
 
     /**
