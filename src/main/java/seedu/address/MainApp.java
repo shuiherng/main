@@ -77,6 +77,7 @@ public class MainApp extends Application {
 
         addressBookModel = initModelManager(storage, userPrefs);
         scheduleModel = initScheduleModel(storage, userPrefs);
+        diagnosisModel = new DiagnosisModelManager();
 
         logic = new LogicManager(addressBookModel, scheduleModel, diagnosisModel);
 
@@ -233,7 +234,7 @@ public class MainApp extends Application {
         try {
             // Load the fxml file and create a new stage for the Prompt Window.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("main/out/production/resources/view/PromptWindow.fxml"));
+            loader.setLocation(MainApp.class.getResource("/view/PromptWindow.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
           //  C:\Users\lixin\Desktop\main\src\main\resources\view\PromptWindow.fxml
             // Create the Prompt Window Stage.

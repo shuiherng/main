@@ -108,6 +108,15 @@ public class AddressBookModelManager extends ComponentManager implements Address
         filteredPersons.setPredicate(predicate);
     }
 
+    @Override
+    public ObservableList<Person> internalGetFromPersonList(Predicate<Person> predicate) {
+        requireNonNull(predicate);
+
+        FilteredList<Person> tempList = new FilteredList<>(addressBook.getPersonList());
+        tempList.setPredicate(predicate);
+
+        return FXCollections.unmodifiableObservableList(tempList);
+    }
 
     //=========== Undo/Redo =================================================================================
     /*

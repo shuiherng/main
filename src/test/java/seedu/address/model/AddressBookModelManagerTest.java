@@ -13,7 +13,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-//import seedu.address.model.person.NameContainsKeywordsPredicate;
+//import seedu.address.model.person.MatchPersonPredicate;
 //import seedu.address.testutil.AddressBookBuilder;
 
 public class AddressBookModelManagerTest {
@@ -71,7 +71,7 @@ public class AddressBookModelManagerTest {
 
         // different filteredList -> returns false
         String[] keywords = ALICE.getName().fullName.split("\\s+");
-        modelManager.updateFilteredPersonList(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
+        modelManager.updateFilteredPersonList(new MatchPersonPredicate(Arrays.asList(keywords)));
         assertFalse(modelManager.equals(new AddressBookModelManager(addressBook, userPrefs)));
 
         // resets modelManager to initial state for upcoming tests
