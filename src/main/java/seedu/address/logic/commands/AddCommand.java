@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.*;
-import seedu.address.logic.parser.ScheduleCommandParser;
+import seedu.address.logic.parser.ScheduleEventParser;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.AddressBookModel;
 import seedu.address.model.DiagnosisModel;
@@ -124,11 +124,12 @@ public class AddCommand extends Command {
         } else if (addType.equals("appointment")) {
             // adds an event into the schedule
             try {
-                ScheduleEvent newEvent = new ScheduleCommandParser(scheduleModel).parse(args);
+                ScheduleEvent newEvent = new ScheduleEventParser(addressBookModel, scheduleModel).parse(args);
                 scheduleModel.addEvent(newEvent);
                 return new CommandResult(String.format(MESSAGE_SUCCESS_SCHEDULE, newEvent));
             } catch (ParseException e) {
-                throw new CommandException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+                throw new CommandException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                        ScheduleEventParser.MESSAGE_CORRECT_FORMAT));
             }
         } else if (addType.equals("disease")) {
             // adds a disease into the addressbook

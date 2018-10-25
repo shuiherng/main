@@ -198,11 +198,8 @@ public class ScheduleEventParser {
     }
 
     private List<ScheduleEvent> getAppointmentsBetween(Pair<Calendar> dateInterval) {
-        scheduleModel.updateFilteredEventList((scheduleEvent) -> {
-            return !scheduleEvent.getDate().getKey().before(dateInterval.getKey())
-                    && !scheduleEvent.getDate().getValue().after(dateInterval.getValue());
-        });
-        return scheduleModel.getFilteredEventList();
+        return scheduleModel.internalGetFromEventList(scheduleEvent ->
+                !scheduleEvent.getDate().getKey().before(dateInterval.getKey())
+                        && !scheduleEvent.getDate().getValue().after(dateInterval.getValue()));
     }
-
 }
