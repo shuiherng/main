@@ -33,8 +33,16 @@ public class EditCommandParser implements Parser<EditCommand> {
     public EditCommand parse(String args) throws ParseException {
         requireNonNull(args);
 
-        String[] argSplit = args.split(" ", 3);
-        String cmdType = argSplit[0];
+        String cmdType;
+        String target;
+        try {
+            String[] argSplit = args.trim().split(" ", 3);
+            cmdType = argSplit[0];
+            target = argSplit[1];
+            args = argSplit[2];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+        }
 
         ArgumentMultimap argMultimap;
 
@@ -47,8 +55,6 @@ public class EditCommandParser implements Parser<EditCommand> {
         } else {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
         }
-
-        String target = argMultimap.getPreamble();
 
         /* We remove the index based representation so there's no risk of modifying the wrong entry, which would be
         a severe problem in an application with sensitive information.

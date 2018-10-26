@@ -20,9 +20,14 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         String[] argSplit = args.trim().split(" ", 2);
 
-        String cmdType = argSplit[0];
-        args = argSplit[1];
-
+        String cmdType;
+        try {
+            cmdType = argSplit[0];
+            args = argSplit[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    AddCommand.MESSAGE_USAGE));
+        }
         // we change the parsing to take place in the command execution phase
         // instead so we can prompt the user for missing fields directly rather than
         // reject the command altogether.
