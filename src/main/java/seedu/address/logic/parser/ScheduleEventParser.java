@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import seedu.address.commons.util.Pair;
+import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.logic.parser.exceptions.PromptException;
 import seedu.address.model.AddressBookModel;
@@ -22,12 +23,10 @@ import seedu.address.model.person.PersonId;
  */
 public class ScheduleEventParser {
 
-    public static final String MESSAGE_SCHEDULE_FORMAT = "Expected format: schedule for [name] [date/duration].\n"
-            + "Please enter date/duration in natural expressions or in DD/MM/YYYY format.\n"
-            + "Refer to User Guide for the complete list of accepted natural expressions.\n";
     public static final String MESSAGE_PROMPT_NOTES = "Any additional notes?\n";
     public static final String MESSAGE_PROMPT_TIMESLOT = "Please enter a time slot in DD/MM/YYYY hh:mm - hh:mm: \n";
     public static final String MESSAGE_PROMPT_ID = "Please enter the ID of the patient you want to schedule for: \n";
+
     private ScheduleModel scheduleModel;
     private AddressBookModel addressBookModel;
 
@@ -67,7 +66,7 @@ public class ScheduleEventParser {
                 }
             }
         }
-        throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_SCHEDULE_FORMAT));
+        throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE_APPOINTMENT));
     }
 
     /**
@@ -112,7 +111,7 @@ public class ScheduleEventParser {
             Pair<Calendar> timeSlot = dateTimeParser.parseTimeSlot(timeSlotInput.trim());
             return timeSlot;
         } catch (ParseException | PromptException e) {
-            throw new ParseException("AHH");
+            throw new ParseException(e.getMessage());
         }
     }
 

@@ -251,7 +251,7 @@ public class MainApp extends Application {
             controller.setDisplay(input);
 
             // Show the dialog and wait until the user closes it
-            PromptStage.show();
+            PromptStage.showAndWait();
 
             return controller;
         } catch (IOException e) {
