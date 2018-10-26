@@ -112,7 +112,7 @@ public class ScheduleEventParser {
             Pair<Calendar> timeSlot = dateTimeParser.parseTimeSlot(timeSlotInput.trim());
             return timeSlot;
         } catch (ParseException | PromptException e) {
-            throw new ParseException("AHH");
+            throw new ParseException(e.getMessage());
         }
     }
 

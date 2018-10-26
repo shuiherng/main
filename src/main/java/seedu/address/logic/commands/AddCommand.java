@@ -128,8 +128,9 @@ public class AddCommand extends Command {
                 scheduleModel.addEvent(newEvent);
                 return new CommandResult(String.format(MESSAGE_SUCCESS_SCHEDULE, newEvent));
             } catch (ParseException e) {
-                throw new CommandException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                        ScheduleEventParser.MESSAGE_SCHEDULE_FORMAT));
+                throw new CommandException(e.getMessage());
+                //throw new CommandException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                //        ScheduleEventParser.MESSAGE_SCHEDULE_FORMAT));
             }
         } else if (addType.equals("disease")) {
             // adds a disease into the addressbook

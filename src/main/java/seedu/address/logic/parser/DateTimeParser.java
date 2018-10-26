@@ -424,6 +424,9 @@ public class DateTimeParser {
      */
     public Pair<Calendar> parseTimeSlot(String timeSlotInput) throws ParseException {
         String[] splitString = timeSlotInput.split("\\s+");
+        if (splitString.length != 4) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_SCHEDULE_PROMPT_FORMAT));
+        }
         String ddmmyyyy = splitString[0];
         String startTime = splitString[1];
         String endTime = splitString[3];
