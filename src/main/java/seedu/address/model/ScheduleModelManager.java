@@ -14,7 +14,9 @@ import javafx.collections.transformation.SortedList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.ScheduleChangedEvent;
+import seedu.address.model.event.EventId;
 import seedu.address.model.event.ScheduleEvent;
+import seedu.address.model.event.exceptions.ScheduleEventNotFoundException;
 
 /**
  * Actual schedule model manager for handling schedule in the application.
@@ -121,6 +123,16 @@ public class ScheduleModelManager extends ComponentManager implements ScheduleMo
 
         return FXCollections.unmodifiableObservableList(sortedSchedule);
     }
+
+    @Override
+    public ScheduleEvent getEventById(EventId eventId) throws ScheduleEventNotFoundException {
+        ObservableList<ScheduleEvent> tempList = internalGetFromEventList(e -> e.getId().equals(eventId));
+        if (tempList.size() != 1) {
+            throw new ScheduleEventNotFoundException();
+        }
+        return tempList.get(0);
+    }
+
 
     @Override
     public boolean equals(Object obj) {

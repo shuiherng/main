@@ -3,6 +3,7 @@ package seedu.address.model;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -13,6 +14,8 @@ import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonId;
+import seedu.address.model.person.exceptions.PersonNotFoundException;
 
 /**
  * Represents the in-memory addressBookModel of the address book data.
@@ -116,6 +119,15 @@ public class AddressBookModelManager extends ComponentManager implements Address
         tempList.setPredicate(predicate);
 
         return FXCollections.unmodifiableObservableList(tempList);
+    }
+
+    @Override
+    public Person getPersonById(PersonId personId) throws PersonNotFoundException {
+        ObservableList<Person> tempList = internalGetFromPersonList(p -> p.getId().equals(personId));
+        if (tempList.size() != 1) {
+            throw new PersonNotFoundException();
+        }
+        return tempList.get(0);
     }
 
     //=========== Undo/Redo =================================================================================

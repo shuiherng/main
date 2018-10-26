@@ -1,9 +1,12 @@
 package seedu.address.model;
 
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonId;
+import seedu.address.model.person.exceptions.PersonNotFoundException;
 
 /**
  * The API of the AddressBookModel component.
@@ -66,5 +69,13 @@ public interface AddressBookModel {
      * @return list of persons.
      */
     ObservableList<Person> internalGetFromPersonList(Predicate<Person> predicate);
+
+    /**
+     * Finds a person by their Id. O
+     * @param personId Lookup id.
+     * @return Person object.
+     * @throws PersonNotFoundException
+     */
+    Person getPersonById(PersonId personId) throws PersonNotFoundException;
 
 }
