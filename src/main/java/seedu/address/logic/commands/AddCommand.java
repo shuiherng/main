@@ -43,7 +43,7 @@ public class AddCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Use 'add patient' , 'add appointment' or "
             + "'add disease' to add a patient, appointment or disease respectively. "
             + "\n"
-            + "Parameters to add persons: "
+            + "Parameters to add patient: "
             + PREFIX_NAME + "NAME "
             + PREFIX_PHONE + "PHONE "
             + PREFIX_EMAIL + "EMAIL "
@@ -59,7 +59,12 @@ public class AddCommand extends Command {
             + PREFIX_TAG + "owesMoney"
             + "\n"
             + "Parameters to add appointment: "
-            + "natural datetime expression"
+            + "for NAME "
+            + "DATE/DURATION \n"
+            + "Example: " + COMMAND_WORD + " "
+            + "appointment "
+            + "for David Lee tomorrow"
+            + "\n"
             + "Parameters to add disease: "
             + PREFIX_DISEASE + "DISEASE "
             + "[" + PREFIX_SYMPTOM + "SYMPTOM]...\n"
@@ -70,6 +75,44 @@ public class AddCommand extends Command {
             + PREFIX_SYMPTOM + "blackheads "
             + "\n";
 
+    public static final String MESSAGE_USAGE_PERSON = "Expected format for adding a patient: \n"
+            + COMMAND_WORD + " patient "
+            + PREFIX_NAME + "NAME "
+            + PREFIX_PHONE + "PHONE "
+            + PREFIX_EMAIL + "EMAIL "
+            + PREFIX_ADDRESS + "ADDRESS "
+            + "[" + PREFIX_TAG + "TAG]...\n"
+            + "Example: " + COMMAND_WORD + " "
+            + "patient "
+            + PREFIX_NAME + "John Doe "
+            + PREFIX_PHONE + "98765432 "
+            + PREFIX_EMAIL + "johnd@example.com "
+            + PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 "
+            + PREFIX_TAG + "friends "
+            + PREFIX_TAG + "owesMoney"
+            + "\n";
+
+    public static final String MESSAGE_USAGE_APPOINTMENT = "Expected format for adding an appointment: \n"
+            + COMMAND_WORD + " appointment "
+            + "for NAME  "
+            + "DATE/DURATION \n"
+            + "Example: " + COMMAND_WORD + " "
+            + "appointment "
+            + "for David Lee tomorrow"
+            + "\n"
+            + "Please enter DATE/DURATION in natural expressions or in DD/MM/YYYY format.\n"
+            + "Refer to User Guide for the complete list of accepted natural expressions.\n";
+
+    public static final String MESSAGE_USAGE_DISEASE = "Expected format for adding a disease: \n "
+            + COMMAND_WORD + " disease "
+            + PREFIX_DISEASE + "DISEASE "
+            + "[" + PREFIX_SYMPTOM + "SYMPTOM]...\n"
+            + "Example: " + COMMAND_WORD + " "
+            + "disease "
+            + PREFIX_DISEASE + "acne "
+            + PREFIX_SYMPTOM + "pustules "
+            + PREFIX_SYMPTOM + "blackheads "
+            + "\n";
 
     public static final String MESSAGE_SUCCESS_ADDRESSBOOK = "New person added: %1$s";
     public static final String MESSAGE_SUCCESS_SCHEDULE = "New schedule event added: %1$s";
@@ -103,7 +146,7 @@ public class AddCommand extends Command {
                             PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
 
             if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS, PREFIX_PHONE, PREFIX_EMAIL)) {
-                throw new CommandException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+                throw new CommandException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE_PERSON));
             }
 
             try {
@@ -129,8 +172,6 @@ public class AddCommand extends Command {
                 return new CommandResult(String.format(MESSAGE_SUCCESS_SCHEDULE, newEvent));
             } catch (ParseException e) {
                 throw new CommandException(e.getMessage());
-                //throw new CommandException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                //        ScheduleEventParser.MESSAGE_SCHEDULE_FORMAT));
             }
         } else if (addType.equals("disease")) {
             // adds a disease into the addressbook
@@ -138,7 +179,7 @@ public class AddCommand extends Command {
                     ArgumentTokenizer.tokenize(args, PREFIX_DISEASE, PREFIX_SYMPTOM);
 
             if (!arePrefixesPresent(argMultimap, PREFIX_DISEASE, PREFIX_SYMPTOM)) {
-                throw new CommandException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+                throw new CommandException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE_DISEASE));
             }
 
             try {
