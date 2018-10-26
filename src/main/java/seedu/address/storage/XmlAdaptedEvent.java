@@ -11,9 +11,8 @@ import java.util.stream.Collectors;
 
 import javax.xml.bind.annotation.XmlElement;
 
-import javafx.util.Pair;
-
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.commons.util.Pair;
 import seedu.address.model.event.EventId;
 import seedu.address.model.event.ScheduleEvent;
 import seedu.address.model.person.PersonId;
@@ -119,7 +118,7 @@ public class XmlAdaptedEvent {
         startTime.setTime(ScheduleEvent.SDF.parse(datetimeStart));
         Calendar endTime = Calendar.getInstance();
         endTime.setTime(ScheduleEvent.SDF.parse(datetimeEnd));
-        final Pair<Calendar, Calendar> modelCalendarPair = new Pair<>(startTime, endTime);
+        final Pair<Calendar> modelCalendarPair = new Pair<>(startTime, endTime);
 
         if (personId == null) {
             throw new IllegalValueException(
