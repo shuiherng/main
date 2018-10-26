@@ -48,9 +48,9 @@ public class ScheduleEventParser {
         String[] nameInput = generateNameInput(splitInput, dateInputStartAt);
         String dateInput = generateDateInput(splitInput, dateInputStartAt);
         Pair<Calendar> timeSlot = parseDateInput(dateInput);
-        PersonId patient = parseNameInput(nameInput);
+        PersonId patientId = parseNameInput(nameInput);
         String notes = promptForNotes();
-        return null;
+        return new ScheduleEvent(timeSlot, patientId, notes, null);
     }
 
     /**
@@ -140,6 +140,19 @@ public class ScheduleEventParser {
 
     /**
      *
+     * @return
+     * @throws ParseException
+     */
+    private String promptForNotes() throws ParseException {
+        try {
+            return new Prompt().promptForMoreInput(MESSAGE_PROMPT_NOTES, "");
+        } catch (PromptException e) {
+            throw new ParseException("AHH");
+        }
+    }
+
+    /**
+     *
      * @param nameMatchedPersons
      * @return
      */
@@ -154,18 +167,8 @@ public class ScheduleEventParser {
         return personsBuilder.toString().trim();
     }
 
-    /**
-     *
-     * @return
-     * @throws ParseException
-     */
-    private String promptForNotes() throws ParseException {
-        try {
-            return new Prompt().promptForMoreInput(MESSAGE_PROMPT_NOTES, "");
-        } catch (PromptException e) {
-            throw new ParseException("AHH");
-        }
-    }
+
+
     /**
      *
      * @param splitString

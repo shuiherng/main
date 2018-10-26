@@ -10,10 +10,10 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import javafx.util.Pair;
-
+import seedu.address.commons.util.Pair;
 import seedu.address.model.person.PersonId;
 import seedu.address.model.tag.Tag;
+
 
 /**
  * Represents a Schedule Event in the address book.
@@ -44,17 +44,17 @@ public class ScheduleEvent {
     /**
      * Every field must be present and not null.
      */
-    public ScheduleEvent(Pair<Calendar, Calendar> date, PersonId personId, String details, Set<Tag> tags) {
+    public ScheduleEvent(Pair<Calendar> date, PersonId personId, String details, Set<Tag> tags) {
         this(new EventId(), date, personId, details, tags);
     }
 
-    public ScheduleEvent(EventId eventId, Pair<Calendar, Calendar> date,
+    public ScheduleEvent(EventId eventId, Pair<Calendar> date,
                          PersonId personId, String details, Set<Tag> tags) {
         requireAllNonNull(eventId, date, personId, details, tags);
         this.id = eventId;
         this.attributes = new HashMap<>();
 
-        Pair<Calendar, Calendar> scheduleEventDate = new Pair<>(date.getKey(), date.getValue());
+        Pair<Calendar> scheduleEventDate = new Pair<>(date.getKey(), date.getValue());
         this.attributes.put(ScheduleEventProperty.DATETIME, scheduleEventDate);
         this.attributes.put(ScheduleEventProperty.PERSONID, personId);
         this.attributes.put(ScheduleEventProperty.DETAILS, details);
@@ -68,8 +68,8 @@ public class ScheduleEvent {
         return this.id;
     }
 
-    public Pair<Calendar, Calendar> getDate() {
-        Pair<?, ?> returnedDate = (Pair<?, ?>) this.attributes.get(ScheduleEventProperty.DATETIME);
+    public Pair<Calendar> getDate() {
+        Pair<?> returnedDate = (Pair<?>) this.attributes.get(ScheduleEventProperty.DATETIME);
         return (new Pair<>((Calendar) returnedDate.getKey(), (Calendar) returnedDate.getValue()));
     }
 
