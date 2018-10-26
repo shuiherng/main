@@ -86,6 +86,7 @@ public class AddCommand extends Command {
     public AddCommand(String addType, String args) {
         this.addType = addType;
         this.args = args;
+        System.out.println(args);
     }
 
     @Override
@@ -101,8 +102,7 @@ public class AddCommand extends Command {
                     ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE,
                             PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
 
-            if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS, PREFIX_PHONE, PREFIX_EMAIL)
-                    || !argMultimap.getPreamble().isEmpty()) {
+            if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS, PREFIX_PHONE, PREFIX_EMAIL)) {
                 throw new CommandException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
             }
 
@@ -136,8 +136,7 @@ public class AddCommand extends Command {
             ArgumentMultimap argMultimap =
                     ArgumentTokenizer.tokenize(args, PREFIX_DISEASE, PREFIX_SYMPTOM);
 
-            if (!arePrefixesPresent(argMultimap, PREFIX_DISEASE, PREFIX_SYMPTOM)
-                    || !argMultimap.getPreamble().isEmpty()) {
+            if (!arePrefixesPresent(argMultimap, PREFIX_DISEASE, PREFIX_SYMPTOM)) {
                 throw new CommandException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
             }
 
@@ -168,6 +167,8 @@ public class AddCommand extends Command {
      * {@code ArgumentMultimap}.
      */
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+        Stream.of(prefixes).forEach(prefix -> System.out.println(prefix));
+        Stream.of(prefixes).forEach(prefix -> System.out.println(argumentMultimap.getValue(prefix)));
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 

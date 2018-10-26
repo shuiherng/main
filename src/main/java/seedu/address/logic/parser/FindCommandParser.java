@@ -17,10 +17,15 @@ public class FindCommandParser implements Parser<FindCommand> {
      */
     public FindCommand parse(String args) throws ParseException {
 
-        String[] argSplit = args.split(" ", 2);
+        String cmdType;
+        try {
+            String[] argSplit = args.trim().split(" ", 2);
 
-        String cmdType = argSplit[0];
-        args = argSplit[1];
+            cmdType = argSplit[0];
+            args = argSplit[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+        }
 
         if (!cmdType.equals("patient") && !cmdType.equals("appointment") && !cmdType.equals("symptom")) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));

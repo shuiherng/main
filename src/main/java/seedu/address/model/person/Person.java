@@ -47,8 +47,8 @@ public class Person {
     public Person(PersonId personId, Name name, Phone phone, Email email,
                   Address address, boolean exists, Set<Tag> tags) {
         requireAllNonNull(personId, name, phone, email, address, tags);
-        this.id = new PersonId();
-        this.exists = true;
+        this.id = personId;
+        this.exists = exists;
         this.attributes = new HashMap<>();
         this.attributes.put(PersonProperty.NAME, name);
         this.attributes.put(PersonProperty.PHONE, phone);

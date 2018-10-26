@@ -24,14 +24,26 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
         // argSplit[0]: cmdType
         // argSplit[1]: target (parseException if not valid format)
         // argSplit[2]: empty (parseException otherwise)
-        String[] argSplit = args.split(" ", 3);
-        String cmdType = argSplit[0];
-
-        if(!cmdType.equals("patient") && !cmdType.equals("appointment") || !argSplit[2].trim().equals("")) {
+        String cmdType;
+        String target;
+        try {
+            String[] argSplit = args.trim().split(" ", 3);
+            cmdType = argSplit[0];
+            target = argSplit[1];
+            if (argSplit.length > 2) {
+                args = argSplit[2];
+            } else {
+                args = "";
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
         }
 
-        return new DeleteCommand(cmdType, argSplit[1]);
+        if(!cmdType.equals("patient") && !cmdType.equals("appointment") || !args.trim().equals("")) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+        }
+
+        return new DeleteCommand(cmdType, target);
         /*
         // older index-based implementation
         try {

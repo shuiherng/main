@@ -118,6 +118,7 @@ public class AddressBookModelManager extends ComponentManager implements Address
         FilteredList<Person> tempList = new FilteredList<>(addressBook.getPersonList());
         tempList.setPredicate(predicate);
 
+
         return FXCollections.unmodifiableObservableList(tempList);
     }
 
