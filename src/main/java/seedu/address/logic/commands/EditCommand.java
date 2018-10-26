@@ -79,8 +79,8 @@ public class EditCommand extends Command {
         requireNonNull(diagnosisModel);
 
         if (cmdType.equals("patient")) {
-            if (!PersonId.isValidId(cmdType)) {
-                throw new CommandException("Incorrect format for patient.");
+            if (!PersonId.isValidId(target)) {
+                throw new CommandException("Incorrect format for patient ID.");
             }
             EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
             if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
@@ -134,8 +134,8 @@ public class EditCommand extends Command {
             }
 
         } else if (cmdType.equals("appointment")) {
-            if (!EventId.isValidId(cmdType)) {
-                throw new CommandException("Incorrect format for event.");
+            if (!EventId.isValidId(target)) {
+                throw new CommandException("Incorrect format for event ID.");
             }
             EditScheduleEventDescriptor editScheduleEventDescriptor = new EditScheduleEventDescriptor();
             if (argMultimap.getValue(PREFIX_PERSON).isPresent()) {

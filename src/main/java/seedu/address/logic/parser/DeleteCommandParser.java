@@ -1,8 +1,9 @@
 package seedu.address.logic.parser;
 
+import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
-import seedu.address.commons.core.index.Index;
+//import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
@@ -17,6 +18,22 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public DeleteCommand parse(String args) throws ParseException {
+        requireNonNull(args);
+
+        // we expect the following:
+        // argSplit[0]: cmdType
+        // argSplit[1]: target (parseException if not valid format)
+        // argSplit[2]: empty (parseException otherwise)
+        String[] argSplit = args.split(" ", 3);
+        String cmdType = argSplit[0];
+
+        if(!cmdType.equals("patient") && !cmdType.equals("appointment") || !argSplit[2].trim().equals("")) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+        }
+
+        return new DeleteCommand(cmdType, argSplit[1]);
+        /*
+        // older index-based implementation
         try {
             Index index = ParserUtil.parseIndex(args);
             return new DeleteCommand(index);
@@ -24,6 +41,7 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE), pe);
         }
+        */
     }
 
 }
