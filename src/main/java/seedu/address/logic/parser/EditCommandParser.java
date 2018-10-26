@@ -7,6 +7,7 @@ import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.ScheduleEventCliSyntax.*;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -31,10 +32,29 @@ public class EditCommandParser implements Parser<EditCommand> {
      */
     public EditCommand parse(String args) throws ParseException {
         requireNonNull(args);
-        ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
 
-        Index index;
+        String[] argSplit = args.split(" ", 3);
+        String cmdType = argSplit[0];
+
+        ArgumentMultimap argMultimap;
+
+        if(cmdType.equals("patient")) {
+            argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE,
+                    PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
+        } else if (cmdType.equals("appointment")) {
+            argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_PERSON, PREFIX_DATETIME,
+                    PREFIX_DETAILS, PREFIX_TAGS);
+        } else {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+        }
+
+        String target = argMultimap.getPreamble();
+
+        /* We remove the index based representation so there's no risk of modifying the wrong entry, which would be
+        a severe problem in an application with sensitive information.
+         */
+        /*Index index;
+
 
         try {
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
@@ -42,7 +62,11 @@ public class EditCommandParser implements Parser<EditCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     EditCommand.MESSAGE_USAGE), pe);
         }
+        */
 
+        return new EditCommand(cmdType, target, argMultimap);
+
+        /*
         EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
         if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
             editPersonDescriptor.setName(ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get()));
@@ -63,21 +87,9 @@ public class EditCommandParser implements Parser<EditCommand> {
         }
 
         return new EditCommand(index, editPersonDescriptor);
+        */
     }
 
-    /**
-     * Parses {@code Collection<String> tags} into a {@code Set<Tag>} if {@code tags} is non-empty.
-     * If {@code tags} contain only one element which is an empty string, it will be parsed into a
-     * {@code Set<Tag>} containing zero tags.
-     */
-    private Optional<Set<Tag>> parseTagsForEdit(Collection<String> tags) throws ParseException {
-        assert tags != null;
 
-        if (tags.isEmpty()) {
-            return Optional.empty();
-        }
-        Collection<String> tagSet = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
-        return Optional.of(ParserUtil.parseTags(tagSet));
-    }
 
 }

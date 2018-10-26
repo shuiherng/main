@@ -3,7 +3,9 @@ package seedu.address.model;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
+import seedu.address.model.event.EventId;
 import seedu.address.model.event.ScheduleEvent;
+import seedu.address.model.event.exceptions.ScheduleEventNotFoundException;
 
 /**
  * The API of the ScheduleModel component.
@@ -59,4 +61,11 @@ public interface ScheduleModel {
      */
     ObservableList<ScheduleEvent> internalGetFromEventList(Predicate<ScheduleEvent> predicate);
 
+    /**
+     * Finds a person by their Id. O
+     * @param eventId Lookup id.
+     * @return ScheduleEvent object.
+     * @throws ScheduleEventNotFoundException
+     */
+    ScheduleEvent getEventById(EventId eventId) throws ScheduleEventNotFoundException;
 }
