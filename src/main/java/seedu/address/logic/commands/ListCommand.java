@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_PERSONS;
+import static seedu.address.model.ScheduleModel.PREDICATE_SHOW_ALL_SCHEDULE_EVENTS;
 
 import java.util.Arrays;
 
@@ -40,6 +41,9 @@ public class ListCommand extends Command {
 
         if (this.cmdType.equals("patient")) {
             addressBookModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+            return new CommandResult(MESSAGE_SUCCESS);
+        } else if (this.cmdType.equals("appointment")) {
+            scheduleModel.updateFilteredEventList(PREDICATE_SHOW_ALL_SCHEDULE_EVENTS);
             return new CommandResult(MESSAGE_SUCCESS);
         } else if (this.cmdType.equals("disease")) {
             Disease[] diseaseList = diagnosisModel.getDiseases();

@@ -146,8 +146,10 @@ public class XmlAdaptedPerson {
         final boolean modelExists = exists.equals("true");
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelPersonId, modelName, modelPhone,
+        Person newPerson = new Person(modelPersonId, modelName, modelPhone,
                 modelEmail, modelAddress, modelExists, modelTags);
+        System.out.println(newPerson);
+        return newPerson;
     }
 
     @Override

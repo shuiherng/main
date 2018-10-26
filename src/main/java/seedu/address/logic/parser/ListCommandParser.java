@@ -18,9 +18,15 @@ public class ListCommandParser {
      */
     public ListCommand parse(String args) throws ParseException {
 
-        String cmdType = args.trim();
+        String cmdType;
+        try {
+            String[] argSplit = args.trim().split(" ", 2);
+            cmdType = argSplit[0];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        }
 
-        if (!cmdType.equals("patient") && !cmdType.equals("symptom")) {
+        if (!cmdType.equals("patient") && !cmdType.equals("symptom") && !cmdType.equals("appointment")) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
         }
 

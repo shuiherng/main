@@ -31,7 +31,7 @@ public class EventId {
         requireNonNull(value);
 
         this.value = value;
-        int idValue = Integer.parseInt(value.substring(1, value.length() - 1));
+        int idValue = Integer.parseInt(value.substring(1));
         if (idValue >= idCounter) {
             idCounter = idValue + 1;
         }
