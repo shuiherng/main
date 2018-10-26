@@ -284,11 +284,11 @@ Unlike other commands, the `schedule` command does not require prefixing each su
 .. `next week` is the date/duration keyword, and is carried forward to the next step for further parsing.
 
 . Low-Level Parsing: The date/duration string is parsed and converted into a `Pair<Calendar, Calendar>` object to represent `next week`:
-.. The program executes a keyword search and invokes the method `getWeekDates(currentTime, 1)`, where it converts `next week` into a date range, by doing relevant calculations on a `Calendar` object which represents the current time. For instance, if the command is executed on 16/10/2018, `next week` becomes a date range from 22/10/2018 0859hrs to 28/10/2018 1801hrs. This range takes into consideration the doctor's working hours.
+.. The program executes a keyword search and invokes the method `getWeekDates(currentTime, 1)`, where it converts `next week` into a datetime range, by doing relevant calculations on a `Calendar` object which represents the current time. For instance, if the command is executed on 16/10/2018, `next week` becomes a date range from 22/10/2018 0859hrs to 28/10/2018 1801hrs. This range takes into consideration the doctor's working hours.
 .. Two `Calendar` objects are created in the process to represent the start and end datetimes. These two objects are then placed in a `Pair`.
 
 . Further Prompting: The user is presented with a list of suggested empty time slots for the appointment, from which one is chosen:
-.. `DateTimeParser` finds a list of available time periods within the date range identified in low-level parsing, and passes the list as a `String` into `Prompt` and `UI` objects. These then display the results to the user.
+.. `DateTimeParser` finds a list of available time periods within the datetime range identified in low-level parsing, and passes the list as a `String` into `Prompt` and `UI` objects. These then display the results to the user.
 
 .. The user then inputs the desired time slot such as `22/10/2018 9:30-10:30`.
 .. The refined time selection is then passed back to `DateTimeParser` and converted into a `Pair<Calendar, Calendar>` object.
