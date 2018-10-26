@@ -1,6 +1,9 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_DISEASE;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
 import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.model.ScheduleModel.PREDICATE_SHOW_ALL_SCHEDULE_EVENTS;
 
@@ -39,13 +42,13 @@ public class ListCommand extends Command {
         requireNonNull(scheduleModel);
         requireNonNull(diagnosisModel);
 
-        if (this.cmdType.equals("patient")) {
+        if (this.cmdType.equals(CMDTYPE_PATIENT)) {
             addressBookModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
             return new CommandResult(MESSAGE_SUCCESS);
-        } else if (this.cmdType.equals("appointment")) {
+        } else if (this.cmdType.equals(CMDTYPE_APPOINTMENT)) {
             scheduleModel.updateFilteredEventList(PREDICATE_SHOW_ALL_SCHEDULE_EVENTS);
             return new CommandResult(MESSAGE_SUCCESS);
-        } else if (this.cmdType.equals("disease")) {
+        } else if (this.cmdType.equals(CMDTYPE_DISEASE)) {
             Disease[] diseaseList = diagnosisModel.getDiseases();
             String cmdResult = "Found the following disease:\n" + Arrays.toString(diseaseList);
             return new CommandResult(cmdResult);

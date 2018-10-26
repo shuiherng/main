@@ -19,16 +19,7 @@ public class ArgumentTokenizerTest {
         String argsString = "  ";
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argsString, pSlash);
 
-        assertPreambleEmpty(argMultimap);
         assertArgumentAbsent(argMultimap, pSlash);
-    }
-
-    private void assertPreamblePresent(ArgumentMultimap argMultimap, String expectedPreamble) {
-        assertEquals(expectedPreamble, argMultimap.getPreamble());
-    }
-
-    private void assertPreambleEmpty(ArgumentMultimap argMultimap) {
-        assertTrue(argMultimap.getPreamble().isEmpty());
     }
 
     /**

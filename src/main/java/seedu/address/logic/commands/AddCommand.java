@@ -2,6 +2,9 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_DISEASE;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
 import static seedu.address.logic.parser.DiseaseMatcherCliSyntax.PREFIX_DISEASE;
 import static seedu.address.logic.parser.DiseaseMatcherCliSyntax.PREFIX_SYMPTOM;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_ADDRESS;
@@ -96,7 +99,7 @@ public class AddCommand extends Command {
         requireNonNull(scheduleModel);
         requireNonNull(diagnosisModel);
 
-        if (addType.equals("patient")) {
+        if (addType.equals(CMDTYPE_PATIENT)) {
             // adds a patient into the addressbook
             ArgumentMultimap argMultimap =
                     ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE,
@@ -121,7 +124,7 @@ public class AddCommand extends Command {
             } catch (ParseException e) {
                 throw new CommandException("Unexpected Error: unacceptable values should have been prompted for.", e);
             }
-        } else if (addType.equals("appointment")) {
+        } else if (addType.equals(CMDTYPE_APPOINTMENT)) {
             // adds an event into the schedule
             try {
                 ScheduleEvent newEvent = new ScheduleEventParser(addressBookModel, scheduleModel).parse(args);
@@ -131,7 +134,7 @@ public class AddCommand extends Command {
                 throw new CommandException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                         ScheduleEventParser.MESSAGE_SCHEDULE_FORMAT));
             }
-        } else if (addType.equals("disease")) {
+        } else if (addType.equals(CMDTYPE_DISEASE)) {
             // adds a disease into the addressbook
             ArgumentMultimap argMultimap =
                     ArgumentTokenizer.tokenize(args, PREFIX_DISEASE, PREFIX_SYMPTOM);
