@@ -3,12 +3,14 @@ package seedu.address.model;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.Comparator;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.ScheduleChangedEvent;
@@ -109,10 +111,15 @@ public class ScheduleModelManager extends ComponentManager implements ScheduleMo
     public ObservableList<ScheduleEvent> internalGetFromEventList(Predicate<ScheduleEvent> predicate) {
         requireNonNull(predicate);
 
+        // filters
         FilteredList<ScheduleEvent> tempList = new FilteredList<>(schedule.getAllEventList());
         tempList.setPredicate(predicate);
 
-        return FXCollections.unmodifiableObservableList(tempList);
+        // sorts
+        SortedList<ScheduleEvent> sortedSchedule = new SortedList<>(tempList,
+                new ScheduleEventComparator());
+
+        return FXCollections.unmodifiableObservableList(sortedSchedule);
     }
 
     @Override
@@ -127,6 +134,13 @@ public class ScheduleModelManager extends ComponentManager implements ScheduleMo
 
         ScheduleModelManager other = (ScheduleModelManager) obj;
         return schedule.equals(other.schedule);
+    }
+
+    public class ScheduleEventComparator implements Comparator<ScheduleEvent> {
+        @Override
+        public int compare(ScheduleEvent first, ScheduleEvent second) {
+            return first.getDate().getKey().compareTo(second.getDate().getKey());
+        }
     }
 
 }

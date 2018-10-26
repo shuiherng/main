@@ -12,10 +12,10 @@ import javafx.stage.Stage;
 public class PromptWindow {
 
     @FXML
-    private TextField commandBox = new TextField();
+    private TextField commandBox;
 
     @FXML
-    private TextArea displayBox = new TextArea();
+    private TextArea displayBox;
 
     private Stage promptStage;
     private String input;
