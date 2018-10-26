@@ -130,7 +130,7 @@ public class EditCommand extends Command {
                 return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, editedPerson));
 
             } catch (PersonNotFoundException e) {
-                throw new CommandException("Could not locate unique person with given ID.");
+                throw new CommandException("Could not locate unique person with given ID, or person has been deleted.");
             }
 
         } else if (cmdType.equals("appointment")) {
@@ -170,7 +170,7 @@ public class EditCommand extends Command {
                 return new CommandResult(String.format(MESSAGE_EDIT_EVENT_SUCCESS, editedEvent));
 
             } catch (ScheduleEventNotFoundException e) {
-                throw new CommandException("Could not locate unique event with given ID.");
+                throw new CommandException("Could not locate unique event with given ID, or event has been deleted.");
             }
 
         } else {
