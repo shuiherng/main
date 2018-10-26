@@ -19,7 +19,7 @@ public class ClearCommandParser {
      */
     public ClearCommand parse(String args) throws ParseException {
 
-        String cmdType = args;
+        String cmdType = args.trim();
 
         if (!cmdType.equals(CMDTYPE_APPOINTMENT)) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ClearCommand.MESSAGE_USAGE));

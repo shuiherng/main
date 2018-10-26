@@ -20,6 +20,7 @@ public class ModeCommandParser {
      */
     public ModeCommand parse(String args) throws ParseException {
 
+        args = args.trim();
         if (!args.equals(CMDTYPE_PATIENT) && !args.equals(CMDTYPE_APPOINTMENT)) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ModeCommand.MESSAGE_USAGE));
         }
