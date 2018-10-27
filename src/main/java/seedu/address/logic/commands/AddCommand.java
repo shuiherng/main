@@ -173,6 +173,7 @@ public class AddCommand extends Command {
             // adds an event into the schedule
             try {
                 ScheduleEvent newEvent = new ScheduleEventParser(addressBookModel, scheduleModel).parse(args);
+                System.out.println(newEvent);
                 scheduleModel.addEvent(newEvent);
                 return new CommandResult(String.format(MESSAGE_SUCCESS_SCHEDULE, newEvent));
             } catch (ParseException e) {

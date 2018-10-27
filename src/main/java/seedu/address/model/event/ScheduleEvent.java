@@ -131,12 +131,14 @@ public class ScheduleEvent {
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
-        builder.append("ScheduleEvent (Appointment) for PersonId: ")
+        builder.append("ScheduleEvent (Appointment) ID ")
                 .append(getId())
+                .append(" for PersonId: ")
+                .append(getPersonId())
                 .append(" for daterange ")
-                .append(SDF.format(getDate().getKey().getTime()))
+                .append(STORAGE_SDF.format(getDate().getKey().getTime()))
                 .append(" to ")
-                .append(SDF.format(getDate().getValue().getTime()))
+                .append(STORAGE_SDF.format(getDate().getValue().getTime()))
                 .append("\nDetails: ")
                 .append(getDetails())
                 .append("\nTags: ");
