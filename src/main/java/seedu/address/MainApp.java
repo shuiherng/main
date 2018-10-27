@@ -236,7 +236,7 @@ public class MainApp extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("/view/PromptWindow.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
-          //  C:\Users\lixin\Desktop\main\src\main\resources\view\PromptWindow.fxml
+
             // Create the Prompt Window Stage.
             Stage PromptStage = new Stage();
             PromptStage.setTitle("Prompt Window");
@@ -249,6 +249,8 @@ public class MainApp extends Application {
             PromptWindow controller = loader.getController();
             controller.setPromptStage(PromptStage);
             controller.setDisplay(input);
+            scene.getAccelerators().put(controller.getEnter(), controller.getPressEnter());
+            scene.getAccelerators().put(controller.getCancel(), controller.getPressCancel());
 
             // Show the dialog and wait until the user closes it
             PromptStage.showAndWait();

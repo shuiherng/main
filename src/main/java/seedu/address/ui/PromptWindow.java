@@ -3,6 +3,9 @@ package seedu.address.ui;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 
 
@@ -20,6 +23,10 @@ public class PromptWindow {
     private Stage promptStage;
     private String input;
     private boolean enterClicked = false;
+    private Runnable pressEnter = () -> handleEnter();
+    private Runnable pressCancel = () -> handleCancel();
+    private KeyCombination enter = new KeyCodeCombination(KeyCode.ENTER);
+    private KeyCombination cancel = new KeyCodeCombination(KeyCode.ESCAPE);
 
     /**
      * Initializes the controller class. This method is automatically called
@@ -82,4 +89,19 @@ public class PromptWindow {
         enterClicked = false;
     }
 
+    public Runnable getPressEnter() {
+        return pressEnter;
+    }
+
+    public Runnable getPressCancel() {
+        return pressCancel;
+    }
+
+    public KeyCombination getEnter() {
+        return enter;
+    }
+
+    public KeyCombination getCancel() {
+        return cancel;
+    }
 }
