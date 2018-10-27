@@ -57,6 +57,7 @@ public class UiManager extends ComponentManager implements Ui {
             scheduleMainWindow.fillInnerParts();
             mainWindow = new MainWindow(primaryStage, config, prefs, logic);
             mainWindow.show(); //This should be called before creating other UI parts
+            mainWindow.setShowing(true);
             mainWindow.fillInnerParts();
 
         } catch (Throwable e) {
@@ -71,7 +72,9 @@ public class UiManager extends ComponentManager implements Ui {
 
         try {
             mainWindow.hide();
+            mainWindow.setShowing(false);
             scheduleMainWindow.show();
+            scheduleMainWindow.setShowing(true);
         } catch (Throwable e) {
             logger.severe(StringUtil.getDetails(e));
             showFatalErrorDialogAndShutdown("Fatal error during switching", e);
@@ -84,7 +87,9 @@ public class UiManager extends ComponentManager implements Ui {
 
         try {
             scheduleMainWindow.hide();
+            scheduleMainWindow.setShowing(false);
             mainWindow.show();
+            mainWindow.setShowing(true);
         } catch (Throwable e) {
             logger.severe(StringUtil.getDetails(e));
             showFatalErrorDialogAndShutdown("Fatal error during switching", e);
@@ -95,6 +100,7 @@ public class UiManager extends ComponentManager implements Ui {
     public void stop() {
         prefs.updateLastUsedGuiSetting(mainWindow.getCurrentGuiSetting());
         mainWindow.hide();
+        mainWindow.setShowing(false);
         mainWindow.releaseResources();
     }
 

@@ -33,6 +33,7 @@ public class ScheduleMainWindow extends UiPart {
 
     private Stage primaryStage;
     private Logic logic;
+    private boolean isShowing;
 
     // Independent Ui parts residing in this Ui container
     private AppointmentPanel appointmentPanel;
@@ -63,11 +64,11 @@ public class ScheduleMainWindow extends UiPart {
         this.logic = logic;
         this.config = config;
         this.prefs = prefs;
+        this.isShowing = false;
 
         // Configure the UI
         setTitle(config.getAppTitle());
         setWindowDefaultSize(prefs);
-
         registerAsAnEventHandler(this);
 
         helpWindow = new HelpWindow();
@@ -152,12 +153,16 @@ public class ScheduleMainWindow extends UiPart {
                 (int) primaryStage.getX(), (int) primaryStage.getY());
     }
 
+    public void setShowing(boolean showing) {
+        isShowing = showing;
+    }
+
     /**
      * Opens the help window or focuses on it if it's already opened.
      */
     @FXML
     public void handleHelp() {
-        if (!helpWindow.isShowing()) {
+        if (!helpWindow.isShowing() && isShowing) {
             helpWindow.show();
         } else {
             helpWindow.focus();
