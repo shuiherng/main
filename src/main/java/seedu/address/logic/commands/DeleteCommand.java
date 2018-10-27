@@ -1,6 +1,8 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
 
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -43,7 +45,7 @@ public class DeleteCommand extends Command {
         requireNonNull(scheduleModel);
         // requireNonNull(diagnosisModel); // no diagnosis model delete
 
-        if (cmdType.equals("patient")) {
+        if (cmdType.equals(CMDTYPE_PATIENT)) {
             if (!PersonId.isValidId(target)) {
                 throw new CommandException("Incorrect format for patient ID.");
             }
@@ -55,7 +57,7 @@ public class DeleteCommand extends Command {
                 throw new CommandException("Person ID " + target + " not found");
             }
             return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, target));
-        } else if (cmdType.equals("appointment")) {
+        } else if (cmdType.equals(CMDTYPE_APPOINTMENT)) {
             if (!EventId.isValidId(target)) {
                 throw new CommandException("Incorrect format for event ID.");
             }
