@@ -1,5 +1,8 @@
 package seedu.address.logic.commands;
 
+import seedu.address.commons.core.EventsCenter;
+import seedu.address.commons.events.ui.SwitchToPatientEvent;
+import seedu.address.commons.events.ui.SwitchToScheduleEvent;
 import seedu.address.logic.CommandHistory;
 // import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -40,10 +43,10 @@ public class ModeCommand extends Command {
         requireNonNull(scheduleModel);
 
         if (this.cmdType.equals(CMDTYPE_PATIENT)) {
-            // invoke ui call to switch to patient mode
+            EventsCenter.getInstance().post(new SwitchToPatientEvent());
             return new CommandResult(MESSAGE_PATIENT_SWITCH_SUCCESS);
         } else if (this.cmdType.equals(CMDTYPE_APPOINTMENT)) {
-            // invoke ui call to switch to schedule mode
+            EventsCenter.getInstance().post(new SwitchToScheduleEvent());
             return new CommandResult(MESSAGE_SCHEDULE_SWITCH_SUCCESS);
         } else {
             throw new CommandException("Unexpected command type: should have been caught in ModeCommandParser.");
