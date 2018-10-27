@@ -156,7 +156,7 @@ public class ScheduleEventParser {
         try {
             return new Prompt().promptForMoreInput(MESSAGE_PROMPT_NOTES, "");
         } catch (PromptException e) {
-            throw new ParseException("AHH");
+            throw new ParseException(e.getMessage());
         }
     }
 
