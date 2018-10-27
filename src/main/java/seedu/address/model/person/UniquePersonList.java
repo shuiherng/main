@@ -125,6 +125,7 @@ public class UniquePersonList implements Iterable<Person> {
      */
     public ObservableList<Person> asUnmodifiableObservableList() {
         return FXCollections.unmodifiableObservableList(internalList);
+        // return internalList;
     }
 
     @Override

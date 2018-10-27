@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.events.model.ScheduleChangedEvent;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
 import seedu.address.logic.Logic;
@@ -184,5 +185,11 @@ public class ScheduleMainWindow extends UiPart {
     private void handleShowHelpEvent(ShowHelpRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         handleHelp();
+    }
+
+    @Subscribe
+    public void handleScheduleChangedEvent(ScheduleChangedEvent event) {
+        appointmentPanel = new AppointmentPanel(logic.getFilteredEventList());
+        appointmentPanelPlaceholder.getChildren().add(appointmentPanel.getRoot());
     }
 }

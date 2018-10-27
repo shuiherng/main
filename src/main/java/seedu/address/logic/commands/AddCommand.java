@@ -12,6 +12,10 @@ import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_TAG;
+import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_EXISTING_PERSONS;
+import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_PERSONS;
+import static seedu.address.model.ScheduleModel.PREDICATE_SHOW_ALL_SCHEDULE_EVENTS;
+import static seedu.address.model.ScheduleModel.PREDICATE_SHOW_SCHEDULE_EVENTS;
 
 import java.util.Optional;
 import java.util.Set;
@@ -119,6 +123,8 @@ public class AddCommand extends Command {
                     throw new CommandException(MESSAGE_DUPLICATE_PERSON);
                 }
                 addressBookModel.addPerson(person);
+                addressBookModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+                addressBookModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_EXISTING_PERSONS);
                 return new CommandResult(String.format(MESSAGE_SUCCESS_ADDRESSBOOK, person.getName()));
             } catch (ParseException e) {
                 throw new CommandException("Unexpected Error: unacceptable values should have been prompted for.", e);
@@ -128,6 +134,8 @@ public class AddCommand extends Command {
             try {
                 ScheduleEvent newEvent = new ScheduleEventParser(addressBookModel, scheduleModel).parse(args);
                 scheduleModel.addEvent(newEvent);
+                scheduleModel.updateFilteredEventList(PREDICATE_SHOW_ALL_SCHEDULE_EVENTS);
+                scheduleModel.updateFilteredEventList(PREDICATE_SHOW_SCHEDULE_EVENTS);
                 return new CommandResult(String.format(MESSAGE_SUCCESS_SCHEDULE, newEvent));
             } catch (ParseException e) {
                 throw new CommandException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
