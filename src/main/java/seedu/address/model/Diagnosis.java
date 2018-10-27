@@ -7,12 +7,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -54,16 +49,13 @@ public class Diagnosis {
      * @param disease disease input.
      * @return an array of all symptoms.
      */
-    public Symptom[] getSymptoms(Disease disease) {
+    public List<Symptom> getSymptoms(Disease disease) {
         requireNonNull(disease);
         Set<Symptom> symptoms = matcher.get(disease);
-        Symptom[] symptomArray = new Symptom[symptoms.size()];
-        int i = 0;
-        for (Symptom symptom : symptoms) {
-            symptomArray[i] = symptom;
-            i++;
-        }
-        return symptomArray;
+        List<Symptom> symptomList = new ArrayList<>();
+        symptomList.addAll(symptoms);
+        symptomList.sort(Comparator.comparing(Symptom::toString));
+        return symptomList;
     }
 
     /**
@@ -71,15 +63,12 @@ public class Diagnosis {
      *
      * @return an array all diseases.
      */
-    public Disease[] getDiseases() {
+    public List<Disease> getDiseases() {
         Set<Disease> diseases = matcher.keySet();
-        Disease[] diseasesArray = new Disease[diseases.size()];
-        int i = 0;
-        for (Disease disease : diseases) {
-            diseasesArray[i] = disease;
-            i++;
-        }
-        return diseasesArray;
+        List<Disease> diseasesList = new ArrayList<>();
+        diseasesList.addAll(diseases);
+        diseasesList.sort(Comparator.comparing(Disease::toString));
+        return diseasesList;
     }
 
     /**
@@ -106,7 +95,11 @@ public class Diagnosis {
      */
     public List<Disease> predictDisease(Set<Symptom> symptoms) {
         requireAllNonNull(symptoms);
-        return null;
+        List<Disease> diseases = this.matcher.keySet().stream()
+                .filter(disease -> this.matcher.get(disease).containsAll(symptoms)).collect(Collectors.toList());
+        //Disease[] diseaseArray = new Disease[diseases.size()];
+        diseases.sort(Comparator.comparing(Disease::toString));
+        return diseases;
     }
 
     /**
@@ -126,10 +119,10 @@ public class Diagnosis {
             String[] nextRecord;
 
             while ((nextRecord = csvReader.readNext()) != null) {
-                Disease disease = new Disease(nextRecord[0]);
+                Disease disease = new Disease(nextRecord[0].toLowerCase());
                 nextRecord = ArrayUtils.remove(nextRecord, 0);
                 List<String> symptomsList = Arrays.asList(nextRecord);
-                List<Symptom> symptoms = symptomsList.stream().map(x -> new Symptom(x)).collect(Collectors.toList());
+                List<Symptom> symptoms = symptomsList.stream().map(x -> new Symptom(x.toLowerCase())).collect(Collectors.toList());
                 HashSet<Symptom> symptoms1 = new HashSet<>();
                 symptoms1.addAll(symptoms);
                 diseaseSymptomMatcher.put(disease, symptoms1);

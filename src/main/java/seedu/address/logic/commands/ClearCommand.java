@@ -5,7 +5,6 @@ import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
 
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.model.AddressBook;
 import seedu.address.model.AddressBookModel;
 import seedu.address.model.DiagnosisModel;
 import seedu.address.model.Schedule;

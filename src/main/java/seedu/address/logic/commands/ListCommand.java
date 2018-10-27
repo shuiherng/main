@@ -10,6 +10,7 @@ import static seedu.address.model.ScheduleModel.PREDICATE_SHOW_ALL_SCHEDULE_EVEN
 import static seedu.address.model.ScheduleModel.PREDICATE_SHOW_SCHEDULE_EVENTS;
 
 import java.util.Arrays;
+import java.util.List;
 
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -68,8 +69,8 @@ public class ListCommand extends Command {
                 return new CommandResult(MESSAGE_APPOINTMENT_SUCCESS);
             }
         } else if (this.cmdType.equals(CMDTYPE_DISEASE)) {
-            Disease[] diseaseList = diagnosisModel.getDiseases();
-            String cmdResult = "Found the following disease:\n" + Arrays.toString(diseaseList);
+            List<Disease> diseaseList = diagnosisModel.getDiseases();
+            String cmdResult = "Found the following disease:\n" + diseaseList.toString();
             return new CommandResult(cmdResult);
         } else {
             throw new CommandException("Unexpected Values: Should have been caught in FindCommandParser.");
