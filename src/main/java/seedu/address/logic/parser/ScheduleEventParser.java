@@ -1,6 +1,11 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
+import static seedu.address.commons.core.Messages.MESSAGE_PERSONS_MATCH_BY_NAME_FAIL;
+import static seedu.address.logic.parser.Prompt.MESSAGE_PROMPT_ID;
+import static seedu.address.logic.parser.Prompt.MESSAGE_PROMPT_NOTES;
+import static seedu.address.logic.parser.Prompt.MESSAGE_PROMPT_TIMESLOT;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -18,14 +23,12 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonId;
 
 
+
 /**
  * Parses input arguments and creates a new ScheduleEvent object
  */
 public class ScheduleEventParser {
 
-    private static final String MESSAGE_PROMPT_NOTES = "Any additional notes?\n";
-    private static final String MESSAGE_PROMPT_TIMESLOT = "Please enter a time slot in DD/MM/YYYY hh:mm - hh:mm: \n";
-    private static final String MESSAGE_PROMPT_ID = "Please enter the ID of the patient you want to schedule for: \n";
 
     private ScheduleModel scheduleModel;
     private AddressBookModel addressBookModel;
@@ -46,10 +49,10 @@ public class ScheduleEventParser {
         int dateInputStartAt = breakdownInput(splitInput);
         String[] nameInput = generateNameInput(splitInput, dateInputStartAt);
         String dateInput = generateDateInput(splitInput, dateInputStartAt);
-        Pair<Calendar> timeSlot = parseDateInput(dateInput);
         PersonId patientId = parseNameInput(nameInput);
+        Pair<Calendar> timeSlot = parseDateInput(dateInput);
         String notes = promptForNotes();
-        return new ScheduleEvent(timeSlot, patientId, notes, null);
+        return new ScheduleEvent(timeSlot, patientId, notes, ParserUtil.parseTags(Arrays.asList(null)));
     }
 
     /**
@@ -128,6 +131,9 @@ public class ScheduleEventParser {
         try {
             List<Person> nameMatchedPersons = addressBookModel.internalGetFromPersonList
                     (new MatchPersonPredicate(Arrays.asList(nameInput)));
+            if (nameMatchedPersons.isEmpty()){
+                throw new ParseException(MESSAGE_PERSONS_MATCH_BY_NAME_FAIL);
+            }
             String personsToDisplay = displayPersonListAsString (nameMatchedPersons);
             String personIdInput = new Prompt().promptForMoreInput(MESSAGE_PROMPT_ID, personsToDisplay);
             List<Person> finalizedPerson = addressBookModel.internalGetFromPersonList
@@ -135,9 +141,9 @@ public class ScheduleEventParser {
             if (finalizedPerson.size() == 1) {
                 return finalizedPerson.get(0).getId();
             }
-            throw new ParseException("AHH");
+            throw new ParseException(MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         } catch (PromptException e) {
-            throw new ParseException("AHH");
+            throw new ParseException(e.getMessage());
         }
     }
 
@@ -257,18 +263,20 @@ public class ScheduleEventParser {
      * @param interval
      * @return
      */
+
     private boolean isTimeSlotWithinRange(Pair<Calendar> timeSlot, Pair<Calendar> interval) {
         Calendar dayStart = (Calendar) interval.getKey().clone();
         Calendar dayEnd = (Calendar) dayStart.clone();
         dayEnd.set(Calendar.HOUR_OF_DAY, 18);
         do {
-            if (timeSlot.getKey().before(dayStart) || timeSlot.getValue().after(dayEnd)) {
-                return false;
+            if (!timeSlot.getKey().before(dayStart) && !timeSlot.getValue().after(dayEnd)) {
+                return true;
             } else {
                 dayStart.add(Calendar.DATE, 1);
                 dayEnd.add(Calendar.DATE, 1);
             }
-        } while (!dayEnd.equals(interval.getValue()));
-        return true;
+        } while (!dayEnd.after(interval.getValue()));
+        return false;
     }
+
 }

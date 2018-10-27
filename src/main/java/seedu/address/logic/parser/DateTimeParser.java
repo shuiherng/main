@@ -1,6 +1,7 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.Prompt.MESSAGE_PROMPT_TIMESLOT_FORMAT;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -27,9 +28,6 @@ public class DateTimeParser {
     public static final String MESSAGE_INVALID_SLOT = "Invalid time slot! \n%1$s";
     public static final String MESSAGE_END_BEFORE_START = "The end time of an appointment must be after the start time! \n";
     public static final String MESSAGE_SLOT_NOT_WITHIN_RANGE = "Time slot entered is not in the range specified! \n";
-    private static final String MESSAGE_PROMPT_TIMESLOT_FORMAT = "Expected format: DD/MM/YYYY hh:mm - hh:mm, "
-            + "where hh (hour) must be between 9 and 18 \n"
-            + "Eg. 13/12/2018 13:30 - 14:30\n";
     private static final String MESSAGE_NO_SLOTS = "No time slots available!\n";
     private static final String MESSAGE_HAVE_SLOTS = "You have time slots available during:\n";
 
@@ -499,7 +497,7 @@ public class DateTimeParser {
         timeSlot.getKey().set(Calendar.HOUR_OF_DAY, Integer.parseInt(startHourMin[0]));
         timeSlot.getKey().set(Calendar.MINUTE, Integer.parseInt(startHourMin[1]));
         timeSlot.getValue().set(Calendar.HOUR_OF_DAY, Integer.parseInt(endHourMin[0]));
-        timeSlot.getValue().set(Calendar.MINUTE, Integer.parseInt(startHourMin[1]));
+        timeSlot.getValue().set(Calendar.MINUTE, Integer.parseInt(endHourMin[1]));
     }
 
     /**
