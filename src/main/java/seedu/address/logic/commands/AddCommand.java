@@ -123,7 +123,6 @@ public class AddCommand extends Command {
 
     public static final String MESSAGE_SUCCESS_ADDRESSBOOK = "New person added: %1$s";
     public static final String MESSAGE_SUCCESS_SCHEDULE = "New schedule event added: %1$s";
-    public static final String MESSAGE_SUCCESS_DIAGNOSIS = "New disease matcher added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the patient book";
     public static final String MESSAGE_DUPLICATE_DISEASE = "This disease already exists in the patient book";
 
@@ -166,8 +165,6 @@ public class AddCommand extends Command {
                     throw new CommandException(MESSAGE_DUPLICATE_PERSON);
                 }
                 addressBookModel.addPerson(person);
-                addressBookModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-                addressBookModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_EXISTING_PERSONS);
                 return new CommandResult(String.format(MESSAGE_SUCCESS_ADDRESSBOOK, person.getName()));
             } catch (ParseException e) {
                 throw new CommandException("Unexpected Error: unacceptable values should have been prompted for.", e);
@@ -177,8 +174,6 @@ public class AddCommand extends Command {
             try {
                 ScheduleEvent newEvent = new ScheduleEventParser(addressBookModel, scheduleModel).parse(args);
                 scheduleModel.addEvent(newEvent);
-                scheduleModel.updateFilteredEventList(PREDICATE_SHOW_ALL_SCHEDULE_EVENTS);
-                scheduleModel.updateFilteredEventList(PREDICATE_SHOW_SCHEDULE_EVENTS);
                 return new CommandResult(String.format(MESSAGE_SUCCESS_SCHEDULE, newEvent));
             } catch (ParseException e) {
                 throw new CommandException(e.getMessage());
@@ -203,7 +198,10 @@ public class AddCommand extends Command {
                     throw new CommandException(MESSAGE_DUPLICATE_DISEASE);
                 }
                 diagnosisModel.addMatcher(disease, symptomSet);
-                return new CommandResult(String.format(MESSAGE_SUCCESS_DIAGNOSIS, disease));
+                String cmdResult = "New disease "
+                        + disease.toString()
+                        + " has been added into our record.";
+                return new CommandResult(cmdResult);
             } catch (ParseException e) {
                 throw new CommandException("Unexpected Error: unacceptable values should have been prompted for.", e);
             }

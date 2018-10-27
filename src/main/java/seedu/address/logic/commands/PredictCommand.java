@@ -27,7 +27,7 @@ import static seedu.address.logic.parser.DiseaseMatcherCliSyntax.PREFIX_SYMPTOM;
  */
 public class PredictCommand extends Command {
     public static final String COMMAND_WORD = "predict";
-    public static final String MESSAGE_USAGE = "Expected format for adding a disease: \n "
+    public static final String MESSAGE_USAGE = "Expected format for predicting a disease: \n "
             + COMMAND_WORD
             + "[" + PREFIX_SYMPTOM + "SYMPTOM]...\n"
             + "Example: " + COMMAND_WORD + " "
@@ -56,7 +56,7 @@ public class PredictCommand extends Command {
         try {
             Set<Symptom> symptomSet = ParserUtil.parseSymptoms(argMultimap.getAllValues(PREFIX_SYMPTOM));
             List<Disease> diseases = diagnosisModel.predictDisease(symptomSet);
-            String cmdResult = "Found the following disease:\n" + diseases.toString();
+            String cmdResult = "The diseases that you may be looking for:\n" + diseases.toString();
             return new CommandResult(cmdResult);
         } catch (ParseException e) {
             throw new CommandException("Unexpected Error: unacceptable values should have been prompted for.", e);
