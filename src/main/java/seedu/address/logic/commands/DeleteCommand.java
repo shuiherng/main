@@ -3,6 +3,10 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
+import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_EXISTING_PERSONS;
+import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_PERSONS;
+import static seedu.address.model.ScheduleModel.PREDICATE_SHOW_ALL_SCHEDULE_EVENTS;
+import static seedu.address.model.ScheduleModel.PREDICATE_SHOW_SCHEDULE_EVENTS;
 
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -51,8 +55,8 @@ public class DeleteCommand extends Command {
             }
             try {
                 Person foundPerson = addressBookModel.getPersonById(new PersonId(target));
-                System.out.println(foundPerson);
                 addressBookModel.deletePerson(foundPerson);
+                addressBookModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_EXISTING_PERSONS);
             } catch (PersonNotFoundException e) {
                 throw new CommandException("Person ID " + target + " not found");
             }
@@ -63,6 +67,7 @@ public class DeleteCommand extends Command {
             }
             try {
                 scheduleModel.deleteEvent(scheduleModel.getEventById(new EventId(target)));
+                scheduleModel.updateFilteredEventList(PREDICATE_SHOW_SCHEDULE_EVENTS);
             } catch (ScheduleEventNotFoundException e) {
                 throw new CommandException("Event ID " + target + " not found");
             }

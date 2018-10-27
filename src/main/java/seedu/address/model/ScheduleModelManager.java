@@ -25,7 +25,7 @@ public class ScheduleModelManager extends ComponentManager implements ScheduleMo
     private static final Logger logger = LogsCenter.getLogger(ScheduleModelManager.class);
 
     private final Schedule schedule;
-    private final FilteredList<ScheduleEvent> filteredScheduleEventList;
+    private FilteredList<ScheduleEvent> filteredScheduleEventList;
 
     /**
      * Initializes a ScheduleModelManager with the given schedule and userPrefs.
@@ -38,6 +38,7 @@ public class ScheduleModelManager extends ComponentManager implements ScheduleMo
 
         this.schedule = new Schedule(schedule);
         this.filteredScheduleEventList = new FilteredList<>(schedule.getAllEventList());
+        this.filteredScheduleEventList.setPredicate(PREDICATE_SHOW_SCHEDULE_EVENTS);
     }
 
     public ScheduleModelManager() {
@@ -61,6 +62,8 @@ public class ScheduleModelManager extends ComponentManager implements ScheduleMo
 
     /** Raises an event to indicate the calendarModel has changed. */
     private void indicateScheduleChanged() {
+        this.filteredScheduleEventList = new FilteredList<>(schedule.getAllEventList());
+        this.filteredScheduleEventList.setPredicate(PREDICATE_SHOW_SCHEDULE_EVENTS);
         raise(new ScheduleChangedEvent(schedule));
     }
 
@@ -79,7 +82,7 @@ public class ScheduleModelManager extends ComponentManager implements ScheduleMo
     @Override
     public void addEvent(ScheduleEvent event) {
         schedule.addScheduleEvent(event);
-        this.updateFilteredEventList(PREDICATE_SHOW_ALL_SCHEDULE_EVENTS);
+        this.updateFilteredEventList(PREDICATE_SHOW_SCHEDULE_EVENTS);
         indicateScheduleChanged();
     }
 

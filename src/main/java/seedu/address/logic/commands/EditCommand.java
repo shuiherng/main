@@ -9,7 +9,7 @@ import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.ScheduleEventCliSyntax.*;
-import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_PERSONS;
+import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_EXISTING_PERSONS;
 
 import java.util.*;
 
@@ -128,7 +128,7 @@ public class EditCommand extends Command {
                 Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
 
                 addressBookModel.updatePerson(personToEdit, editedPerson);
-                addressBookModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+                addressBookModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_EXISTING_PERSONS);
                 return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, editedPerson));
 
             } catch (PersonNotFoundException e) {
@@ -168,7 +168,7 @@ public class EditCommand extends Command {
                 ScheduleEvent editedEvent = createEditedEvent(eventToEdit, editScheduleEventDescriptor);
 
                 scheduleModel.updateEvent(eventToEdit, editedEvent);
-                scheduleModel.updateFilteredEventList(ScheduleModel.PREDICATE_SHOW_ALL_SCHEDULE_EVENTS);
+                scheduleModel.updateFilteredEventList(ScheduleModel.PREDICATE_SHOW_SCHEDULE_EVENTS);
                 return new CommandResult(String.format(MESSAGE_EDIT_EVENT_SUCCESS, editedEvent));
 
             } catch (ScheduleEventNotFoundException e) {

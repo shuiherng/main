@@ -13,7 +13,12 @@ import seedu.address.model.person.exceptions.PersonNotFoundException;
  */
 public interface AddressBookModel {
     /**
-     * {@code Predicate} that always evaluates to true
+     * {@code Predicate} that shows existing persons
+     */
+    Predicate<Person> PREDICATE_SHOW_ALL_EXISTING_PERSONS = Person::getExists;
+
+    /**
+     * {@code Predicate} that shows all persons, including undeleted ones.
      */
     Predicate<Person> PREDICATE_SHOW_ALL_PERSONS = unused -> true;
 

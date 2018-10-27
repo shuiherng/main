@@ -148,7 +148,6 @@ public class XmlAdaptedPerson {
         final Set<Tag> modelTags = new HashSet<>(personTags);
         Person newPerson = new Person(modelPersonId, modelName, modelPhone,
                 modelEmail, modelAddress, modelExists, modelTags);
-        System.out.println(newPerson);
         return newPerson;
     }
 
