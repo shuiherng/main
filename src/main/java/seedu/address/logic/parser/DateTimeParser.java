@@ -24,12 +24,15 @@ import seedu.address.model.event.ScheduleEvent;
  */
 public class DateTimeParser {
 
-
-    private static final String MESSAGE_PROMPT_TIMESLOT_FORMAT = "Expected format: DD/MM/YYYY hh:mm - hh:mm\n"
+    public static final String MESSAGE_INVALID_SLOT = "Invalid time slot! \n%1$s";
+    public static final String MESSAGE_END_BEFORE_START = "The end time of an appointment must be after the start time! \n";
+    public static final String MESSAGE_SLOT_NOT_WITHIN_RANGE = "Time slot entered is not in the range specified! \n";
+    private static final String MESSAGE_PROMPT_TIMESLOT_FORMAT = "Expected format: DD/MM/YYYY hh:mm - hh:mm, "
+            + "where hh (hour) must be between 9 and 18 \n"
             + "Eg. 13/12/2018 13:30 - 14:30\n";
     private static final String MESSAGE_NO_SLOTS = "No time slots available!\n";
     private static final String MESSAGE_HAVE_SLOTS = "You have time slots available during:\n";
-    private static final String MESSAGE_INVALID_SLOT = "Invalid time slot! \n%1$s";
+
 
     /**
      * Parses date from input string.
@@ -39,8 +42,7 @@ public class DateTimeParser {
      */
     public Pair<Calendar> parseDate(String input, Calendar currentTime) throws ParseException {
         zeroOutExtraPrecision(currentTime);
-        Pair<Calendar> resultantDateInterval = getResultantDate(currentTime, input.trim());
-        return resultantDateInterval;
+        return getResultantDate(currentTime, input.trim());
     }
 
 
@@ -83,7 +85,7 @@ public class DateTimeParser {
      * @param dateInput Input string.
      * @return Date range intended by the input string.
      */
-    private Pair<Calendar> parseIn(Calendar currentTime, String dateInput) {
+    private Pair<Calendar> parseIn(Calendar currentTime, String dateInput) throws ParseException {
         String[] splitString = dateInput.split("\\s+");
         assert splitString[0].equals("in");
         if (Character.isDigit(splitString[1].charAt(0))) {
@@ -103,7 +105,7 @@ public class DateTimeParser {
         } else if (dateInput.equals("in a few days")) {
             return getNearFutureDates(currentTime);
         }
-        return null;
+        throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE_APPOINTMENT));
     }
 
     /**
@@ -113,47 +115,60 @@ public class DateTimeParser {
      * @param dateInput Input string.
      * @return Date range intended by the input string.
      */
-    private Pair<Calendar> parseThisOrNext(Calendar currentTime, String dateInput) {
+    private Pair<Calendar> parseThisOrNext(Calendar currentTime, String dateInput) throws ParseException {
         String[] splitString = dateInput.split("\\s+");
         assert splitString[0].equals("next") || splitString[0].equals("in");
+        int offset; // time offset from "now"
+        if (splitString[0].equals("next")) {
+            offset = 1;
+        } else {
+            offset = 0;
+        }
         switch (splitString[1]) {
         case "week":
-            if (splitString[0].equals("next")) {
-                return getWeekDates(currentTime, 1);
-            } else {
-                return getWeekDates(currentTime, 0);
-            }
+            return getWeekDates(currentTime, offset);
         case "month":
-            if (splitString[0].equals("next")) {
-                return getMonthDates(currentTime, 1);
-            } else {
-                return getMonthDates(currentTime, 0);
-            }
+            return getMonthDates(currentTime, offset);
         default:
             // do nothing
         }
         int dayOfWeek = -1; // requires a check somewhere
-        if (splitString[1].contains("Mon")) {
+        switch (splitString[1]) {
+        case "Mon":
+        case "Monday":
             dayOfWeek = 0;
-        } else if (splitString[1].contains("Tue")) {
+            break;
+        case "Tue":
+        case "Tuesday":
             dayOfWeek = 1;
-        } else if (splitString[1].contains("Wed")) {
+            break;
+        case "Wed":
+        case "Wednesday":
+            dayOfWeek = 2;
+            break;
+        case "Thu":
+        case "Thursday":
             dayOfWeek = 3;
-        } else if (splitString[1].contains("Thu")) {
+            break;
+        case "Fri":
+        case "Friday":
             dayOfWeek = 4;
-        } else if (splitString[1].contains("Fri")) {
+            break;
+        case "Sat":
+        case "Saturday":
             dayOfWeek = 5;
-        } else if (splitString[1].contains("Sat")) {
+            break;
+        case "Sun":
+        case "Sunday":
             dayOfWeek = 6;
-        } else if (splitString[1].contains("Sun")) {
-            dayOfWeek = 7;
+            break;
+        default:
+            // do nothing
         }
-        if (splitString[0].equals("next")) {
-            return getWeekDayDate(currentTime, dayOfWeek, 1);
-        } else if (splitString[0].equals("this")) {
-            return getWeekDayDate(currentTime, dayOfWeek, 0);
+        if (dayOfWeek == -1) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE_APPOINTMENT));
         }
-        return null; // need to handle
+        return getWeekDayDate(currentTime, dayOfWeek, offset);
     }
 
     /**
@@ -246,7 +261,7 @@ public class DateTimeParser {
      */
     private Pair<Calendar> getDateFromSpecified(String dateTimeInput) throws ParseException {
         try {
-            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); // use the static String in some other class
             Date date = formatter.parse(dateTimeInput);
             Calendar finalDate = new GregorianCalendar();
             finalDate.setTime(date);
@@ -255,7 +270,7 @@ public class DateTimeParser {
             setDateStartAndEnd(dateStart, dateEnd); // apply working hours by default
             return new Pair<>(dateStart, dateEnd);
         } catch (java.text.ParseException e) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE_APPOINTMENT));
+            throw new ParseException("Unexpected error, as date validity should have been checked");
         }
     }
 
@@ -287,10 +302,10 @@ public class DateTimeParser {
             testCalendar.set(Calendar.YEAR, year);
             testCalendar.set(Calendar.MONTH, month - 1); // MONTH is zero-based
             int maxDays = testCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-            if (day > maxDays) {
-                return false;
+            if (day <= maxDays) {
+                return true;
             }
-            return true;
+            return false;
         } catch (NumberFormatException e) {
             return false;
         }
@@ -424,7 +439,7 @@ public class DateTimeParser {
      */
     public Pair<Calendar> parseTimeSlot(String timeSlotInput) throws ParseException {
         String[] splitString = timeSlotInput.split("\\s+");
-        if (splitString.length != 4) {
+        if (splitString.length != 4) { // {"DD/YMM/YYYY", "hh:mm", "-", "hh:mm"}
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
         }
         String ddmmyyyy = splitString[0];
@@ -439,7 +454,7 @@ public class DateTimeParser {
         }
         setSlotStartAndEnd(timeSlot, startTime, endTime);
         if (!timeSlot.getKey().before(timeSlot.getValue())) {
-            throw new ParseException(String.format(MESSAGE_INVALID_SLOT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+            throw new ParseException(String.format(MESSAGE_INVALID_SLOT, MESSAGE_END_BEFORE_START));
         }
         return timeSlot;
     }
@@ -451,7 +466,7 @@ public class DateTimeParser {
      */
     private boolean isValidTimeFormat(String time) {
         String[] splitString = time.split(":");
-        if (splitString.length != 2) {
+        if (splitString.length != 2) { // {"hh", "mm"}
             return false;
         }
         try {
