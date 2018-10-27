@@ -89,7 +89,6 @@ public class AddCommand extends Command {
     public AddCommand(String addType, String args) {
         this.addType = addType;
         this.args = args;
-        System.out.println(args);
     }
 
     @Override
@@ -120,7 +119,7 @@ public class AddCommand extends Command {
                     throw new CommandException(MESSAGE_DUPLICATE_PERSON);
                 }
                 addressBookModel.addPerson(person);
-                return new CommandResult(String.format(MESSAGE_SUCCESS_ADDRESSBOOK, person));
+                return new CommandResult(String.format(MESSAGE_SUCCESS_ADDRESSBOOK, person.getName()));
             } catch (ParseException e) {
                 throw new CommandException("Unexpected Error: unacceptable values should have been prompted for.", e);
             }

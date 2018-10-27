@@ -38,6 +38,7 @@ public class ScheduleModelManager extends ComponentManager implements ScheduleMo
 
         this.schedule = new Schedule(schedule);
         this.filteredScheduleEventList = new FilteredList<>(schedule.getAllEventList());
+        this.filteredScheduleEventList.setPredicate(PREDICATE_SHOW_SCHEDULE_EVENTS);
     }
 
     public ScheduleModelManager() {
@@ -79,7 +80,7 @@ public class ScheduleModelManager extends ComponentManager implements ScheduleMo
     @Override
     public void addEvent(ScheduleEvent event) {
         schedule.addScheduleEvent(event);
-        this.updateFilteredEventList(PREDICATE_SHOW_ALL_SCHEDULE_EVENTS);
+        this.updateFilteredEventList(PREDICATE_SHOW_SCHEDULE_EVENTS);
         indicateScheduleChanged();
     }
 

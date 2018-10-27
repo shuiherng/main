@@ -1,5 +1,6 @@
 package seedu.address.model;
 
+import java.util.Calendar;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
@@ -11,7 +12,13 @@ import seedu.address.model.event.exceptions.ScheduleEventNotFoundException;
  * The API of the ScheduleModel component.
  */
 public interface ScheduleModel {
-    /** {@code Predicate} that always evaluates to true */
+    /** {@code Predicate} that shows all future events */
+    Predicate<ScheduleEvent> PREDICATE_SHOW_SCHEDULE_EVENTS = e -> {
+        Calendar currentDay = Calendar.getInstance();
+        return e.getDate().getKey().compareTo(currentDay) > 0;
+    };
+
+    /** {@code Predicate} that shows all events, including those in the past */
     Predicate<ScheduleEvent> PREDICATE_SHOW_ALL_SCHEDULE_EVENTS = unused -> true;
 
     /** Clears existing backing ScheduleModel and replaces with the provided new data. */

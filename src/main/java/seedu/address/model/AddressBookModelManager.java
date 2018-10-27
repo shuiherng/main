@@ -37,8 +37,8 @@ public class AddressBookModelManager extends ComponentManager implements Address
         logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
 
         this.addressBook = new AddressBook(addressBook);
-        // this.filteredPersons = new FilteredList<>(addressBook.getAllPersonList());
         this.filteredPersons = new FilteredList<>(addressBook.getPersonList());
+        this.filteredPersons.setPredicate(PREDICATE_SHOW_ALL_EXISTING_PERSONS);
     }
 
     public AddressBookModelManager() {
@@ -82,7 +82,7 @@ public class AddressBookModelManager extends ComponentManager implements Address
     @Override
     public void addPerson(Person person) {
         addressBook.addPerson(person);
-        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        updateFilteredPersonList(PREDICATE_SHOW_ALL_EXISTING_PERSONS);
         indicateAddressBookChanged();
     }
 

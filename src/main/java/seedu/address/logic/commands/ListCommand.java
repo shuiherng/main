@@ -4,8 +4,10 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_DISEASE;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
+import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_EXISTING_PERSONS;
 import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.model.ScheduleModel.PREDICATE_SHOW_ALL_SCHEDULE_EVENTS;
+import static seedu.address.model.ScheduleModel.PREDICATE_SHOW_SCHEDULE_EVENTS;
 
 import java.util.Arrays;
 
@@ -27,12 +29,19 @@ public class ListCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + "use 'list patient' or 'list disease' "
             + "to list all persons or diseases with index numbers.\n";
 
-    public static final String MESSAGE_SUCCESS = "Listed all persons";
+    public static final String MESSAGE_PERSON_SUCCESS = "Listed all existing persons";
+    public static final String MESSAGE_PERSON_ALL_SUCCESS = "Listed all existing persons (including deleted ones)";
+
+    public static final String MESSAGE_APPOINTMENT_SUCCESS = "Listed all appointments";
+    public static final String MESSAGE_APPOINTMENT_ALL_SUCCESS = "Listed all appointments (including those in the"
+            + "past";
 
     private final String cmdType;
+    private final String args;
 
-    public ListCommand(String cmdType) {
+    public ListCommand(String cmdType, String args) {
         this.cmdType = cmdType;
+        this.args = args.trim();
     }
 
     @Override
@@ -43,11 +52,21 @@ public class ListCommand extends Command {
         requireNonNull(diagnosisModel);
 
         if (this.cmdType.equals(CMDTYPE_PATIENT)) {
-            addressBookModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-            return new CommandResult(MESSAGE_SUCCESS);
+            if (args.equals("all")) {
+                addressBookModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+                return new CommandResult(MESSAGE_PERSON_ALL_SUCCESS);
+            } else {
+                addressBookModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_EXISTING_PERSONS);
+                return new CommandResult(MESSAGE_PERSON_SUCCESS);
+            }
         } else if (this.cmdType.equals(CMDTYPE_APPOINTMENT)) {
-            scheduleModel.updateFilteredEventList(PREDICATE_SHOW_ALL_SCHEDULE_EVENTS);
-            return new CommandResult(MESSAGE_SUCCESS);
+            if (args.equals("all")) {
+                scheduleModel.updateFilteredEventList(PREDICATE_SHOW_ALL_SCHEDULE_EVENTS);
+                return new CommandResult(MESSAGE_APPOINTMENT_ALL_SUCCESS);
+            } else {
+                scheduleModel.updateFilteredEventList(PREDICATE_SHOW_SCHEDULE_EVENTS);
+                return new CommandResult(MESSAGE_APPOINTMENT_SUCCESS);
+            }
         } else if (this.cmdType.equals(CMDTYPE_DISEASE)) {
             Disease[] diseaseList = diagnosisModel.getDiseases();
             String cmdResult = "Found the following disease:\n" + Arrays.toString(diseaseList);
