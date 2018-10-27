@@ -72,21 +72,46 @@ public class FindCommand extends Command {
         } else if (this.cmdType.equals(CMDTYPE_DISEASE)) {
             Disease disease = new Disease(searchString.trim().toLowerCase());
             if (!diagnosisModel.hasDisease(disease)) {
-                throw new CommandException("Unexpected Error: disease is not present in our record, "
-                        + "please add the disease and its related symptoms into the record");
+                throw new CommandException("Unexpected Error: "
+                        + disease.toString()
+                        + " is not present in our record,"
+                        + " please add this disease and its related symptoms into the record");
             }
             List<Symptom> symptomList = diagnosisModel.getSymptoms(disease);
-            cmdResult = disease.toString() + " is present in our record.\n"
-                    + "\n"
-                    + "Found the following symptoms matching "
+            cmdResult = disease.toString() + " is present in our record. Found the following symptoms matching "
                     + disease.toString() + ":\n"
-                    + symptomList.toString();
+                    + "\n"
+                    + FindCommand.convertListToString(symptomList);
         } else {
             throw new CommandException("Unexpected Values: Should have been caught in FindCommandParser.");
         }
 
         return new CommandResult(cmdResult);
 
+    }
+
+    private static String convertListToString(List<Symptom> symptomList) {
+        String symptomListString = "1. ";
+        int i;
+        for (i = 1; i <= symptomList.size(); i++) {
+
+            if (i % 5 == 0) {
+                symptomListString = symptomListString.concat(i + ". " + symptomList.get(i - 1) + "\n");
+                continue;
+            }
+
+            symptomListString = symptomListString.concat(i + ". " + symptomList.get(i - 1).toString() + ", ");
+
+        }
+
+        symptomListString = symptomListString.substring(3);
+
+        if (symptomListString.charAt(symptomListString.length() - 1) == ' ') {
+            symptomListString = symptomListString.substring(0, symptomListString.length() - 2);
+        }
+
+        symptomListString = symptomListString.concat("\n");
+        return symptomListString;
     }
 
     @Override

@@ -128,8 +128,7 @@ public class EditCommand extends Command {
                 Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
 
                 addressBookModel.updatePerson(personToEdit, editedPerson);
-                addressBookModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_EXISTING_PERSONS);
-                return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, editedPerson));
+                return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, editedPerson.getName()));
 
             } catch (PersonNotFoundException e) {
                 throw new CommandException("Could not locate unique person with given ID, or person has been deleted.");
