@@ -25,13 +25,13 @@ public interface DiagnosisModel {
      * @param disease disease input.
      * @return a list of all symptoms.
      */
-    Symptom[] getSymptoms(Disease disease);
+    List<Symptom> getSymptoms(Disease disease);
 
     /**
      * Gets all diseases stored in patient book.
      * @return a list all diseases.
      */
-    Disease[] getDiseases();
+    List<Disease> getDiseases();
 
     /**
      * Adds a disease and its related symptoms into the database

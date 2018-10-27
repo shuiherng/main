@@ -27,13 +27,13 @@ public class DiagnosisModelManager implements DiagnosisModel {
     }
 
     @Override
-    public Symptom[] getSymptoms(Disease disease) {
+    public List<Symptom> getSymptoms(Disease disease) {
         requireNonNull(disease);
         return diagnosis.getSymptoms(disease);
     }
 
     @Override
-    public Disease[] getDiseases() {
+    public List<Disease> getDiseases() {
         return diagnosis.getDiseases();
     }
 
