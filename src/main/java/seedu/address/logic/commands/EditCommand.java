@@ -13,6 +13,9 @@ import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_EXISTING_P
 
 import java.util.*;
 
+import seedu.address.commons.core.EventsCenter;
+import seedu.address.commons.events.ui.SwitchToPatientEvent;
+import seedu.address.commons.events.ui.SwitchToScheduleEvent;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.commons.util.Pair;
 import seedu.address.logic.CommandHistory;
@@ -128,6 +131,7 @@ public class EditCommand extends Command {
                 Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
 
                 addressBookModel.updatePerson(personToEdit, editedPerson);
+                EventsCenter.getInstance().post(new SwitchToPatientEvent());
                 return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, editedPerson.getName()));
 
             } catch (PersonNotFoundException e) {
@@ -168,6 +172,7 @@ public class EditCommand extends Command {
 
                 scheduleModel.updateEvent(eventToEdit, editedEvent);
                 scheduleModel.updateFilteredEventList(ScheduleModel.PREDICATE_SHOW_SCHEDULE_EVENTS);
+                EventsCenter.getInstance().post(new SwitchToScheduleEvent());
                 return new CommandResult(String.format(MESSAGE_EDIT_EVENT_SUCCESS, editedEvent));
 
             } catch (ScheduleEventNotFoundException e) {
