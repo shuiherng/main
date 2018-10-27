@@ -2,6 +2,7 @@ package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_DISEASE;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_SYMPTOM;
 
@@ -25,15 +26,18 @@ public class ListCommandParser {
         try {
             String[] argSplit = args.trim().split(" ", 2);
             cmdType = argSplit[0];
+            if (argSplit.length > 1) {
+                args = argSplit[1];
+            }
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
         }
 
-        if (!cmdType.equals(CMDTYPE_PATIENT) && !cmdType.equals(CMDTYPE_SYMPTOM)
+        if (!cmdType.equals(CMDTYPE_PATIENT) && !cmdType.equals(CMDTYPE_DISEASE)
                 && !cmdType.equals(CMDTYPE_APPOINTMENT)) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
         }
 
-        return new ListCommand(cmdType);
+        return new ListCommand(cmdType, args);
     }
 }

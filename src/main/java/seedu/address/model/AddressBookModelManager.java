@@ -25,7 +25,7 @@ public class AddressBookModelManager extends ComponentManager implements Address
 
     private final AddressBook addressBook;
 
-    private final FilteredList<Person> filteredPersons;
+    private FilteredList<Person> filteredPersons;
 
     /**
      * Initializes a AddressBookModelManager with the given addressBook and userPrefs.
@@ -37,8 +37,8 @@ public class AddressBookModelManager extends ComponentManager implements Address
         logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
 
         this.addressBook = new AddressBook(addressBook);
-        // this.filteredPersons = new FilteredList<>(addressBook.getAllPersonList());
         this.filteredPersons = new FilteredList<>(addressBook.getPersonList());
+        this.filteredPersons.setPredicate(PREDICATE_SHOW_ALL_EXISTING_PERSONS);
     }
 
     public AddressBookModelManager() {
@@ -64,6 +64,8 @@ public class AddressBookModelManager extends ComponentManager implements Address
 
     /** Raises an event to indicate the addressBookModel has changed. */
     private void indicateAddressBookChanged() {
+        this.filteredPersons = new FilteredList<>(addressBook.getPersonList());
+        this.filteredPersons.setPredicate(PREDICATE_SHOW_ALL_EXISTING_PERSONS);
         raise(new AddressBookChangedEvent(addressBook));
     }
 
@@ -82,7 +84,6 @@ public class AddressBookModelManager extends ComponentManager implements Address
     @Override
     public void addPerson(Person person) {
         addressBook.addPerson(person);
-        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         indicateAddressBookChanged();
     }
 
