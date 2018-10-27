@@ -58,6 +58,7 @@ public class MainApp extends Application {
     protected DiagnosisModel diagnosisModel;
     protected Config config;
     protected UserPrefs userPrefs;
+    protected Stage secondaryStage= new Stage();
 
     @Override
     public void init() throws Exception {
@@ -219,7 +220,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         logger.info("Starting PatientBook " + MainApp.VERSION);
-        ui.start(primaryStage);
+        ui.start(primaryStage,secondaryStage);
     }
 
     /**

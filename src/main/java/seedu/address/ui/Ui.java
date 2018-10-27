@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 public interface Ui {
 
     /** Starts the UI (and the App).  */
-    void start(Stage primaryStage);
+    void start(Stage primaryStage, Stage secondaryStage);
 
     /** Switches the UI to the Schedule Mode */
     void switchToSchedule();

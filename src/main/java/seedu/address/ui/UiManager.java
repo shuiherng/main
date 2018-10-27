@@ -14,6 +14,8 @@ import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.storage.DataSavingExceptionEvent;
+import seedu.address.commons.events.ui.SwitchToPatientEvent;
+import seedu.address.commons.events.ui.SwitchToScheduleEvent;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.Logic;
 import seedu.address.model.UserPrefs;
@@ -37,7 +39,7 @@ public class UiManager extends ComponentManager implements Ui {
     private UserPrefs prefs;
     private MainWindow mainWindow;
     private ScheduleMainWindow scheduleMainWindow;
-
+    private Stage secondaryStage;
     public UiManager(Logic logic, Config config, UserPrefs prefs) {
         super();
         this.logic = logic;
@@ -46,15 +48,16 @@ public class UiManager extends ComponentManager implements Ui {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage, Stage secondaryStage) {
         logger.info("Starting UI...");
 
         //Set the application icon.
         primaryStage.getIcons().add(getImage(ICON_APPLICATION));
 
         try {
-            scheduleMainWindow = new ScheduleMainWindow(primaryStage, config, prefs, logic);
+            scheduleMainWindow = new ScheduleMainWindow(secondaryStage, config, prefs, logic);
             scheduleMainWindow.fillInnerParts();
+            scheduleMainWindow.hide();
             mainWindow = new MainWindow(primaryStage, config, prefs, logic);
             mainWindow.show(); //This should be called before creating other UI parts
             mainWindow.setShowing(true);
@@ -71,10 +74,10 @@ public class UiManager extends ComponentManager implements Ui {
         logger.info("Switching to Schedule Mode");
 
         try {
-            mainWindow.hide();
-            mainWindow.setShowing(false);
             scheduleMainWindow.show();
             scheduleMainWindow.setShowing(true);
+            mainWindow.hide();
+            mainWindow.setShowing(false);
         } catch (Throwable e) {
             logger.severe(StringUtil.getDetails(e));
             showFatalErrorDialogAndShutdown("Fatal error during switching", e);
@@ -151,5 +154,15 @@ public class UiManager extends ComponentManager implements Ui {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         showFileOperationAlertAndWait(FILE_OPS_ERROR_DIALOG_HEADER_MESSAGE, FILE_OPS_ERROR_DIALOG_CONTENT_MESSAGE,
                 event.exception);
+    }
+
+    @Subscribe
+    private void handleSwitchToScheduleEvent (SwitchToScheduleEvent event) {
+        switchToSchedule();
+    }
+
+    @Subscribe
+    private void handleSwitchToPatientEvent (SwitchToPatientEvent event) {
+        switchToPatient();
     }
 }
