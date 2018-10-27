@@ -12,7 +12,7 @@ import java.util.Scanner;
  */
 public class Prompt {
 
-
+    private static final String MESSAGE_PROMPT_CANCEL = "Cancelled command\n";
     private MainApp mainApp = new MainApp();
     private PromptWindow promptWindow;
 
@@ -26,7 +26,7 @@ public class Prompt {
         if (promptWindow.isEnterClicked()) {
             return promptWindow.getInput();
         } else {
-            throw new PromptException();
+            throw new PromptException(MESSAGE_PROMPT_CANCEL);
         }
     }
 }

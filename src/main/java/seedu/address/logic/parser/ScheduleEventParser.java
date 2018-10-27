@@ -23,9 +23,9 @@ import seedu.address.model.person.PersonId;
  */
 public class ScheduleEventParser {
 
-    public static final String MESSAGE_PROMPT_NOTES = "Any additional notes?\n";
-    public static final String MESSAGE_PROMPT_TIMESLOT = "Please enter a time slot in DD/MM/YYYY hh:mm - hh:mm: \n";
-    public static final String MESSAGE_PROMPT_ID = "Please enter the ID of the patient you want to schedule for: \n";
+    private static final String MESSAGE_PROMPT_NOTES = "Any additional notes?\n";
+    private static final String MESSAGE_PROMPT_TIMESLOT = "Please enter a time slot in DD/MM/YYYY hh:mm - hh:mm: \n";
+    private static final String MESSAGE_PROMPT_ID = "Please enter the ID of the patient you want to schedule for: \n";
 
     private ScheduleModel scheduleModel;
     private AddressBookModel addressBookModel;
@@ -109,7 +109,11 @@ public class ScheduleEventParser {
             String availableTimeSlots = dateTimeParser.getAvailableTimeSlotsBetween(scheduledAppts, dateInterval);
             String timeSlotInput = new Prompt().promptForMoreInput(MESSAGE_PROMPT_TIMESLOT, availableTimeSlots);
             Pair<Calendar> timeSlot = dateTimeParser.parseTimeSlot(timeSlotInput.trim());
-            return timeSlot;
+            if (isTimeSlotWithinRange(timeSlot, dateInterval)) {
+                return timeSlot; // where do we check clashing time slots??
+            } else {
+                throw new ParseException(String.format(DateTimeParser.MESSAGE_INVALID_SLOT, DateTimeParser.MESSAGE_SLOT_NOT_WITHIN_RANGE));
+            }
         } catch (ParseException | PromptException e) {
             throw new ParseException(e.getMessage());
         }
@@ -245,5 +249,26 @@ public class ScheduleEventParser {
         return scheduleModel.internalGetFromEventList(scheduleEvent ->
                 !scheduleEvent.getDate().getKey().before(dateInterval.getKey())
                         && !scheduleEvent.getDate().getValue().after(dateInterval.getValue()));
+    }
+
+    /**
+     *
+     * @param timeSlot
+     * @param interval
+     * @return
+     */
+    private boolean isTimeSlotWithinRange(Pair<Calendar> timeSlot, Pair<Calendar> interval) {
+        Calendar dayStart = (Calendar) interval.getKey().clone();
+        Calendar dayEnd = (Calendar) dayStart.clone();
+        dayEnd.set(Calendar.HOUR_OF_DAY, 18);
+        do {
+            if (timeSlot.getKey().before(dayStart) || timeSlot.getValue().after(dayEnd)) {
+                return false;
+            } else {
+                dayStart.add(Calendar.DATE, 1);
+                dayEnd.add(Calendar.DATE, 1);
+            }
+        } while (!dayEnd.equals(interval.getValue()));
+        return true;
     }
 }
