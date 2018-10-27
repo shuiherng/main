@@ -1,6 +1,9 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_SYMPTOM;
 
 import java.util.Arrays;
 
@@ -57,17 +60,17 @@ public class FindCommand extends Command {
         requireNonNull(diagnosisModel);
         String cmdResult;
 
-        if (this.cmdType.equals("patient")) {
+        if (this.cmdType.equals(CMDTYPE_PATIENT)) {
             String[] nameKeywords = searchString.split("\\s+");
 
             addressBookModel.updateFilteredPersonList(new MatchPersonPredicate(Arrays.asList(nameKeywords)));
             cmdResult = String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW,
                     addressBookModel.getFilteredPersonList().size());
-        } else if (this.cmdType.equals("appointment")) {
+        } else if (this.cmdType.equals(CMDTYPE_APPOINTMENT)) {
             scheduleModel.updateFilteredEventList(new ScheduleEventMatchesPredicate(searchString));
             cmdResult = String.format(Messages.MESSAGE_EVENTS_LISTED_OVERVIEW,
                     scheduleModel.getFilteredEventList().size());
-        } else if (this.cmdType.equals("symptom")) {
+        } else if (this.cmdType.equals(CMDTYPE_SYMPTOM)) {
             Disease disease = new Disease(searchString.trim().toLowerCase());
             if (!diagnosisModel.hasDisease(disease)) {
                 throw new CommandException("Unexpected Error: disease is not present in our record, "

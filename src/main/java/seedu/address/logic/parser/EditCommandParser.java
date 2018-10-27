@@ -2,6 +2,8 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_NAME;
@@ -46,10 +48,10 @@ public class EditCommandParser implements Parser<EditCommand> {
 
         ArgumentMultimap argMultimap;
 
-        if(cmdType.equals("patient")) {
+        if(cmdType.equals(CMDTYPE_PATIENT)) {
             argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE,
                     PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
-        } else if (cmdType.equals("appointment")) {
+        } else if (cmdType.equals(CMDTYPE_APPOINTMENT)) {
             argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_PERSON, PREFIX_DATETIME,
                     PREFIX_DETAILS, PREFIX_TAGS);
         } else {

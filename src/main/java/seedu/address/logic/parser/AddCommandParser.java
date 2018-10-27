@@ -1,6 +1,9 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_DIAGNOSIS;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
 
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -31,7 +34,8 @@ public class AddCommandParser implements Parser<AddCommand> {
         // we change the parsing to take place in the command execution phase
         // instead so we can prompt the user for missing fields directly rather than
         // reject the command altogether.
-        if (!cmdType.equals("patient") && !cmdType.equals("appointment") && !cmdType.equals("diagnosis")) {
+        if (!cmdType.equals(CMDTYPE_PATIENT) && !cmdType.equals(CMDTYPE_APPOINTMENT)
+                && !cmdType.equals(CMDTYPE_DIAGNOSIS)) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     AddCommand.MESSAGE_USAGE));
         }
