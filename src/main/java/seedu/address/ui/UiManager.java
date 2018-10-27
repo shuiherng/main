@@ -158,11 +158,13 @@ public class UiManager extends ComponentManager implements Ui {
 
     @Subscribe
     private void handleSwitchToScheduleEvent (SwitchToScheduleEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
         switchToSchedule();
     }
 
     @Subscribe
     private void handleSwitchToPatientEvent (SwitchToPatientEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
         switchToPatient();
     }
 }
