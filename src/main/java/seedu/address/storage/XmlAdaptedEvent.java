@@ -72,8 +72,8 @@ public class XmlAdaptedEvent {
      */
     public XmlAdaptedEvent(ScheduleEvent source) {
         eventId = source.getId().toString();
-        datetimeStart = ScheduleEvent.SDF.format(source.getDate().getKey().getTime());
-        datetimeEnd = ScheduleEvent.SDF.format(source.getDate().getValue().getTime());
+        datetimeStart = ScheduleEvent.STORAGE_SDF.format(source.getDate().getKey().getTime());
+        datetimeEnd = ScheduleEvent.STORAGE_SDF.format(source.getDate().getValue().getTime());
         personId = source.getPersonId().toString();
         details = source.getDetails();
         tagged = source.getTags().stream()
@@ -105,13 +105,13 @@ public class XmlAdaptedEvent {
         if (datetimeStart == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, "Calendar Start"));
         }
-        if (ScheduleEvent.SDF.parse(datetimeStart) == null) {
+        if (ScheduleEvent.STORAGE_SDF.parse(datetimeStart) == null) {
             throw new IllegalValueException("Unable to parse datetime start");
         }
         if (datetimeEnd == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, "Calendar End"));
         }
-        if (ScheduleEvent.SDF.parse(datetimeEnd) == null) {
+        if (ScheduleEvent.STORAGE_SDF.parse(datetimeEnd) == null) {
             throw new IllegalValueException("Unable to parse datetime end");
         }
         Calendar startTime = Calendar.getInstance();

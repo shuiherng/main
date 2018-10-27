@@ -23,9 +23,11 @@ public class ScheduleEvent {
 
     // Standard datetime String format to be used by this application
     public static final SimpleDateFormat SDF;
+    public static final SimpleDateFormat STORAGE_SDF;
 
     static {
         SDF = new SimpleDateFormat("dd/MM/yyyy hh:mm - hh:mm");
+        STORAGE_SDF = new SimpleDateFormat("dd/MM/yyyy hh:mm");
     }
 
     /**
