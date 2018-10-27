@@ -33,6 +33,7 @@ public class MainWindow extends UiPart<Stage> {
 
     private Stage primaryStage;
     private Logic logic;
+    private boolean isShowing;
 
     // Independent Ui parts residing in this Ui container
     private BrowserPanel browserPanel;
@@ -67,6 +68,7 @@ public class MainWindow extends UiPart<Stage> {
         this.logic = logic;
         this.config = config;
         this.prefs = prefs;
+        this.isShowing = false;
 
         // Configure the UI
         setTitle(config.getAppTitle());
@@ -164,12 +166,16 @@ public class MainWindow extends UiPart<Stage> {
                 (int) primaryStage.getX(), (int) primaryStage.getY());
     }
 
+    public void setShowing(boolean showing) {
+        isShowing = showing;
+    }
+
     /**
      * Opens the help window or focuses on it if it's already opened.
      */
     @FXML
     public void handleHelp() {
-        if (!helpWindow.isShowing()) {
+        if (!helpWindow.isShowing() && isShowing) {
             helpWindow.show();
         } else {
             helpWindow.focus();
