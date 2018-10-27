@@ -26,8 +26,8 @@ public class ScheduleEvent {
     public static final SimpleDateFormat STORAGE_SDF;
 
     static {
-        SDF = new SimpleDateFormat("dd/MM/yyyy hh:mm - hh:mm");
-        STORAGE_SDF = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        SDF = new SimpleDateFormat("dd/MM/yyyy HH:mm - HH:mm");
+        STORAGE_SDF = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     }
 
     /**
