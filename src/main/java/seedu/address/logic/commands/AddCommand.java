@@ -119,7 +119,6 @@ public class AddCommand extends Command {
 
     public static final String MESSAGE_SUCCESS_ADDRESSBOOK = "New person added: %1$s";
     public static final String MESSAGE_SUCCESS_SCHEDULE = "New schedule event added: %1$s";
-    public static final String MESSAGE_SUCCESS_DIAGNOSIS = "New disease matcher added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the patient book";
     public static final String MESSAGE_DUPLICATE_DISEASE = "This disease already exists in the patient book";
 
@@ -196,7 +195,10 @@ public class AddCommand extends Command {
                     throw new CommandException(MESSAGE_DUPLICATE_DISEASE);
                 }
                 diagnosisModel.addMatcher(disease, symptomSet);
-                return new CommandResult(String.format(MESSAGE_SUCCESS_DIAGNOSIS, disease));
+                String cmdResult = "New disease "
+                        + disease.toString()
+                        + " has been added into our record.";
+                return new CommandResult(cmdResult);
             } catch (ParseException e) {
                 throw new CommandException("Unexpected Error: unacceptable values should have been prompted for.", e);
             }
