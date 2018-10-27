@@ -52,7 +52,7 @@ public class ScheduleEventParser {
         PersonId patientId = parseNameInput(nameInput);
         Pair<Calendar> timeSlot = parseDateInput(dateInput);
         String notes = promptForNotes();
-        return new ScheduleEvent(timeSlot, patientId, notes, ParserUtil.parseTags(Arrays.asList(null)));
+        return new ScheduleEvent(timeSlot, patientId, notes, ParserUtil.parseTags(Arrays.asList("a")));
     }
 
     /**
