@@ -114,10 +114,11 @@ public class XmlAdaptedEvent {
         if (ScheduleEvent.STORAGE_SDF.parse(datetimeEnd) == null) {
             throw new IllegalValueException("Unable to parse datetime end");
         }
+
         Calendar startTime = Calendar.getInstance();
-        startTime.setTime(ScheduleEvent.SDF.parse(datetimeStart));
+        startTime.setTime(ScheduleEvent.STORAGE_SDF.parse(datetimeStart));
         Calendar endTime = Calendar.getInstance();
-        endTime.setTime(ScheduleEvent.SDF.parse(datetimeEnd));
+        endTime.setTime(ScheduleEvent.STORAGE_SDF.parse(datetimeEnd));
         final Pair<Calendar> modelCalendarPair = new Pair<>(startTime, endTime);
 
         if (personId == null) {
