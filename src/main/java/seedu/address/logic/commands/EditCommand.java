@@ -53,11 +53,14 @@ public class EditCommand extends Command {
             + PREFIX_PHONE + "91234567 "
             + PREFIX_EMAIL + "johndoe@example.com";
 
+    public static final String MESSAGE_CANNOT_EDIT_DELETED = "Cannot edit deleted person.";
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
+    public static final String MESSAGE_INVALID_FORMAT = "Invalid format: %1$s";
+    public static final String MESSAGE_INVALID_EVENT_ID = "Incorrect format for appointment ID.";
+    public static final String MESSAGE_INVALID_PATIENT_ID = "Incorrect format for patient ID.";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     // public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
     private static final String MESSAGE_EDIT_EVENT_SUCCESS = "Edited Event: %1$s";
-    private static final String MESSAGE_INVALID_PATIENT_ID = "Incorrect format for patient ID.";
 
     // private final Index index;
     // private final EditPersonDescriptor editPersonDescriptor;
@@ -92,34 +95,34 @@ public class EditCommand extends Command {
                 try {
                     editPersonDescriptor.setName(ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get()));
                 } catch (ParseException e) {
-                    throw new CommandException("Incorrect format for name.", e);
+                    throw new CommandException(String.format(MESSAGE_INVALID_FORMAT, Name.class.getSimpleName()));
                 }
             }
             if (argMultimap.getValue(PREFIX_PHONE).isPresent()) {
                 try {
                     editPersonDescriptor.setPhone(ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get()));
                 } catch (ParseException e) {
-                    throw new CommandException("Incorrect format for phone.", e);
+                    throw new CommandException(String.format(MESSAGE_INVALID_FORMAT, Phone.class.getSimpleName()));
                 }
             }
             if (argMultimap.getValue(PREFIX_EMAIL).isPresent()) {
                 try {
                     editPersonDescriptor.setEmail(ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get()));
                 } catch (ParseException e) {
-                    throw new CommandException("Incorrect format for email.", e);
+                    throw new CommandException(String.format(MESSAGE_INVALID_FORMAT, Email.class.getSimpleName()));
                 }
             }
             if (argMultimap.getValue(PREFIX_ADDRESS).isPresent()) {
                 try {
                     editPersonDescriptor.setAddress(ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get()));
                 } catch (ParseException e) {
-                    throw new CommandException("Incorrect format for address.", e);
+                    throw new CommandException(String.format(MESSAGE_INVALID_FORMAT, Address.class.getSimpleName()));
                 }
             }
             try {
                 parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
             } catch (ParseException e) {
-                throw new CommandException("Invalid tag format.");
+                throw new CommandException(String.format(MESSAGE_INVALID_FORMAT, Tag.class.getSimpleName()));
             }
             if (!editPersonDescriptor.isAnyFieldEdited()) {
                 throw new CommandException(EditCommand.MESSAGE_NOT_EDITED);
@@ -128,6 +131,12 @@ public class EditCommand extends Command {
             // Edit the person
             try {
                 Person personToEdit = addressBookModel.getPersonById(new PersonId(target));
+
+                // disallow editing if person is already deleted
+                if (!personToEdit.getExists()) {
+                    throw new CommandException(MESSAGE_CANNOT_EDIT_DELETED);
+                }
+
                 Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
 
                 addressBookModel.updatePerson(personToEdit, editedPerson);
@@ -140,7 +149,7 @@ public class EditCommand extends Command {
 
         } else if (cmdType.equals(CMDTYPE_APPOINTMENT)) {
             if (!EventId.isValidId(target)) {
-                throw new CommandException("Incorrect format for event ID.");
+                throw new CommandException(MESSAGE_INVALID_EVENT_ID);
             }
             EditScheduleEventDescriptor editScheduleEventDescriptor = new EditScheduleEventDescriptor();
             if (argMultimap.getValue(PREFIX_PERSON).isPresent()) {
