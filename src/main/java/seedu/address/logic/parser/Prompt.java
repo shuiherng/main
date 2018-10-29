@@ -18,6 +18,7 @@ public class Prompt {
             + "where hh (hour) must be between 9 and 18 \n"
             + "Eg. 13/12/2018 13:30 - 14:30\n";
     private static final String MESSAGE_PROMPT_CANCEL = "Cancelled command\n";
+    private static final String EMPTY_RESPONSE = "";
     private MainApp mainApp = new MainApp();
     private PromptWindow promptWindow;
 
@@ -26,11 +27,17 @@ public class Prompt {
      * @param messageToUser message to be displayed
      * @return input by the user
      */
-    public String promptForMoreInput (String leadingMessage, String messageToUser) throws PromptException {
+    public String promptForMoreInput (String leadingMessage, String messageToUser, boolean isInputCompulsory) throws PromptException {
         promptWindow = mainApp.showPromptWindow(leadingMessage + messageToUser);
         if (promptWindow.isEnterClicked()) {
             if (!promptWindow.getInput().equals("")) {
                 return promptWindow.getInput();
+            } else {
+                if (isInputCompulsory) {
+                    throw new PromptException(MESSAGE_PROMPT_CANCEL); // not typing anything for a compulsory field is treated as cancelling the command
+                } else {
+                    return EMPTY_RESPONSE;
+                }
             }
         }
         throw new PromptException(MESSAGE_PROMPT_CANCEL);
