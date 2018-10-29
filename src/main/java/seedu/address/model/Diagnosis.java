@@ -120,7 +120,7 @@ public class Diagnosis {
                 InputStream inputStream = MainApp.class
                         .getResourceAsStream("/storage/datasetForSymptomAndDisease.csv");
                 FileUtil.writeToCSVFile(Paths.get(pathStringForCSV),
-                        Diagnosis.convertStreamToString(inputStream).concat("\n"));
+                        Diagnosis.convertStreamToString(inputStream));
             }
 
             List<String> strings = FileUtil.readFromCSVFile(Paths.get(pathStringForCSV));
