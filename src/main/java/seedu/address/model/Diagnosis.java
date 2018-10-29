@@ -3,10 +3,9 @@ package seedu.address.model;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -14,6 +13,8 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import com.opencsv.CSVReader;
 
+import seedu.address.MainApp;
+import seedu.address.commons.util.FileUtil;
 import seedu.address.model.symptom.Disease;
 import seedu.address.model.symptom.Symptom;
 
@@ -22,12 +23,12 @@ import seedu.address.model.symptom.Symptom;
  */
 public class Diagnosis {
 
-    private static final String pathStringForCSV = "src/main/resources/storage/datasetForSymptomAndDisease.csv";
+    private static final String pathStringForCSV = "datasetForSymptomAndDisease.csv";
     private HashMap<Disease, Set<Symptom>> matcher;
 
 
     public Diagnosis() {
-        matcher = Diagnosis.readDataFromCsvFile();
+        matcher = this.readDataFromCsvFile();
         requireNonNull(matcher);
     }
 
@@ -77,14 +78,15 @@ public class Diagnosis {
      * @param disease  disease input.
      * @param symptoms related symptoms.
      */
+
+
     public void addMatcher(Disease disease, Set<Symptom> symptoms) {
         requireNonNull(disease);
         requireAllNonNull(symptoms);
         boolean hasDisease = this.hasDisease(disease);
-        if (hasDisease) {
-            //todo: prompt user.
+        if (!hasDisease) {
+            this.matcher = writeDataFromCsvFile(disease, symptoms);
         }
-        this.matcher = writeDataFromCsvFile(disease, symptoms);
     }
 
     /**
@@ -107,18 +109,23 @@ public class Diagnosis {
      *
      * @return a HashMap object which its key is the disease and value is its related symptoms.
      */
+
     private static HashMap<Disease, Set<Symptom>> readDataFromCsvFile() {
 
         try {
             HashMap<Disease, Set<Symptom>> diseaseSymptomMatcher = new HashMap<>();
-            String filePath = new File(pathStringForCSV)
-                    .getAbsolutePath();
-            File file = new File(filePath);
-            FileReader fileReader = new FileReader(file);
-            CSVReader csvReader = new CSVReader(fileReader);
-            String[] nextRecord;
 
-            while ((nextRecord = csvReader.readNext()) != null) {
+            if (!FileUtil.isFileExists(Paths.get(pathStringForCSV))) {
+                FileUtil.createFile(Paths.get(pathStringForCSV));
+                InputStream inputStream = MainApp.class
+                        .getResourceAsStream("/storage/datasetForSymptomAndDisease.csv");
+                FileUtil.writeToCSVFile(Paths.get(pathStringForCSV),
+                        Diagnosis.convertStreamToString(inputStream).concat("\n"));
+            }
+
+            List<String> strings = FileUtil.readFromCSVFile(Paths.get(pathStringForCSV));
+            for (int i = 0; i < strings.size(); i++) {
+                String[] nextRecord = strings.get(i).split(",");
                 Disease disease = new Disease(nextRecord[0].toLowerCase());
                 nextRecord = ArrayUtils.remove(nextRecord, 0);
                 List<String> symptomsList = Arrays.asList(nextRecord);
@@ -129,10 +136,21 @@ public class Diagnosis {
                 diseaseSymptomMatcher.put(disease, symptoms1);
             }
             return diseaseSymptomMatcher;
+
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * Converts a stream to a string.
+     * @param is input stream.
+     * @return the formatted string.
+     */
+    private static String convertStreamToString(InputStream is) {
+        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+        return s.hasNext() ? s.next() : "";
     }
 
     /**
@@ -141,18 +159,11 @@ public class Diagnosis {
      * @return a new ashMap object which its key is the disease and value is its related symptoms.
      */
     private static HashMap<Disease, Set<Symptom>> writeDataFromCsvFile(Disease disease, Set<Symptom> symptoms) {
+
         try {
-            String filePath = new File(pathStringForCSV)
-                    .getAbsolutePath();
-            File file = new File(filePath);
-            FileWriter fileWriter = new FileWriter(file, true);
-
-
             String data = Diagnosis.stringConverter(disease.toString(), symptoms);
-            fileWriter.append(data);
-
-            fileWriter.flush();
-            fileWriter.close();
+            Path path = Paths.get(pathStringForCSV);
+            FileUtil.writeToCSVFile(path, data);
 
             return Diagnosis.readDataFromCsvFile();
         } catch (IOException e) {

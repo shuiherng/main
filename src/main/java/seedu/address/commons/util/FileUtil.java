@@ -1,10 +1,8 @@
 package seedu.address.commons.util;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
+import java.util.List;
 
 /**
  * Writes and reads files
@@ -20,6 +18,7 @@ public class FileUtil {
     /**
      * Returns true if {@code path} can be converted into a {@code Path} via {@link Paths#get(String)},
      * otherwise returns false.
+     *
      * @param path A string representing the file path. Cannot be null.
      */
     public static boolean isValidPath(String path) {
@@ -33,6 +32,7 @@ public class FileUtil {
 
     /**
      * Creates a file if it does not exist along with its missing parent directories.
+     *
      * @throws IOException if the file or directory cannot be created.
      */
     public static void createIfMissing(Path file) throws IOException {
@@ -78,6 +78,27 @@ public class FileUtil {
      */
     public static void writeToFile(Path file, String content) throws IOException {
         Files.write(file, content.getBytes(CHARSET));
+    }
+
+    /**
+     * Wrties given string to a file.
+     * @param file
+     * @param content
+     * @throws IOException
+     */
+    public static void writeToCSVFile(Path file, String content) throws IOException {
+
+        Files.write(file, content.getBytes(CHARSET), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+    }
+
+    /**
+     * Assumes file exists.
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    public static List<String> readFromCSVFile(Path file) throws IOException {
+        return (Files.readAllLines(file));
     }
 
 }
