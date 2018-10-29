@@ -31,7 +31,7 @@ public class AppointmentCard extends UiPart<Region> {
     @FXML
     private Label id;
     @FXML
-    private Label eventID;
+    private Label eventid;
     @FXML
     private Label datetime;
     @FXML
@@ -45,7 +45,7 @@ public class AppointmentCard extends UiPart<Region> {
         super(FXML);
         this.event = event;
         id.setText(displayedIndex + ". ");
-        eventID.setText(event.getId().toString());
+        eventid.setText(event.getId().toString());
         name.setText(null); //TODO
         datetime.setText(event.getDateToString());
         personId.setText(event.getPersonId().toString());
