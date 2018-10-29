@@ -47,7 +47,7 @@ public class AppointmentCard extends UiPart<Region> {
         id.setText(displayedIndex + ". ");
         eventID.setText(event.getId().toString());
         name.setText(null); //TODO
-        datetime.setText(event.getDate().toString());
+        datetime.setText(event.getDateToString());
         personId.setText(event.getPersonId().toString());
         details.setText(event.getDetails());
         event.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
