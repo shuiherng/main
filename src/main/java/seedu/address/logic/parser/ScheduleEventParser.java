@@ -110,7 +110,7 @@ public class ScheduleEventParser {
             Pair<Calendar> dateInterval = dateTimeParser.parseDate(dateInput, currentTime);
             List<ScheduleEvent> scheduledAppts = getAppointmentsBetween(dateInterval);
             String availableTimeSlots = dateTimeParser.getAvailableTimeSlotsBetween(scheduledAppts, dateInterval);
-            String timeSlotInput = new Prompt().promptForMoreInput(MESSAGE_PROMPT_TIMESLOT, availableTimeSlots);
+            String timeSlotInput = new Prompt().promptForMoreInput(MESSAGE_PROMPT_TIMESLOT, availableTimeSlots, true);
             Pair<Calendar> timeSlot = dateTimeParser.parseTimeSlot(timeSlotInput.trim());
             if (isTimeSlotWithinRange(timeSlot, dateInterval)) {
                 return timeSlot; // where do we check clashing time slots??
@@ -135,7 +135,7 @@ public class ScheduleEventParser {
                 throw new ParseException(MESSAGE_PERSONS_MATCH_BY_NAME_FAIL);
             }
             String personsToDisplay = displayPersonListAsString (nameMatchedPersons);
-            String personIdInput = new Prompt().promptForMoreInput(MESSAGE_PROMPT_ID, personsToDisplay);
+            String personIdInput = new Prompt().promptForMoreInput(MESSAGE_PROMPT_ID, personsToDisplay, true);
             List<Person> finalizedPerson = addressBookModel.internalGetFromPersonList
                     (new MatchPersonPredicate(Arrays.asList(personIdInput)));
             if (finalizedPerson.size() == 1) {
@@ -154,7 +154,7 @@ public class ScheduleEventParser {
      */
     private String promptForNotes() throws ParseException {
         try {
-            return new Prompt().promptForMoreInput(MESSAGE_PROMPT_NOTES, "");
+            return new Prompt().promptForMoreInput(MESSAGE_PROMPT_NOTES, "", false);
         } catch (PromptException e) {
             throw new ParseException(e.getMessage());
         }
