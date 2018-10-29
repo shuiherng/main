@@ -37,10 +37,14 @@ public class ScheduleMainWindow extends UiPart {
     private boolean isShowing;
 
     // Independent Ui parts residing in this Ui container
+    private BrowserPanel browserPanel;
     private AppointmentPanel appointmentPanel;
     private Config config;
     private UserPrefs prefs;
     private HelpWindow helpWindow;
+
+    @FXML
+    private StackPane browserPlaceholder;
 
     @FXML
     private StackPane commandBoxPlaceholder;
@@ -113,6 +117,9 @@ public class ScheduleMainWindow extends UiPart {
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
+        browserPanel = new BrowserPanel();
+        browserPlaceholder.getChildren().add(browserPanel.getRoot());
+
         appointmentPanel = new AppointmentPanel(logic.getFilteredEventList());
         appointmentPanelPlaceholder.getChildren().add(appointmentPanel.getRoot());
 
