@@ -1,5 +1,9 @@
 package seedu.address.logic.commands;
 
+import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
+
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.events.ui.SwitchToPatientEvent;
 import seedu.address.commons.events.ui.SwitchToScheduleEvent;
@@ -10,9 +14,7 @@ import seedu.address.model.AddressBookModel;
 import seedu.address.model.DiagnosisModel;
 import seedu.address.model.ScheduleModel;
 
-import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
-import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
+
 
 /**
  * Switch between Patient Mode and Calender Mode
@@ -34,7 +36,9 @@ public class ModeCommand extends Command {
 
     private final String cmdType;
 
-    public ModeCommand(String cmdType) { this.cmdType = cmdType; }
+    public ModeCommand(String cmdType) {
+        this.cmdType = cmdType;
+    }
 
     @Override
     public CommandResult execute(AddressBookModel addressBookModel, ScheduleModel scheduleModel,
