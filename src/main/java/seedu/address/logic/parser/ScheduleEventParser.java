@@ -3,7 +3,6 @@ package seedu.address.logic.parser;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
 import static seedu.address.commons.core.Messages.MESSAGE_PERSONS_MATCH_BY_NAME_FAIL;
-import static seedu.address.logic.parser.DateTimeParser.MESSAGE_SLOT_CLASHING;
 import static seedu.address.logic.parser.Prompt.MESSAGE_PROMPT_ID;
 import static seedu.address.logic.parser.Prompt.MESSAGE_PROMPT_NOTES;
 import static seedu.address.logic.parser.Prompt.MESSAGE_PROMPT_TAGS;
@@ -120,12 +119,14 @@ public class ScheduleEventParser {
             if (isTimeSlotWithinRange(timeSlot, dateInterval)) {
                 for (ScheduleEvent appt: scheduledAppts) {
                     if (appt.isClashing(timeSlot)) {
-                        throw new ParseException(String.format(DateTimeParser.MESSAGE_INVALID_SLOT, DateTimeParser.MESSAGE_SLOT_CLASHING));
+                        throw new ParseException(String.format(DateTimeParser.MESSAGE_INVALID_SLOT,
+                                DateTimeParser.MESSAGE_SLOT_CLASHING));
                     }
                 }
                 return timeSlot; // where do we check clashing time slots??
             } else {
-                throw new ParseException(String.format(DateTimeParser.MESSAGE_INVALID_SLOT, DateTimeParser.MESSAGE_SLOT_NOT_WITHIN_RANGE));
+                throw new ParseException(String.format(DateTimeParser.MESSAGE_INVALID_SLOT,
+                        DateTimeParser.MESSAGE_SLOT_NOT_WITHIN_RANGE));
             }
         } catch (ParseException | PromptException e) {
             throw new ParseException(e.getMessage());
@@ -141,7 +142,7 @@ public class ScheduleEventParser {
         try {
             List<Person> matchedPersons = addressBookModel.internalGetFromPersonList
                     (new MatchPersonPredicate(Arrays.asList(nameInput)));
-            if (matchedPersons.isEmpty()){
+            if (matchedPersons.isEmpty()) {
                 throw new ParseException(MESSAGE_PERSONS_MATCH_BY_NAME_FAIL);
             }
             Set<PersonId> choosablePersonIds = getChoosablePersonIds(matchedPersons);

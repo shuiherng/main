@@ -1,7 +1,9 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.parser.CmdTypeCliSyntax.*;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_DISEASE;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
 
 import java.util.Arrays;
 import java.util.List;
@@ -95,6 +97,11 @@ public class FindCommand extends Command {
 
     }
 
+    /**
+     *
+     * @param symptomList
+     * @return
+     */
     private static String convertListToString(List<Symptom> symptomList) {
         String symptomListString = "1. ";
         int i;

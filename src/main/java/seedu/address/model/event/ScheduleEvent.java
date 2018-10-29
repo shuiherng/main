@@ -75,6 +75,14 @@ public class ScheduleEvent {
         return (new Pair<>((Calendar) returnedDate.getKey(), (Calendar) returnedDate.getValue()));
     }
 
+    public String getDateToString() {
+        StringBuilder dateBuilder = new StringBuilder();
+        dateBuilder.append(STORAGE_SDF.format(getDate().getKey().getTime()))
+                   .append(" to ")
+                   .append(STORAGE_SDF.format(getDate().getValue().getTime()));
+        return dateBuilder.toString();
+    }
+
     public PersonId getPersonId() {
         return (PersonId) this.attributes.get(ScheduleEventProperty.PERSONID);
     }

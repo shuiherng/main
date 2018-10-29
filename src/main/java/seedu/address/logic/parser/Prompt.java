@@ -28,14 +28,15 @@ public class Prompt {
      * @param messageToUser message to be displayed
      * @return input by the user
      */
-    public String promptForMoreInput (String leadingMessage, String messageToUser, boolean isInputCompulsory) throws PromptException {
+    public String promptForMoreInput (String leadingMessage, String messageToUser, boolean isInputCompulsory)
+            throws PromptException {
         promptWindow = mainApp.showPromptWindow(leadingMessage + messageToUser);
         if (promptWindow.isEnterClicked()) {
             if (!promptWindow.getInput().equals("")) {
                 return promptWindow.getInput();
             } else {
                 if (isInputCompulsory) {
-                    throw new PromptException(MESSAGE_PROMPT_CANCEL); // not typing anything for a compulsory field is treated as cancelling the command
+                    throw new PromptException(MESSAGE_PROMPT_CANCEL); // treated as cancelling the command
                 } else {
                     return EMPTY_RESPONSE;
                 }

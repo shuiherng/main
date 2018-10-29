@@ -26,7 +26,8 @@ import seedu.address.model.event.ScheduleEvent;
 public class DateTimeParser {
 
     public static final String MESSAGE_INVALID_SLOT = "Invalid time slot! \n%1$s";
-    public static final String MESSAGE_END_BEFORE_START = "The end time of an appointment must be after the start time! \n";
+    public static final String MESSAGE_END_BEFORE_START = "The end time of an appointment "
+                                                        + "must be after the start time! \n";
     public static final String MESSAGE_SLOT_NOT_WITHIN_RANGE = "Time slot entered is not in the range specified! \n";
     public static final String MESSAGE_SLOT_CLASHING = "Time slot entered clashes with existing appointments! \n";
     private static final String MESSAGE_NO_SLOTS = "No time slots available!\n";
@@ -73,7 +74,8 @@ public class DateTimeParser {
             if (isValidDateFormat(dateInput)) {
                 return getDateFromSpecified(dateInput); // user actually inputs the date (eg. 13/12/2018)
             } else {
-                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE_APPOINTMENT));
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                        AddCommand.MESSAGE_USAGE_APPOINTMENT));
             }
         }
     }
@@ -158,7 +160,8 @@ public class DateTimeParser {
             // do nothing
         }
         if (dayOfWeek == -1) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE_APPOINTMENT));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    AddCommand.MESSAGE_USAGE_APPOINTMENT));
         }
         return getWeekDayDate(currentTime, dayOfWeek, offset);
     }
