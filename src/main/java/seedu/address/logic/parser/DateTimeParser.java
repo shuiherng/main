@@ -28,6 +28,7 @@ public class DateTimeParser {
     public static final String MESSAGE_INVALID_SLOT = "Invalid time slot! \n%1$s";
     public static final String MESSAGE_END_BEFORE_START = "The end time of an appointment must be after the start time! \n";
     public static final String MESSAGE_SLOT_NOT_WITHIN_RANGE = "Time slot entered is not in the range specified! \n";
+    public static final String MESSAGE_SLOT_CLASHING = "Time slot entered clashes with existing appointments! \n";
     private static final String MESSAGE_NO_SLOTS = "No time slots available!\n";
     private static final String MESSAGE_HAVE_SLOTS = "You have time slots available during:\n";
 

@@ -105,6 +105,27 @@ public class ScheduleEvent {
     }
 
     /**
+     * Returns true if the event clashes with a given duration
+     */
+    public boolean isClashing(Pair<Calendar> duration) {
+        boolean isClashing = false;
+        Calendar thisStart = this.getDate().getKey();
+        Calendar thisEnd = this.getDate().getValue();
+        Calendar otherStart = duration.getKey();
+        Calendar otherEnd = duration.getValue();
+        if (thisStart.equals(otherStart)) { // if two start times are the same, they will clash definitely
+            isClashing = true;
+        }
+        if (thisStart.before(otherStart) && otherStart.before(thisEnd)) {
+            isClashing = true;
+        }
+        if (otherStart.before(thisStart) && thisStart.before(otherEnd)) {
+            isClashing = true;
+        }
+        return isClashing;
+    }
+
+    /**
      * Returns true if both persons have the same ID.
      */
     @Override
