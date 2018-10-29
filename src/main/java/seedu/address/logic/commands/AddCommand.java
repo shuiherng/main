@@ -124,9 +124,9 @@ public class AddCommand extends Command {
             + PREFIX_SYMPTOM + "blackheads "
             + "\n";
 
-    public static final String MESSAGE_SUCCESS_ADDRESSBOOK = "New person added: %1$s";
-    public static final String MESSAGE_SUCCESS_SCHEDULE = "New schedule event added: %1$s";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the patient book";
+    public static final String MESSAGE_SUCCESS_ADDRESSBOOK = "New patient added: %1$s";
+    public static final String MESSAGE_SUCCESS_SCHEDULE = "New appointment added: %1$s";
+    public static final String MESSAGE_DUPLICATE_PERSON = "This patient already exists in the patient book";
     public static final String MESSAGE_DUPLICATE_DISEASE = "This disease already exists in the patient book";
 
     private final String addType;
