@@ -30,6 +30,8 @@ public class FindCommand extends Command {
 
     public static final String COMMAND_WORD = "find";
 
+    public static final String MESSAGE_UNEXPECTED_PARAMETER = "Unexpected Values: "
+            + "Should have been caught in FindCommandParser.";
     public static final String MESSAGE_USAGE = COMMAND_WORD + "use 'find patient' or 'find disease' "
             + "to find all persons whose names contain any of "
             + "the specified keywords (case-insensitive) or to find all symptoms related to a disease if it exists "
@@ -90,7 +92,7 @@ public class FindCommand extends Command {
                     + "\n"
                     + FindCommand.convertListToString(symptomList);
         } else {
-            throw new CommandException("Unexpected Values: Should have been caught in FindCommandParser.");
+            throw new CommandException(MESSAGE_UNEXPECTED_PARAMETER);
         }
 
         return new CommandResult(cmdResult);
