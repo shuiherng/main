@@ -122,7 +122,8 @@ public class Diagnosis {
                 Disease disease = new Disease(nextRecord[0].toLowerCase());
                 nextRecord = ArrayUtils.remove(nextRecord, 0);
                 List<String> symptomsList = Arrays.asList(nextRecord);
-                List<Symptom> symptoms = symptomsList.stream().map(x -> new Symptom(x.toLowerCase())).collect(Collectors.toList());
+                List<Symptom> symptoms = symptomsList.stream().map(x -> new Symptom(x.toLowerCase()))
+                        .collect(Collectors.toList());
                 HashSet<Symptom> symptoms1 = new HashSet<>();
                 symptoms1.addAll(symptoms);
                 diseaseSymptomMatcher.put(disease, symptoms1);
