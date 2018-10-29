@@ -109,7 +109,7 @@ public class DateTimeParser {
 
     /**
      * Parser "this ..." or "next ..." commands.
-     * eg. "this week" "next month" "next Thur".
+     * eg. "this week" "next month" "next Thursday".
      * @param currentTime Current time.
      * @param dateInput Input string.
      * @return Date range intended by the input string.
@@ -133,31 +133,24 @@ public class DateTimeParser {
         }
         int dayOfWeek = -1; // requires a check somewhere
         switch (splitString[1]) {
-        case "Mon":
         case "Monday":
             dayOfWeek = 0;
             break;
-        case "Tue":
         case "Tuesday":
             dayOfWeek = 1;
             break;
-        case "Wed":
         case "Wednesday":
             dayOfWeek = 2;
             break;
-        case "Thu":
         case "Thursday":
             dayOfWeek = 3;
             break;
-        case "Fri":
         case "Friday":
             dayOfWeek = 4;
             break;
-        case "Sat":
         case "Saturday":
             dayOfWeek = 5;
             break;
-        case "Sun":
         case "Sunday":
             dayOfWeek = 6;
             break;
