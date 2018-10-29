@@ -9,7 +9,6 @@ import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.model.ScheduleModel.PREDICATE_SHOW_ALL_SCHEDULE_EVENTS;
 import static seedu.address.model.ScheduleModel.PREDICATE_SHOW_SCHEDULE_EVENTS;
 
-import java.util.Arrays;
 import java.util.List;
 
 import seedu.address.commons.core.EventsCenter;
@@ -86,6 +85,11 @@ public class ListCommand extends Command {
 
     }
 
+    /**
+     * Formats the list to a string for command result.
+     * @param diseaseList
+     * @return a formatted string.
+     */
     private static String convertListToString(List<Disease> diseaseList) {
         String diseaseListString = "1. ";
         int i;

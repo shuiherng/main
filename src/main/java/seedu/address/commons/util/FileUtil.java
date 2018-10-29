@@ -1,7 +1,11 @@
 package seedu.address.commons.util;
 
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 
 /**
@@ -86,7 +90,7 @@ public class FileUtil {
      * @param content
      * @throws IOException
      */
-    public static void writeToCSVFile(Path file, String content) throws IOException {
+    public static void writeToCsvFile(Path file, String content) throws IOException {
 
         Files.write(file, content.getBytes(CHARSET), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
     }
@@ -97,7 +101,7 @@ public class FileUtil {
      * @return
      * @throws IOException
      */
-    public static List<String> readFromCSVFile(Path file) throws IOException {
+    public static List<String> readFromCsvFile(Path file) throws IOException {
         return (Files.readAllLines(file));
     }
 

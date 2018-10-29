@@ -3,15 +3,20 @@ package seedu.address.model;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.ArrayUtils;
-
-import com.opencsv.CSVReader;
 
 import seedu.address.MainApp;
 import seedu.address.commons.util.FileUtil;
@@ -119,11 +124,11 @@ public class Diagnosis {
                 FileUtil.createFile(Paths.get(pathStringForCSV));
                 InputStream inputStream = MainApp.class
                         .getResourceAsStream("/storage/datasetForSymptomAndDisease.csv");
-                FileUtil.writeToCSVFile(Paths.get(pathStringForCSV),
+                FileUtil.writeToCsvFile(Paths.get(pathStringForCSV),
                         Diagnosis.convertStreamToString(inputStream));
             }
 
-            List<String> strings = FileUtil.readFromCSVFile(Paths.get(pathStringForCSV));
+            List<String> strings = FileUtil.readFromCsvFile(Paths.get(pathStringForCSV));
             for (int i = 0; i < strings.size(); i++) {
                 String[] nextRecord = strings.get(i).split(",");
                 Disease disease = new Disease(nextRecord[0].toLowerCase());
@@ -163,7 +168,7 @@ public class Diagnosis {
         try {
             String data = Diagnosis.stringConverter(disease.toString(), symptoms);
             Path path = Paths.get(pathStringForCSV);
-            FileUtil.writeToCSVFile(path, data);
+            FileUtil.writeToCsvFile(path, data);
 
             return Diagnosis.readDataFromCsvFile();
         } catch (IOException e) {
