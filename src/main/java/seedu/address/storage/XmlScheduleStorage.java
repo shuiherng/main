@@ -15,6 +15,7 @@ import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.FileUtil;
 import seedu.address.model.ReadOnlySchedule;
+import seedu.address.model.event.ScheduleEvent;
 
 
 /**
@@ -71,6 +72,8 @@ public class XmlScheduleStorage implements ScheduleStorage {
     public void saveSchedule(ReadOnlySchedule schedule, Path filePath) throws IOException {
         requireNonNull(schedule);
         requireNonNull(filePath);
+        System.out.println("file path:");
+        System.out.println(filePath);
 
         FileUtil.createIfMissing(filePath);
         XmlFileStorage.saveScheduleToFile(filePath, new XmlSerializableSchedule(schedule));

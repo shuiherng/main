@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 // import javax.xml.bind.annotation.XmlRootElement;
 
 import seedu.address.commons.exceptions.IllegalValueException;
@@ -16,6 +17,7 @@ import seedu.address.model.event.ScheduleEvent;
 /**
  * An Immutable Schedule that is serializable to XML format
  */
+@XmlRootElement(name = "schedule")
 public class XmlSerializableSchedule {
 
     public static final String MESSAGE_DUPLICATE_EVENT = "Event list contains duplicate event(s).";
