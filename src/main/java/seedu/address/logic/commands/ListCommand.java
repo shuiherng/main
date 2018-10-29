@@ -29,6 +29,7 @@ import seedu.address.model.symptom.Disease;
 public class ListCommand extends Command {
 
     public static final String COMMAND_WORD = "list";
+    public static final String GET_ALL_WORD = "all";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + "use 'list patient' or 'list disease' "
             + "to list all persons or diseases with index numbers.\n";
@@ -56,7 +57,7 @@ public class ListCommand extends Command {
         requireNonNull(diagnosisModel);
 
         if (this.cmdType.equals(CMDTYPE_PATIENT)) {
-            if (args.equals("all")) {
+            if (args.equals(GET_ALL_WORD)) {
                 addressBookModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
                 EventsCenter.getInstance().post(new SwitchToPatientEvent());
                 return new CommandResult(MESSAGE_PERSON_ALL_SUCCESS);
@@ -66,7 +67,7 @@ public class ListCommand extends Command {
                 return new CommandResult(MESSAGE_PERSON_SUCCESS);
             }
         } else if (this.cmdType.equals(CMDTYPE_APPOINTMENT)) {
-            if (args.equals("all")) {
+            if (args.equals(GET_ALL_WORD)) {
                 scheduleModel.updateFilteredEventList(PREDICATE_SHOW_ALL_SCHEDULE_EVENTS);
                 EventsCenter.getInstance().post(new SwitchToScheduleEvent());
                 return new CommandResult(MESSAGE_APPOINTMENT_ALL_SUCCESS);
