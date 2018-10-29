@@ -9,7 +9,6 @@ import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.ScheduleEventCliSyntax.*;
-import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_EXISTING_PERSONS;
 
 import java.util.*;
 
@@ -56,8 +55,9 @@ public class EditCommand extends Command {
 
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
+    // public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
     private static final String MESSAGE_EDIT_EVENT_SUCCESS = "Edited Event: %1$s";
+    private static final String MESSAGE_INVALID_PATIENT_ID = "Incorrect format for patient ID.";
 
     // private final Index index;
     // private final EditPersonDescriptor editPersonDescriptor;
@@ -85,7 +85,7 @@ public class EditCommand extends Command {
 
         if (cmdType.equals(CMDTYPE_PATIENT)) {
             if (!PersonId.isValidId(target)) {
-                throw new CommandException("Incorrect format for patient ID.");
+                throw new CommandException(MESSAGE_INVALID_PATIENT_ID);
             }
             EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
             if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
