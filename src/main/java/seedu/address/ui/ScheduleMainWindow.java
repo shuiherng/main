@@ -190,7 +190,7 @@ public class ScheduleMainWindow extends UiPart {
     }
 
     public AppointmentPanel getAppointmentPanel() {
-        return appointmentPanel ;
+        return appointmentPanel;
     }
 
     @Subscribe
