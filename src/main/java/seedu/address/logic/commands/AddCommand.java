@@ -12,10 +12,6 @@ import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_TAG;
-import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_EXISTING_PERSONS;
-import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_PERSONS;
-import static seedu.address.model.ScheduleModel.PREDICATE_SHOW_ALL_SCHEDULE_EVENTS;
-import static seedu.address.model.ScheduleModel.PREDICATE_SHOW_SCHEDULE_EVENTS;
 
 import java.util.Optional;
 import java.util.Set;
@@ -128,6 +124,7 @@ public class AddCommand extends Command {
     public static final String MESSAGE_SUCCESS_SCHEDULE = "New appointment added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This patient already exists in the patient book";
     public static final String MESSAGE_DUPLICATE_DISEASE = "This disease already exists in the patient book";
+    private static final String MESSAGE_INVALID_PATIENT_FORMAT = "Invalid input format for patient";
 
     private final String addType;
     private final String args;
@@ -171,7 +168,7 @@ public class AddCommand extends Command {
                 EventsCenter.getInstance().post(new SwitchToPatientEvent());
                 return new CommandResult(String.format(MESSAGE_SUCCESS_ADDRESSBOOK, person.getName()));
             } catch (ParseException e) {
-                throw new CommandException("Unexpected Error: unacceptable values should have been prompted for.", e);
+                throw new CommandException(MESSAGE_INVALID_PATIENT_FORMAT, e);
             }
         } else if (addType.equals(CMDTYPE_APPOINTMENT)) {
             // adds an event into the schedule
