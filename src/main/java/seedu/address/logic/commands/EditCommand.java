@@ -8,9 +8,17 @@ import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_TAG;
-import static seedu.address.logic.parser.ScheduleEventCliSyntax.*;
+import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_DATETIME;
+import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_DETAILS;
+import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_PERSON;
+import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_TAGS;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.events.ui.SwitchToPatientEvent;
@@ -29,7 +37,12 @@ import seedu.address.model.ScheduleModel;
 import seedu.address.model.event.EventId;
 import seedu.address.model.event.ScheduleEvent;
 import seedu.address.model.event.exceptions.ScheduleEventNotFoundException;
-import seedu.address.model.person.*;
+import seedu.address.model.person.Address;
+import seedu.address.model.person.Email;
+import seedu.address.model.person.Name;
+import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonId;
+import seedu.address.model.person.Phone;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
 
@@ -114,7 +127,8 @@ public class EditCommand extends Command {
             }
             if (argMultimap.getValue(PREFIX_ADDRESS).isPresent()) {
                 try {
-                    editPersonDescriptor.setAddress(ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get()));
+                    editPersonDescriptor.setAddress(ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS)
+                            .get()));
                 } catch (ParseException e) {
                     throw new CommandException(String.format(MESSAGE_INVALID_FORMAT, Address.class.getSimpleName()));
                 }
@@ -404,7 +418,9 @@ public class EditCommand extends Command {
             return CollectionUtil.isAnyNonNull(personId, date, details, tags);
         }
 
-        public void setPerson(PersonId personId) { this.personId = personId; }
+        public void setPerson(PersonId personId) {
+            this.personId = personId;
+        }
 
         public Optional<PersonId> getPerson() {
             return Optional.ofNullable(personId);
@@ -418,7 +434,9 @@ public class EditCommand extends Command {
             return Optional.ofNullable(date);
         }
 
-        public void setDetails(String details) { this.details = details; }
+        public void setDetails(String details) {
+            this.details = details;
+        }
 
         public Optional<String> getDetails() {
             return Optional.ofNullable(details);
