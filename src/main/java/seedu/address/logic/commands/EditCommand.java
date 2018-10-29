@@ -9,10 +9,13 @@ import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.ScheduleEventCliSyntax.*;
-import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_PERSONS;
+import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_EXISTING_PERSONS;
 
 import java.util.*;
 
+import seedu.address.commons.core.EventsCenter;
+import seedu.address.commons.events.ui.SwitchToPatientEvent;
+import seedu.address.commons.events.ui.SwitchToScheduleEvent;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.commons.util.Pair;
 import seedu.address.logic.CommandHistory;
@@ -128,8 +131,8 @@ public class EditCommand extends Command {
                 Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
 
                 addressBookModel.updatePerson(personToEdit, editedPerson);
-                addressBookModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-                return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, editedPerson));
+                EventsCenter.getInstance().post(new SwitchToPatientEvent());
+                return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, editedPerson.getName()));
 
             } catch (PersonNotFoundException e) {
                 throw new CommandException("Could not locate unique person with given ID, or person has been deleted.");
@@ -168,7 +171,8 @@ public class EditCommand extends Command {
                 ScheduleEvent editedEvent = createEditedEvent(eventToEdit, editScheduleEventDescriptor);
 
                 scheduleModel.updateEvent(eventToEdit, editedEvent);
-                scheduleModel.updateFilteredEventList(ScheduleModel.PREDICATE_SHOW_ALL_SCHEDULE_EVENTS);
+                scheduleModel.updateFilteredEventList(ScheduleModel.PREDICATE_SHOW_SCHEDULE_EVENTS);
+                EventsCenter.getInstance().post(new SwitchToScheduleEvent());
                 return new CommandResult(String.format(MESSAGE_EDIT_EVENT_SUCCESS, editedEvent));
 
             } catch (ScheduleEventNotFoundException e) {

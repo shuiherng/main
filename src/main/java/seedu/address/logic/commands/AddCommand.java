@@ -12,11 +12,18 @@ import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_TAG;
+import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_EXISTING_PERSONS;
+import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_PERSONS;
+import static seedu.address.model.ScheduleModel.PREDICATE_SHOW_ALL_SCHEDULE_EVENTS;
+import static seedu.address.model.ScheduleModel.PREDICATE_SHOW_SCHEDULE_EVENTS;
 
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import seedu.address.commons.core.EventsCenter;
+import seedu.address.commons.events.ui.SwitchToPatientEvent;
+import seedu.address.commons.events.ui.SwitchToScheduleEvent;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.*;
@@ -117,9 +124,9 @@ public class AddCommand extends Command {
             + PREFIX_SYMPTOM + "blackheads "
             + "\n";
 
-    public static final String MESSAGE_SUCCESS_ADDRESSBOOK = "New person added: %1$s";
-    public static final String MESSAGE_SUCCESS_SCHEDULE = "New schedule event added: %1$s";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the patient book";
+    public static final String MESSAGE_SUCCESS_ADDRESSBOOK = "New patient added: %1$s";
+    public static final String MESSAGE_SUCCESS_SCHEDULE = "New appointment added: %1$s";
+    public static final String MESSAGE_DUPLICATE_PERSON = "This patient already exists in the patient book";
     public static final String MESSAGE_DUPLICATE_DISEASE = "This disease already exists in the patient book";
 
     private final String addType;
@@ -131,7 +138,6 @@ public class AddCommand extends Command {
     public AddCommand(String addType, String args) {
         this.addType = addType;
         this.args = args;
-        System.out.println(args);
     }
 
     @Override
@@ -162,7 +168,8 @@ public class AddCommand extends Command {
                     throw new CommandException(MESSAGE_DUPLICATE_PERSON);
                 }
                 addressBookModel.addPerson(person);
-                return new CommandResult(String.format(MESSAGE_SUCCESS_ADDRESSBOOK, person));
+                EventsCenter.getInstance().post(new SwitchToPatientEvent());
+                return new CommandResult(String.format(MESSAGE_SUCCESS_ADDRESSBOOK, person.getName()));
             } catch (ParseException e) {
                 throw new CommandException("Unexpected Error: unacceptable values should have been prompted for.", e);
             }
@@ -170,7 +177,9 @@ public class AddCommand extends Command {
             // adds an event into the schedule
             try {
                 ScheduleEvent newEvent = new ScheduleEventParser(addressBookModel, scheduleModel).parse(args);
+                System.out.println(newEvent);
                 scheduleModel.addEvent(newEvent);
+                EventsCenter.getInstance().post(new SwitchToScheduleEvent());
                 return new CommandResult(String.format(MESSAGE_SUCCESS_SCHEDULE, newEvent));
             } catch (ParseException e) {
                 throw new CommandException(e.getMessage());

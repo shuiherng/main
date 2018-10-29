@@ -5,6 +5,8 @@ import java.util.function.Predicate;
 
 import seedu.address.commons.util.StringUtil;
 
+import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_EXISTING_PERSONS;
+
 /**
  * Tests that a {@code Person}'s {@code Name} matches any of the keywords given.
  */
@@ -17,7 +19,8 @@ public class MatchPersonPredicate implements Predicate<Person> {
 
     @Override
     public boolean test(Person person) {
-        return keywords.stream()
+        return PREDICATE_SHOW_ALL_EXISTING_PERSONS.test(person) &&
+                keywords.stream()
                 .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getName().fullName, keyword))
                 || keywords.stream().anyMatch(keyword -> person.getId().toString().equals(keyword));
     }

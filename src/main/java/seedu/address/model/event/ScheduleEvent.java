@@ -23,9 +23,11 @@ public class ScheduleEvent {
 
     // Standard datetime String format to be used by this application
     public static final SimpleDateFormat SDF;
+    public static final SimpleDateFormat STORAGE_SDF;
 
     static {
-        SDF = new SimpleDateFormat("dd/MM/yyyy hh:mm - hh:mm");
+        SDF = new SimpleDateFormat("dd/MM/yyyy HH:mm - HH:mm");
+        STORAGE_SDF = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     }
 
     /**
@@ -129,12 +131,14 @@ public class ScheduleEvent {
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
-        builder.append("ScheduleEvent (Appointment) for PersonId: ")
+        builder.append("Appointment ID: ")
                 .append(getId())
-                .append(" for daterange ")
-                .append(SDF.format(getDate().getKey().getTime()))
+                .append(" scheduled for patient ID: ")
+                .append(getPersonId())
+                .append(" during: ")
+                .append(STORAGE_SDF.format(getDate().getKey().getTime()))
                 .append(" to ")
-                .append(SDF.format(getDate().getValue().getTime()))
+                .append(STORAGE_SDF.format(getDate().getValue().getTime()))
                 .append("\nDetails: ")
                 .append(getDetails())
                 .append("\nTags: ");

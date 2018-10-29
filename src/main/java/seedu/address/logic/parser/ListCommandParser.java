@@ -26,6 +26,9 @@ public class ListCommandParser {
         try {
             String[] argSplit = args.trim().split(" ", 2);
             cmdType = argSplit[0];
+            if (argSplit.length > 1) {
+                args = argSplit[1];
+            }
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
         }
@@ -35,6 +38,6 @@ public class ListCommandParser {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
         }
 
-        return new ListCommand(cmdType);
+        return new ListCommand(cmdType, args);
     }
 }
