@@ -61,4 +61,16 @@ public class ScheduleEventUtil {
         }
         return sb.toString();
     }
+
+    /**
+     * Since ScheduleEvents are uniquely identified by ID, testing requires us to compare everything but
+     * ID to ensure that other fields were added correctly. This method returns whether all fields match. IDs may
+     * match, but is not a requirement.
+     */
+    public static boolean matchEventProperties(ScheduleEvent event, ScheduleEvent otherEvent) {
+        return event.getDate().equals(otherEvent.getDate())
+                && event.getDetails().equals(otherEvent.getDetails())
+                && event.getPersonId().equals(otherEvent.getPersonId())
+                && event.getTags().equals(otherEvent.getTags());
+    }
 }
