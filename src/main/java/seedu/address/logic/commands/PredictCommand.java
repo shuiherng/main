@@ -22,7 +22,6 @@ import seedu.address.model.symptom.Disease;
 import seedu.address.model.symptom.Symptom;
 
 
-
 /**
  * Predicts a disease given a set of symptoms.
  */
@@ -57,7 +56,14 @@ public class PredictCommand extends Command {
         try {
             Set<Symptom> symptomSet = ParserUtil.parseSymptoms(argMultimap.getAllValues(PREFIX_SYMPTOM));
             List<Disease> diseases = diagnosisModel.predictDisease(symptomSet);
-            String cmdResult = "The diseases that you may be looking for:\n" + diseases.toString();
+            if (diseases.isEmpty()) {
+                throw new CommandException("We cannot determine the identity of the disease.\nThe reason could"
+                        + " be possibly due to an invalid command format, please check your format again.\n"
+                        + "\n"
+                        + MESSAGE_USAGE);
+            }
+            String cmdResult = "The diseases that you may be looking for:\n"
+                    + CommandResult.convertListToString(diseases);
             return new CommandResult(cmdResult);
         } catch (ParseException e) {
             throw new CommandException("Unexpected Error: unacceptable values should have been prompted for.", e);

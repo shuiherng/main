@@ -77,40 +77,11 @@ public class ListCommand extends Command {
             }
         } else if (this.cmdType.equals(CMDTYPE_DISEASE)) {
             List<Disease> diseaseList = diagnosisModel.getDiseases();
-            String cmdResult = "Found the following disease:\n" + ListCommand.convertListToString(diseaseList);
+            String cmdResult = "Found the following disease:\n" + CommandResult.convertListToString(diseaseList);
             return new CommandResult(cmdResult);
         } else {
             throw new CommandException("Unexpected Values: Should have been caught in FindCommandParser.");
         }
 
-    }
-
-    /**
-     * Formats the list to a string for command result.
-     * @param diseaseList
-     * @return a formatted string.
-     */
-    private static String convertListToString(List<Disease> diseaseList) {
-        String diseaseListString = "1. ";
-        int i;
-        for (i = 1; i <= diseaseList.size(); i++) {
-
-            if (i % 5 == 0) {
-                diseaseListString = diseaseListString.concat(i + ". " + diseaseList.get(i - 1) + "\n");
-                continue;
-            }
-
-            diseaseListString = diseaseListString.concat(i + ". " + diseaseList.get(i - 1).toString() + ", ");
-
-        }
-
-        diseaseListString = diseaseListString.substring(3);
-
-        if (diseaseListString.charAt(diseaseListString.length() - 1) == ' ') {
-            diseaseListString = diseaseListString.substring(0, diseaseListString.length() - 2);
-        }
-
-        diseaseListString = diseaseListString.concat("\n");
-        return diseaseListString;
     }
 }
