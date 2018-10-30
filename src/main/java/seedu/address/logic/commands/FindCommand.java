@@ -90,42 +90,13 @@ public class FindCommand extends Command {
             cmdResult = disease.toString() + " is present in our record. Found the following symptoms matching "
                     + disease.toString() + ":\n"
                     + "\n"
-                    + FindCommand.convertListToString(symptomList);
+                    + CommandResult.convertListToString(symptomList);
         } else {
             throw new CommandException(MESSAGE_UNEXPECTED_PARAMETER);
         }
 
         return new CommandResult(cmdResult);
 
-    }
-
-    /**
-     *
-     * @param symptomList
-     * @return
-     */
-    private static String convertListToString(List<Symptom> symptomList) {
-        String symptomListString = "1. ";
-        int i;
-        for (i = 1; i <= symptomList.size(); i++) {
-
-            if (i % 5 == 0) {
-                symptomListString = symptomListString.concat(i + ". " + symptomList.get(i - 1) + "\n");
-                continue;
-            }
-
-            symptomListString = symptomListString.concat(i + ". " + symptomList.get(i - 1).toString() + ", ");
-
-        }
-
-        symptomListString = symptomListString.substring(3);
-
-        if (symptomListString.charAt(symptomListString.length() - 1) == ' ') {
-            symptomListString = symptomListString.substring(0, symptomListString.length() - 2);
-        }
-
-        symptomListString = symptomListString.concat("\n");
-        return symptomListString;
     }
 
     @Override

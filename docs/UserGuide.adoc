@@ -95,22 +95,22 @@ Command entered: `add appointment for Xinze tomorrow`
 1) There are multiple individuals named `Xinze` in the patient record, the program will request for a specific patient ID in a form similar to the following:
 
 .Prompt Window for Patient ID
-image::PromptName.png[width="600"]
+image::promptName.png[width="600"]
 
 2) Once `Xinze` is matched to a unique patient in the patient record, the program will display a list of available time periods during `tomorrow`, based on the current time at which the command is executed, in another prompt window similar to the following:
 
 .Prompt Window for Time Slot
-image::PromptTimeSlot.png[width="600"]
+image::promptTimeSlot.png[width="600"]
 
 3) User further input: `31/10/2018 9:30 - 10:30`. Program proceeds to request for tags to be attached to the appointment, in another prompt window similar to the following:
 
 .Prompt Window for Tags
-image::PromptTag.png[width="600"]
+image::promptTag.png[width="600"]
 
 4) User may choose to provide or not provide any tags. In this case, the user does not wish to attach any tags. After that, program proceeds to request for additional notes for the appointment, in another prompt window similar to the following:
 
 .Prompt Window for Additional Notes
-image::PromptNotes.png[width="600"]
+image::promptNotes.png[width="600"]
 
 5) User may choose to provide or not provide any additional notes. In this case, the user does not wish to add any additional notes. Upon completion, program creates the appointment as indicated in the schedule, and displays the following message to the user:
 
@@ -170,6 +170,85 @@ Example:
 
 Clears all appointments scheduled in the record. If necessary, switches the application to appointment management mode.
 
+=== Add a disease : `add disease`
+
+*Format:* `add disease d/DISEASE s/SYMPTOM`
+
+Adds a new disease to the patient book.
+
+You must include one and only one `DISEASE` parameter with prefix `d/` and at least one `SYMPTOM` for that disease
+with prefix `s/`. Duplicate symptoms can be included but only one will be added into the patient book.
+
+When you try to add an existing disease into the patient book, the following error message will be shown to you:
+
+.Error Message for Duplicate Diseases
+image::ErrorMessageForAddingExistingDisease.png[width="600"]
+
+Hence, you may try command `find disease NAME` to find related symptoms of this existing disease.
+
+Example:
+
+* `add disease d/acne s/pustules s/blackheads`
+* `add disease d/alcohol misuse s/stroke s/stroke s/mouth cancer` +
+Symptom 'stroke' will be included once in our record.
+* `add disease d/obesity d/obesities` +
+This is an invalid command due to multiple occurrence of disease and zero occurrence of symptom. Hence, you will
+be prompted to enter a correct command:
+
+.Error Message for Wrong Add Disease Format
+image::ErrorMessageForWrongAddDiseaseCommand.png[width="600"]
+
+=== List all diseases : `list disease`
+
+*Format:* `list disease`
+
+Shows a list of all diseases in the patient book.
+
+=== Locate diseases  : `find disease`
+
+*Format:* `find disease NAME`
+
+Finds the disease which its name is specified in the command and return its related symptoms
+displayed in alphabetic order.
+
+* The search is case insensitive; e.g. ‘HIV’, ‘hIV’ and ‘hiv’ are all equivalent.
+* Only full words will be matched; e.g. ‘confus’ will not match ‘confusion’.
+
+Example:
+
+* `find disease influenza` +
+Returns all the symptoms related to disease ‘influenza’:
+
+.Result for Command 'find disease influenza'
+image::FindDiseaseInfluenza.png[width="600"]
+
+=== Predict disease  : `predict`
+
+*Format:* `predict s/SYMPTOM`
+
+You must include at least one `SYMPTOM` parameter with prefix `s/` to predict a disease. All
+diseases that contain the set of symptoms will be returned and displayed in alphabetic order.
+
+* The `SYMPTOM` parameter is case insensitive; e.g. ‘fever’ will match ‘FeVER’.
+* Only diseases containing all the symptoms given in the command will be returned; e.g.
+For command `predict s/fever s/blackout`, even if disease ‘bacteremia’ contains symptom ‘fever’,
+it will not be returned since it does not contain symptom ‘blackout’.
+* If none of diseases contain the given set of symptoms, an error message will be shown to you:
+
+Example:
+
+* `predict s/fever s/blackout` +
+Returns diseases which contain the two symptoms:
+
+.Result for Valid Command 'predict s/fever s/blackout'
+image::PredictDiseaseValidDemo.png[width="600"]
+
+* `predict s/cry` +
+Returns an error message:
+
+.Error Message for Invalid Command 'predict s/cry'
+image::PredictInvalidDemo.png[width="600"]
+
 === List entered commands : `history`
 
 *Format:* `history`
@@ -187,39 +266,39 @@ Exits the program.
 
 == Command Summary
 
-* *Add a disease* :
+* *Add a disease* : `add disease` +
 
 * *Add a patient* : `add patient` +
 
 * *Add an appointment* : `add appointment` +
 
-* *Clear All appointments* : `clear schedule`
+* *Clear All appointments* : `clear schedule` +
 
-* *Delete a patient* : `delete patient`
+* *Delete a patient* : `delete patient` +
 
-* *Delete an appointment* : `delete appointment`
+* *Delete an appointment* : `delete appointment` +
 
-* *Edit appointment information* : `edit appointment`
+* *Edit appointment information* : `edit appointment` +
 
 * *Edit patient information* : `edit patient` +
 
-* *Exit the program* : `exit`
+* *Exit the program* : `exit` +
 
 * *List all appointments* : `list appointment` +
 
-* *List all diseases* :
+* *List all diseases* : `list disease` +
 
 * *List all patients* : `list patient` +
 
-* *View command history* : `history`
+* *View command history* : `history` +
 
-* *Locate appointments* : `find appointment`
+* *Locate appointments* : `find appointment` +
 
-* *Locate diseases* :
+* *Locate diseases* : `find disease` +
 
-* *Locate patients* : `find patient`
+* *Locate patients* : `find patient` +
 
-* *Predict disease* :
+* *Predict disease* : `predict` +
 
 * *Switch to appointment management mode* : `mode appointment` +
 
