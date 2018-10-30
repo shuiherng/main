@@ -51,6 +51,124 @@ Switches the application to appointment management mode. In this mode, you can v
 When you enter a valid command regarding appointment in patient management mode, the application will switch to
 appointment management mode automatically.
 
+=== Add an appointment : `add appointment`
+
+*Format:* `add appointment for NAME DATE/DURATION`
+
+Creates a new appointment and places it in the schedule. If necessary, switches the application to appointment management mode.
+
+[NOTE]
+Unlike other commands, this command does not require any prefixing.
+
+For DATE/DURATION parameter, user may choose to use natural expressions to indicate the time or period where the appointment is to be scheduled in. The list of natural expressions for DATE/DURATION
+which are accepted by the program include:
+
+* tomorrow/tmr
+* the day after tomorrow/tmr
+* in * day(s)
+* in * week(s)
+* in * month(s)
+* this/next week
+* this/next month
+* this/next Monday/Tuesday/Wednesday/Thursday/Friday/Saturday/Sunday
+* soon
+* recently
+* in a few days
+* DD/MM/YYYY
+[NOTE]
+Asterisk (*) denotes any positive integer number.
+
+After the initial input is processed by the programme, user may encounter a maximum of four prompt windows for further input, including:
+
+* A prompt window where user is required to choose the correct patient to schedule for, if the name provided in the initial input can be matched to multiple patients in the record. Patient ID of the intended patient is to be entered.
+* A prompt window where user is required to provide a specific time slot for the appointment, from a list of available time periods, in DD/MM/YYYY hh:mm - hh:mm format.
+* A prompt window where user may choose to provide any additional notes for the appointment.
+* A prompt window where user may choose to provide any tags for the appointment.
+
+Example:
+
+Command entered: `add appointment for Xinze tomorrow`
+// we require explicit numbering because the numbering system stops searching for further indices past
+// a fenced code block.
+
+1) If there are multiple individuals named `Xinze` in the patient record, the program will request for a specific patient ID in a form similar to the following:
+
+.Prompt Window for Patient ID
+image::PromptName.png[width="600"]
+
+2) Once `Xinze` is matched to a unique patient in the patient record, the program will display a list of available time periods during `tomorrow`, based on the current time at which the command is executed, in another prompt window similar to the following:
+
+.Prompt Window for Time Slot
+image::PromptTimeSlot.png[width="600"]
+
+3) User further input: `31/10/2018 9:30 - 10:30`. Program proceeds to request for tags to be attached to the appointment, in another prompt window similar to the following:
+
+.Prompt Window for Tags
+image::PromptTag.png[width="600"]
+
+4) User may choose to provide or not provide any tags. In this case, the user does not wish to attach any tags. After that, program proceeds to request for additional notes for the appointment, in another prompt window similar to the following:
+
+.Prompt Window for Additional Notes
+image::PromptNotes.png[width="600"]
+
+5) User may choose to provide or not provide any additional notes. In this case, the user does not wish to add any additional notes. Upon completion, program creates an appointment as indicated in the schedule, and displays the following message to the user:
+
+
+```
+New appointment added: Appointment ID: e3 scheduled for patient ID: p7 during: 31/10/2018 09:30 to 31/10/2018 10:30
+Details:
+Tags:
+```
+
+=== Edit appointment information : `edit appointment`
+
+*Format:* `edit appointment APPOINTMENT_ID [p/PATIENT_ID] [t/TIME] [d/NOTES] [s/TAG]`
+
+Edits an existing appointment with the given field in the schedule.  If necessary, switches the application to appointment management mode.
+
+[NOTE]
+At least one of the optional fields must be provided.
+[NOTE]
+To edit the time of the appointment, `[t/TIME]` has to be entered in `DD/MM/YYYY hh:mm - hh:mm` format
+
+Examples:
+
+* `edit appointment e1 s/SecondVisit`
+* `edit appointment e1031 p/p5`
+* `edit appointment e41032 t/30/10/2019 4:00 - 5:30`
+
+=== List all appointments : `list appointment`
+
+*Format:* `list appointment [all]`
+
+Shows a list of all future appointments scheduled, based on the current time at which the command is executed. Using `all` will display past appointments in the list as well. If necessary, switches the application to appointment management mode.
+
+=== Locate appointments : `find appointment`
+
+*Format:* `find appointment APPOINTMENT_ID`
+
+Shows the appointment as indicated by the `APPOINTMENT_ID`. If necessary, switches the application to appointment management mode.
+
+Example:
+
+* `find appointment e2`
+
+=== Delete an appointment : `delete appointment`
+
+*Format:* `delete appointment APPOINTMENT_ID`
+
+Deletes an appointment as indicated by the `APPOINTMENT_ID`. If necessary, switches the application to appointment management mode.
+
+Example:
+
+* `delete appointment e2`
+
+=== Clear all appointments : `clear schedule`
+
+*Format:* `clear schedule`
+
+Clears all appointments scheduled in the record. If necessary, switches the application to appointment management mode.
+
 === List entered commands : `history`
 
 *Format:* `history`
