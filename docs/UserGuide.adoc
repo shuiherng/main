@@ -100,7 +100,7 @@ Notable Behaviour:
 * The search is case insensitive, eg. `hans` will match `Hans`
 * The order of keywords do not matter, eg. `Hans Bo` will match `Bo Hans`
 * Only names in the patient record are searched
-* Patients which are marked as deleted will not match any search term
+* Patients which are marked as deleted can only be found by looking up their Patient ID explicitly. They may not be found via keyword search
 * Only full words will be searched, eg. `Han` will *not* match `Hans`
 * Patient which match at least one of the keywords will be displayed after running the search, eg. `Hans Bo` will match `Hans Gruber` and `Bo Yang`
 * Finding a patient via their ID will match and display patients who have the exact same ID as the search term, unless the ID is for some reason part of another patient's name, in which case they will be displayed as well
