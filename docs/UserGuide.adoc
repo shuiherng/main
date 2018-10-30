@@ -22,14 +22,11 @@ By: `Team T12-2`      Since: `Jun 2016`      Licence: `MIT`
 *Command Format*
 
 .   Commands are, in general, case sensitive.
-.   Words in `UPPER_CASE` are parameters to be supplied by the user, eg. in `add patient n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
+.   Words in `UPPER_CASE` are parameters to be supplied by the user. eg. in `add patient n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
 .   Items in square brackets are optional. +
-    e.g. `make appointment [at 3pm] [next week]` may be entered as `make appointment`, and the program will prompt for the details as required.
-.   Parameters may be specified in any order, eg. `make appointment next week at 3pm` is also acceptable for the abovementioned command.
+    eg. in `add patient [t/TAG]`, `TAG` is an optional parameter.
+.   Parameters with prefixes may be specified in any order, eg. all parameters for `add patient`, such as `n/NAME` and `a/ADDRESS` can be specified in any order
 ====
-
-[NOTE]
-In some places in this guide, you will find that two or more commands have been placed within curly brackets and separated by forward-slashes. This indicates that the commands are equivalent. For example, `{schedule/make} appointment` indicates that `schedule appointment` and `make appointment` are both equally valid.
 
 === View help : `help`
 
