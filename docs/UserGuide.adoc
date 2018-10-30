@@ -51,6 +51,78 @@ Switches the application to appointment management mode. In this mode, you can v
 When you enter a valid command regarding appointment in patient management mode, the application will switch to
 appointment management mode automatically.
 
+=== Add a patient : `add patient`
+
+*Format:* `add patient n/NAME p/PHONE a/ADDRESS e/EMAIL [t/TAG]`
+
+Creates a new patient record and saves it in the list of all patient records. If necessary, switches the application to patient management mode.
+
+[NOTE]
+Any number of tags may be included, or none at all.
+
+Examples:
+
+* `add patient n/John Smith p/90516038 a/New Smith Street, Singapore 519321 e/johnsmith@gmail.com`
+* `add patient n/Alice Barker p/62353535 a/4 Pizza Road, Singapore 941023 e/alice_barker@yahoo.com.sg t/friend t/groupmate`
+
+=== Edit patient information : `edit patient`
+
+*Format:* `edit patient PATIENT_ID [n/NAME] [p/PHONE] [a/ADDRESS] [e/EMAIL] [t/TAG]`
+
+Edits an existing patient record. If necessary, switches the application to patient management mode.
+
+[NOTE]
+At least one of the optional fields must be provided.
+
+[TIP]
+Editing tags will remove all existing tags from the patient and replace them with the new tags. To remove all tags from a patient, use `t/` without any further input after the `/`.
+
+Example:
+
+* `edit patient p229 n/Bob Ross p/95106202`
+* `edit patient p24 t/replacedTag t/friend`
+* `edit patient p510 a/New Address Road, Singapore 401914 t/`
+
+=== List all patients : `list patient`
+
+*Format:* `list patient [all]`
+
+Shows a list of all patients in the patient record. Using `all` will display all patients deleted in the past. If necessary, switches the application to appointment management mode.
+
+=== Locate patients : `find patient`
+
+*Format:* `find patient KEYWORD [MORE_KEYWORDS]`
+
+*Alternative Format:* `find patient PATIENT_ID`
+
+Notable Behaviour:
+
+* The search is case insensitive, eg. `hans` will match `Hans`
+* The order of keywords do not matter, eg. `Hans Bo` will match `Bo Hans`
+* Only names in the patient record are searched
+* Patients which are marked as deleted will not match any search term
+* Only full words will be searched, eg. `Han` will *not* match `Hans`
+* Patient which match at least one of the keywords will be displayed after running the search, eg. `Hans Bo` will match `Hans Gruber` and `Bo Yang`
+* Finding a patient via their ID will match and display patients who have the exact same ID as the search term, unless the ID is for some reason part of another patient's name, in which case they will be displayed as well
+
+Examples:
+
+* `find patient john`
+* `find patient Alice bob`
+* `find patient p510`
+
+=== Delete a patient record : `delete patient`
+
+*Format:* `delete patient PATIENT_ID`
+
+[NOTE]
+Patient records will only be marked as deleted, rather than being removed altogether. This is due to the sensitive nature of patient information
+
+Examples:
+
+* `delete patient p510`
+* `delete patient p29`
+
 === Add an appointment : `add appointment`
 
 *Format:* `add appointment for NAME DATE/DURATION`
