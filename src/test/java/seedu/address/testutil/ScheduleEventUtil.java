@@ -1,16 +1,19 @@
 package seedu.address.testutil;
 
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
+import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_DETAILS;
+import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_PERSON;
+import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_TAGS;
+
+import java.util.Set;
+
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.model.event.ScheduleEvent;
 import seedu.address.model.tag.Tag;
 
-import java.util.Set;
 
-import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
-import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_DETAILS;
-import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_PERSON;
-import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_TAGS;
+
 
 /**
  * A utility class for ScheduleEvent.
