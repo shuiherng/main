@@ -187,42 +187,42 @@ Exits the program.
 
 == Command Summary
 
-* *Add A Disease* :
+* *Add a disease* :
 
-* *Add A Patient* : `add patient` +
+* *Add a patient* : `add patient` +
 
-* *Add An Appointment* : `add appointment` +
+* *Add an appointment* : `add appointment` +
 
-* *Clear All Appointments* : `clear`
+* *Clear All appointments* : `clear schedule`
 
-* *Delete A Patient Record (Mark As Absent)* : `delete patient`
+* *Delete a patient* : `delete patient`
 
-* *Delete An Appointment* : `delete appointment`
+* *Delete an appointment* : `delete appointment`
 
-* *Edit Appointment Information* : `edit appointment`
+* *Edit appointment information* : `edit appointment`
 
-* *Edit Patient Information* : `edit patient` +
+* *Edit patient information* : `edit patient` +
 
-* *Exit The Program* : `exit`
+* *Exit the program* : `exit`
 
-* *List All Appointments* : `list appointments` +
+* *List all appointments* : `list appointment` +
 
-* *List All Diseases* :
+* *List all diseases* :
 
-* *List All Patients* : `list patients` +
+* *List all patients* : `list patient` +
 
-* *View Command History* : `history`
+* *View command history* : `history`
 
-* *Locate An Appointment* : `find appointment`
+* *Locate appointments* : `find appointment`
 
-* *Locate Diseases* :
+* *Locate diseases* :
 
-* *Locate Patients By Name* : `find patient`
+* *Locate patients* : `find patient`
 
-* *Predict Disease* :
+* *Predict disease* :
 
-* *Switch To Appointment Management Mode* : `mode appointment` +
+* *Switch to appointment management mode* : `mode appointment` +
 
-* *Switch To Patient Management Mode:* : `mode patient` +
+* *Switch to patient management mode:* : `mode patient` +
 
-* *View Help* : `help` +
+* *View help* : `help` +
