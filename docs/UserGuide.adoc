@@ -60,28 +60,29 @@ Creates a new appointment and places it in the schedule. If necessary, switches 
 [NOTE]
 Unlike other commands, this command does not require any prefixing.
 
-For DATE/DURATION parameter, user may choose to use natural expressions to indicate the time or period where the appointment is to be scheduled in. The list of natural expressions for DATE/DURATION
+For `DATE/DURATION` parameter, user may choose to use natural expressions to indicate the time or period where the appointment is to be scheduled. The list of natural expressions for `DATE/DURATION`
 which are accepted by the program include:
 
-* tomorrow/tmr
-* the day after tomorrow/tmr
-* in * day(s)
-* in * week(s)
-* in * month(s)
-* this/next week
-* this/next month
-* this/next Monday/Tuesday/Wednesday/Thursday/Friday/Saturday/Sunday
-* soon
-* recently
-* in a few days
-* DD/MM/YYYY
+* `tomorrow` or `tmr`
+* `the day after tomorrow` or `the day after tmr`
+* `in * day` or `in * days`
+* `in * week` or `in * weeks`
+* `in * month` or `in * months`
+* `this week` or `next week`
+* `this month` or `next month`
+* `this Monday` `this Tuesday` `this Wednesday` `this Thursday` `this Friday` `this Saturday` or `this Sunday`
+* `next Monday` `next Tuesday` `next Wednesday` `next Thursday` `next Friday` `next Saturday` or `next Sunday`
+* `soon`
+* `recently`
+* `in a few days`
+* in `DD/MM/YYYY` format
 [NOTE]
 Asterisk (*) denotes any positive integer number.
 
 After the initial input is processed by the programme, user may encounter a maximum of four prompt windows for further input, including:
 
-* A prompt window where user is required to choose the correct patient to schedule for, if the name provided in the initial input can be matched to multiple patients in the record. Patient ID of the intended patient is to be entered.
-* A prompt window where user is required to provide a specific time slot for the appointment, from a list of available time periods, in DD/MM/YYYY hh:mm - hh:mm format.
+* A prompt window where user is required to choose the correct patient to schedule for, if the name provided in the initial input can be matched to multiple patients in the record. `Patient_ID` of the intended patient is to be entered.
+* A prompt window where user is required to provide a specific time slot for the appointment, from a list of available time periods, in `DD/MM/YYYY hh:mm - hh:mm` format.
 * A prompt window where user may choose to provide any additional notes for the appointment.
 * A prompt window where user may choose to provide any tags for the appointment.
 
@@ -91,7 +92,7 @@ Command entered: `add appointment for Xinze tomorrow`
 // we require explicit numbering because the numbering system stops searching for further indices past
 // a fenced code block.
 
-1) If there are multiple individuals named `Xinze` in the patient record, the program will request for a specific patient ID in a form similar to the following:
+1) There are multiple individuals named `Xinze` in the patient record, the program will request for a specific patient ID in a form similar to the following:
 
 .Prompt Window for Patient ID
 image::PromptName.png[width="600"]
@@ -111,7 +112,7 @@ image::PromptTag.png[width="600"]
 .Prompt Window for Additional Notes
 image::PromptNotes.png[width="600"]
 
-5) User may choose to provide or not provide any additional notes. In this case, the user does not wish to add any additional notes. Upon completion, program creates an appointment as indicated in the schedule, and displays the following message to the user:
+5) User may choose to provide or not provide any additional notes. In this case, the user does not wish to add any additional notes. Upon completion, program creates the appointment as indicated in the schedule, and displays the following message to the user:
 
 
 ```
