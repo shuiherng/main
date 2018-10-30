@@ -22,14 +22,11 @@ By: `Team T12-2`      Since: `Jun 2016`      Licence: `MIT`
 *Command Format*
 
 .   Commands are, in general, case sensitive.
-.   Words in `UPPER_CASE` are parameters to be supplied by the user, eg. in `add patient n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
+.   Words in `UPPER_CASE` are parameters to be supplied by the user. eg. in `add patient n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
 .   Items in square brackets are optional. +
-    e.g. `make appointment [at 3pm] [next week]` may be entered as `make appointment`, and the program will prompt for the details as required.
-.   Parameters may be specified in any order, eg. `make appointment next week at 3pm` is also acceptable for the abovementioned command.
+    eg. in `add patient [t/TAG]`, `TAG` is an optional parameter.
+.   Parameters with prefixes may be specified in any order, eg. all parameters for `add patient`, such as `n/NAME` and `a/ADDRESS` can be specified in any order
 ====
-
-[NOTE]
-In some places in this guide, you will find that two or more commands have been placed within curly brackets and separated by forward-slashes. This indicates that the commands are equivalent. For example, `{schedule/make} appointment` indicates that `schedule appointment` and `make appointment` are both equally valid.
 
 === View help : `help`
 
@@ -54,6 +51,125 @@ Switches the application to appointment management mode. In this mode, you can v
 When you enter a valid command regarding appointment in patient management mode, the application will switch to
 appointment management mode automatically.
 
+=== Add an appointment : `add appointment`
+
+*Format:* `add appointment for NAME DATE/DURATION`
+
+Creates a new appointment and places it in the schedule. If necessary, switches the application to appointment management mode.
+
+[NOTE]
+Unlike other commands, this command does not require any prefixing.
+
+For `DATE/DURATION` parameter, user may choose to use natural expressions to indicate the time or period where the appointment is to be scheduled. The list of natural expressions for `DATE/DURATION`
+which are accepted by the program include:
+
+* `tomorrow` or `tmr`
+* `the day after tomorrow` or `the day after tmr`
+* `in * day` or `in * days`
+* `in * week` or `in * weeks`
+* `in * month` or `in * months`
+* `this week` or `next week`
+* `this month` or `next month`
+* `this Monday` `this Tuesday` `this Wednesday` `this Thursday` `this Friday` `this Saturday` or `this Sunday`
+* `next Monday` `next Tuesday` `next Wednesday` `next Thursday` `next Friday` `next Saturday` or `next Sunday`
+* `soon`
+* `recently`
+* `in a few days`
+* in `DD/MM/YYYY` format
+[NOTE]
+Asterisk (*) denotes any positive integer number.
+
+After the initial input is processed by the programme, user may encounter a maximum of four prompt windows for further input, including:
+
+* A prompt window where user is required to choose the correct patient to schedule for, if the name provided in the initial input can be matched to multiple patients in the record. `Patient_ID` of the intended patient is to be entered.
+* A prompt window where user is required to provide a specific time slot for the appointment, from a list of available time periods, in `DD/MM/YYYY hh:mm - hh:mm` format.
+* A prompt window where user may choose to provide any additional notes for the appointment.
+* A prompt window where user may choose to provide any tags for the appointment.
+
+Example:
+
+Command entered: `add appointment for Xinze tomorrow`
+// we require explicit numbering because the numbering system stops searching for further indices past
+// a fenced code block.
+
+1) There are multiple individuals named `Xinze` in the patient record, the program will request for a specific patient ID in a form similar to the following:
+
+.Prompt Window for Patient ID
+image::PromptName.png[width="600"]
+
+2) Once `Xinze` is matched to a unique patient in the patient record, the program will display a list of available time periods during `tomorrow`, based on the current time at which the command is executed, in another prompt window similar to the following:
+
+.Prompt Window for Time Slot
+image::PromptTimeSlot.png[width="600"]
+
+3) User further input: `31/10/2018 9:30 - 10:30`. Program proceeds to request for tags to be attached to the appointment, in another prompt window similar to the following:
+
+.Prompt Window for Tags
+image::PromptTag.png[width="600"]
+
+4) User may choose to provide or not provide any tags. In this case, the user does not wish to attach any tags. After that, program proceeds to request for additional notes for the appointment, in another prompt window similar to the following:
+
+.Prompt Window for Additional Notes
+image::PromptNotes.png[width="600"]
+
+5) User may choose to provide or not provide any additional notes. In this case, the user does not wish to add any additional notes. Upon completion, program creates the appointment as indicated in the schedule, and displays the following message to the user:
+
+
+```
+New appointment added: Appointment ID: e3 scheduled for patient ID: p7 during: 31/10/2018 09:30 to 31/10/2018 10:30
+Details:
+Tags:
+```
+
+=== Edit appointment information : `edit appointment`
+
+*Format:* `edit appointment APPOINTMENT_ID [p/PATIENT_ID] [t/TIME] [d/NOTES] [s/TAG]`
+
+Edits an existing appointment with the given field in the schedule.  If necessary, switches the application to appointment management mode.
+
+[NOTE]
+At least one of the optional fields must be provided.
+[NOTE]
+To edit the time of the appointment, `[t/TIME]` has to be entered in `DD/MM/YYYY hh:mm - hh:mm` format
+
+Examples:
+
+* `edit appointment e1 s/SecondVisit`
+* `edit appointment e1031 p/p5`
+* `edit appointment e41032 t/30/10/2019 4:00 - 5:30`
+
+=== List all appointments : `list appointment`
+
+*Format:* `list appointment [all]`
+
+Shows a list of all future appointments scheduled, based on the current time at which the command is executed. Using `all` will display past appointments in the list as well. If necessary, switches the application to appointment management mode.
+
+=== Locate appointments : `find appointment`
+
+*Format:* `find appointment APPOINTMENT_ID`
+
+Shows the appointment as indicated by the `APPOINTMENT_ID`. If necessary, switches the application to appointment management mode.
+
+Example:
+
+* `find appointment e2`
+
+=== Delete an appointment : `delete appointment`
+
+*Format:* `delete appointment APPOINTMENT_ID`
+
+Deletes an appointment as indicated by the `APPOINTMENT_ID`. If necessary, switches the application to appointment management mode.
+
+Example:
+
+* `delete appointment e2`
+
+=== Clear all appointments : `clear schedule`
+
+*Format:* `clear schedule`
+
+Clears all appointments scheduled in the record. If necessary, switches the application to appointment management mode.
+
 === List entered commands : `history`
 
 *Format:* `history`
@@ -71,42 +187,42 @@ Exits the program.
 
 == Command Summary
 
-* *Add A Disease* :
+* *Add a disease* :
 
-* *Add A Patient* : `add patient` +
+* *Add a patient* : `add patient` +
 
-* *Add An Appointment* : `add appointment` +
+* *Add an appointment* : `add appointment` +
 
-* *Clear All Appointments* : `clear`
+* *Clear All appointments* : `clear schedule`
 
-* *Delete A Patient Record (Mark As Absent)* : `delete patient`
+* *Delete a patient* : `delete patient`
 
-* *Delete An Appointment* : `delete appointment`
+* *Delete an appointment* : `delete appointment`
 
-* *Edit Appointment Information* : `edit appointment`
+* *Edit appointment information* : `edit appointment`
 
-* *Edit Patient Information* : `edit patient` +
+* *Edit patient information* : `edit patient` +
 
-* *Exit The Program* : `exit`
+* *Exit the program* : `exit`
 
-* *List All Appointments* : `list appointments` +
+* *List all appointments* : `list appointment` +
 
-* *List All Diseases* :
+* *List all diseases* :
 
-* *List All Patients* : `list patients` +
+* *List all patients* : `list patient` +
 
-* *View Command History* : `history`
+* *View command history* : `history`
 
-* *Locate An Appointment* : `find appointment`
+* *Locate appointments* : `find appointment`
 
-* *Locate Diseases* :
+* *Locate diseases* :
 
-* *Locate Patients By Name* : `find patient`
+* *Locate patients* : `find patient`
 
-* *Predict Disease* :
+* *Predict disease* :
 
-* *Switch To Appointment Management Mode* : `mode appointment` +
+* *Switch to appointment management mode* : `mode appointment` +
 
-* *Switch To Patient Management Mode:* : `mode patient` +
+* *Switch to patient management mode:* : `mode patient` +
 
-* *View Help* : `help` +
+* *View help* : `help` +
