@@ -28,7 +28,7 @@ import seedu.address.model.UserPrefs;
  */
 public class ScheduleMainWindow extends UiPart {
     private static final String FXML = "ScheduleMainWindow.fxml";
-    private static final String modeTitle = " : Schedule Mode";
+    private static final String modeTitle = " : Appointment Mode";
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 

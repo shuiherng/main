@@ -43,6 +43,9 @@ Switches the application to patient management mode. In this mode, you can view 
 enter a valid command regarding patient in appointment management mode, the application will switch to patient management
 mode automatically.
 
+.Patient Mode
+image::PatientMode.png[width="600"]
+
 === Switch to appointment management mode : `mode appointment`
 
 *Format:* `mode appointment`
@@ -50,6 +53,9 @@ mode automatically.
 Switches the application to appointment management mode. In this mode, you can view and manage your patient's appointments.
 When you enter a valid command regarding appointment in patient management mode, the application will switch to
 appointment management mode automatically.
+
+.Appointment Mode
+image::AppointmentMode.png[width="600"]
 
 === Add a patient : `add patient`
 

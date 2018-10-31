@@ -32,7 +32,7 @@ public class ModeCommand extends Command {
 
     public static final String MESSAGE_CANNOT_SWITCH = "You are already in this mode.\n";
     private static final String MESSAGE_PATIENT_SWITCH_SUCCESS = "Switched to Patient Mode.\n";
-    private static final String MESSAGE_SCHEDULE_SWITCH_SUCCESS = "Switched to Schedule Mode.\n";
+    private static final String MESSAGE_SCHEDULE_SWITCH_SUCCESS = "Switched to Appointment Mode.\n";
 
     private final String cmdType;
 
