@@ -13,8 +13,9 @@ import seedu.address.logic.commands.ListCommand;
 
 public class ListCommandParserTest {
 
-    private ListCommandParser parser = new ListCommandParser();
     private static final String addAll = " " + GET_ALL_WORD;
+
+    private ListCommandParser parser = new ListCommandParser();
 
     @Test
     public void parse_validArgs_returnsListCommand() {
