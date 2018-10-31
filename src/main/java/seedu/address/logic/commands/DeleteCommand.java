@@ -7,8 +7,8 @@ import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_EXISTING_P
 import static seedu.address.model.ScheduleModel.PREDICATE_SHOW_SCHEDULE_EVENTS;
 
 import seedu.address.commons.core.EventsCenter;
-import seedu.address.commons.events.ui.SwitchToPatientEvent;
 import seedu.address.commons.events.ui.SwitchToAppointmentEvent;
+import seedu.address.commons.events.ui.SwitchToPatientEvent;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBookModel;
