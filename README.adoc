@@ -9,19 +9,19 @@ image:https://img.shields.io/vscode-marketplace/r/ritwickdey.LiveServer.svg[Visu
 image:https://img.shields.io/beerpay/hashdog/scrapfy-chrome-extension.svg[Beerpay]
 
 ifdef::env-github[]
-image::docs/images/Ui.png[width="600"]
+image::docs/images/PatientMode.PNG[width="600"]
 endif::[]
 
 ifndef::env-github[]
-image::images/Ui.png[width="600"]
+image::images/PatientMode.PNG[width="600"]
 endif::[]
 
 ifdef::env-github[]
-image::docs/images/Ui2.png[width="600"]
+image::docs/images/AppointmentMode.PNG[width="600"]
 endif::[]
 
 ifndef::env-github[]
-image::images/Ui2.png[width="600"]
+image::images/AppointmentMode.PNG[width="600"]
 endif::[]
 
 * This is a desktop Patient Book application. It has a GUI but most of the user interactions happen using a CLI (Command Line Interface).
