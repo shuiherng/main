@@ -26,9 +26,9 @@ import seedu.address.model.UserPrefs;
 /**
  * Encapsulates schedule main window.
  */
-public class ScheduleMainWindow extends UiPart {
-    private static final String FXML = "ScheduleMainWindow.fxml";
-    private static final String modeTitle = " : Schedule Mode";
+public class AppointmentMainWindow extends UiPart {
+    private static final String FXML = "AppointmentMainWindow.fxml";
+    private static final String modeTitle = " : Appointment Mode";
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 
@@ -61,7 +61,7 @@ public class ScheduleMainWindow extends UiPart {
     @FXML
     private StackPane statusbarPlaceholder;
 
-    public ScheduleMainWindow(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
+    public AppointmentMainWindow(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
         super(FXML, primaryStage);
 
         // Set dependencies

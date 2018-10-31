@@ -8,7 +8,7 @@ import static seedu.address.model.ScheduleModel.PREDICATE_SHOW_SCHEDULE_EVENTS;
 
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.events.ui.SwitchToPatientEvent;
-import seedu.address.commons.events.ui.SwitchToScheduleEvent;
+import seedu.address.commons.events.ui.SwitchToAppointmentEvent;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBookModel;
@@ -79,7 +79,7 @@ public class DeleteCommand extends Command {
             } catch (ScheduleEventNotFoundException e) {
                 throw new CommandException(String.format(MESSAGE_EVENT_ID_NOT_FOUND, target));
             }
-            EventsCenter.getInstance().post(new SwitchToScheduleEvent());
+            EventsCenter.getInstance().post(new SwitchToAppointmentEvent());
             return new CommandResult(String.format(MESSAGE_DELETE_EVENT_SUCCESS, target));
         } else {
             throw new CommandException(MESSAGE_UNEXPECTED_CMDTYPE);

@@ -13,7 +13,7 @@ import java.util.List;
 
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.events.ui.SwitchToPatientEvent;
-import seedu.address.commons.events.ui.SwitchToScheduleEvent;
+import seedu.address.commons.events.ui.SwitchToAppointmentEvent;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBookModel;
@@ -68,11 +68,11 @@ public class ListCommand extends Command {
         } else if (this.cmdType.equals(CMDTYPE_APPOINTMENT)) {
             if (args.equals(GET_ALL_WORD)) {
                 scheduleModel.updateFilteredEventList(PREDICATE_SHOW_ALL_SCHEDULE_EVENTS);
-                EventsCenter.getInstance().post(new SwitchToScheduleEvent());
+                EventsCenter.getInstance().post(new SwitchToAppointmentEvent());
                 return new CommandResult(MESSAGE_APPOINTMENT_ALL_SUCCESS);
             } else {
                 scheduleModel.updateFilteredEventList(PREDICATE_SHOW_SCHEDULE_EVENTS);
-                EventsCenter.getInstance().post(new SwitchToScheduleEvent());
+                EventsCenter.getInstance().post(new SwitchToAppointmentEvent());
                 return new CommandResult(MESSAGE_APPOINTMENT_SUCCESS);
             }
         } else if (this.cmdType.equals(CMDTYPE_DISEASE)) {
