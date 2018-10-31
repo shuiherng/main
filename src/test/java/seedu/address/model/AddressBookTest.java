@@ -29,7 +29,7 @@ public class AddressBookTest {
 
     @Test
     public void constructor() {
-        assertEquals(Collections.emptyList(), addressBook.getAllPersonList());
+        assertEquals(Collections.emptyList(), addressBook.getPersonList());
     }
 
     @Test
@@ -88,7 +88,7 @@ public class AddressBookTest {
     @Test
     public void getPersonList_modifyList_throwsUnsupportedOperationException() {
         thrown.expect(UnsupportedOperationException.class);
-        addressBook.getAllPersonList().remove(0);
+        addressBook.getPersonList().remove(0);
     }
 
     /**
@@ -102,20 +102,10 @@ public class AddressBookTest {
         }
 
         @Override
-        public ObservableList<Person> getAllPersonList() {
+        public ObservableList<Person> getPersonList() {
             return persons;
         }
 
-        @Override
-        public ObservableList<Person> getPersonList() {
-            ObservableList<Person> visiblePersons = FXCollections.observableArrayList();
-            persons.forEach((person) -> {
-                if (person.getExists()) {
-                    visiblePersons.add(person);
-                }
-            });
-            return visiblePersons;
-        }
     }
 
 }

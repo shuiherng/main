@@ -1,8 +1,16 @@
 package seedu.address.logic.commands;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static seedu.address.logic.commands.DeleteCommand.MESSAGE_INVALID_PERSON_ID;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
+import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_PERSONS;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBookModel;
@@ -15,19 +23,15 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonId;
 import seedu.address.testutil.PersonBuilder;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static seedu.address.logic.commands.DeleteCommand.MESSAGE_INVALID_PERSON_ID;
-import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
-import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_PERSONS;
-
+/**
+ * Tests delete command.
+ */
 public class DeleteCommandTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    void delete_patient_success() throws Exception {
+    public void delete_patient_success() throws Exception {
         AddressBookModel model = new AddressBookModelManager();
         Person person = new PersonBuilder().build();
         model.addPerson(person);
@@ -36,7 +40,7 @@ public class DeleteCommandTest {
     }
 
     @Test
-    void delete_patient_invalidId_throwsCommandException() throws Exception {
+    public void deletePatient_invalidId_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(MESSAGE_INVALID_PERSON_ID);
         AddressBookModel model = new AddressBookModelManager();
@@ -45,7 +49,7 @@ public class DeleteCommandTest {
     }
 
     @Test
-    void delete_patient_idNonExistent_throwsCommandException() throws Exception {
+    public void deletePatient_idNonExistent_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
 
         // these two people have different IDs as the PersonID assigned is a static variable
@@ -63,7 +67,7 @@ public class DeleteCommandTest {
     }
 
     @Test
-    void delete_invalidCmdType() throws Exception {
+    public void delete_invalidCmdType() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(DeleteCommand.MESSAGE_UNEXPECTED_CMDTYPE);
 
@@ -74,12 +78,18 @@ public class DeleteCommandTest {
                         new CommandHistory());
     }
 
+    /**
+     * makes sure that the deleting is successful
+     * @param addressBookModel address book model
+     * @param target target for deletion
+     * @throws Exception
+     */
     private void assertDeletePatientSuccess(AddressBookModel addressBookModel, String target)
             throws Exception {
 
         ScheduleModel scheduleModel = new ScheduleModelManager();
         DiagnosisModel diagnosisModel = new DiagnosisModelManager();
-        CommandHistory commandHistory =  new CommandHistory();
+        CommandHistory commandHistory = new CommandHistory();
 
         DeleteCommand cmd = new DeleteCommand(CMDTYPE_PATIENT, target);
 
@@ -92,16 +102,22 @@ public class DeleteCommandTest {
         // it should also produce the correct success message.
         assertTrue(addressBookModel.getFilteredPersonList().size() == 1);
         assertFalse(addressBookModel.getFilteredPersonList().get(0).getExists());
-        assertEquals(result, new CommandResult(String.format(DeleteCommand.MESSAGE_DELETE_EVENT_SUCCESS,
+        assertEquals(result, new CommandResult(String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 target)));
     }
 
+    /**
+     * Triggers delete failure
+     * @param addressBookModel address book model
+     * @param target target for deletion
+     * @throws Exception
+     */
     private void triggerDeletePatientFailure(AddressBookModel addressBookModel, String target)
             throws Exception {
 
         ScheduleModel scheduleModel = new ScheduleModelManager();
         DiagnosisModel diagnosisModel = new DiagnosisModelManager();
-        CommandHistory commandHistory =  new CommandHistory();
+        CommandHistory commandHistory = new CommandHistory();
 
         DeleteCommand cmd = new DeleteCommand(CMDTYPE_PATIENT, target);
 

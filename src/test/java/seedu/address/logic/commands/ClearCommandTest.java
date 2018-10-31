@@ -1,8 +1,13 @@
 package seedu.address.logic.commands;
 
+import static org.junit.Assert.assertEquals;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBookModel;
@@ -12,21 +17,17 @@ import seedu.address.model.DiagnosisModelManager;
 import seedu.address.model.ScheduleModel;
 import seedu.address.model.ScheduleModelManager;
 
-import static org.junit.Assert.assertEquals;
-import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
-import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
-
 public class ClearCommandTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    void clear_schedule_success() throws Exception {
+    public void clear_schedule_success() throws Exception {
 
         AddressBookModel addressBookModel = new AddressBookModelManager();
         ScheduleModel scheduleModel = new ScheduleModelManager();
         DiagnosisModel diagnosisModel = new DiagnosisModelManager();
-        CommandHistory commandHistory =  new CommandHistory();
+        CommandHistory commandHistory = new CommandHistory();
 
         // TODO: add a couple scheduleEvent objects here
 
@@ -40,7 +41,7 @@ public class ClearCommandTest {
     }
 
     @Test
-    void clear_invalidParameter_throwsCommandException() throws Exception{
+    public void clear_invalidParameter_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(ClearCommand.MESSAGE_UNEXPECTED_PARAMETER);
 

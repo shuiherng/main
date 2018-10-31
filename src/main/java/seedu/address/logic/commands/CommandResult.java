@@ -45,4 +45,16 @@ public class CommandResult {
         return listString;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        return this == other
+                || (other instanceof CommandResult
+                && ((CommandResult) other).feedbackToUser.equals(this.feedbackToUser));
+    }
+
+    @Override
+    public String toString() {
+        return "CommandResult: " + feedbackToUser;
+    }
+
 }

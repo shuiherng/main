@@ -1,9 +1,5 @@
 package seedu.address.logic.parser;
 
-import org.junit.Test;
-
-import seedu.address.logic.commands.ListCommand;
-
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.commands.ListCommand.GET_ALL_WORD;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_DIAGNOSIS;
@@ -11,10 +7,15 @@ import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
+import org.junit.Test;
+
+import seedu.address.logic.commands.ListCommand;
+
 public class ListCommandParserTest {
 
-    private ListCommandParser parser = new ListCommandParser();
     private static final String addAll = " " + GET_ALL_WORD;
+
+    private ListCommandParser parser = new ListCommandParser();
 
     @Test
     public void parse_validArgs_returnsListCommand() {

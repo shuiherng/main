@@ -1,14 +1,15 @@
 package seedu.address.logic;
 
 import static org.junit.Assert.assertEquals;
-import static seedu.address.commons.core.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import seedu.address.logic.commands.CommandResult;
+import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.HistoryCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -21,7 +22,9 @@ import seedu.address.model.ScheduleModel;
 import seedu.address.model.ScheduleModelManager;
 import seedu.address.model.UserPrefs;
 
-
+/**
+ * Tests the logic manager.
+ */
 public class LogicManagerTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -40,14 +43,14 @@ public class LogicManagerTest {
 
     @Test
     public void execute_commandExecutionError_throwsCommandException() {
-        String deleteCommand = "delete 9";
-        assertCommandException(deleteCommand, MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        String deleteCommand = "delete patient p9001";
+        assertCommandException(deleteCommand, String.format(DeleteCommand.MESSAGE_PERSON_ID_NOT_FOUND, "p9001"));
         assertHistoryCorrect(deleteCommand);
     }
 
     @Test
     public void execute_validCommand_success() {
-        String listCommand = ListCommand.COMMAND_WORD;
+        String listCommand = ListCommand.COMMAND_WORD + " " + CMDTYPE_PATIENT;
         assertCommandSuccess(listCommand, ListCommand.MESSAGE_PERSON_SUCCESS, addressBookModel);
         assertHistoryCorrect(listCommand);
     }
