@@ -1,5 +1,7 @@
 package seedu.address.logic.commands;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,8 +14,6 @@ import seedu.address.logic.CommandHistory;
 import seedu.address.model.AddressBookModelManager;
 import seedu.address.model.DiagnosisModelManager;
 import seedu.address.model.ScheduleModelManager;
-
-import static org.junit.Assert.assertEquals;
 
 public class HistoryCommandTest {
     @Rule
