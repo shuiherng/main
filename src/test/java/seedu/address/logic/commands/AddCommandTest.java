@@ -1,8 +1,20 @@
 package seedu.address.logic.commands;
 
+import static org.junit.Assert.assertTrue;
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.commands.AddCommand.MESSAGE_INVALID_PATIENT_FORMAT;
+import static seedu.address.logic.commands.AddCommand.MESSAGE_USAGE_PERSON;
+import static seedu.address.logic.commands.CommandTestUtil.*;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
+import static seedu.address.logic.parser.PersonCliSyntax.*;
+import static seedu.address.testutil.PersonBuilder.*;
+import static seedu.address.testutil.PersonUtil.matchProperties;
+import static seedu.address.testutil.TypicalPersons.ALICE;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBookModel;
@@ -15,23 +27,12 @@ import seedu.address.model.person.Person;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.PersonUtil;
 
-import static org.junit.Assert.assertTrue;
-import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.commands.AddCommand.MESSAGE_INVALID_PATIENT_FORMAT;
-import static seedu.address.logic.commands.AddCommand.MESSAGE_USAGE_PERSON;
-import static seedu.address.logic.commands.CommandTestUtil.*;
-import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
-import static seedu.address.logic.parser.PersonCliSyntax.*;
-import static seedu.address.testutil.PersonBuilder.*;
-import static seedu.address.testutil.PersonUtil.matchProperties;
-import static seedu.address.testutil.TypicalPersons.ALICE;
-
 public class AddCommandTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    public void parse_patient_success() throws Exception {
+    public void parsePatient_success() throws Exception {
 
         // normal input
         Person person = new PersonBuilder(ALICE).withTags(VALID_TAG_FRIEND).build();
@@ -74,21 +75,21 @@ public class AddCommandTest {
     }
 
     @Test
-    public void parse_patient_optionalFieldsMissing_success() throws Exception {
+    public void parsePatient_optionalFieldsMissing_success() throws Exception {
         Person person = new PersonBuilder(ALICE).build();
         Person addedPerson = testAddressBookModel(PersonUtil.getPersonDetails(person));
         assertTrue(matchProperties(person, addedPerson));
     }
 
     @Test
-    public void parse_patient_missingCompulsoryFields_throwsCommandException() throws Exception {
+    public void parsePatient_missingCompulsoryFields_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE_PERSON));
         testAddressBookModel(NAME_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY);
     }
 
     @Test
-    public void parse_patient_incorrectNameFormat_throwsCommandException() throws Exception {
+    public void parsePatient_incorrectNameFormat_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(MESSAGE_INVALID_PATIENT_FORMAT);
         // no & allowed in name
@@ -101,7 +102,7 @@ public class AddCommandTest {
     }
 
     @Test
-    public void parse_patient_incorrectPhoneFormat_throwsCommandException() throws Exception {
+    public void parsePatient_incorrectPhoneFormat_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(MESSAGE_INVALID_PATIENT_FORMAT);
         // no a allowed in phone
@@ -114,7 +115,7 @@ public class AddCommandTest {
     }
 
     @Test
-    public void parse_patient_incorrectEmailFormat_throwsCommandException() throws Exception {
+    public void parsePatient_incorrectEmailFormat_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(MESSAGE_INVALID_PATIENT_FORMAT);
         // no @ present in email
@@ -127,7 +128,7 @@ public class AddCommandTest {
     }
 
     @Test
-    public void parse_patient_incorrectAddressFormat_throwsCommandException() throws Exception {
+    public void parsePatient_incorrectAddressFormat_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(MESSAGE_INVALID_PATIENT_FORMAT);
         // empty string not allowed for address
@@ -140,7 +141,7 @@ public class AddCommandTest {
     }
 
     @Test
-    public void parse_patient_incorrectTagFormat_throwsCommandException() throws Exception {
+    public void parsePatient_incorrectTagFormat_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(MESSAGE_INVALID_PATIENT_FORMAT);
         // * not allowed in tag

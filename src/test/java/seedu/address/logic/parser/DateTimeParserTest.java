@@ -70,13 +70,15 @@ public class DateTimeParserTest {
         // no wrap around
         expectedCalendarStart.set(2018, 9, 12, 9, 0, 0);
         expectedCalendarEnd.set(2018, 9, 12, 18, 0, 0);
-        assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd), parser.parseDate(VALID_TOMORROW, dummyCurrentTime));
+        assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd), parser.parseDate(VALID_TOMORROW,
+                dummyCurrentTime));
 
         // testing "the day after tomorrow"
         // no wrap around
         expectedCalendarStart.set(2018, 9, 13, 9, 0, 0);
         expectedCalendarEnd.set(2018, 9, 13, 18, 0, 0);
-        assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd), parser.parseDate(VALID_THE_DAY_AFTER_TOMORROW, dummyCurrentTime));
+        assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd),
+                parser.parseDate(VALID_THE_DAY_AFTER_TOMORROW, dummyCurrentTime));
     }
 
     @Test
@@ -84,7 +86,8 @@ public class DateTimeParserTest {
         // testing "in 5 days"
         expectedCalendarStart.set(2018, 9, 16, 9, 0, 0);
         expectedCalendarEnd.set(2018, 9, 16, 18, 0, 0);
-        assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd), parser.parseDate(VALID_IN_SOME_SMALL_DAYS, dummyCurrentTime));
+        assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd), parser.parseDate(VALID_IN_SOME_SMALL_DAYS,
+                dummyCurrentTime));
     }
 
     @Test
@@ -92,7 +95,8 @@ public class DateTimeParserTest {
         // testing "in 3 weeks"
         expectedCalendarStart.set(2018, 9, 29, 9, 0, 0);
         expectedCalendarEnd.set(2018, 10, 4, 18, 0, 0);
-        assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd), parser.parseDate(VALID_IN_SOME_SMALL_WEEKS, dummyCurrentTime));
+        assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd),
+                parser.parseDate(VALID_IN_SOME_SMALL_WEEKS, dummyCurrentTime));
         // there is still a bug when tried with 11/11
     }
 

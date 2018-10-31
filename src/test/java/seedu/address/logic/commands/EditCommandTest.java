@@ -1,8 +1,19 @@
 package seedu.address.logic.commands;
 
+import static org.junit.Assert.assertTrue;
+import static seedu.address.logic.commands.CommandTestUtil.*;
+import static seedu.address.logic.commands.EditCommand.MESSAGE_CANNOT_EDIT_DELETED;
+import static seedu.address.logic.commands.EditCommand.MESSAGE_INVALID_FORMAT;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
+import static seedu.address.logic.parser.PersonCliSyntax.*;
+import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_DETAILS;
+import static seedu.address.testutil.PersonUtil.matchProperties;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.ArgumentMultimap;
@@ -22,16 +33,9 @@ import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 import seedu.address.testutil.PersonBuilder;
 
-import static org.junit.Assert.assertTrue;
-import static seedu.address.logic.commands.CommandTestUtil.*;
-import static seedu.address.logic.commands.EditCommand.MESSAGE_CANNOT_EDIT_DELETED;
-import static seedu.address.logic.commands.EditCommand.MESSAGE_INVALID_FORMAT;
-import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
-import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
-import static seedu.address.logic.parser.PersonCliSyntax.*;
-import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_DETAILS;
-import static seedu.address.testutil.PersonUtil.matchProperties;
-
+/**
+ * Tests the edit command.
+ */
 public class EditCommandTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -76,7 +80,7 @@ public class EditCommandTest {
     }
 
     @Test
-    public void parse_patient_multipleRepeatedFields_acceptsLast() throws Exception {
+    public void parsePatient_multipleRepeatedFields_acceptsLast() throws Exception {
         Person person = new PersonBuilder().build();
         Person editedPerson = new PersonBuilder()
                 .withName(VALID_NAME_BOB)
@@ -91,7 +95,7 @@ public class EditCommandTest {
         assertTrue(matchProperties(editedPerson, testAddressBookModel(person, argMultimap)));
     }
     @Test
-    public void parse_patient_invalidPatientId() throws Exception {
+    public void parsePatient_invalidPatientId() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(EditCommand.MESSAGE_INVALID_PATIENT_ID);
         EditCommand cmd = new EditCommand(CMDTYPE_PATIENT, "invalidID",
@@ -103,7 +107,7 @@ public class EditCommandTest {
     }
 
     @Test
-    public void parse_patient_unchanged_throwsCommandException() throws Exception {
+    public void parsePatient_unchanged_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(EditCommand.MESSAGE_NOT_EDITED);
         testAddressBookModel(new PersonBuilder().build(),
@@ -111,7 +115,7 @@ public class EditCommandTest {
     }
 
     @Test
-    public void parse_patient_invalidName_throwsCommandException() throws Exception {
+    public void parsePatient_invalidName_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(String.format(MESSAGE_INVALID_FORMAT, Name.class.getSimpleName()));
         // no & allowed in name
@@ -120,7 +124,7 @@ public class EditCommandTest {
     }
 
     @Test
-    public void parse_patient_invalidPhone_throwsCommandException() throws Exception {
+    public void parsePatient_invalidPhone_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(String.format(MESSAGE_INVALID_FORMAT, Phone.class.getSimpleName()));
         // no a allowed in phone number
@@ -129,7 +133,7 @@ public class EditCommandTest {
     }
 
     @Test
-    public void parse_patient_invalidEmail_throwsCommandException() throws Exception {
+    public void parsePatient_invalidEmail_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(String.format(MESSAGE_INVALID_FORMAT, Email.class.getSimpleName()));
         // @ missing from email
@@ -138,7 +142,7 @@ public class EditCommandTest {
     }
 
     @Test
-    public void parse_patient_invalidAddress_throwsCommandException() throws Exception {
+    public void parsePatient_invalidAddress_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(String.format(MESSAGE_INVALID_FORMAT, Address.class.getSimpleName()));
         // no empty address allowed
@@ -147,7 +151,7 @@ public class EditCommandTest {
     }
 
     @Test
-    public void parse_patient_invalidTag_throwsCommandException() throws Exception {
+    public void parsePatient_invalidTag_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(String.format(MESSAGE_INVALID_FORMAT, Tag.class.getSimpleName()));
         // no * allowed in tag
@@ -156,7 +160,7 @@ public class EditCommandTest {
     }
 
     @Test
-    public void parse_patient_editDeleted_throwsCommandException() throws Exception {
+    public void parsePatient_editDeleted_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(MESSAGE_CANNOT_EDIT_DELETED);
         Person person = new PersonBuilder().build();
@@ -171,7 +175,7 @@ public class EditCommandTest {
     // --- start of schedule tests ---
 
     @Test
-    public void parse_appointment_invalidEventId() throws Exception {
+    public void parseAppointment_invalidEventId() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(EditCommand.MESSAGE_INVALID_EVENT_ID);
         EditCommand cmd = new EditCommand(CMDTYPE_APPOINTMENT, "invalidID",

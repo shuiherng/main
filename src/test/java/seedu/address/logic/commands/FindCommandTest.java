@@ -1,5 +1,11 @@
 package seedu.address.logic.commands;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -15,12 +21,9 @@ import seedu.address.model.ScheduleModelManager;
 import seedu.address.model.person.Person;
 import seedu.address.testutil.PersonBuilder;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
-import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
-
+/**
+ * Tests the find command.
+ */
 public class FindCommandTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();

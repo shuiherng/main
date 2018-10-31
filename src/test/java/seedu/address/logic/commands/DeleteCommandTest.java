@@ -1,8 +1,16 @@
 package seedu.address.logic.commands;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static seedu.address.logic.commands.DeleteCommand.MESSAGE_INVALID_PERSON_ID;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
+import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_PERSONS;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBookModel;
@@ -15,13 +23,9 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonId;
 import seedu.address.testutil.PersonBuilder;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static seedu.address.logic.commands.DeleteCommand.MESSAGE_INVALID_PERSON_ID;
-import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
-import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_PERSONS;
-
+/**
+ * Tests delete command.
+ */
 public class DeleteCommandTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -36,7 +40,7 @@ public class DeleteCommandTest {
     }
 
     @Test
-    public void delete_patient_invalidId_throwsCommandException() throws Exception {
+    public void deletePatient_invalidId_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(MESSAGE_INVALID_PERSON_ID);
         AddressBookModel model = new AddressBookModelManager();
@@ -45,7 +49,7 @@ public class DeleteCommandTest {
     }
 
     @Test
-    public void delete_patient_idNonExistent_throwsCommandException() throws Exception {
+    public void deletePatient_idNonExistent_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
 
         // these two people have different IDs as the PersonID assigned is a static variable
@@ -79,7 +83,7 @@ public class DeleteCommandTest {
 
         ScheduleModel scheduleModel = new ScheduleModelManager();
         DiagnosisModel diagnosisModel = new DiagnosisModelManager();
-        CommandHistory commandHistory =  new CommandHistory();
+        CommandHistory commandHistory = new CommandHistory();
 
         DeleteCommand cmd = new DeleteCommand(CMDTYPE_PATIENT, target);
 

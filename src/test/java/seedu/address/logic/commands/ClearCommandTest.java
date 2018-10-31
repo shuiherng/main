@@ -1,8 +1,13 @@
 package seedu.address.logic.commands;
 
+import static org.junit.Assert.assertEquals;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBookModel;
@@ -11,10 +16,6 @@ import seedu.address.model.DiagnosisModel;
 import seedu.address.model.DiagnosisModelManager;
 import seedu.address.model.ScheduleModel;
 import seedu.address.model.ScheduleModelManager;
-
-import static org.junit.Assert.assertEquals;
-import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
-import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
 
 public class ClearCommandTest {
     @Rule

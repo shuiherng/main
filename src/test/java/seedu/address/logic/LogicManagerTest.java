@@ -1,7 +1,6 @@
 package seedu.address.logic;
 
 import static org.junit.Assert.assertEquals;
-import static seedu.address.commons.core.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
 
@@ -23,7 +22,9 @@ import seedu.address.model.ScheduleModel;
 import seedu.address.model.ScheduleModelManager;
 import seedu.address.model.UserPrefs;
 
-
+/**
+ * Tests the logic manager.
+ */
 public class LogicManagerTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();

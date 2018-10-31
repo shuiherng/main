@@ -178,7 +178,7 @@ public class PatientBookParserTest {
     }
 
     @Test
-    public void parseCommand_deletePatient_invalidInput_throwsParseException() throws Exception {
+    public void parseCommand_deletePatientInvalidInput_throwsParseException() throws Exception {
         thrown.expect(ParseException.class);
         thrown.expectMessage(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
         PersonId personId = new PersonBuilder().build().getId();
@@ -187,7 +187,7 @@ public class PatientBookParserTest {
     }
 
     @Test
-    public void parseCommand_deleteAppointment_invalidInput_throwsParseException() throws Exception {
+    public void parseCommand_deleteAppointmentInvalidInput_throwsParseException() throws Exception {
         thrown.expect(ParseException.class);
         thrown.expectMessage(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
         parser.parseCommand(DeleteCommand.COMMAND_WORD + " "
@@ -195,21 +195,21 @@ public class PatientBookParserTest {
     }
 
     @Test
-    public void parseCommand_find_invalidInput_throwsParseException() throws Exception {
+    public void parseCommand_findInvalidInput_throwsParseException() throws Exception {
         thrown.expect(ParseException.class);
         thrown.expectMessage(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         parser.parseCommand(FindCommand.COMMAND_WORD + " " + "invalid");
     }
 
     @Test
-    public void parseCommand_edit_invalidInput_throwsParseException() throws Exception {
+    public void parseCommand_editInvalidInput_throwsParseException() throws Exception {
         thrown.expect(ParseException.class);
         thrown.expectMessage(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
         parser.parseCommand(EditCommand.COMMAND_WORD + " " + "invalid");
     }
 
     @Test
-    public void parseCommand_list_invalidInput_throwsParseException() throws Exception {
+    public void parseCommand_listInvalidInput_throwsParseException() throws Exception {
         thrown.expect(ParseException.class);
         thrown.expectMessage(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
         parser.parseCommand(ListCommand.COMMAND_WORD + " " + "invalid");
