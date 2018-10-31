@@ -15,6 +15,37 @@ endif::[]
 :repoURL: https://github.com/CS2103-AY1819S1-T12-2/main
 
 By: `Team T12-2`      Since: `Jun 2016`      Licence: `MIT`
+
+== Introduction
+
+PatientBook is an all-in-one convenience utility for medical professionals in Singapore. It is used to store and manage patient data as well as appointment schedules. It can also be used to retrieve information about disease, symptoms and drugs.
+Patientbook uses simple and intuitive “commands” to receive instructions from the user – this makes it speedy, lightweight and easy to pick up. Refer to Section 2, “Quick Start” to begin using PatientBook.
+
+== Quick Start
+
+. Ensure you have Java version 9 or later installed on your computer. If not, the latest version of Java can be downloaded
+http://www.java.com/en/download/[here].
+.  Download the latest version of `patientbook.jar`
+   https://github.com/CS2103-AY1819S1-T12-2/main/releases[here].
+. Copy the downloaded file to the folder you wish to use as the home folder for PatientBook.
+. Double-click the file to start PatientBook. The following GUI should appear in a few seconds.
++
+image::PatientMode.png[width="790"]
++
+.  Type the command in the command box and press kbd:[Enter] to execute it. +
+e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
+.  Some example commands you can try:
+
+* *`mode patient`* : switches to patient management mode.
+* *`mode appointment`* : switches to appointment management mode.
+* *`add patient n/David Lee p/99998888 a/Utown e/davlee@gmail.com`* : automatically switches to patient management mode and add patient David Lee into the patient record, with the details provided.
+* *`delete patient p0`* : deletes patient with patient ID 'p0'.
+* *`add appointment for Lee next week`* : automatically switches to patient management mode, and schedules an appointment for patient whose name matches Lee some time next week.
+* *`delete appointment e0`* : deletes appointment with appointment ID 'e0'.
+* *`exit`* : exits the app.
+
+.  Refer to <<Features>> for details of each command.
+
 [[Features]]
 == Features
 
