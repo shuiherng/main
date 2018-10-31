@@ -9,10 +9,10 @@ import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
 import static seedu.address.logic.parser.PersonCliSyntax.*;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_TAG;
-import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_PERSON;
-import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_DETAILS;
-import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_TAGS;
 import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_DATETIME;
+import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_DETAILS;
+import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_PERSON;
+import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_TAGS;
 import static seedu.address.testutil.PersonBuilder.DEFAULT_NAME;
 import static seedu.address.testutil.ScheduleEventBuilder.SAMPLE_EVENTID;
 
@@ -22,8 +22,15 @@ import org.junit.rules.ExpectedException;
 
 import seedu.address.logic.commands.AddCommand;
 
-import seedu.address.logic.commands.*;
+import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.DeleteCommand;
+import seedu.address.logic.commands.EditCommand;
+import seedu.address.logic.commands.ExitCommand;
+import seedu.address.logic.commands.FindCommand;
+import seedu.address.logic.commands.HelpCommand;
+import seedu.address.logic.commands.HistoryCommand;
+import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.ModeCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonId;

@@ -1,16 +1,17 @@
 package seedu.address.logic.commands;
 
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
 import seedu.address.logic.CommandHistory;
 import seedu.address.model.AddressBookModelManager;
 import seedu.address.model.DiagnosisModelManager;
 import seedu.address.model.ScheduleModelManager;
-
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 

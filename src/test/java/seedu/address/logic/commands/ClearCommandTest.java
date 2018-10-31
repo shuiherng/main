@@ -27,7 +27,7 @@ public class ClearCommandTest {
         AddressBookModel addressBookModel = new AddressBookModelManager();
         ScheduleModel scheduleModel = new ScheduleModelManager();
         DiagnosisModel diagnosisModel = new DiagnosisModelManager();
-        CommandHistory commandHistory =  new CommandHistory();
+        CommandHistory commandHistory = new CommandHistory();
 
         // TODO: add a couple scheduleEvent objects here
 
@@ -41,7 +41,7 @@ public class ClearCommandTest {
     }
 
     @Test
-    public void clear_invalidParameter_throwsCommandException() throws Exception{
+    public void clear_invalidParameter_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(ClearCommand.MESSAGE_UNEXPECTED_PARAMETER);
 

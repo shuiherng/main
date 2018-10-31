@@ -9,6 +9,7 @@ import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
 import seedu.address.commons.core.Messages;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -78,6 +79,12 @@ public class FindCommandTest {
                 new CommandHistory());
     }
 
+    /**
+     * ensures that string is found in address book
+     * @param addressBookModel model
+     * @param searchString search string
+     * @throws Exception
+     */
     private void assertFoundInAddressBook(AddressBookModel addressBookModel, String searchString)
             throws Exception {
 

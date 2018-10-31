@@ -7,6 +7,9 @@ import java.util.List;
 import seedu.address.model.Schedule;
 import seedu.address.model.event.ScheduleEvent;
 
+/**
+ * Typical Events
+ */
 public class TypicalEvents {
 
     /* TODO: copy the event properties exactly out of

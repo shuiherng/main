@@ -4,10 +4,24 @@ import static org.junit.Assert.assertTrue;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.commands.AddCommand.MESSAGE_INVALID_PATIENT_FORMAT;
 import static seedu.address.logic.commands.AddCommand.MESSAGE_USAGE_PERSON;
-import static seedu.address.logic.commands.CommandTestUtil.*;
+import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
-import static seedu.address.logic.parser.PersonCliSyntax.*;
-import static seedu.address.testutil.PersonBuilder.*;
+import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_PHONE;
+import static seedu.address.testutil.PersonBuilder.DEFAULT_ADDRESS;
+import static seedu.address.testutil.PersonBuilder.DEFAULT_EMAIL;
+import static seedu.address.testutil.PersonBuilder.DEFAULT_NAME;
+import static seedu.address.testutil.PersonBuilder.DEFAULT_PHONE;
 import static seedu.address.testutil.PersonUtil.matchProperties;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 
@@ -154,12 +168,18 @@ public class AddCommandTest {
         testAddressBookModel(sb.toString());
     }
 
+    /**
+     * Tests addressbook model
+     * @param toAdd add string
+     * @return person added
+     * @throws Exception
+     */
     private Person testAddressBookModel(String toAdd) throws Exception {
 
         AddressBookModel addressBookModel = new AddressBookModelManager();
         ScheduleModel scheduleModel = new ScheduleModelManager();
         DiagnosisModel diagnosisModel = new DiagnosisModelManager();
-        CommandHistory commandHistory =  new CommandHistory();
+        CommandHistory commandHistory = new CommandHistory();
 
         AddCommand cmd = new AddCommand(CMDTYPE_PATIENT, toAdd);
 

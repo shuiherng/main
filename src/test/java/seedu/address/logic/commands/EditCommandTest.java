@@ -1,12 +1,21 @@
 package seedu.address.logic.commands;
 
 import static org.junit.Assert.assertTrue;
-import static seedu.address.logic.commands.CommandTestUtil.*;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.address.logic.commands.EditCommand.MESSAGE_CANNOT_EDIT_DELETED;
 import static seedu.address.logic.commands.EditCommand.MESSAGE_INVALID_FORMAT;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
-import static seedu.address.logic.parser.PersonCliSyntax.*;
+import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_DETAILS;
 import static seedu.address.testutil.PersonUtil.matchProperties;
 
@@ -188,13 +197,20 @@ public class EditCommandTest {
 
     // --- end of schedule tests ---
 
+    /**
+     * Tests address book model
+     * @param original original person
+     * @param argMultimap mapping
+     * @return edited person
+     * @throws Exception
+     */
     private Person testAddressBookModel(Person original, ArgumentMultimap argMultimap)
             throws Exception {
 
         AddressBookModel addressBookModel = new AddressBookModelManager();
         ScheduleModel scheduleModel = new ScheduleModelManager();
         DiagnosisModel diagnosisModel = new DiagnosisModelManager();
-        CommandHistory commandHistory =  new CommandHistory();
+        CommandHistory commandHistory = new CommandHistory();
 
         addressBookModel.addPerson(original);
 
@@ -206,13 +222,20 @@ public class EditCommandTest {
         return addressBookModel.internalGetFromPersonList(unused -> true).get(0);
     }
 
+    /**
+     * Tests schedule model
+     * @param original original event
+     * @param argMultimap mapping
+     * @return edited event
+     * @throws Exception
+     */
     private ScheduleEvent testScheduleModel(ScheduleEvent original,
                                             ArgumentMultimap argMultimap) throws Exception {
 
         AddressBookModel addressBookModel = new AddressBookModelManager();
         ScheduleModel scheduleModel = new ScheduleModelManager();
         DiagnosisModel diagnosisModel = new DiagnosisModelManager();
-        CommandHistory commandHistory =  new CommandHistory();
+        CommandHistory commandHistory = new CommandHistory();
 
         scheduleModel.addEvent(original);
 
