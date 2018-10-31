@@ -21,8 +21,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import seedu.address.commons.core.EventsCenter;
+import seedu.address.commons.events.ui.SwitchToAppointmentEvent;
 import seedu.address.commons.events.ui.SwitchToPatientEvent;
-import seedu.address.commons.events.ui.SwitchToScheduleEvent;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.commons.util.Pair;
 import seedu.address.logic.CommandHistory;
@@ -195,7 +195,7 @@ public class EditCommand extends Command {
 
                 scheduleModel.updateEvent(eventToEdit, editedEvent);
                 scheduleModel.updateFilteredEventList(ScheduleModel.PREDICATE_SHOW_SCHEDULE_EVENTS);
-                EventsCenter.getInstance().post(new SwitchToScheduleEvent());
+                EventsCenter.getInstance().post(new SwitchToAppointmentEvent());
                 return new CommandResult(String.format(MESSAGE_EDIT_EVENT_SUCCESS, editedEvent));
 
             } catch (ScheduleEventNotFoundException e) {

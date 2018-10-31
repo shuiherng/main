@@ -11,7 +11,7 @@ import java.util.List;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.events.ui.SwitchToPatientEvent;
-import seedu.address.commons.events.ui.SwitchToScheduleEvent;
+import seedu.address.commons.events.ui.SwitchToAppointmentEvent;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBookModel;
@@ -75,7 +75,7 @@ public class FindCommand extends Command {
                     addressBookModel.getFilteredPersonList().size());
         } else if (this.cmdType.equals(CMDTYPE_APPOINTMENT)) {
             scheduleModel.updateFilteredEventList(new ScheduleEventMatchesPredicate(searchString));
-            EventsCenter.getInstance().post(new SwitchToScheduleEvent());
+            EventsCenter.getInstance().post(new SwitchToAppointmentEvent());
             cmdResult = String.format(Messages.MESSAGE_EVENTS_LISTED_OVERVIEW,
                     scheduleModel.getFilteredEventList().size());
         } else if (this.cmdType.equals(CMDTYPE_DISEASE)) {

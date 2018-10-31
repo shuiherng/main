@@ -18,8 +18,8 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import seedu.address.commons.core.EventsCenter;
+import seedu.address.commons.events.ui.SwitchToAppointmentEvent;
 import seedu.address.commons.events.ui.SwitchToPatientEvent;
-import seedu.address.commons.events.ui.SwitchToScheduleEvent;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.ArgumentMultimap;
@@ -179,7 +179,7 @@ public class AddCommand extends Command {
                 ScheduleEvent newEvent = new ScheduleEventParser(addressBookModel, scheduleModel).parse(args);
                 System.out.println(newEvent);
                 scheduleModel.addEvent(newEvent);
-                EventsCenter.getInstance().post(new SwitchToScheduleEvent());
+                EventsCenter.getInstance().post(new SwitchToAppointmentEvent());
                 return new CommandResult(String.format(MESSAGE_SUCCESS_SCHEDULE, newEvent));
             } catch (ParseException e) {
                 throw new CommandException(e.getMessage());
