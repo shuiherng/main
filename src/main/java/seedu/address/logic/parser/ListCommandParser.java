@@ -27,6 +27,8 @@ public class ListCommandParser implements Parser<ListCommand> {
             cmdType = argSplit[0];
             if (argSplit.length > 1) {
                 args = argSplit[1];
+            } else {
+                args = "";
             }
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));

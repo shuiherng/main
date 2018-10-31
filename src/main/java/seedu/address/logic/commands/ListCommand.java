@@ -84,4 +84,12 @@ public class ListCommand extends Command {
         }
 
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return this == other
+                || (other instanceof ListCommand
+                && cmdType.equals(((ListCommand) other).cmdType)
+                && args.equals(((ListCommand) other).args));
+    }
 }

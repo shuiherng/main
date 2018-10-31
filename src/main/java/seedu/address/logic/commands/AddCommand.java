@@ -127,7 +127,7 @@ public class AddCommand extends Command {
     public static final String MESSAGE_SUCCESS_SCHEDULE = "New appointment added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This patient already exists in the patient book";
     public static final String MESSAGE_DUPLICATE_DISEASE = "This disease already exists in the patient book";
-    private static final String MESSAGE_INVALID_PATIENT_FORMAT = "Invalid input format for patient";
+    public static final String MESSAGE_INVALID_PATIENT_FORMAT = "Invalid input format for patient";
 
     private final String addType;
     private final String args;
@@ -137,7 +137,7 @@ public class AddCommand extends Command {
      */
     public AddCommand(String addType, String args) {
         this.addType = addType;
-        this.args = args;
+        this.args = args.trim();
     }
 
     @Override

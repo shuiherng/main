@@ -21,7 +21,7 @@ public class ClearCommandTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    void clear_schedule_success() throws Exception {
+    public void clear_schedule_success() throws Exception {
 
         AddressBookModel addressBookModel = new AddressBookModelManager();
         ScheduleModel scheduleModel = new ScheduleModelManager();
@@ -40,7 +40,7 @@ public class ClearCommandTest {
     }
 
     @Test
-    void clear_invalidParameter_throwsCommandException() throws Exception{
+    public void clear_invalidParameter_throwsCommandException() throws Exception{
         thrown.expect(CommandException.class);
         thrown.expectMessage(ClearCommand.MESSAGE_UNEXPECTED_PARAMETER);
 

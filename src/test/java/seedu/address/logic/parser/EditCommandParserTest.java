@@ -60,12 +60,12 @@ public class EditCommandParserTest {
     @Test
     public void parse_allArgsPresent_success() {
         // for patient
-        assertParseSuccess(parser, EditCommand.COMMAND_WORD + " " + CMDTYPE_PATIENT + SAMPLE_PERSONID
-                + TAG_EMPTY,
+        assertParseSuccess(parser, CMDTYPE_PATIENT + " " + SAMPLE_PERSONID
+                + " " + TAG_EMPTY,
                 new EditCommand(CMDTYPE_PATIENT, SAMPLE_PERSONID, ArgumentTokenizer.tokenize(TAG_EMPTY, PREFIX_TAG)));
 
         // for appointment
-        assertParseSuccess(parser, EditCommand.COMMAND_WORD + " " + CMDTYPE_APPOINTMENT + SAMPLE_EVENTID
+        assertParseSuccess(parser, CMDTYPE_APPOINTMENT + " " + SAMPLE_EVENTID
                 + TAG_EMPTY, new EditCommand(CMDTYPE_APPOINTMENT, SAMPLE_EVENTID,
                         ArgumentTokenizer.tokenize(TAG_EMPTY, PREFIX_TAG)));
     }

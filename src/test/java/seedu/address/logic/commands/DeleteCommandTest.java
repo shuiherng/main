@@ -27,7 +27,7 @@ public class DeleteCommandTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    void delete_patient_success() throws Exception {
+    public void delete_patient_success() throws Exception {
         AddressBookModel model = new AddressBookModelManager();
         Person person = new PersonBuilder().build();
         model.addPerson(person);
@@ -36,7 +36,7 @@ public class DeleteCommandTest {
     }
 
     @Test
-    void delete_patient_invalidId_throwsCommandException() throws Exception {
+    public void delete_patient_invalidId_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(MESSAGE_INVALID_PERSON_ID);
         AddressBookModel model = new AddressBookModelManager();
@@ -45,7 +45,7 @@ public class DeleteCommandTest {
     }
 
     @Test
-    void delete_patient_idNonExistent_throwsCommandException() throws Exception {
+    public void delete_patient_idNonExistent_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
 
         // these two people have different IDs as the PersonID assigned is a static variable
@@ -63,7 +63,7 @@ public class DeleteCommandTest {
     }
 
     @Test
-    void delete_invalidCmdType() throws Exception {
+    public void delete_invalidCmdType() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(DeleteCommand.MESSAGE_UNEXPECTED_CMDTYPE);
 
@@ -92,7 +92,7 @@ public class DeleteCommandTest {
         // it should also produce the correct success message.
         assertTrue(addressBookModel.getFilteredPersonList().size() == 1);
         assertFalse(addressBookModel.getFilteredPersonList().get(0).getExists());
-        assertEquals(result, new CommandResult(String.format(DeleteCommand.MESSAGE_DELETE_EVENT_SUCCESS,
+        assertEquals(result, new CommandResult(String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 target)));
     }
 

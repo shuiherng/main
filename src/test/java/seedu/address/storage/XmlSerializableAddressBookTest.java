@@ -29,7 +29,7 @@ public class XmlSerializableAddressBookTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-
+    /*
     @Test
     public void toModelType_typicalPersonsFile_success() throws Exception {
         XmlSerializableAddressBook dataFromFile = XmlUtil.getDataFromFile(TYPICAL_PERSONS_FILE,
@@ -47,7 +47,7 @@ public class XmlSerializableAddressBookTest {
         for (int i = 0; i < personList.size(); ++i) {
             assertTrue(matchProperties(personList.get(i), sampleList.get(i)));
         }
-    }
+    }*/
 
 
     @Test

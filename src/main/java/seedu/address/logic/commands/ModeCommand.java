@@ -56,4 +56,11 @@ public class ModeCommand extends Command {
             throw new CommandException("Unexpected command type: should have been caught in ModeCommandParser.");
         }
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return this == other
+                || (other instanceof ModeCommand
+                && cmdType.equals(((ModeCommand) other).cmdType));
+    }
 }

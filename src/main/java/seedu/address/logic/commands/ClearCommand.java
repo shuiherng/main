@@ -39,4 +39,11 @@ public class ClearCommand extends Command {
         }
         return new CommandResult(MESSAGE_SUCCESS);
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return this == other
+                || (other instanceof ClearCommand
+                && ((ClearCommand) other).cmdType.equals(this.cmdType));
+    }
 }

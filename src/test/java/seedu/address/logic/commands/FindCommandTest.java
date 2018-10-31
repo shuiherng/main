@@ -26,10 +26,12 @@ public class FindCommandTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    void find_patient_success() throws Exception {
+    public void find_patient_success() throws Exception {
         AddressBookModel model = new AddressBookModelManager();
         Person p1 = new PersonBuilder().withName(VALID_NAME_AMY).build();
         Person p2 = new PersonBuilder().withName(VALID_NAME_BOB).build();
+        model.addPerson(p1);
+        model.addPerson(p2);
 
         // ensure that only p1 is found in the filtered list
         assertFoundInAddressBook(model, VALID_NAME_AMY);
@@ -63,7 +65,7 @@ public class FindCommandTest {
     }
 
     @Test
-    void find_invalidParameter() throws Exception {
+    public void find_invalidParameter() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(FindCommand.MESSAGE_UNEXPECTED_PARAMETER);
 

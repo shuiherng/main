@@ -48,7 +48,7 @@ public class PatientBookParserTest {
     @Test
     public void parseCommand_addAppointment() throws Exception {
         String argString = "for " + ScheduleEventBuilder.DEFAULT_PERSON + " "
-                + ScheduleEventBuilder.DEFAULT_DATETIME_STRING;
+                + ScheduleEventBuilder.DEFAULT_DATETIME;
         String cmdString = AddCommand.COMMAND_WORD + " " + CMDTYPE_APPOINTMENT + " " + argString;
         AddCommand command = (AddCommand) parser.parseCommand(cmdString);
         assertEquals(new AddCommand(CMDTYPE_APPOINTMENT, argString), command);
@@ -74,7 +74,7 @@ public class PatientBookParserTest {
     public void parseCommand_deleteAppointment() throws Exception {
         DeleteCommand command = (DeleteCommand) parser.parseCommand(DeleteCommand.COMMAND_WORD + " "
                 + CMDTYPE_APPOINTMENT + " " + SAMPLE_EVENTID);
-        assertEquals(new DeleteCommand(CMDTYPE_PATIENT, SAMPLE_EVENTID), command);
+        assertEquals(new DeleteCommand(CMDTYPE_APPOINTMENT, SAMPLE_EVENTID), command);
     }
 
     @Test
@@ -94,22 +94,22 @@ public class PatientBookParserTest {
     @Test
     public void parseCommand_editPatient() throws Exception {
         Person person = new PersonBuilder().build();
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize("", PREFIX_NAME, PREFIX_PHONE,
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize("n/newname", PREFIX_NAME, PREFIX_PHONE,
                 PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
 
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
-                + CMDTYPE_PATIENT + " " + person.getId().toString() + " ");
+                + CMDTYPE_PATIENT + " " + person.getId().toString() + " n/newname");
         assertEquals(new EditCommand(CMDTYPE_PATIENT,
                 person.getId().toString(), argMultimap), command);
     }
 
     @Test
     public void parseCommand_editAppointment() throws Exception {
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize("", PREFIX_PERSON, PREFIX_DATETIME,
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize("p/p50", PREFIX_PERSON, PREFIX_DATETIME,
                 PREFIX_DETAILS, PREFIX_TAGS);
 
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
-                + CMDTYPE_APPOINTMENT + " " + SAMPLE_EVENTID + " ");
+                + CMDTYPE_APPOINTMENT + " " + SAMPLE_EVENTID + " p/p50");
         assertEquals(new EditCommand(CMDTYPE_APPOINTMENT, SAMPLE_EVENTID, argMultimap), command);
     }
 
@@ -159,7 +159,7 @@ public class PatientBookParserTest {
     @Test
     public void parseCommand_list() throws Exception {
         ListCommand command = (ListCommand) parser.parseCommand(ListCommand.COMMAND_WORD + " "
-                + CMDTYPE_PATIENT);
+                + CMDTYPE_PATIENT + " " + GET_ALL_WORD);
         assertEquals(new ListCommand(CMDTYPE_PATIENT, GET_ALL_WORD), command);
     }
 
