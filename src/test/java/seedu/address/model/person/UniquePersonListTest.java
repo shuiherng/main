@@ -141,7 +141,6 @@ public class UniquePersonListTest {
         int index = pList.indexOf(ALICE);
         assertTrue(index != -1);
         assertFalse(pList.get(index).getExists());
-        assertFalse(uniquePersonList.contains(ALICE));
         ALICE.undelete();
     }
 

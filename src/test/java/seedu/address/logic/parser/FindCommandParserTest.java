@@ -6,12 +6,9 @@ import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_SYMPTOM;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
-import java.util.Arrays;
-
 import org.junit.Test;
 
 import seedu.address.logic.commands.FindCommand;
-import seedu.address.model.person.MatchPersonPredicate;
 
 public class FindCommandParserTest {
 

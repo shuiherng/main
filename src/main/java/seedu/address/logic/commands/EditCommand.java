@@ -475,7 +475,6 @@ public class EditCommand extends Command {
 
             // state check
             EditScheduleEventDescriptor e = (EditScheduleEventDescriptor) other;
-
             return getPerson().equals(e.getPerson())
                     && getDate().equals(e.getDate())
                     && getDetails().equals(e.getDetails())

@@ -1,6 +1,5 @@
 package seedu.address.storage;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static seedu.address.storage.XmlAdaptedPerson.MISSING_FIELD_MESSAGE_FORMAT;
 import static seedu.address.testutil.PersonUtil.matchProperties;
@@ -16,6 +15,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.PersonId;
 import seedu.address.model.person.Phone;
 import seedu.address.testutil.Assert;
 
@@ -52,7 +52,7 @@ public class XmlAdaptedPersonTest {
         XmlAdaptedPerson person =
                 new XmlAdaptedPerson(INVALID_PERSONID, VALID_NAME, VALID_PHONE, VALID_EMAIL,
                         VALID_ADDRESS, VALID_EXISTS, VALID_TAGS);
-        String expectedMessage = Name.MESSAGE_NAME_CONSTRAINTS;
+        String expectedMessage = PersonId.MESSAGE_PERSONID_CONSTRAINTS;
         Assert.assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
 

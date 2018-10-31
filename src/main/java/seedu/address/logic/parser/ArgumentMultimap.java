@@ -51,6 +51,13 @@ public class ArgumentMultimap {
         return new ArrayList<>(argMultimap.get(prefix));
     }
 
+    @Override
+    public boolean equals(Object other) {
+        return this == other
+                || (other instanceof ArgumentMultimap
+                && argMultimap.equals(((ArgumentMultimap) other).argMultimap));
+    }
+
     /*
      * Returns the preamble (text before the first valid prefix). Trims any leading/trailing spaces.
      *

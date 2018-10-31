@@ -142,7 +142,7 @@ public abstract class AddressBookSystemTest {
      */
     protected void showAllPersons() {
         executeCommand(ListCommand.COMMAND_WORD);
-        assertEquals(getModel().getAddressBook().getAllPersonList().size(), getModel().getFilteredPersonList().size());
+        assertEquals(getModel().getAddressBook().getPersonList().size(), getModel().getFilteredPersonList().size());
     }
 
     /**
@@ -150,7 +150,8 @@ public abstract class AddressBookSystemTest {
      */
     protected void showPersonsWithName(String keyword) {
         executeCommand(FindCommand.COMMAND_WORD + " " + keyword);
-        assertTrue(getModel().getFilteredPersonList().size() < getModel().getAddressBook().getAllPersonList().size());
+        assertTrue(getModel().getFilteredPersonList().size() < getModel()
+                .getAddressBook().getPersonList().size());
     }
 
     /**
@@ -158,7 +159,7 @@ public abstract class AddressBookSystemTest {
      */
     protected void deleteAllPersons() {
         executeCommand(ClearCommand.COMMAND_WORD);
-        assertEquals(0, getModel().getAddressBook().getAllPersonList().size());
+        assertEquals(0, getModel().getAddressBook().getPersonList().size());
     }
 
     /**

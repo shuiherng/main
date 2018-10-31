@@ -1,12 +1,15 @@
 package seedu.address.testutil;
 
-import seedu.address.model.Schedule;
-import seedu.address.model.event.ScheduleEvent;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import seedu.address.model.Schedule;
+import seedu.address.model.event.ScheduleEvent;
+
+/**
+ * Typical Events
+ */
 public class TypicalEvents {
 
     /* TODO: copy the event properties exactly out of
