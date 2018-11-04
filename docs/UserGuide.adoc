@@ -164,6 +164,8 @@ Examples:
 
 *Format:* `add appointment for NAME TIME`
 
+*Alternative Format:* `add appointment for PATIENT_ID TIME`
+
 Creates a new appointment and places it in the schedule. If necessary, switches the application to appointment management mode.
 
 [NOTE]
@@ -190,7 +192,7 @@ Asterisk (*) denotes any positive integer number.
 
 After the initial input is processed by the programme, user may encounter a maximum of four prompt windows for further input, including:
 
-* A prompt window where user is required to choose the correct patient to schedule for, if the name provided in the initial input can be matched to multiple patients in the record. `Patient_ID` of the intended patient is to be entered.
+* A prompt window where user is required to choose the correct patient to schedule for, if the name provided in the initial input can be matched to multiple patients in the record. The definition of a successful match is the same as that of the command `find patient`, as explained above. `Patient_ID` of the intended patient is to be entered.
 * A prompt window where user is required to provide a specific time slot for the appointment, from a list of available time periods, in `DD/MM/YYYY hh:mm - hh:mm` format.
 * A prompt window where user may choose to provide any additional notes for the appointment.
 * A prompt window where user may choose to provide any tags for the appointment.
