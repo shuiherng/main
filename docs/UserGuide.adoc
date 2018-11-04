@@ -275,9 +275,9 @@ Example:
 
 * `delete appointment e2`
 
-=== Clear all appointments : `clear schedule`
+=== Clear all appointments : `clear appointment`
 
-*Format:* `clear schedule`
+*Format:* `clear appointment`
 
 Clears all appointments scheduled in the record. If necessary, switches the application to appointment management mode.
 
@@ -383,7 +383,7 @@ Exits the program.
 
 * *Add an appointment* : `add appointment` +
 
-* *Clear All appointments* : `clear schedule` +
+* *Clear All appointments* : `clear appointment` +
 
 * *Delete a patient* : `delete patient` +
 
