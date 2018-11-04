@@ -1,0 +1,5 @@
+{
+  "appTitle" : "Patient Book",
+  "logLevel" : "INFO",
+  "userPrefsFilePath" : "preferences.json"
+}
