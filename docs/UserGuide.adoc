@@ -189,6 +189,8 @@ which are accepted by the program include:
 * in `DD/MM/YYYY` format
 [NOTE]
 Asterisk (*) denotes any positive integer number.
+[NOTE]
+Adding an appointment with a time that is already past is allowed. However, this functionality should only be used when user wants to record some critical information about a past appointment that is for some reason unscheduled beforehand.
 
 After the initial input is processed by the programme, user may encounter a maximum of four prompt windows for further input, including:
 
@@ -236,12 +238,12 @@ Tags:
 
 *Format:* `edit appointment APPOINTMENT_ID [p/PATIENT_ID] [t/TIME] [d/NOTES] [s/TAG]`
 
-Edits an existing appointment with the given field in the schedule.  If necessary, switches the application to appointment management mode.
+Edits an existing appointment with the given field(s). The constraints of each field are the same as those of the command `add appointment`. If necessary, switches the application to appointment management mode.
 
 [NOTE]
 At least one of the optional fields must be provided.
 [NOTE]
-To edit the time of the appointment, `[t/TIME]` has to be entered in `DD/MM/YYYY hh:mm - hh:mm` format
+To edit the time of the appointment, `[t/TIME]` has to be entered in `DD/MM/YYYY hh:mm - hh:mm` format, as natural expressions are not supported in this command.
 
 Examples:
 
