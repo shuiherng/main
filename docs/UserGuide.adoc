@@ -162,14 +162,14 @@ Examples:
 
 === Add an appointment : `add appointment`
 
-*Format:* `add appointment for NAME DATE/DURATION`
+*Format:* `add appointment for NAME TIME`
 
 Creates a new appointment and places it in the schedule. If necessary, switches the application to appointment management mode.
 
 [NOTE]
 Unlike other commands, this command does not require any prefixing.
 
-For `DATE/DURATION` parameter, user may choose to use natural expressions to indicate the time or period where the appointment is to be scheduled. The list of natural expressions for `DATE/DURATION`
+For `TIME` parameter, user may choose to use natural expressions to indicate the time or period where the appointment is to be scheduled. The list of natural expressions for `TIME`
 which are accepted by the program include:
 
 * `tomorrow` or `tmr`
