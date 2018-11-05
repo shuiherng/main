@@ -13,6 +13,7 @@ import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_TAG;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -128,6 +129,17 @@ public class AddCommand extends Command {
     public static final String MESSAGE_DUPLICATE_PERSON = "This patient already exists in the patient book";
     public static final String MESSAGE_DUPLICATE_DISEASE = "This disease already exists in the patient book";
     public static final String MESSAGE_INVALID_PATIENT_FORMAT = "Invalid input format for patient";
+    public static final String NO_DISEASE_PARAMETER = "No disease value when parsing (parsing performed "
+            + "during execution).";
+    public static final String MULTIPLE_DISEASE_PARAMETER_ERROR = "Only one disease parameter is allowed. "
+            + "Please try again!";
+    public static final String ILLEGAL_CHAR_IN_SYMPTOM_PARAMETER = "Symptom parameter should not contain comma ','.";
+    public static final String ILLEGAL_CHAR_COMMA = ",";
+    public static final String EMPTY_SYMPTOM_ERROR = "Symptom should not be empty.";
+    public static final String NEW_DISEASE = "New disease ";
+    public static final String HAS_BEEN_ADDED_INTO_OUR_RECORD = " has been added into our record.";
+    public static final String ERROR_UNACCEPTABLE_VALUES_SHOULD_HAVE_BEEN_PROMPTED_FOR = "Unexpected Error: unacceptable values should have been prompted for.";
+    public static final String VALUES_SHOULD_HAVE_BEEN_CAUGHT_IN_ADD_COMMAND_PARSER = "Unexpected Values: should have been caught in AddCommandParser.";
 
     private final String addType;
     private final String args;
@@ -196,23 +208,40 @@ public class AddCommand extends Command {
             try {
                 Optional<String> diseaseValue = argMultimap.getValue(PREFIX_DISEASE);
                 if (!diseaseValue.isPresent()) {
-                    throw new CommandException("No disease value when parsing (parsing performed during execution).");
+                    throw new CommandException(NO_DISEASE_PARAMETER);
                 }
+
+                List<String> diseaseValues = argMultimap.getAllValues(PREFIX_DISEASE);
+
+                if (diseaseValues.size() > 1) {
+                    throw new CommandException(MULTIPLE_DISEASE_PARAMETER_ERROR);
+                }
+
                 Disease disease = ParserUtil.parseDisease(diseaseValue.get());
                 Set<Symptom> symptomSet = ParserUtil.parseSymptoms(argMultimap.getAllValues(PREFIX_SYMPTOM));
+
+                for (Symptom symptom : symptomSet) {
+                    if (symptom.toString().contains(ILLEGAL_CHAR_COMMA)) {
+                        throw new CommandException(ILLEGAL_CHAR_IN_SYMPTOM_PARAMETER);
+                    }
+                    if (symptom.toString().isEmpty()) {
+                        throw new CommandException(EMPTY_SYMPTOM_ERROR);
+                    }
+                }
+
                 if (diagnosisModel.hasDisease(disease)) {
                     throw new CommandException(MESSAGE_DUPLICATE_DISEASE);
                 }
                 diagnosisModel.addMatcher(disease, symptomSet);
-                String cmdResult = "New disease "
+                String cmdResult = NEW_DISEASE
                         + disease.toString()
-                        + " has been added into our record.";
+                        + HAS_BEEN_ADDED_INTO_OUR_RECORD;
                 return new CommandResult(cmdResult);
             } catch (ParseException e) {
-                throw new CommandException("Unexpected Error: unacceptable values should have been prompted for.", e);
+                throw new CommandException(ERROR_UNACCEPTABLE_VALUES_SHOULD_HAVE_BEEN_PROMPTED_FOR, e);
             }
         } else {
-            throw new CommandException("Unexpected Values: should have been caught in AddCommandParser.");
+            throw new CommandException(VALUES_SHOULD_HAVE_BEEN_CAUGHT_IN_ADD_COMMAND_PARSER);
         }
 
 

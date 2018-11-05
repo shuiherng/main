@@ -46,6 +46,12 @@ public class FindCommand extends Command {
             + COMMAND_WORD
             + " disease"
             + " influenza\n";
+    public static final String UNEXPECTED_ERROR = "Unexpected Error: ";
+    public static final String IS_NOT_PRESENT_IN_OUR_RECORD = " is not present in our record,";
+    public static final String AND_ITS_RELATED_SYMPTOMS_INTO_THE_RECORD = " please add this disease and "
+            + "its related symptoms into the record";
+    public static final String THE_FOLLOWING_SYMPTOMS_MATCHING = " is present in our record. "
+            + "Found the following symptoms matching ";
 
     private final String cmdType;
     private final String searchString;
@@ -81,13 +87,13 @@ public class FindCommand extends Command {
         } else if (this.cmdType.equals(CMDTYPE_DISEASE)) {
             Disease disease = new Disease(searchString.trim().toLowerCase());
             if (!diagnosisModel.hasDisease(disease)) {
-                throw new CommandException("Unexpected Error: "
+                throw new CommandException(UNEXPECTED_ERROR
                         + disease.toString()
-                        + " is not present in our record,"
-                        + " please add this disease and its related symptoms into the record");
+                        + IS_NOT_PRESENT_IN_OUR_RECORD
+                        + AND_ITS_RELATED_SYMPTOMS_INTO_THE_RECORD);
             }
             List<Symptom> symptomList = diagnosisModel.getSymptoms(disease);
-            cmdResult = disease.toString() + " is present in our record. Found the following symptoms matching "
+            cmdResult = disease.toString() + THE_FOLLOWING_SYMPTOMS_MATCHING
                     + disease.toString() + ":\n"
                     + "\n"
                     + CommandResult.convertListToString(symptomList);
