@@ -87,4 +87,5 @@ public class DiagnosisTest {
         symptomSet.add(blackhead);
         assertEquals(Collections.emptyList(), diagnosis.predictDisease(symptomSet));
     }
+
 }

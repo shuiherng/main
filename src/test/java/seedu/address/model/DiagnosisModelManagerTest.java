@@ -84,4 +84,5 @@ public class DiagnosisModelManagerTest {
         symptomSet.add(arm_weakness);
         assertEquals(Collections.emptyList(), diagnosisModelManager.predictDisease(symptomSet));
     }
+
 }

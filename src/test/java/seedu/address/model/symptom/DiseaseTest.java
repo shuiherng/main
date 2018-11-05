@@ -26,4 +26,5 @@ public class DiseaseTest {
         assertNotEquals(INFLUENZA, empty_string);
 
     }
+
 }
