@@ -14,7 +14,11 @@ import seedu.address.commons.events.ui.AppointmentPanelSelectionChangedEvent;
  * The appointment note panel of the App
  */
 public class AppointmentNotePanel extends UiPart<Region> {
+
+    private static final String DEFAULT_MESSAGE = "You have not selected any appointment";
+
     private static final String FXML = "AppointmentNotePanel.fxml";
+
     private final Logger logger = LogsCenter.getLogger(getClass());
 
     @FXML
@@ -23,7 +27,12 @@ public class AppointmentNotePanel extends UiPart<Region> {
     public AppointmentNotePanel() {
         super(FXML);
 
+        loadDefaultNote();
         registerAsAnEventHandler(this);
+    }
+
+    private void loadDefaultNote() {
+        notearea.setText(DEFAULT_MESSAGE);
     }
 
     private void loadNotes(String notes) {
