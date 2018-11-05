@@ -32,6 +32,7 @@ public class DateTimeParser {
     public static final String MESSAGE_SLOT_CLASHING = "Time slot entered clashes with existing appointments! \n";
     private static final String MESSAGE_NO_SLOTS = "No time slots available!\n";
     private static final String MESSAGE_HAVE_SLOTS = "You have time slots available during:\n";
+    private static final String MESSAGE_INVALID_INTEGER = "Please enter a valid positive integer number!\n";
 
 
     /**
@@ -90,7 +91,12 @@ public class DateTimeParser {
         String[] splitString = dateInput.split("\\s+");
         assert splitString[0].equals("in");
         if (Character.isDigit(splitString[1].charAt(0))) {
-            int offset = Integer.parseInt(splitString[1]);
+            int offset;
+            try {
+                offset = Integer.parseInt(splitString[1]);
+            } catch (NumberFormatException e) {
+                throw new ParseException(MESSAGE_INVALID_INTEGER);
+            }
             switch (splitString[2]) {
             case "days":
             case "day":
