@@ -260,45 +260,48 @@ and `show()` on that of the desired mode.
 
 // tag::nlp[]
 
-=== Natural Language Processing for Scheduling
+=== Natural Language Processing for Adding an Appointment
 
-This feature facilitates scheduling, which enables the user to add appointments in the schedule system with user input phrased in natural language, and does so in a conversational process. It mainly implements a command parser which parses natural language user input, and creates the intended `ScheduleEvent` object to be stored.
+This feature facilitates scheduling, which enables the user to add appointments into the schedule system with user input phrased in natural expressions, and does so in a conversational process enabled by several prompt windows. It mainly implements a `ScheduleEvent` parser which parses natural language user input, and creates the intended `ScheduleEvent` object to be stored.
 
-There are four steps involved in the processing of natural language commands:
+There are five steps involved in the processing of this feature:
 
-. High-Level Parsing: Command-specific, user inputs are broken down into sub-fields
-. Low-Level Parsing: Date/time specific, user inputs for date or duration are parsed into a `Pair<Calendar, Calendar>` object
-. Further Prompting: User is prompted with a list of available time slots, and required to select a specific time slot
-. Generating Event: The resulting `ScheduleEvent` object corresponding to the user input is created and sent to `Schedule` to be stored.
+Step 1. Breaking Down: User input is broken down into sub-fields, namely, name and date/duration.
+
+Step 2. Patient Parsing:  User input for patient name is parsed into the corresponding `PersonId` object.
+
+Step 3. Date/duration Parsing:  User input for date/duration is parsed into a `Pair<Calendar, Calendar>` object.
+
+Step 4. Further Prompting: User is prompted with two prompt windows where tags and additional notes can be added.
+
+Step 5. Generating Appointment: The resulting `ScheduleEvent` object corresponding to all user input is created.
 
 The following is an example of a use case, and how the mechanism behaves:
 
-User Input: `schedule for David Lee next week`.
+User Input: `add appointment for David Lee next week`.
 
-[NOTE]
-Unlike other commands, the `schedule` command does not require prefixing each subsequent field. This is to simulate natural language, and eliminates the need for a prefix reference sheet when scheduling appointments for patients.
+. Breaking Down: The user input string, starting with `for`, is passed into a `ScheduleEventParser` object, and broken down into meaningful substrings for name and date/duration respectively:
 
-. High-Level Parsing: The entire string is passed into a `ScheduleCommandParser` object, and broken down into meaningful sub-strings:
-.. `schedule` is the command word, and is discarded.
-.. `David Lee` is the name of the patient. The corresponding patient's `PersonID` will be obtained by searching through the list of patients stored in `PersonList`. Should there be multiple patients with the same name, the application will prompt the user to select the appropriate one. Once the `PersonID` is obtained, it is stored as an attribute in a new `ScheduleEvent` object.
-.. `next week` is the date/duration keyword, and is carried forward to the next step for further parsing.
+.. Programme starts with assuming that the substring for name is only one word long, and the remaining string following the name word all the way to the end of the string is the input for date/duration. In this case, `David` is the assumed name substring and `Lee next week` is the assumed date/duration substring.
+.. It takes the assumed date/duration substring,`Lee next week`, and checks if it is a valid date/duration expression.
+.. As a match cannot be found, it means that the assumed demarcation between name and date/duration inputs is incorrect. Programme makes another attempt by assuming the name substring is longer by one word (i.e. `David Lee`) and the date/duration substring is shorter by one word (i.e. `next week`). It takes the new assumed date/duration substring and checks its validity again.
+.. As a match is found this time, it indicates that the assumption is correct. `David Lee` will be carried forward to the Patient Parsing step while `next week` will be carried forward to the Date/duration Parsing step.
+.. In other cases where a match cannot be found after all assumptions have been tested, an exception will be thrown indicating that the user has not used an accepted expression.
 
-. Low-Level Parsing: The date/duration string is parsed and converted into a `Pair<Calendar, Calendar>` object to represent `next week`:
-.. The program executes a keyword search and invokes the method `getWeekDates(currentTime, 1)`, where it converts `next week` into a date range, by doing relevant calculations on a `Calendar` object which represents the current time. For instance, if the command is executed on 16/10/2018, `next week` becomes a datetime range from 22/10/2018 0859hrs to 28/10/2018 1801hrs. This range takes into consideration the doctor's working hours.
-.. Two `Calendar` objects are created in the process to represent the start and end datetimes. These two objects are then placed in a `Pair`.
+. Patient Parsing: The string `David Lee` is parsed and converted into the corresponding `PersonId` object:
+.. TO-DO
 
-. Further Prompting: The user is presented with a list of suggested empty time slots for the appointment, from which one is chosen:
-.. `DateTimeParser` finds a list of available time periods within the datetime range identified in low-level parsing, and passes the list as a `String` into `Prompt` and `UI` objects. These then display the results to the user.
+. Date/duration Parsing: The string `next week` is passed to a `DateTimeParser` object where it is parsed and converted into a `Pair<Calendar, Calendar>` object to represent the user's chosen time slot for the appointment:
+.. Programme executes a keyword search and invokes the method `getWeekDates(currentTime, 1)`, where it converts `next week` into a datetime range, by doing relevant calculations on the `Calendar` object which represents the current time. For instance, if the command is executed on 16/10/2018, `next week` becomes a datetime range from 22/10/2018 09:00 - 28/10/2018 18:00. This range takes into consideration the doctor's working hours.
+.. Programme searches the list of already scheduled appointments within the datetime range obtained. It finds a list of available time periods by taking the complement within that range, and passes the list as a `String` into a `Prompt` object, where the list is displayed to the user in a `PromptWindow`.
+.. User inputs a specific time slot from the list of available time periods. For instance, user inputs `22/10/2018 09:00 - 10:00`. The refined time slot string is then passed back to `DateTimeParser` and converted into a `Pair<Calendar, Calendar>` object that represents this time slot, by invoking the method `parseTimeSlot(timeSlotString)`.
 
-.. The user then inputs the desired time slot such as `22/10/2018 9:30-10:30`.
-.. The refined time selection is then passed back to `DateTimeParser` and converted into a `Pair<Calendar, Calendar>` object.
+. Further Prompting: The user is presented with two more `PromptWindow`, where they can provide further inputs for tag and additional notes for the appointment. This is done through a simple I/O mechanism.
 
-. Generating Event: The `Pair` object from the previous step is added as an attribute in the `ScheduleEvent` object which is then returned.
+. Generating Appointment: Results from the previous steps are used to fill the attributes of a newly created `ScheduleEvent` object which is then returned.
 
-[NOTE]
-Instead of using natural language, the user may also choose to enter a `schedule` command in a fixed format such as `schedule for David Lee *on* 22/10/2018 0930 *to* 1030` to create an appointment without further prompts.
 
-The sequence diagram below illustrates this process, showing notable steps:
+The sequence diagram below illustrates this process, showing notable steps: (DIAGRAM TO BE CHANGED)
 
 image::NaturalLanguageProcessingSequenceDiagram.png[width="800"]
 
