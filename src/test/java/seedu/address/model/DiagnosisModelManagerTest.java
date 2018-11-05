@@ -1,10 +1,10 @@
 package seedu.address.model;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import seedu.address.model.symptom.Disease;
-import seedu.address.model.symptom.Symptom;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,11 +12,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import seedu.address.model.symptom.Disease;
+import seedu.address.model.symptom.Symptom;
 
 public class DiagnosisModelManagerTest {
 
@@ -32,7 +33,7 @@ public class DiagnosisModelManagerTest {
     private Disease autism = new Disease("autism");
 
     private Disease stroke = new Disease("stroke");
-    private Symptom arm_weakness = new Symptom("arm weakness");
+    private Symptom armWeakness = new Symptom("arm weakness");
     private Symptom confusion = new Symptom("confusion");
 
     @Test
@@ -45,7 +46,7 @@ public class DiagnosisModelManagerTest {
     public void getSymptoms() {
         assertNotNull(diagnosisModelManager.getSymptoms(melanoma));
         assertTrue(diagnosisModelManager.getSymptoms(melanoma).contains(paraparesis));
-        assertFalse(diagnosisModelManager.getSymptoms(melanoma).contains(arm_weakness));
+        assertFalse(diagnosisModelManager.getSymptoms(melanoma).contains(armWeakness));
         assertNotEquals(Collections.emptyList(), diagnosisModelManager.getSymptoms(melanoma));
 
         thrown.expect(NullPointerException.class);
@@ -62,13 +63,13 @@ public class DiagnosisModelManagerTest {
     @Test
     public void addMatcher() {
         Set<Symptom> symptomSet = new HashSet<>();
-        symptomSet.add(arm_weakness);
+        symptomSet.add(armWeakness);
         symptomSet.add(confusion);
         diagnosisModelManager.addMatcher(stroke, symptomSet);
 
         assertTrue(diagnosisModelManager.hasDisease(stroke));
         assertNotEquals(Collections.emptyList(), diagnosisModelManager.getSymptoms(stroke));
-        assertTrue(diagnosisModelManager.getSymptoms(stroke).contains(arm_weakness));
+        assertTrue(diagnosisModelManager.getSymptoms(stroke).contains(armWeakness));
         assertFalse(diagnosisModelManager.getSymptoms(stroke).contains(pruritus));
     }
 
@@ -81,7 +82,7 @@ public class DiagnosisModelManagerTest {
         diseaseList.add(melanoma);
         assertEquals(diseaseList, diagnosisModelManager.predictDisease(symptomSet));
 
-        symptomSet.add(arm_weakness);
+        symptomSet.add(armWeakness);
         assertEquals(Collections.emptyList(), diagnosisModelManager.predictDisease(symptomSet));
     }
 

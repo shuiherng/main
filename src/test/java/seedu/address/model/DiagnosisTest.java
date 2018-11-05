@@ -1,10 +1,10 @@
 package seedu.address.model;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import seedu.address.model.symptom.Disease;
-import seedu.address.model.symptom.Symptom;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,11 +12,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import seedu.address.model.symptom.Disease;
+import seedu.address.model.symptom.Symptom;
 
 public class DiagnosisTest {
 
@@ -26,7 +27,7 @@ public class DiagnosisTest {
     private final Diagnosis diagnosis = new Diagnosis();
 
     private Disease influenza = new Disease("influenza");
-    private Symptom lip_smacking = new Symptom("lip smacking");
+    private Symptom lipSmacking = new Symptom("lip smacking");
     private Symptom fever = new Symptom("fever");
 
     private Disease autism = new Disease("autism");
@@ -45,7 +46,7 @@ public class DiagnosisTest {
     public void getSymptoms() {
 
         assertNotNull(diagnosis.getSymptoms(influenza));
-        assertTrue(diagnosis.getSymptoms(influenza).contains(lip_smacking));
+        assertTrue(diagnosis.getSymptoms(influenza).contains(lipSmacking));
         assertFalse(diagnosis.getSymptoms(influenza).contains(blackhead));
         assertNotEquals(Collections.emptyList(), diagnosis.getSymptoms(influenza));
 
@@ -79,7 +80,7 @@ public class DiagnosisTest {
     public void predictDisease() {
         Set<Symptom> symptomSet = new HashSet<>();
         symptomSet.add(fever);
-        symptomSet.add(lip_smacking);
+        symptomSet.add(lipSmacking);
         List<Disease> diseaseList = new ArrayList<>();
         diseaseList.add(influenza);
         assertEquals(diseaseList, diagnosis.predictDisease(symptomSet));
