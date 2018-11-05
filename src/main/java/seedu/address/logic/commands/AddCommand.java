@@ -138,8 +138,10 @@ public class AddCommand extends Command {
     public static final String EMPTY_SYMPTOM_ERROR = "Symptom should not be empty.";
     public static final String NEW_DISEASE = "New disease ";
     public static final String HAS_BEEN_ADDED_INTO_OUR_RECORD = " has been added into our record.";
-    public static final String ERROR_UNACCEPTABLE_VALUES_SHOULD_HAVE_BEEN_PROMPTED_FOR = "Unexpected Error: unacceptable values should have been prompted for.";
-    public static final String VALUES_SHOULD_HAVE_BEEN_CAUGHT_IN_ADD_COMMAND_PARSER = "Unexpected Values: should have been caught in AddCommandParser.";
+    public static final String ERROR_UNACCEPTABLE_VALUES_SHOULD_HAVE_BEEN_PROMPTED_FOR = "Unexpected Error: "
+            + "unacceptable values should have been prompted for.";
+    public static final String VALUES_SHOULD_HAVE_BEEN_CAUGHT_IN_ADD_COMMAND_PARSER = "Unexpected Values: "
+            + "should have been caught in AddCommandParser.";
 
     private final String addType;
     private final String args;
