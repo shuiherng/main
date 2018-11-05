@@ -76,6 +76,7 @@ public class UiManager extends ComponentManager implements Ui {
         try {
             appointmentMainWindow.show();
             appointmentMainWindow.setShowing(true);
+            appointmentMainWindow.setNotePanelToDefault();
             mainWindow.hide();
             mainWindow.setShowing(false);
         } catch (Throwable e) {

@@ -31,7 +31,7 @@ public class AppointmentNotePanel extends UiPart<Region> {
         registerAsAnEventHandler(this);
     }
 
-    private void loadDefaultNote() {
+    public void loadDefaultNote() {
         notearea.setText(DEFAULT_MESSAGE);
     }
 

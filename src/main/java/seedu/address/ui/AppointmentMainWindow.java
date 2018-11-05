@@ -193,6 +193,10 @@ public class AppointmentMainWindow extends UiPart {
         return appointmentPanel;
     }
 
+    public void setNotePanelToDefault() {
+        appointmentNotePanel.loadDefaultNote();
+    }
+
     @Subscribe
     private void handleShowHelpEvent(ShowHelpRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
