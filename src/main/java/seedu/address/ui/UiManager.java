@@ -89,10 +89,10 @@ public class UiManager extends ComponentManager implements Ui {
         logger.info("Switching to Patient Mode");
 
         try {
-            appointmentMainWindow.hide();
-            appointmentMainWindow.setShowing(false);
             mainWindow.show();
             mainWindow.setShowing(true);
+            appointmentMainWindow.hide();
+            appointmentMainWindow.setShowing(false);
         } catch (Throwable e) {
             logger.severe(StringUtil.getDetails(e));
             showFatalErrorDialogAndShutdown("Fatal error during switching", e);
