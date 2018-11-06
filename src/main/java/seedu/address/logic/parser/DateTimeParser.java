@@ -60,9 +60,13 @@ public class DateTimeParser {
                                                                          + "as date validity should have been checked";
     public static final String MESSAGE_UNEXPECTED_ERROR_TIME_ALR_CHECKED = "Unexpected error, "
                                                                          + "as time validity should have been checked";
-    public static final SimpleDateFormat SDF_SINGLE_DATE = new SimpleDateFormat("dd/MM/yyyy");
-    public static final SimpleDateFormat SDF_TIME = new SimpleDateFormat("kk:mm");
+    public static final SimpleDateFormat SDF_SINGLE_DATE;
+    public static final SimpleDateFormat SDF_TIME;
 
+    static {
+        SDF_SINGLE_DATE = new SimpleDateFormat("dd/MM/yyyy");
+        SDF_TIME = new SimpleDateFormat("kk:mm");
+    }
 
     /**
      * Parses date from input string.
