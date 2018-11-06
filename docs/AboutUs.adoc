@@ -29,8 +29,8 @@ Responsibilities: UI
 '''
 
 === Zhou Zegang
-image::ZZG229.png[width="150", align="left"]
-{empty}[http://github.com/ZZG229[github]] [<<zhouzegang#, portfolio>>]
+image::zzg229.png[width="150", align="left"]
+{empty}[http://github.com/zzg229[github]] [<<zhouzegang#, portfolio>>]
 
 Role: Developer +
 Responsibilities: Data
