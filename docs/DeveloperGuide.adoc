@@ -327,7 +327,10 @@ These operations are exposed in the `DiagnosisModel` interface as
 `DiagnosisModel#addMatcher(Disease disease, Set<Symptom> symptoms)` and
 `DiagnosisModel#predictDisease(Set<Symptom> symptoms)` respectively.
 
-Given below is an example usage scenario and how the `diagnosis` mechanism behaves at each step.
+Given below is an example usage scenario and how the `diagnosis` mechanism behaves at each step:
+
+.Sequence Diagram
+image::DiagnosisSequenceDiagram.png[width="800"]
 
 Step 1. The user launches the application for the first time. The `Diagnosis` will be instantiated and its
 private attribute `matcher` will be initialized by calling the `static` method `Diagnosis#readDataFromCsvFile()`.
