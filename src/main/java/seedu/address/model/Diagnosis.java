@@ -150,6 +150,7 @@ public class Diagnosis {
 
     /**
      * Converts a stream to a string.
+     *
      * @param is input stream.
      * @return the formatted string.
      */
