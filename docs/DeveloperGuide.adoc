@@ -341,37 +341,45 @@ image::NaturalLanguageProcessingSequenceDiagram.png[width="800"]
 The diagnosis feature is facilitated by `Diagnosis` class. This class contains a private attribute called
 `matcher` of type `HashMap<Disease, Set<Symptom>>`. Additionally, it implements the following operations:
 
-* `Diagnosis#hasDisease(Disease disease)` – Check if the application contains the disease input by users.
-* `Diagnosis#getSymptoms(Disease disease)` – Get all the related symptoms of a disease input by users
-* `Diagnosis#addMatcher(Disease disease, Set<Symptom> symptoms)` – Store a particular disease-symptom matcher input by users.
-* `Diagnosis#predictDisease(Set<Symptom> symptoms)` – Predict a disease for symptoms input by users.
+* `Diagnosis#hasDisease(Disease disease)` – Check if the application contains the `disease` input by users
+* `Diagnosis#getSymptoms(Disease disease)` – Return a `list` of all the related `symptoms` of a `disease` input by users
+* `Diagnosis#getDiseases()` – Return a `list` of existing `diseases` from the database
+* `Diagnosis#addMatcher(Disease disease, Set<Symptom> symptoms)` – Store a particular `disease` with its set of `symptoms` in database.
+* `Diagnosis#predictDisease(Set<Symptom> symptoms)` – Predict a `disease` for a set of `symptoms` input by users.
 
-These operations are exposed in the DiagnosisModel interface as `DiagnosisModel# hasDisease(Disease disease)`,
-`DiagnosisModel#getSymptoms(Disease disease)`, `DiagnosisModel#addMatcher(Disease disease, Set<Symptom> symptoms)`, and
+These operations are exposed in the `DiagnosisModel` interface as
+`DiagnosisModel# hasDisease(Disease disease)`,
+`DiagnosisModel#getSymptoms(Disease disease)`, `DiagnosisModel#getDiseases()`,
+`DiagnosisModel#addMatcher(Disease disease, Set<Symptom> symptoms)` and
 `DiagnosisModel#predictDisease(Set<Symptom> symptoms)` respectively.
 
-Given below is an example usage scenario and how the diagnosis mechanism behaves at each step.
+Given below is an example usage scenario and how the `diagnosis` mechanism behaves at each step:
 
-Step 1. The user launches the application for the first time. The `Diagnosis` will be initialized with a
-`HashMap<Disease,Set<Symptom>> matcher` stored in the database.
+.Sequence Diagram
+image::DiagnosisSequenceDiagram.png[width="800"]
 
-Step 2. The user executes `disease Influenza` command to get symptoms of “Influenza” stored in the patient book.
-The `disease` command calls `DiagnosisModel#hasDisease(Disease disease)` first, if the return `Boolean` value is false,
-the user will be notified with a message stating: “The disease you are looking for is not in our record,
-please add it with `addDisease` Command”. If the return value is true, it will continue to
-call `DiagnosisModel#getSymptoms(Disease disease)` and get all the symptoms related to “Influenza” in a `Set<Symptom>`.
+Step 1. The user launches the application for the first time. The `Diagnosis` will be instantiated and its
+private attribute `matcher` will be initialized by calling the `static` method `Diagnosis#readDataFromCsvFile()`.
+
+Step 2. The user executes `find disease Influenza` command to get symptoms of “Influenza” stored in the patient book.
+The `find disease` command calls `DiagnosisModel#hasDisease(Disease disease)` first, if the return `Boolean` value is `false`,
+the user will be notified with a `command exception` thrown . If the return value is `true`, it will continue to call
+`DiagnosisModel#getSymptoms(Disease disease)` and get all the `symptoms` related to “Influenza” in a `List<Symptom>`.
 
 Step 3. If the disease is not present in the database record, the user can execute
-`addDisease dis/Influenza sym/ncoordination sym/fever sym/pleuritic pain…` command to insert
-a disease-symptom matcher into the database record. Now, the `addDisease` command calls
-`DiagnosisModel#addMatcher(Disease disease, Set<Symptom> symptoms)`.
-Inside the method, `Diagnosis#addMatcher(Disease disease, Set<Symptom> symptoms)` will be
-invoked and reset the private attribute `matcher`.
+`add disease d/Influenza s/ncoordination s/fever s/pleuritic pain…` command to insert the data into the database record.
+Now, the `add disease` command calls `DiagnosisModel#addMatcher(Disease disease, Set<Symptom> symptoms)`.
+Now it will call the `static` method `writeDataFromCsvFile(Disease disease, Set<Symptom> symptoms)` which returns
+a `Hashmap` of type `HashMap<Disease, Set<Symptom>>` and assigns it to `this.matcher` to update the `private` attribute.
 
-Step 4. Now the user decides to execute the command `predict` to search for a disease in database
-that matches with input symptoms. This command calls `DiasnosisModel#predictDisease(Set<Symptom> symptoms)`
-which runs a searching algorithm to check if such diseases exist. The method returns a `set` of all
-potential diseases or `null` if it does not exist.
+Step 4. The user executes `list disease` command to get a list of diseases stored in the patient book.
+The `list disease` command calls `DiagnosisModel#getDiseases()` which returns a `list` of diseases present in the
+`key set of matcher`.
+
+Step 5. Now the user decides to execute the command `predict` to search for a `disease` in database that
+matches with input symptoms. This command calls `DiasnosisModel#predictDisease(Set<Symptom>)` which returns a `list`
+of diseases that are mapped to a set of symptoms containing the given set.
+
 
 ==== Design Considerations
 
@@ -388,12 +396,13 @@ related symptoms, then maintain a `list` of `Match` objects.
 
 ===== Aspect: Searching algorithm to support disease prediction operation
 
-* **Alternative 1 (current choice):** Do a linear search to find if a disease that matches all symptoms exists.
+* **Alternative 1 (current choice):** Use `stream` to search and collect all potential diseases.
 ** Pros: Easy to implement and easy for new developers to understand.
 ** Cons: May have performance issues in terms of lower efficiency.
-* **Alternative 2:**
-** Pros:
-** Cons:
+* **Alternative 2:** Use a more systematic way to determine the suitability of each disease by
+calculating the similarity of its pre-existing set of symptoms and the set of symptoms given by users.
+** Pros: More accurate in determining the correct diseases.
+** Cons: Hard to implement and understand.
 
 // end::diagnosis[]
 

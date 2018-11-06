@@ -90,7 +90,7 @@ public class Diagnosis {
         requireAllNonNull(symptoms);
         boolean hasDisease = this.hasDisease(disease);
         if (!hasDisease) {
-            this.matcher = writeDataFromCsvFile(disease, symptoms);
+            this.matcher = writeDataToCsvFile(disease, symptoms);
         }
     }
 
@@ -150,6 +150,7 @@ public class Diagnosis {
 
     /**
      * Converts a stream to a string.
+     *
      * @param is input stream.
      * @return the formatted string.
      */
@@ -163,7 +164,7 @@ public class Diagnosis {
      *
      * @return a new ashMap object which its key is the disease and value is its related symptoms.
      */
-    private static HashMap<Disease, Set<Symptom>> writeDataFromCsvFile(Disease disease, Set<Symptom> symptoms) {
+    private static HashMap<Disease, Set<Symptom>> writeDataToCsvFile(Disease disease, Set<Symptom> symptoms) {
 
         try {
             String data = Diagnosis.stringConverter(disease.toString(), symptoms);
