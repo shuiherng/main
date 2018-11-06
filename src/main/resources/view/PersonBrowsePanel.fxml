@@ -57,7 +57,7 @@
                   <Font name="Arial Black" size="25.0" />
                </font>
             </Label>
-            <Label fx:id="ID" text="have" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Label fx:id="id" text="have" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <font>
                   <Font name="Lucida Handwriting Italic" size="20.0" />
                </font>
