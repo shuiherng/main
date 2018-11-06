@@ -154,7 +154,7 @@ public class ScheduleEventParser {
      * @param dateInterval The time range specified.
      * @param scheduledAppts The list of already scheduled appointments within the range.
      * @param timeSlot The given time slot.
-     * @throws ParseException If an error occurs during parsing.
+     * @throws ParseException If an error occurs during parsing, indicating invalid time slot.
      */
     private void verifyTimeSlotValidity(Pair<Calendar> dateInterval, List<ScheduleEvent> scheduledAppts, Pair<Calendar> timeSlot) throws ParseException {
         if (isTimeSlotWithinRange(timeSlot, dateInterval)) {
