@@ -108,6 +108,9 @@ Examples:
 
 Selects an existing patient and its information will display on the right. If necessary, switches the application to patient management mode.
 
+[NOTE]
+Select command is different from clicking the patient card in the window. It enables you to select the patients who were soft deleted
+
 Examples:
 
 * `select patient p0`
@@ -249,6 +252,9 @@ Tags:
 *Format:* `select appointment APPOINTMENT_ID`
 
 Selects an existing appointment and its details will display on the right. If necessary, switches the application to appointment management mode.
+
+[NOTE]
+Select command is different from clicking the appointment card in the window. It enables you to select the appointment in the past.
 
 Examples:
 
