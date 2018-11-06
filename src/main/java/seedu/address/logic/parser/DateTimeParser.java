@@ -351,61 +351,106 @@ public class DateTimeParser {
      * @return The list of available time slots represented as a String.
      */
     public String getAvailableTimeSlotsBetween(List<ScheduleEvent> scheduledAppointments, Pair<Calendar> dateInterval) {
-        List<Pair<Calendar>> availableTimeList = getSlotsAsList(scheduledAppointments, dateInterval);
-        return slotsListToString(availableTimeList);
+        List<Pair<Calendar>> availableSlotList = getAvailableSlotList(scheduledAppointments, dateInterval);
+        return slotListToString(availableSlotList);
     }
 
     /**
-     * Gets available time slots for a given date interval.
+     * Gets the available time slots for a given time range.
      * A time period is considered available when the doctor does not have an appointment during it.
-     * @param scheduledAppts
-     * @param dateInterval
-     * @return Available time slots during the date interval, represented as a list, unsorted due to implementation.
+     * @param scheduledAppts Already scheduled appointments within the time range.
+     * @param dateInterval The time range.
+     * @return Available time slots during the time range, represented as a list, unsorted due to implementation.
      */
-    private List<Pair<Calendar>> getSlotsAsList(List<ScheduleEvent> scheduledAppts, Pair<Calendar> dateInterval) {
+    private List<Pair<Calendar>> getAvailableSlotList(List<ScheduleEvent> scheduledAppts, Pair<Calendar> dateInterval) {
 
-        List<Pair<Calendar>> emptySlots = new ArrayList<>();
+        List<Pair<Calendar>> availableSlots = new ArrayList<>();
         if (!scheduledAppts.isEmpty()) {
-            Calendar firstScheduleStart = scheduledAppts.get(0).getDate().getKey();
-            Calendar firstDayStart = (Calendar) firstScheduleStart.clone();
-            firstDayStart.set(Calendar.HOUR_OF_DAY, 9);
-            firstDayStart.set(Calendar.MINUTE, 0);
-            if (firstScheduleStart.after(firstDayStart)) {
-                emptySlots.add(new Pair<>(firstDayStart, firstScheduleStart));
-            }
+            findFirstAvailableSlot(scheduledAppts, availableSlots);
             for (int i = 0; i < scheduledAppts.size() - 1; i++) {
                 Calendar currentEnd = scheduledAppts.get(i).getDate().getValue();
                 Calendar nextStart = scheduledAppts.get(i + 1).getDate().getKey();
-                if (nextStart.get(Calendar.DATE) != currentEnd.get(Calendar.DATE)) {
-                    // the next appointment is on a different date already
-                    // the remaining (if applicable) current day will be free all the way till day end
-                    Calendar dayEnd = (Calendar) currentEnd.clone();
-                    dayEnd.set(Calendar.HOUR_OF_DAY, 18);
-                    dayEnd.set(Calendar.MINUTE, 0);
-                    if (currentEnd.before(dayEnd)) {
-                        emptySlots.add(new Pair<>(currentEnd, dayEnd));
-                    }
-                    // also, on the day where the next appointment is,
-                    // the time preceding (if applicable) the start of the next appointment will be free
-                    Calendar dayStart = (Calendar) nextStart.clone();
-                    dayStart.set(Calendar.HOUR_OF_DAY, 9);
-                    dayStart.set(Calendar.MINUTE, 0);
-                    if (nextStart.after(dayStart)) {
-                        emptySlots.add(new Pair<>(dayStart, nextStart));
-                    }
-                } else if (currentEnd.before(nextStart)) {
-                    emptySlots.add(new Pair<>(currentEnd, nextStart));
-                }
+                findAvailableSlotsBetweenTwoAppts(availableSlots, currentEnd, nextStart);
             }
-            Calendar lastScheduleEnd = scheduledAppts.get(scheduledAppts.size() - 1).getDate().getValue();
-            Calendar lastDayEnd = (Calendar) lastScheduleEnd.clone();
-            lastDayEnd.set(Calendar.HOUR_OF_DAY, 18);
-            lastDayEnd.set(Calendar.MINUTE, 0);
-            if (lastScheduleEnd.before(lastDayEnd)) {
-                emptySlots.add(new Pair<>(lastScheduleEnd, lastDayEnd));
-            }
+            findLastAvaialbleSlot(scheduledAppts, availableSlots);
         }
-        // Now need to find days when there is no scheduled appointment, ie. the day is completely empty
+        findCompletelyAvailableDays(scheduledAppts, dateInterval, availableSlots);
+        return availableSlots; // unsorted
+    }
+
+    /**
+     * Finds and appends the first available time slot before the the first scheduled appointment within that range.
+     * This available time slot will be from 9:00 of the day where the first appointment is,
+     * to the start of the first appointment.
+     * @param scheduledAppts The list of already scheduled appointments within the time range.
+     * @param availableSlots The list of available time slots within the time range.
+     */
+    private void findFirstAvailableSlot(List<ScheduleEvent> scheduledAppts, List<Pair<Calendar>> availableSlots) {
+        Calendar firstScheduleStart = scheduledAppts.get(0).getDate().getKey();
+        Calendar firstDayStart = (Calendar) firstScheduleStart.clone();
+        firstDayStart.set(Calendar.HOUR_OF_DAY, 9);
+        firstDayStart.set(Calendar.MINUTE, 0);
+        if (firstScheduleStart.after(firstDayStart)) {
+            availableSlots.add(new Pair<>(firstDayStart, firstScheduleStart));
+        }
+    }
+
+    /**
+     * Finds and appends all available time slots between two appointments, given
+     * the end of one appointment and the start of the the next appointment.
+     * @param availableSlots The list of available time slots within the time range.
+     * @param currentEnd The end time of one appointment.
+     * @param nextStart The start time of the next appointment.
+     */
+    private void findAvailableSlotsBetweenTwoAppts(List<Pair<Calendar>> availableSlots,
+                                                   Calendar currentEnd, Calendar nextStart) {
+        if (nextStart.get(Calendar.DATE) != currentEnd.get(Calendar.DATE)) {
+            // the next appointment is on a different date already
+            // the remaining (if applicable) current day will be free all the way till day end
+            Calendar dayEnd = (Calendar) currentEnd.clone();
+            dayEnd.set(Calendar.HOUR_OF_DAY, 18);
+            dayEnd.set(Calendar.MINUTE, 0);
+            if (currentEnd.before(dayEnd)) {
+                availableSlots.add(new Pair<>(currentEnd, dayEnd));
+            }
+            // also, on the day where the next appointment is,
+            // the time preceding (if applicable) the start of the next appointment will be free
+            Calendar dayStart = (Calendar) nextStart.clone();
+            dayStart.set(Calendar.HOUR_OF_DAY, 9);
+            dayStart.set(Calendar.MINUTE, 0);
+            if (nextStart.after(dayStart)) {
+                availableSlots.add(new Pair<>(dayStart, nextStart));
+            }
+        } else if (currentEnd.before(nextStart)) {
+            availableSlots.add(new Pair<>(currentEnd, nextStart));
+        }
+    }
+
+    /**
+     * Finds and appends the last available time slot after the the last scheduled appointment within that range.
+     * This available time slot will be from the end of the last appointment,
+     * to 18:00 of the day where the last appointment is.
+     * @param scheduledAppts The list of already scheduled appointments within the time range.
+     * @param availableSlots The list of available time slots within the time range.
+     */
+    private void findLastAvaialbleSlot(List<ScheduleEvent> scheduledAppts, List<Pair<Calendar>> availableSlots) {
+        Calendar lastScheduleEnd = scheduledAppts.get(scheduledAppts.size() - 1).getDate().getValue();
+        Calendar lastDayEnd = (Calendar) lastScheduleEnd.clone();
+        lastDayEnd.set(Calendar.HOUR_OF_DAY, 18);
+        lastDayEnd.set(Calendar.MINUTE, 0);
+        if (lastScheduleEnd.before(lastDayEnd)) {
+            availableSlots.add(new Pair<>(lastScheduleEnd, lastDayEnd));
+        }
+    }
+
+    /**
+     * Finds and appends all available time slots during days that are completely empty within a given range.
+     * @param scheduledAppts The list of already scheduled appointments within the time range.
+     * @param dateInterval The time range.
+     * @param availableSlots The list of available time slots within the time range.
+     */
+    private void findCompletelyAvailableDays(List<ScheduleEvent> scheduledAppts,
+                                             Pair<Calendar> dateInterval, List<Pair<Calendar>> availableSlots) {
         Calendar dayPointer = (Calendar) dateInterval.getKey().clone();
         // since the maximum interval is one month, using DAY_OF_YEAR will always be safe
         while (!dayPointer.after(dateInterval.getValue())) {
@@ -421,17 +466,16 @@ public class DateTimeParser {
                     Calendar emptyDayStart = (Calendar) dayPointer.clone();
                     Calendar emptyDayEnd = (Calendar) dayPointer.clone();
                     setDateStartAndEnd(emptyDayStart, emptyDayEnd);
-                    emptySlots.add(new Pair<>(emptyDayStart, emptyDayEnd));
+                    availableSlots.add(new Pair<>(emptyDayStart, emptyDayEnd));
                 }
             } else {
                 Calendar emptyDayStart = (Calendar) dayPointer.clone();
                 Calendar emptyDayEnd = (Calendar) dayPointer.clone();
                 setDateStartAndEnd(emptyDayStart, emptyDayEnd);
-                emptySlots.add(new Pair<>(emptyDayStart, emptyDayEnd));
+                availableSlots.add(new Pair<>(emptyDayStart, emptyDayEnd));
             }
             dayPointer.add(Calendar.DATE, 1); // next date
         }
-        return emptySlots; // unsorted
     }
 
     /**
@@ -439,7 +483,7 @@ public class DateTimeParser {
      * @param slots List representation of slots.
      * @return String representation of the given list of slots.
      */
-    private String slotsListToString(List<Pair<Calendar>> slots) {
+    private String slotListToString(List<Pair<Calendar>> slots) {
         if (slots.isEmpty()) {
             return MESSAGE_NO_SLOTS;
         }
