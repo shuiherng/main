@@ -76,6 +76,7 @@ public class UiManager extends ComponentManager implements Ui {
         try {
             appointmentMainWindow.show();
             appointmentMainWindow.setShowing(true);
+            appointmentMainWindow.setNotePanelToDefault();
             mainWindow.hide();
             mainWindow.setShowing(false);
         } catch (Throwable e) {
@@ -89,10 +90,11 @@ public class UiManager extends ComponentManager implements Ui {
         logger.info("Switching to Patient Mode");
 
         try {
-            appointmentMainWindow.hide();
-            appointmentMainWindow.setShowing(false);
             mainWindow.show();
             mainWindow.setShowing(true);
+            mainWindow.setBrowsePanelToDefault();
+            appointmentMainWindow.hide();
+            appointmentMainWindow.setShowing(false);
         } catch (Throwable e) {
             logger.severe(StringUtil.getDetails(e));
             showFatalErrorDialogAndShutdown("Fatal error during switching", e);
@@ -104,7 +106,6 @@ public class UiManager extends ComponentManager implements Ui {
         prefs.updateLastUsedGuiSetting(mainWindow.getCurrentGuiSetting());
         mainWindow.hide();
         mainWindow.setShowing(false);
-        mainWindow.releaseResources();
     }
 
     private void showFileOperationAlertAndWait(String description, String details, Throwable cause) {
