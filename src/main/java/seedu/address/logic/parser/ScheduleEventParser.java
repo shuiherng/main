@@ -73,7 +73,7 @@ public class ScheduleEventParser {
      */
     public ScheduleEvent parse(String input) throws ParseException {
         String[] splitInput = input.split("\\s+");
-        int dateInputStartAt = breakdownInput(splitInput);
+        int dateInputStartAt = findDateInputStart(splitInput);
         String[] patientInput = generatePatientInput(splitInput, dateInputStartAt);
         String dateInput = generateDateInput(splitInput, dateInputStartAt);
         PersonId patientId = parsePatientInput(patientInput);
@@ -89,7 +89,7 @@ public class ScheduleEventParser {
      * @return The index at which input for date starts.
      * @throws ParseException If an error occurs during event parsing.
      */
-    private int breakdownInput(String[] input) throws ParseException {
+    private int findDateInputStart(String[] input) throws ParseException {
         if (input[0].equals("for")) {
             for (int i = 2; i < input.length; i++) { // loop starts at 2 as name is at least one string long
                 if (isSomeDateInput(input, i)) {
@@ -126,7 +126,7 @@ public class ScheduleEventParser {
     }
 
     /**
-     * Parse the given string input into the intended time slot.
+     * Parses the given string input into the intended time slot.
      * @param dateInput User's initial input for date.
      * @return The time slot of the appointment, represented as a Pair of Calendar objects.
      * @throws ParseException If an error occurs during parsing.
@@ -136,15 +136,30 @@ public class ScheduleEventParser {
             Calendar currentTime = Calendar.getInstance();
             DateTimeParser dateTimeParser = new DateTimeParser();
             Pair<Calendar> dateInterval = dateTimeParser.parseDate(dateInput, currentTime);
-            List<ScheduleEvent> scheduledAppts = getAppointmentsBetween(dateInterval);
-            String availableTimeSlots = dateTimeParser.getAvailableTimeSlotsBetween(scheduledAppts, dateInterval);
-            String timeSlotInput = new Prompt().promptForMoreInput(MESSAGE_PROMPT_TIMESLOT, availableTimeSlots, true);
-            Pair<Calendar> timeSlot = dateTimeParser.parseTimeSlot(timeSlotInput.trim());
-            verifyTimeSlotValidity(dateInterval, scheduledAppts, timeSlot);
+            Pair<Calendar> timeSlot = promptForTimeSlot(dateInterval, dateTimeParser);
             return timeSlot;
         } catch (ParseException | PromptException e) {
             throw new ParseException(e.getMessage());
         }
+    }
+
+    /**
+     * Prompts the user to choose a time slot for the appointment.
+     * The user will be provided with a list of available time slots during the specified range to choose from.
+     * @param dateInterval The time range where the appointment is supposed to be in.
+     * @param dateTimeParser The parser to be used for time slot parsing.
+     * @return The final valid chosen time slot.
+     * @throws PromptException If an error occurs during prompt stage.
+     * @throws ParseException If an error occurs during parsing.
+     */
+    private Pair<Calendar> promptForTimeSlot(Pair<Calendar> dateInterval, DateTimeParser dateTimeParser)
+            throws PromptException, ParseException {
+        List<ScheduleEvent> scheduledAppts = getAppointmentsBetween(dateInterval);
+        String availableTimeSlots = dateTimeParser.getAvailableTimeSlotsBetween(scheduledAppts, dateInterval);
+        String timeSlotInput = new Prompt().promptForMoreInput(MESSAGE_PROMPT_TIMESLOT, availableTimeSlots, true);
+        Pair<Calendar> timeSlot = dateTimeParser.parseTimeSlot(timeSlotInput.trim());
+        verifyTimeSlotValidity(dateInterval, scheduledAppts, timeSlot);
+        return timeSlot;
     }
 
     /**
@@ -156,7 +171,8 @@ public class ScheduleEventParser {
      * @param timeSlot The given time slot.
      * @throws ParseException If an error occurs during parsing, indicating invalid time slot.
      */
-    private void verifyTimeSlotValidity(Pair<Calendar> dateInterval, List<ScheduleEvent> scheduledAppts, Pair<Calendar> timeSlot) throws ParseException {
+    private void verifyTimeSlotValidity(Pair<Calendar> dateInterval, List<ScheduleEvent> scheduledAppts,
+                                        Pair<Calendar> timeSlot) throws ParseException {
         if (isTimeSlotWithinRange(timeSlot, dateInterval)) {
             for (ScheduleEvent appt: scheduledAppts) {
                 if (appt.isClashing(timeSlot)) {
@@ -171,9 +187,10 @@ public class ScheduleEventParser {
     }
 
     /**
-     * Parse the given string array input into the intended PatientId.
+     * Parses the given string array input into the intended PatientId.
      * @param patientInput The user input containing patient name or ID.
      * @return The patient ID of the intended patient.
+     * @throws ParseException If an error occurs during parsing.
      */
     private PersonId parsePatientInput(String[] patientInput) throws ParseException {
         try {
@@ -181,16 +198,14 @@ public class ScheduleEventParser {
             if (matchedPatients.isEmpty()) {
                 throw new ParseException(MESSAGE_PATIENT_MATCH_FAIL);
             }
-            Set<PersonId> choosablePersonIds = getChoosablePersonIds(matchedPatients);
-            matchedPatients = promptForIntendedPatient(matchedPatients, choosablePersonIds);
-            return matchedPatients.get(0).getId();
+            return promptForIntendedPatient(matchedPatients).getId();
         } catch (PromptException | ParseException e) {
             throw new ParseException(e.getMessage());
         }
     }
 
     /**
-     * Match a given patien name or ID to a list of patients.
+     * Matches a given patient name or ID to a list of patients.
      * @param patientInput The user input for patient name or ID.
      * @return The list of patients that can be matched by this input.
      */
@@ -201,14 +216,15 @@ public class ScheduleEventParser {
 
     /**
      * Prompts the user to choose the intended patient to schedule for.
-     * @param matchedPatients The list of patients matched by initial input for patient
-     * @param choosablePersonIds The set of patient IDs corresponding to those patients matched.
-     * @return The final list of matched patients. Note that the final list should always contain only one patient.
+     * @param matchedPatients The list of patients matched by initial input for patient.
+     * @return The final matched patients.
      * @throws PromptException If an error occurs during prompt stage.
      * @throws ParseException If an error occurs during parsing.
      */
-    private List<Person> promptForIntendedPatient(List<Person> matchedPatients, Set<PersonId> choosablePersonIds)
+    private Person promptForIntendedPatient(List<Person> matchedPatients)
             throws PromptException, ParseException {
+        // assert not null
+        Set<PersonId> choosablePersonIds = getChoosablePersonIds(matchedPatients);
         while (matchedPatients.size() != 1) {
             String displayablePersons = displayPersonListAsString(matchedPatients);
             String personIdInput = new Prompt().promptForMoreInput(MESSAGE_PROMPT_ID, displayablePersons, true);
@@ -223,7 +239,7 @@ public class ScheduleEventParser {
                 }
             }
         }
-        return matchedPatients;
+        return matchedPatients.get(0);
     }
 
     /**
