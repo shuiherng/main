@@ -92,6 +92,7 @@ public class UiManager extends ComponentManager implements Ui {
         try {
             mainWindow.show();
             mainWindow.setShowing(true);
+            mainWindow.setBrowsePanelToDefault();
             appointmentMainWindow.hide();
             appointmentMainWindow.setShowing(false);
         } catch (Throwable e) {
@@ -105,7 +106,6 @@ public class UiManager extends ComponentManager implements Ui {
         prefs.updateLastUsedGuiSetting(mainWindow.getCurrentGuiSetting());
         mainWindow.hide();
         mainWindow.setShowing(false);
-        mainWindow.releaseResources();
     }
 
     private void showFileOperationAlertAndWait(String description, String details, Throwable cause) {
