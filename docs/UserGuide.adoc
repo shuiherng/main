@@ -14,7 +14,7 @@ ifdef::env-github[]
 endif::[]
 :repoURL: https://github.com/CS2103-AY1819S1-T12-2/main
 
-By: `Team T12-2`      Since: `Jun 2016`      Licence: `MIT`
+By: `Team T12-2`      Since: `Aug 2018`      Licence: `MIT`
 
 == Introduction
 
@@ -283,6 +283,8 @@ Example:
 
 Clears all appointments scheduled in the record. If necessary, switches the application to appointment management mode.
 
+// tag::diagnosis[]
+
 === Add a disease : `add disease`
 
 *Format:* `add disease d/DISEASE s/SYMPTOM`
@@ -290,7 +292,8 @@ Clears all appointments scheduled in the record. If necessary, switches the appl
 Adds a new disease to the patient book.
 
 You must include one and only one `DISEASE` parameter with prefix `d/` and at least one `SYMPTOM` for that disease
-with prefix `s/`. Duplicate symptoms can be included but only one will be added into the patient book.
+with prefix `s/`. Duplicate symptoms can be included but only one will be added into the patient book. The `DISEASE`
+ and `SYMPTOM` parameter can take any characters except `comma`.
 
 When you try to add an existing disease into the patient book, the following error message will be shown to you:
 
@@ -361,6 +364,8 @@ Returns an error message:
 
 .Error Message for Invalid Command 'predict s/cry'
 image::PredictInvalidDemo.png[width="600"]
+
+// end::diagnosis[]
 
 === List entered commands : `history`
 
