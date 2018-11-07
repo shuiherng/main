@@ -26,7 +26,7 @@
                         <Region fx:constant="USE_PREF_SIZE" />
                     </minWidth>
                 </Label>
-                <Label fx:id="datetime" styleClass="cell_big_label" text="\$first" />
+                <Label fx:id="datetime" styleClass="cell_big_label" text="\$datetime" />
             </HBox>
          <FlowPane fx:id="tags" prefHeight="20.0" prefWidth="94.0" />
          <GridPane prefHeight="90.0">
