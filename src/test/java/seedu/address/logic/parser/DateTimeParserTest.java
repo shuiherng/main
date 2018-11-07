@@ -4,11 +4,15 @@ package seedu.address.logic.parser;
 import static org.junit.Assert.assertEquals;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.DateTimeParser.MESSAGE_END_BEFORE_START;
+import static seedu.address.logic.parser.DateTimeParser.MESSAGE_HAVE_SLOTS;
 import static seedu.address.logic.parser.DateTimeParser.MESSAGE_INVALID_INTEGER;
 import static seedu.address.logic.parser.DateTimeParser.MESSAGE_INVALID_SLOT;
+import static seedu.address.logic.parser.DateTimeParser.MESSAGE_NO_SLOTS;
 import static seedu.address.logic.parser.Prompt.MESSAGE_PROMPT_TIMESLOT_FORMAT;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +20,8 @@ import org.junit.Test;
 import seedu.address.commons.util.Pair;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.event.ScheduleEvent;
+import seedu.address.testutil.ScheduleEventBuilder;
 
 
 public class DateTimeParserTest {
@@ -60,17 +66,23 @@ public class DateTimeParserTest {
     private static final String REFINED_INVALID_FORMAT_WRONG_SEQUENCE_TIME_SLOT = "9:30 - 10:30 13.12.2018";
 
 
-    private DateTimeParser parser = new DateTimeParser();
+    private DateTimeParser parser;
     private Calendar actualCurrentTime;
     private Calendar dummyCurrentTime;
     private Calendar dummySundayTime;
     private Calendar expectedCalendarStart;
     private Calendar expectedCalendarEnd;
+    private List<ScheduleEvent> scheduledAppointments;
+    private Calendar durationStart;
+    private Calendar durationEnd;
+    private Pair<Calendar> duration;
+    private Calendar scheduleEventStart;
+    private Calendar scheduleEventEnd;
 
     @Before
     public void initializeCalendars() {
+        parser = new DateTimeParser();
         actualCurrentTime = Calendar.getInstance();
-        //actualCurrentTime.setFirstDayOfWeek(Calendar.MONDAY);
         dummyCurrentTime = (Calendar) actualCurrentTime.clone();
         dummySundayTime = (Calendar) actualCurrentTime.clone();
         dummyCurrentTime.set(2018, 10, 16, 16, 13, 20);
@@ -78,6 +90,12 @@ public class DateTimeParserTest {
         expectedCalendarStart = (Calendar) actualCurrentTime.clone();
         expectedCalendarEnd = (Calendar) actualCurrentTime.clone();
         zeroOutMilliseconds(expectedCalendarStart, expectedCalendarEnd);
+        scheduledAppointments = new ArrayList<>();
+        durationStart = (Calendar) actualCurrentTime.clone();
+        durationEnd = (Calendar) actualCurrentTime.clone();
+        duration = new Pair<>(durationStart, durationEnd);
+        scheduleEventStart = (Calendar) actualCurrentTime.clone();
+        scheduleEventEnd = (Calendar) actualCurrentTime.clone();
     }
 
     @Test
@@ -371,6 +389,75 @@ public class DateTimeParserTest {
         // testing "in 0.8 days"
         assertDateParsingFailure(INVALID_NON_INTEGER_NUMBER, dummyCurrentTime,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_INVALID_INTEGER));
+    }
+
+    @Test
+    public void getAvailableTimeSlotsBetween_noAvailableTimeSlots() {
+        // testing a single day
+        durationStart.set(2018, 11, 13, 9, 00, 0);
+        durationEnd.set(2018, 11, 13, 18, 00, 0);
+        scheduledAppointments.add(new ScheduleEventBuilder().withDurations(duration).build());
+        assertEquals(MESSAGE_NO_SLOTS, parser.getAvailableTimeSlotsBetween(scheduledAppointments, duration));
+        scheduledAppointments.clear();
+
+        // testing 3 days
+        durationStart.set(2018, 11, 13, 9, 00, 0);
+        durationEnd.set(2018, 11, 15, 18, 00, 0);
+        scheduleEventStart.set(2018, 11, 13, 9, 00, 0);
+        scheduleEventEnd.set(2018, 11, 13, 18, 00, 0);
+        scheduledAppointments.add(new ScheduleEventBuilder().withDurations(
+                new Pair<>((Calendar) scheduleEventStart.clone(), (Calendar) scheduleEventEnd.clone())).build());
+        scheduleEventStart.set(2018, 11, 14, 9, 00, 0);
+        scheduleEventEnd.set(2018, 11, 14, 18, 00, 0);
+        scheduledAppointments.add(new ScheduleEventBuilder().withDurations(
+                new Pair<>((Calendar) scheduleEventStart.clone(), (Calendar) scheduleEventEnd.clone())).build());
+        scheduleEventStart.set(2018, 11, 15, 9, 00, 0);
+        scheduleEventEnd.set(2018, 11, 15, 18, 00, 0);
+        scheduledAppointments.add(new ScheduleEventBuilder().withDurations(
+                new Pair<>((Calendar) scheduleEventStart.clone(), (Calendar) scheduleEventEnd.clone())).build());
+        assertEquals(MESSAGE_NO_SLOTS, parser.getAvailableTimeSlotsBetween(scheduledAppointments, duration));
+        scheduledAppointments.clear();
+    }
+
+    @Test
+    public void getAvailableTimeSlotsBetween_noEmptyDays() {
+        durationStart.set(2018, 11, 13, 9, 00, 0);
+        durationEnd.set(2018, 11, 15, 18, 00, 0);
+        scheduleEventStart.set(2018, 11, 13, 10, 00, 0);
+        scheduleEventEnd.set(2018, 11, 13, 13, 00, 0);
+        scheduledAppointments.add(new ScheduleEventBuilder().withDurations(
+                new Pair<>((Calendar) scheduleEventStart.clone(), (Calendar) scheduleEventEnd.clone())).build());
+        scheduleEventStart.set(2018, 11, 14, 9, 00, 0);
+        scheduleEventEnd.set(2018, 11, 14, 14, 00, 0);
+        scheduledAppointments.add(new ScheduleEventBuilder().withDurations(
+                new Pair<>((Calendar) scheduleEventStart.clone(), (Calendar) scheduleEventEnd.clone())).build());
+        scheduleEventStart.set(2018, 11, 15, 15, 00, 0);
+        scheduleEventEnd.set(2018, 11, 15, 18, 00, 0);
+        scheduledAppointments.add(new ScheduleEventBuilder().withDurations(
+                new Pair<>((Calendar) scheduleEventStart.clone(), (Calendar) scheduleEventEnd.clone())).build());
+        String expected = MESSAGE_HAVE_SLOTS
+                        + "\n"
+                        + "13/12/2018:\n"
+                        + "09:00 - 10:00\n"
+                        + "13:00 - 18:00\n"
+                        + "\n"
+                        + "14/12/2018:\n"
+                        + "14:00 - 18:00\n"
+                        + "\n"
+                        + "15/12/2018:\n"
+                        + "09:00 - 15:00\n";
+        assertEquals(expected, parser.getAvailableTimeSlotsBetween(scheduledAppointments, duration));
+        scheduledAppointments.clear();
+    }
+
+    @Test
+    public void getAvailableTimeSlotsBetween_startWithEmptyDays() {
+
+    }
+
+    @Test
+    public void getAvailableTimeSlotsBetween_endWithEmptyDays() {
+
     }
 
     private void zeroOutMilliseconds(Calendar... calendars) {

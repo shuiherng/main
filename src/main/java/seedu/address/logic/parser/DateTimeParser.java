@@ -516,7 +516,7 @@ public class DateTimeParser {
                 // a new date
                 Date formattableDate = slots.get(j).getKey().getTime();
                 String formattedDate = dateFormatter.format(formattableDate);
-                availableTimeBuilder.append("\n" + formattedDate + ": \n");
+                availableTimeBuilder.append("\n" + formattedDate + ":\n");
                 datePointer = slotStart.get(Calendar.DATE);
             }
             Date formattableStartTime = slotStart.getTime();
