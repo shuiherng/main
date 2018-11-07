@@ -2,6 +2,11 @@
 package seedu.address.logic.parser;
 
 import static org.junit.Assert.assertEquals;
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.DateTimeParser.MESSAGE_END_BEFORE_START;
+import static seedu.address.logic.parser.DateTimeParser.MESSAGE_INVALID_INTEGER;
+import static seedu.address.logic.parser.DateTimeParser.MESSAGE_INVALID_SLOT;
+import static seedu.address.logic.parser.Prompt.MESSAGE_PROMPT_TIMESLOT_FORMAT;
 
 import java.util.Calendar;
 
@@ -9,11 +14,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import seedu.address.commons.util.Pair;
+import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 
 public class DateTimeParserTest {
 
+    private static final String EXPECTED_PARSE_EXCEPTION_NOT_THROWN = "The expected ParseException was not thrown.";
     private static final String VALID_TOMORROW = "tomorrow";
     private static final String VALID_THE_DAY_AFTER_TOMORROW = "the day after tomorrow";
     private static final String VALID_IN_SOME_SMALL_DAYS = "in 5 days";
@@ -37,19 +44,21 @@ public class DateTimeParserTest {
 
     private static final String INVALID_SPECIFIED_FORMAT = "13.12.2018";
     private static final String INVALID_SPECIFIED_DAY_NUMBER = "33/12/2018";
-    private static final String INVALID_SPECIFIEDadd_MONTH_NUMBER = "13/13/2018";
+    private static final String INVALID_SPECIFIED_MONTH_NUMBER = "13/13/2018";
     private static final String INVALID_NON_INTEGER_NUMBER = "in 0.8 days";
     private static final String INVALID_BIG_INTEGER_NUMBER = "in 1000000000000000000 months";
     private static final String INVALID_CAPITALIZED = "neXt Month";
     private static final String INVALID_RANDOM = "elephant";
 
     private static final String REFINED_VALID_TIME_SLOT = "13/12/2018 9:30 - 10:30";
-    private static final String REFINED_INVALID_CLASHING = "13/12/2018 10:00 - 10:30";
+    private static final String REFINED_VALID_TIME_SLOT_WITH_WHITESPACE = "13/12/2018 9:30 -   10:30";
+    private static final String REFINED_INVALID_WRONG_DATE = "32/12/2018 9:30 - 10:30";
     private static final String REFINED_INVALID_TOO_EARLY = "13/12/2018 8:30 - 10:30";
     private static final String REFINED_INVALID_T00_LATE = "13/12/2018 19:30 - 23:30";
     private static final String REFINED_INVALID_END_EARLIER_THAN_START = "13/12/2018 10:30 - 9:30";
-    private static final String REFINED_INVALID_FORMAT_TIME_SLOT = "13.12.2018 10:30 - 9:30";
-    private static final String REFINED_INVALID_FORMAT_WRONG_SEQUENCE_TIME_SLOT = "10:30 - 9:30 13.12.2018";
+    private static final String REFINED_INVALID_FORMAT_TIME_SLOT = "13.12.2018 9:30 - 10:30";
+    private static final String REFINED_INVALID_FORMAT_WRONG_SEQUENCE_TIME_SLOT = "9:30 - 10:30 13.12.2018";
+
 
     private DateTimeParser parser = new DateTimeParser();
     private Calendar actualCurrentTime;
@@ -290,18 +299,78 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void parseTimeSlot_validInput() {
+    public void parseTimeSlot_validInput() throws ParseException {
+        // testing "13/12/2018 9:30 - 10:30"
+        expectedCalendarStart.set(2018, 11, 13, 9, 30, 0);
+        expectedCalendarEnd.set(2018, 11, 13, 10, 30, 0);
+        setFirstDayOfWeekToDefault(expectedCalendarStart, expectedCalendarEnd);
+        assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd),
+                parser.parseTimeSlot(REFINED_VALID_TIME_SLOT));
 
+        // testing "13/12/2018 9:30 -   10:30"
+        expectedCalendarStart.set(2018, 11, 13, 9, 30, 0);
+        expectedCalendarEnd.set(2018, 11, 13, 10, 30, 0);
+        setFirstDayOfWeekToDefault(expectedCalendarStart, expectedCalendarEnd);
+        assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd),
+                parser.parseTimeSlot(REFINED_VALID_TIME_SLOT_WITH_WHITESPACE));
     }
 
     @Test
     public void parseTimeSlot_invalidInput_throwsParseException() {
+        // testing "13.12.2018 9:30 - 10:30"
+        assertTimeSlotParsingFailure(REFINED_INVALID_FORMAT_TIME_SLOT,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
 
+        // testing "9:30 - 10:30 13.12.2018"
+        assertTimeSlotParsingFailure(REFINED_INVALID_FORMAT_WRONG_SEQUENCE_TIME_SLOT,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+
+        // testing "13/12/2018 10:30 - 9:30"
+        assertTimeSlotParsingFailure(REFINED_INVALID_END_EARLIER_THAN_START,
+                String.format(MESSAGE_INVALID_SLOT, MESSAGE_END_BEFORE_START));
+
+        // testing "13/12/2018 19:30 - 23:30"
+        assertTimeSlotParsingFailure(REFINED_INVALID_T00_LATE,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+
+        // testing "13/12/2018 8:30 - 10:30"
+        assertTimeSlotParsingFailure(REFINED_INVALID_TOO_EARLY,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+
+        // testing "32/12/2018 9:30 - 10:30"
+        assertTimeSlotParsingFailure(REFINED_INVALID_WRONG_DATE,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
     }
 
     @Test
     public void parseDate_invalidInput_throwsParseException() {
+        // testing "elephant"
+        assertDateParsingFailure(INVALID_RANDOM, dummyCurrentTime,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE_APPOINTMENT));
 
+        // testing "13.12.2018"
+        assertDateParsingFailure(INVALID_SPECIFIED_FORMAT, dummyCurrentTime,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE_APPOINTMENT));
+
+        // testing "33/12/2018"
+        assertDateParsingFailure(INVALID_SPECIFIED_DAY_NUMBER, dummyCurrentTime,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE_APPOINTMENT));
+
+        // testing "13/13/2018"
+        assertDateParsingFailure(INVALID_SPECIFIED_MONTH_NUMBER, dummyCurrentTime,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE_APPOINTMENT));
+
+        // testing "neXt Month"
+        assertDateParsingFailure(INVALID_CAPITALIZED, dummyCurrentTime,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE_APPOINTMENT));
+
+        // testing "in 1000000000000000000 months"
+        assertDateParsingFailure(INVALID_BIG_INTEGER_NUMBER, dummyCurrentTime,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_INVALID_INTEGER));
+
+        // testing "in 0.8 days"
+        assertDateParsingFailure(INVALID_NON_INTEGER_NUMBER, dummyCurrentTime,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_INVALID_INTEGER));
     }
 
     private void zeroOutMilliseconds(Calendar... calendars) {
@@ -317,8 +386,38 @@ public class DateTimeParserTest {
     }
 
     private void setFirstDayOfWeekToDefault(Calendar... calendars) {
-        for (Calendar calendar: calendars) {
+        for (Calendar calendar : calendars) {
             calendar.setFirstDayOfWeek(Calendar.SUNDAY);
         }
     }
+
+    /**
+     *
+     * @param input
+     * @param expectedMessage
+     */
+    private void assertDateParsingFailure(String input, Calendar currentTime, String expectedMessage) {
+        try {
+            parser.parseDate(input, currentTime);
+            throw new AssertionError(EXPECTED_PARSE_EXCEPTION_NOT_THROWN);
+        } catch (ParseException pe) {
+            assertEquals(expectedMessage, pe.getMessage());
+        }
+    }
+
+    /**
+     *
+     * @param input
+     * @param expectedMessage
+     */
+    private void assertTimeSlotParsingFailure(String input, String expectedMessage) {
+        try {
+            parser.parseTimeSlot(input);
+            throw new AssertionError(EXPECTED_PARSE_EXCEPTION_NOT_THROWN);
+        } catch (ParseException pe) {
+            assertEquals(expectedMessage, pe.getMessage());
+        }
+    }
+
+
 }

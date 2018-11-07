@@ -129,7 +129,7 @@ public class DateTimeParser {
             try {
                 offset = Integer.parseInt(splitDateInput[1]);
             } catch (NumberFormatException e) {
-                throw new ParseException(MESSAGE_INVALID_INTEGER);
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_INVALID_INTEGER));
             }
             switch (splitDateInput[2]) {
             case WORD_DAYS:
