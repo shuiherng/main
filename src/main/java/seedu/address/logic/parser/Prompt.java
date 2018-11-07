@@ -32,7 +32,7 @@ public class Prompt {
             throws PromptException {
         promptWindow = mainApp.showPromptWindow(leadingMessage + messageToUser);
         if (promptWindow.isEnterClicked()) {
-            if (!promptWindow.getInput().equals("")) {
+            if (!promptWindow.getInput().equals(EMPTY_RESPONSE)) {
                 return promptWindow.getInput();
             } else {
                 if (isInputCompulsory) {
