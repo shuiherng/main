@@ -479,9 +479,10 @@ public class DateTimeParserTest {
     }
 
     /**
-     *
-     * @param input
-     * @param expectedMessage
+     * Utility method for asserting that an exception has been thrown for date parsing.
+     * @param input The user input.
+     * @param currentTime The current time.
+     * @param expectedMessage The expected exception message.
      */
     private void assertDateParsingFailure(String input, Calendar currentTime, String expectedMessage) {
         try {
@@ -493,9 +494,9 @@ public class DateTimeParserTest {
     }
 
     /**
-     *
-     * @param input
-     * @param expectedMessage
+     * Utility method for asserting that an exception has been thrown for time slot parsing.
+     * @param input The user input.
+     * @param expectedMessage The expected exception message.
      */
     private void assertTimeSlotParsingFailure(String input, String expectedMessage) {
         try {

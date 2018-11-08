@@ -544,11 +544,11 @@ public class DateTimeParser {
         String startTime = splitString[1];
         String endTime = splitString[3];
         if (!isValidDateFormat(ddmmyyyy)) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT)); // change exception! // change test too
         }
         Pair<Calendar> timeSlot = getDateFromSpecified(ddmmyyyy);
         if (!isValidTimeFormat(startTime) || !isValidTimeFormat(endTime)) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT)); // change exception! // change test too
         }
         setSlotStartAndEnd(timeSlot, startTime, endTime);
         if (!timeSlot.getKey().before(timeSlot.getValue())) {
