@@ -1,7 +1,5 @@
 package seedu.address.model.event;
 
-import static seedu.address.model.ScheduleModel.PREDICATE_SHOW_SCHEDULE_EVENTS;
-
 import java.util.function.Predicate;
 
 
@@ -20,14 +18,9 @@ public class ScheduleEventMatchesPredicate implements Predicate<ScheduleEvent> {
         this.constraints = constraints;
     }
 
-
-    /**
-     * TODO: Change this to however we match the event to the constraints
-     */
     @Override
     public boolean test(ScheduleEvent event) {
-        return PREDICATE_SHOW_SCHEDULE_EVENTS.test(event)
-                && event.getId().toString().equals(constraints);
+        return event.getId().toString().equals(constraints);
     }
 
     @Override

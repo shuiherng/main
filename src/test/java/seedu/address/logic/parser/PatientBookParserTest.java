@@ -57,8 +57,8 @@ public class PatientBookParserTest {
 
     @Test
     public void parseCommand_addAppointment() throws Exception {
-        String argString = "for " + ScheduleEventBuilder.DEFAULT_PERSON + " "
-                + ScheduleEventBuilder.DEFAULT_DATETIME;
+        String argString = "for " + ScheduleEventBuilder.DEFAULT_PERSON_ID + " "
+                + ScheduleEventBuilder.DEFAULT_DATETIME_STRING;
         String cmdString = AddCommand.COMMAND_WORD + " " + CMDTYPE_APPOINTMENT + " " + argString;
         AddCommand command = (AddCommand) parser.parseCommand(cmdString);
         assertEquals(new AddCommand(CMDTYPE_APPOINTMENT, argString), command);
