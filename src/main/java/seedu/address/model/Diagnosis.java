@@ -114,7 +114,7 @@ public class Diagnosis {
      *
      * @return a HashMap object which its key is the disease and value is its related symptoms.
      */
-
+    
     private static HashMap<Disease, Set<Symptom>> readDataFromCsvFile() {
 
         try {
