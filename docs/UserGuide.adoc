@@ -102,6 +102,20 @@ Examples:
 * `add patient n/John Smith p/90516038 a/New Smith Street, Singapore 519321 e/johnsmith@gmail.com`
 * `add patient n/Alice Barker p/62353535 a/4 Pizza Road, Singapore 941023 e/alice_barker@yahoo.com.sg t/friend t/groupmate`
 
+=== Select a patient : `select patient`
+
+*Format:* `select patient PATIENT_ID`
+
+Selects an existing patient and its information will display on the right. If necessary, switches the application to patient management mode.
+
+[NOTE]
+Select command is different from clicking the patient card in the window. It enables you to select the patients who were soft deleted
+
+Examples:
+
+* `select patient p0`
+* `select patient p29`
+
 === Edit patient information : `edit patient`
 
 *Format:* `edit patient PATIENT_ID [n/NAME] [p/PHONE] [a/ADDRESS] [e/EMAIL] [t/TAG]`
@@ -233,6 +247,19 @@ New appointment added: Appointment ID: e3 scheduled for patient ID: p7 during: 3
 Details:
 Tags:
 ```
+=== Select an appointment : `select appointment`
+
+*Format:* `select appointment APPOINTMENT_ID`
+
+Selects an existing appointment and its details will display on the right. If necessary, switches the application to appointment management mode.
+
+[NOTE]
+Select command is different from clicking the appointment card in the window. It enables you to select the appointment in the past.
+
+Examples:
+
+* `select appointment e0`
+* `select appointment e29`
 
 === Edit appointment information : `edit appointment`
 
@@ -417,6 +444,10 @@ Exits the program.
 * *Locate patients* : `find patient` +
 
 * *Predict disease* : `predict` +
+
+* *Select a patient* : `select patient` +
+
+* *Select an appointment* : `select appointment` +
 
 * *Switch to appointment management mode* : `mode appointment` +
 
