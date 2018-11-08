@@ -129,7 +129,7 @@ public class DateTimeParser {
             try {
                 offset = Integer.parseInt(splitDateInput[1]);
             } catch (NumberFormatException e) {
-                throw new ParseException(MESSAGE_INVALID_INTEGER);
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_INVALID_INTEGER));
             }
             switch (splitDateInput[2]) {
             case WORD_DAYS:
@@ -159,7 +159,7 @@ public class DateTimeParser {
      */
     private Pair<Calendar> parseThisOrNext(Calendar currentTime, String dateInput) throws ParseException {
         String[] splitDateInput = dateInput.split("\\s+");
-        assert splitDateInput[0].equals(WORD_NEXT) || splitDateInput[0].equals(WORD_IN);
+        assert splitDateInput[0].equals(WORD_NEXT) || splitDateInput[0].equals(WORD_THIS);
         int offset; // time offset from "now"
         if (splitDateInput[0].equals(WORD_NEXT)) {
             offset = 1;
@@ -177,25 +177,25 @@ public class DateTimeParser {
         int dayOfWeek = -1;
         switch (splitDateInput[1]) {
         case WORD_MONDAY:
-            dayOfWeek = 0;
+            dayOfWeek = Calendar.MONDAY;
             break;
         case WORD_TUESDAY:
-            dayOfWeek = 1;
+            dayOfWeek = Calendar.TUESDAY;
             break;
         case WORD_WEDNESDAY:
-            dayOfWeek = 2;
+            dayOfWeek = Calendar.WEDNESDAY;
             break;
         case WORD_THURSDAY:
-            dayOfWeek = 3;
+            dayOfWeek = Calendar.THURSDAY;
             break;
         case WORD_FRIDAY:
-            dayOfWeek = 4;
+            dayOfWeek = Calendar.FRIDAY;
             break;
         case WORD_SATURDAY:
-            dayOfWeek = 5;
+            dayOfWeek = Calendar.SATURDAY;
             break;
         case WORD_SUNDAY:
-            dayOfWeek = 6;
+            dayOfWeek = Calendar.SUNDAY;
             break;
         default:
             // do nothing
@@ -232,9 +232,17 @@ public class DateTimeParser {
     private Pair<Calendar> getWeekDayDate(Calendar currentTime, int dayOfWeek, int offset) {
         Calendar date = (Calendar) currentTime.clone();
         date.setFirstDayOfWeek(Calendar.MONDAY);
-        date.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        date.add(Calendar.WEEK_OF_YEAR, offset); // may need to consider the wrapping around at the year boundary
-        date.add(Calendar.DATE, dayOfWeek);
+        date.add(Calendar.WEEK_OF_YEAR, offset);
+        int actualDayOfWeek = date.get(Calendar.DAY_OF_WEEK);
+        if (actualDayOfWeek != Calendar.SUNDAY && dayOfWeek != Calendar.SUNDAY) {
+            date.add(Calendar.DATE, dayOfWeek - actualDayOfWeek);
+        }
+        if (actualDayOfWeek == Calendar.SUNDAY && dayOfWeek != Calendar.SUNDAY) {
+            date.add(Calendar.DATE, dayOfWeek - 8);
+        }
+        if (actualDayOfWeek != Calendar.SUNDAY && dayOfWeek == Calendar.SUNDAY) {
+            date.add(Calendar.DATE, 8 - actualDayOfWeek);
+        }
         Calendar dateStart = (Calendar) date.clone();
         Calendar dateEnd = (Calendar) date.clone();
         setDateStartAndEnd(dateStart, dateEnd);
@@ -253,8 +261,13 @@ public class DateTimeParser {
         weekOffset.add(Calendar.WEEK_OF_YEAR, offset);
         Calendar dateStart = (Calendar) weekOffset.clone();
         Calendar dateEnd = (Calendar) weekOffset.clone();
-        dateStart.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        dateEnd.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        int dayOfWeek = dateStart.get(Calendar.DAY_OF_WEEK);
+        if (dayOfWeek != Calendar.SUNDAY) {
+            dateStart.add(Calendar.DATE, 2 - dayOfWeek);
+            dateEnd.add(Calendar.DATE, 8 - dayOfWeek);
+        } else {
+            dateStart.add(Calendar.DATE, -6);
+        }
         setDateStartAndEnd(dateStart, dateEnd);
         return new Pair<>(dateStart, dateEnd);
     }
@@ -503,7 +516,7 @@ public class DateTimeParser {
                 // a new date
                 Date formattableDate = slots.get(j).getKey().getTime();
                 String formattedDate = dateFormatter.format(formattableDate);
-                availableTimeBuilder.append("\n" + formattedDate + ": \n");
+                availableTimeBuilder.append("\n" + formattedDate + ":\n");
                 datePointer = slotStart.get(Calendar.DATE);
             }
             Date formattableStartTime = slotStart.getTime();

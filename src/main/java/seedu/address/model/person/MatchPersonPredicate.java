@@ -22,9 +22,9 @@ public class MatchPersonPredicate implements Predicate<Person> {
     @Override
     public boolean test(Person person) {
         return PREDICATE_SHOW_ALL_EXISTING_PERSONS.test(person)
-                && keywords.stream()
+                && (keywords.stream()
                 .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getName().fullName, keyword))
-                || keywords.stream().anyMatch(keyword -> person.getId().toString().equals(keyword));
+                || keywords.stream().anyMatch(keyword -> person.getId().toString().equals(keyword)));
     }
 
     @Override
