@@ -16,9 +16,9 @@ import seedu.address.testutil.ScheduleEventBuilder;
 
 public class AppointmentCardTest extends GuiUnitTest {
 
-    /*private Calendar currentTime = Calendar.getInstance();
+    private Calendar currentTime = Calendar.getInstance();
     private Calendar sampleStart = (Calendar) currentTime.clone();
-    private Calendar sampleEnd = (Calendar) currentTime.clone();*/
+    private Calendar sampleEnd = (Calendar) currentTime.clone();
 
     @Test
     public void display() {
@@ -54,8 +54,9 @@ public class AppointmentCardTest extends GuiUnitTest {
         assertFalse(appointmentCard.equals(0));
 
         // different event, same index -> returns false
-        //ScheduleEvent differentEvent = new ScheduleEventBuilder().withDurations(new Pair<>(sampleStart, sampleEnd)).build();
-        //assertFalse(appointmentCard.equals(new AppointmentCard(differentEvent, 0)));
+        ScheduleEvent differentEvent = new ScheduleEventBuilder().withDurations(new Pair<>(sampleStart, sampleEnd))
+                .build();
+        assertFalse(appointmentCard.equals(new AppointmentCard(differentEvent, 0)));
 
         // same event, different index -> returns false
         assertFalse(appointmentCard.equals(new AppointmentCard(event, 1)));
