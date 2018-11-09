@@ -59,6 +59,7 @@ public class DateTimeParserTest {
     private static final String REFINED_VALID_TIME_SLOT = "13/12/2018 9:30 - 10:30";
     private static final String REFINED_VALID_TIME_SLOT_WITH_WHITESPACE = "13/12/2018 9:30 -   10:30";
     private static final String REFINED_INVALID_WRONG_DATE = "32/12/2018 9:30 - 10:30";
+    private static final String REFINED_INVALID_WRONG_TIME = "13/12/2018 9:88 - 10:30";
     private static final String REFINED_INVALID_TOO_EARLY = "13/12/2018 8:30 - 10:30";
     private static final String REFINED_INVALID_T00_LATE = "13/12/2018 19:30 - 23:30";
     private static final String REFINED_INVALID_END_EARLIER_THAN_START = "13/12/2018 10:30 - 9:30";
@@ -358,6 +359,10 @@ public class DateTimeParserTest {
         // testing "32/12/2018 9:30 - 10:30"
         assertTimeSlotParsingFailure(REFINED_INVALID_WRONG_DATE,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+
+        // testing "13/12/2018 9:88 - 10:30"
+        assertTimeSlotParsingFailure(REFINED_INVALID_WRONG_TIME,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
     }
 
     @Test
@@ -452,14 +457,109 @@ public class DateTimeParserTest {
 
     @Test
     public void getAvailableTimeSlotsBetween_startWithEmptyDays() {
-
+        durationStart.set(2018, 11, 13, 9, 00, 0);
+        durationEnd.set(2018, 11, 15, 18, 00, 0);
+        scheduleEventStart.set(2018, 11, 14, 12, 00, 0);
+        scheduleEventEnd.set(2018, 11, 14, 14, 00, 0);
+        scheduledAppointments.add(new ScheduleEventBuilder().withDurations(
+                new Pair<>((Calendar) scheduleEventStart.clone(), (Calendar) scheduleEventEnd.clone())).build());
+        scheduleEventStart.set(2018, 11, 15, 15, 00, 0);
+        scheduleEventEnd.set(2018, 11, 15, 17, 30, 0);
+        scheduledAppointments.add(new ScheduleEventBuilder().withDurations(
+                new Pair<>((Calendar) scheduleEventStart.clone(), (Calendar) scheduleEventEnd.clone())).build());
+        String expected = MESSAGE_HAVE_SLOTS
+                + "\n"
+                + "13/12/2018:\n"
+                + "09:00 - 18:00\n"
+                + "\n"
+                + "14/12/2018:\n"
+                + "09:00 - 12:00\n"
+                + "14:00 - 18:00\n"
+                + "\n"
+                + "15/12/2018:\n"
+                + "09:00 - 15:00\n"
+                + "17:30 - 18:00\n";
+        assertEquals(expected, parser.getAvailableTimeSlotsBetween(scheduledAppointments, duration));
+        scheduledAppointments.clear();
     }
 
     @Test
     public void getAvailableTimeSlotsBetween_endWithEmptyDays() {
-
+        durationStart.set(2018, 11, 13, 9, 00, 0);
+        durationEnd.set(2018, 11, 15, 18, 00, 0);
+        scheduleEventStart.set(2018, 11, 14, 9, 01, 0);
+        scheduleEventEnd.set(2018, 11, 14, 9, 02, 0);
+        scheduledAppointments.add(new ScheduleEventBuilder().withDurations(
+                new Pair<>((Calendar) scheduleEventStart.clone(), (Calendar) scheduleEventEnd.clone())).build());
+        scheduleEventStart.set(2018, 11, 13, 17, 59, 0);
+        scheduleEventEnd.set(2018, 11, 13, 18, 00, 0);
+        scheduledAppointments.add(new ScheduleEventBuilder().withDurations(
+                new Pair<>((Calendar) scheduleEventStart.clone(), (Calendar) scheduleEventEnd.clone())).build());
+        String expected = MESSAGE_HAVE_SLOTS
+                + "\n"
+                + "13/12/2018:\n"
+                + "09:00 - 17:59\n"
+                + "\n"
+                + "14/12/2018:\n"
+                + "09:00 - 09:01\n"
+                + "09:02 - 18:00\n"
+                + "\n"
+                + "15/12/2018:\n"
+                + "09:00 - 18:00\n";
+        assertEquals(expected, parser.getAvailableTimeSlotsBetween(scheduledAppointments, duration));
+        scheduledAppointments.clear();
     }
 
+    @Test
+    public void getAvailableTimeSlotsBetween_emptyDaysInBetween() {
+        durationStart.set(2018, 11, 13, 9, 00, 0);
+        durationEnd.set(2018, 11, 15, 18, 00, 0);
+        scheduleEventStart.set(2018, 11, 15, 12, 27, 0);
+        scheduleEventEnd.set(2018, 11, 15, 14, 56, 0);
+        scheduledAppointments.add(new ScheduleEventBuilder().withDurations(
+                new Pair<>((Calendar) scheduleEventStart.clone(), (Calendar) scheduleEventEnd.clone())).build());
+        scheduleEventStart.set(2018, 11, 13, 9, 59, 0);
+        scheduleEventEnd.set(2018, 11, 13, 10, 30, 0);
+        scheduledAppointments.add(new ScheduleEventBuilder().withDurations(
+                new Pair<>((Calendar) scheduleEventStart.clone(), (Calendar) scheduleEventEnd.clone())).build());
+        scheduleEventStart.set(2018, 11, 13, 12, 59, 0);
+        scheduleEventEnd.set(2018, 11, 13, 13, 30, 0);
+        scheduledAppointments.add(new ScheduleEventBuilder().withDurations(
+                new Pair<>((Calendar) scheduleEventStart.clone(), (Calendar) scheduleEventEnd.clone())).build());
+        String expected = MESSAGE_HAVE_SLOTS
+                + "\n"
+                + "13/12/2018:\n"
+                + "09:00 - 09:59\n"
+                + "10:30 - 12:59\n"
+                + "13:30 - 18:00\n"
+                + "\n"
+                + "14/12/2018:\n"
+                + "09:00 - 18:00\n"
+                + "\n"
+                + "15/12/2018:\n"
+                + "09:00 - 12:27\n"
+                + "14:56 - 18:00\n";
+        assertEquals(expected, parser.getAvailableTimeSlotsBetween(scheduledAppointments, duration));
+        scheduledAppointments.clear();
+    }
+
+    @Test
+    public void getAvailableTimeSlotsBetween_allEmptyDays() {
+        durationStart.set(2018, 11, 13, 9, 00, 0);
+        durationEnd.set(2018, 11, 15, 18, 00, 0);
+        String expected = MESSAGE_HAVE_SLOTS
+                + "\n"
+                + "13/12/2018:\n"
+                + "09:00 - 18:00\n"
+                + "\n"
+                + "14/12/2018:\n"
+                + "09:00 - 18:00\n"
+                + "\n"
+                + "15/12/2018:\n"
+                + "09:00 - 18:00\n";
+        assertEquals(expected, parser.getAvailableTimeSlotsBetween(scheduledAppointments, duration));
+        scheduledAppointments.clear();
+    }
     private void zeroOutMilliseconds(Calendar... calendars) {
         for (Calendar calendar: calendars) {
             calendar.set(Calendar.MILLISECOND, 0);
