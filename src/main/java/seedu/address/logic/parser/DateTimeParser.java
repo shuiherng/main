@@ -557,17 +557,17 @@ public class DateTimeParser {
     public Pair<Calendar> parseTimeSlot(String timeSlotInput) throws ParseException {
         String[] splitString = timeSlotInput.split("\\s+");
         if (splitString.length != 4) { // {"DD/YMM/YYYY", "hh:mm", "-", "hh:mm"}
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+            throw new ParseException(String.format(MESSAGE_INVALID_SLOT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
         }
         String ddmmyyyy = splitString[0];
         String startTime = splitString[1];
         String endTime = splitString[3];
         if (!isValidDateFormat(ddmmyyyy)) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT)); // change exception! // change test too
+            throw new ParseException(String.format(MESSAGE_INVALID_SLOT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
         }
         Pair<Calendar> timeSlot = getDateFromSpecified(ddmmyyyy);
         if (!isValidTimeFormat(startTime) || !isValidTimeFormat(endTime)) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT)); // change exception! // change test too
+            throw new ParseException(String.format(MESSAGE_INVALID_SLOT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
         }
         setSlotStartAndEnd(timeSlot, startTime, endTime);
         if (!timeSlot.getKey().before(timeSlot.getValue())) {

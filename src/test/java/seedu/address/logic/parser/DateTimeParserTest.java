@@ -58,13 +58,14 @@ public class DateTimeParserTest {
 
     private static final String REFINED_VALID_TIME_SLOT = "13/12/2018 9:30 - 10:30";
     private static final String REFINED_VALID_TIME_SLOT_WITH_WHITESPACE = "13/12/2018 9:30 -   10:30";
+    private static final String REFINED_INVALID_INCOMPLETE = "13/12 11:00 -";
     private static final String REFINED_INVALID_WRONG_DATE = "32/12/2018 9:30 - 10:30";
     private static final String REFINED_INVALID_WRONG_TIME = "13/12/2018 9:88 - 10:30";
     private static final String REFINED_INVALID_TOO_EARLY = "13/12/2018 8:30 - 10:30";
     private static final String REFINED_INVALID_T00_LATE = "13/12/2018 19:30 - 23:30";
     private static final String REFINED_INVALID_END_EARLIER_THAN_START = "13/12/2018 10:30 - 9:30";
     private static final String REFINED_INVALID_FORMAT_TIME_SLOT = "13.12.2018 9:30 - 10:30";
-    private static final String REFINED_INVALID_FORMAT_WRONG_SEQUENCE_TIME_SLOT = "9:30 - 10:30 13.12.2018";
+    private static final String REFINED_INVALID_FORMAT_WRONG_SEQUENCE_TIME_SLOT = "9:30 - 10:30 13/12/2018";
 
 
     private DateTimeParser parser;
@@ -338,11 +339,11 @@ public class DateTimeParserTest {
     public void parseTimeSlot_invalidInput_throwsParseException() {
         // testing "13.12.2018 9:30 - 10:30"
         assertTimeSlotParsingFailure(REFINED_INVALID_FORMAT_TIME_SLOT,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+                String.format(MESSAGE_INVALID_SLOT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
 
-        // testing "9:30 - 10:30 13.12.2018"
+        // testing "9:30 - 10:30 13/12/2018"
         assertTimeSlotParsingFailure(REFINED_INVALID_FORMAT_WRONG_SEQUENCE_TIME_SLOT,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+                String.format(MESSAGE_INVALID_SLOT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
 
         // testing "13/12/2018 10:30 - 9:30"
         assertTimeSlotParsingFailure(REFINED_INVALID_END_EARLIER_THAN_START,
@@ -350,19 +351,23 @@ public class DateTimeParserTest {
 
         // testing "13/12/2018 19:30 - 23:30"
         assertTimeSlotParsingFailure(REFINED_INVALID_T00_LATE,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+                String.format(MESSAGE_INVALID_SLOT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
 
         // testing "13/12/2018 8:30 - 10:30"
         assertTimeSlotParsingFailure(REFINED_INVALID_TOO_EARLY,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+                String.format(MESSAGE_INVALID_SLOT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
 
         // testing "32/12/2018 9:30 - 10:30"
         assertTimeSlotParsingFailure(REFINED_INVALID_WRONG_DATE,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+                String.format(MESSAGE_INVALID_SLOT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
 
         // testing "13/12/2018 9:88 - 10:30"
         assertTimeSlotParsingFailure(REFINED_INVALID_WRONG_TIME,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+                String.format(MESSAGE_INVALID_SLOT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+
+        // testing "13/12 11:00 -"
+        assertTimeSlotParsingFailure(REFINED_INVALID_INCOMPLETE,
+                String.format(MESSAGE_INVALID_SLOT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
     }
 
     @Test
