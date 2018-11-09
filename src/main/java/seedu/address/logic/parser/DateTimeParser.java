@@ -398,23 +398,6 @@ public class DateTimeParser {
     }
 
     /**
-     * Sorts the given list of time slots, primarily based on the start time of the slot.
-     * If two slots have the same start time, their end times and compared.
-     * @param timeSlots The list of time slots to sort.
-     */
-    private void sortTimeSlots(List<Pair<Calendar>> timeSlots) {
-        timeSlots.sort(new Comparator<Pair<Calendar>>() {
-            @Override
-            public int compare(Pair<Calendar> timeSlot1, Pair<Calendar> timeSlot2) {
-                if (timeSlot1.getKey().compareTo(timeSlot2.getKey()) == 0) {
-                    return timeSlot1.getValue().compareTo(timeSlot2.getValue());
-                }
-                return timeSlot1.getKey().compareTo(timeSlot2.getKey());
-            }
-        });
-    }
-
-    /**
      * Finds and appends the first available time slot before the the first scheduled appointment within that range.
      * This available time slot will be from 9:00 of the day where the first appointment is,
      * to the start of the first appointment.
@@ -512,6 +495,23 @@ public class DateTimeParser {
             }
             dayPointer.add(Calendar.DATE, 1); // next date
         }
+    }
+
+    /**
+     * Sorts the given list of time slots, primarily based on the start time of the slot.
+     * If two slots have the same start time, their end times and compared.
+     * @param timeSlots The list of time slots to sort.
+     */
+    private void sortTimeSlots(List<Pair<Calendar>> timeSlots) {
+        timeSlots.sort(new Comparator<Pair<Calendar>>() {
+            @Override
+            public int compare(Pair<Calendar> timeSlot1, Pair<Calendar> timeSlot2) {
+                if (timeSlot1.getKey().compareTo(timeSlot2.getKey()) == 0) {
+                    return timeSlot1.getValue().compareTo(timeSlot2.getValue());
+                }
+                return timeSlot1.getKey().compareTo(timeSlot2.getKey());
+            }
+        });
     }
 
     /**
