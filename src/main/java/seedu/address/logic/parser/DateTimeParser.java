@@ -390,7 +390,7 @@ public class DateTimeParser {
                 Calendar nextStart = scheduledAppts.get(i + 1).getDate().getKey();
                 findAvailableSlotsBetweenTwoAppts(availableSlots, currentEnd, nextStart);
             }
-            findLastAvaialbleSlot(scheduledAppts, availableSlots);
+            findLastAvailableSlot(scheduledAppts, availableSlots);
         }
         findCompletelyAvailableDays(scheduledAppts, dateInterval, availableSlots);
         sortTimeSlots(availableSlots);
@@ -452,7 +452,7 @@ public class DateTimeParser {
      * @param scheduledAppts The list of already scheduled appointments within the time range.
      * @param availableSlots The list of available time slots within the time range.
      */
-    private void findLastAvaialbleSlot(List<ScheduleEvent> scheduledAppts, List<Pair<Calendar>> availableSlots) {
+    private void findLastAvailableSlot(List<ScheduleEvent> scheduledAppts, List<Pair<Calendar>> availableSlots) {
         Calendar lastScheduleEnd = scheduledAppts.get(scheduledAppts.size() - 1).getDate().getValue();
         Calendar lastDayEnd = (Calendar) lastScheduleEnd.clone();
         lastDayEnd.set(Calendar.HOUR_OF_DAY, 18);
