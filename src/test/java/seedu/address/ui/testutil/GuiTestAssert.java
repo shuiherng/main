@@ -44,7 +44,7 @@ public class GuiTestAssert {
      * Asserts that {@code actualCard} displays the details of {@code expectedEvent}.
      */
     public static void assertCardDisplaysEvent(ScheduleEvent expectedEvent, AppointmentCardHandle actualCard) {
-        assertEquals(expectedEvent.getDate().toString(), actualCard.getDatetime());
+        assertEquals(expectedEvent.getDateToString(), actualCard.getDatetime());
         assertEquals(expectedEvent.getPersonId().value, actualCard.getPersonid());
         assertEquals(expectedEvent.getDetails(), actualCard.getDetails());
         assertEquals(expectedEvent.getTags().stream().map(tag -> tag.tagName).collect(Collectors.toList()),

@@ -16,7 +16,7 @@ import seedu.address.model.event.ScheduleEvent;
 public class AppointmentCardHandle extends NodeHandle<Node> {
     private static final String ID_FIELD_ID = "#id";
     private static final String DATETIME_ID = "#datetime";
-    private static final String PERSONID_ID = "#personid";
+    private static final String PERSONID_ID = "#personId";
     private static final String DETAILS_ID = "#details";
     private static final String TAGS_FIELD_ID = "#tags";
 
