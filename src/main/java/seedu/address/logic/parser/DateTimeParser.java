@@ -27,6 +27,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -392,7 +393,25 @@ public class DateTimeParser {
             findLastAvaialbleSlot(scheduledAppts, availableSlots);
         }
         findCompletelyAvailableDays(scheduledAppts, dateInterval, availableSlots);
-        return availableSlots; // unsorted
+        sortTimeSlots(availableSlots);
+        return availableSlots;
+    }
+
+    /**
+     * Sorts the given list of time slots, primarily based on the start time of the slot.
+     * If two slots have the same start time, their end times and compared.
+     * @param timeSlots The list of time slots to sort.
+     */
+    private void sortTimeSlots(List<Pair<Calendar>> timeSlots) {
+        timeSlots.sort(new Comparator<Pair<Calendar>>() {
+            @Override
+            public int compare(Pair<Calendar> timeSlot1, Pair<Calendar> timeSlot2) {
+                if (timeSlot1.getKey().compareTo(timeSlot2.getKey()) == 0) {
+                    return timeSlot1.getValue().compareTo(timeSlot2.getValue());
+                }
+                return timeSlot1.getKey().compareTo(timeSlot2.getKey());
+            }
+        });
     }
 
     /**
