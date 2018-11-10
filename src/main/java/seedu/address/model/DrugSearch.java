@@ -73,22 +73,27 @@ public class DrugSearch {
      */
     public static String moreInfo(int index) {
         String results = "";
-        if (resultsCache.isEmpty()) {
-            return null;
+        try {
+            if (resultsCache.isEmpty()) {
+                return "Empty";
+            }
+
+            index--;
+            String[] record = resultsCache.get(index);
+            results = results.concat("\nName: " + record[1]);
+            results = results.concat("\nActive Ingredient(s): " + record[10].replace("&&", ", "));
+            results = results.concat("\nStrengths Available: " + record[11].replace("&&", ", "));
+            results = results.concat("\nDosage Form: " + record[6]);
+            results = results.concat("\nAdministration : " + record[7].replace("&&", ", "));
+            results = results.concat("\nClassification: " + record[4]);
+            results = results.concat("\nLicense Holder: " + record[2]);
+            results = results.concat("\nATC Code: " + record[5]);
+            results = results.concat("\n\n");
+
+            return results;
         }
-
-        index--;
-        String[] record = resultsCache.get(index);
-        results = results.concat("\nName: " + record[1]);
-        results = results.concat("\nActive Ingredient(s): " + record[10].replace("&&", ", "));
-        results = results.concat("\nStrengths Available: " + record[11].replace("&&", ", "));
-        results = results.concat("\nDosage Form: " + record[6]);
-        results = results.concat("\nAdministration : " + record[7].replace("&&", ", "));
-        results = results.concat("\nClassification: " + record[4]);
-        results = results.concat("\nLicense Holder: " + record[2]);
-        results = results.concat("\nATC Code: " + record[5]);
-        results = results.concat("\n\n");
-
-        return results;
+        catch(IndexOutOfBoundsException e) {
+            return "Not in list";
+        }
     }
 }
