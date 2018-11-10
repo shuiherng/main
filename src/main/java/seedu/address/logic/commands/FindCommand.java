@@ -39,7 +39,8 @@ public class FindCommand extends Command {
             + "to find all patients whose names contains any of the specified "
             + "keywords (case-insensitive)."
             + "\nUse 'find disease' to find all symptoms related to any disease in your database."
-            + "\nUse 'find drug' to find all drugs licensed for sale in Singapore matching this name (only alphabetical inputs)."
+            + "\nUse 'find drug' to find all drugs licensed for sale in Singapore matching this name "
+            +  "(only alphabetical inputs)."
             + "\nResults will be displayed in the form of an indexed list."
             + "\nParameters to find persons: KEYWORD [MORE_KEYWORDS]..."
             + "\nExample: "
@@ -118,7 +119,7 @@ public class FindCommand extends Command {
                 throw new CommandException(DRUG_TOO_GENERIC);
             } else if (result.equals("Initialization failed.")) {
                 throw new CommandException(UNEXPECTED_ERROR + DRUG_SEARCH_INITIALIZATION_FAIL);
-            } else if (result.equals("Not found.")){
+            } else if (result.equals("Not found.")) {
                 throw new CommandException(DRUG_NOT_FOUND);
             } else {
                 cmdResult = result;

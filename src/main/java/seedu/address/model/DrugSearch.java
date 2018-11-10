@@ -53,10 +53,10 @@ public class DrugSearch {
 
         for (int i = 0; i < resultsCache.size(); i++) {
             String[] currentRecord = resultsCache.get(i);
-            results = results.concat(String.format("%5s %s",(i + 1) + ".", "Name: " + currentRecord[1]));
-            results = results.concat("\n" + String.format("%5s %s",""," Active Ingredient(s): "
+            results = results.concat(String.format("%5s %s", (i + 1) + ".", "Name: " + currentRecord[1]));
+            results = results.concat("\n" + String.format("%5s %s", "", " Active Ingredient(s): "
                     + currentRecord[10].replace("&&", ", ")));
-            results = results.concat("\n" + String.format("%5s %s",""," Classification: " + currentRecord[4]));
+            results = results.concat("\n" + String.format("%5s %s", "", " Classification: " + currentRecord[4]));
             results = results.concat("\n\n");
         }
 

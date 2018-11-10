@@ -22,7 +22,7 @@ public class MoreInfoCommandParser implements Parser<MoreInfoCommand> {
          */
         args = args.trim();
 
-        if(!args.matches("[0-9]+")) {
+        if (!args.matches("[0-9]+")) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MoreInfoCommand.MESSAGE_USAGE));
         } else if (args.length() > 4) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MoreInfoCommand.MESSAGE_USAGE));

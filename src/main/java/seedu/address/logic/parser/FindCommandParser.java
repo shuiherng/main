@@ -33,8 +33,8 @@ public class FindCommandParser implements Parser<FindCommand> {
 
         //Check if input to drug search is all alphabetical
 
-        if(cmdType.equals(CMDTYPE_DRUG)) {
-            if(!args.trim().matches("[a-zA-Z]+")) {
+        if (cmdType.equals(CMDTYPE_DRUG)) {
+            if (!args.trim().matches("[a-zA-Z]+")) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
             }
         }
