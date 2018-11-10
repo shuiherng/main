@@ -14,13 +14,13 @@ public class DrugCsvUtilTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    public void returnsNullEventually() throws Exception{
+    public void returnsNullEventually() throws Exception {
         DrugCsvUtil testutil = new DrugCsvUtil(TEST_KEYWORD);
         String[] nextRecord;
-        while((nextRecord = testutil.nextMatchingEntry()) != null) {
+        while ((nextRecord = testutil.nextMatchingEntry()) != null) {
             // do nothing
         }
-        for(int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 5; i++) {
             assertTrue((nextRecord = testutil.nextMatchingEntry()) == null);
         }
     }
