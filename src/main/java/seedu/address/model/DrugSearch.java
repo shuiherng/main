@@ -18,9 +18,9 @@ public class DrugSearch {
      * keywords too generic to search for, as they will match tens of drugs
      */
     private static String[] tooGeneric = {
-        "capsule", "cream", "emulsi", "gel", "hydrochloride",
-        "injection", "lotion", "ointment", "paste", "patch", "pill", "powder",
-        "solution", "supposit", "syrup", "tablet"
+            "capsule", "cream", "emulsi", "gel", "hydrochloride",
+            "injection", "lotion", "ointment", "paste", "patch", "pill", "powder",
+            "solution", "supposit", "syrup", "tablet"
     };
 
     /**
@@ -54,14 +54,20 @@ public class DrugSearch {
 
         for (int i = 0; i < resultsCache.size(); i++) {
             String[] currentRecord = resultsCache.get(i);
-            results = results.concat("\nName: " + currentRecord[1]);
-            results = results.concat("\nActive Ingredient(s): "
+            results = results.concat((i+1)+". Name: " + currentRecord[1]);
+            results = results.concat("\n" + Spacer(i+1) + "  ");
+            results = results.concat("Active Ingredient(s): "
                     + currentRecord[10].replace("&&", ", "));
-            results = results.concat("\nClassification: " + currentRecord[4]);
-            results = results.concat("\n(For more information, enter \"moreinfo " + (i + 1) + "\"");
+            results = results.concat("\n" + Spacer(i+1) + "  ");
+            results = results.concat("Classification: " + currentRecord[4]);
             results = results.concat("\n\n");
         }
 
+        if (resultsCache.size()>0) {
+            results = results.concat("For more information about any result, enter \"moreinfo [INDEX]\"");
+        } else {
+            results = results.concat("No results found. Try again with a different query.");
+        }
         return results;
     }
 
@@ -79,7 +85,7 @@ public class DrugSearch {
 
             index--;
             String[] record = resultsCache.get(index);
-            results = results.concat("\nName: " + record[1]);
+            results = results.concat("Name: " + record[1]);
             results = results.concat("\nActive Ingredient(s): " + record[10].replace("&&", ", "));
             results = results.concat("\nStrengths Available: " + record[11].replace("&&", ", "));
             results = results.concat("\nDosage Form: " + record[6]);
@@ -87,11 +93,27 @@ public class DrugSearch {
             results = results.concat("\nClassification: " + record[4]);
             results = results.concat("\nLicense Holder: " + record[2]);
             results = results.concat("\nATC Code: " + record[5]);
-            results = results.concat("\n\n");
 
             return results;
         } catch (IndexOutOfBoundsException e) {
             return "Not in list";
+        }
+    }
+
+    /**
+     * Returns a sequence of spaces whose length is equivalent to the numnber of digits
+     * in its argument integer.
+     *
+     * @return String containing spaces.
+     */
+
+    private static String Spacer(int input) {
+        if (input < 10) {
+            return "  ";
+        } else if (input < 100) {
+            return "   ";
+        } else {
+            return "     ";
         }
     }
 }
