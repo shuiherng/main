@@ -30,7 +30,7 @@ public class ListCommand extends Command {
     public static final String COMMAND_WORD = "list";
     public static final String GET_ALL_WORD = "all";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + "use 'list patient' or 'list disease' "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + " use 'list patient' or 'list disease' "
             + "to list all persons or diseases with index numbers.\n";
 
     public static final String MESSAGE_PERSON_SUCCESS = "Listed all existing persons";
