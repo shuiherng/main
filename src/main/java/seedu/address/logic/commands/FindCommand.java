@@ -38,8 +38,8 @@ public class FindCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Use 'find patient' "
             + "to find all patients whose names contains any of the specified "
             + "keywords (case-insensitive)."
-            + "\nUse 'find disease' to find all symptoms related to a disease (if it exists)."
-            + "\nUse 'find drug' to find all drugs licensed for sale in Singapore matching this name."
+            + "\nUse 'find disease' to find all symptoms related to any disease in your database."
+            + "\nUse 'find drug' to find all drugs licensed for sale in Singapore matching this name (only alphabetical inputs)."
             + "\nResults will be displayed in the form of an indexed list."
             + "\nParameters to find persons: KEYWORD [MORE_KEYWORDS]..."
             + "\nExample: "
@@ -63,8 +63,10 @@ public class FindCommand extends Command {
             + "its related symptoms into the record";
     public static final String THE_FOLLOWING_SYMPTOMS_MATCHING = " is present in our record. "
             + "Found the following symptoms matching ";
-    public static final String DRUG_SEARCH_INITIALIZATION_FAIL = "The drug search database could not be initialize.";
+    public static final String DRUG_SEARCH_INITIALIZATION_FAIL = "The drug search database could not be initialized.";
     public static final String DRUG_NOT_FOUND = "No results found. Try again with a different query.";
+    public static final String DRUG_TOO_GENERIC = "Your search keyword is too generic. It will lead to hundreds "
+            + "of results. Try a more specific keyword instead.";
 
     private final String cmdType;
     private final String searchString;
@@ -112,7 +114,9 @@ public class FindCommand extends Command {
                     + CommandResult.convertListToString(symptomList);
         } else if (this.cmdType.equals(CMDTYPE_DRUG)) {
             String result = DrugSearch.find(searchString.trim().toLowerCase());
-            if (result.equals("Initialization failed")) {
+            if (result.equals("Too generic")) {
+                throw new CommandException(DRUG_TOO_GENERIC);
+            } else if (result.equals("Initialization failed")) {
                 throw new CommandException(UNEXPECTED_ERROR + DRUG_SEARCH_INITIALIZATION_FAIL);
             } else if (result.equals("None")){
                 throw new CommandException(DRUG_NOT_FOUND);

@@ -36,8 +36,7 @@ public class DrugSearch {
 
         for (String i: tooGeneric) {
             if (i.toLowerCase().contains(keyword.toLowerCase())) {
-                return "The keyword \'" + keyword + "\' is too generic, and will lead to hundreds of results. "
-                        + "Try a longer keyword or a more specific keyword instead.";
+                return "Too generic";
             }
         }
 
@@ -66,7 +65,7 @@ public class DrugSearch {
         if (resultsCache.size() > 0) {
             results = results.concat("For more information about any result, enter \"moreinfo [INDEX]\"");
         } else {
-            results = "none";
+            results = "None";
         }
         return results;
     }

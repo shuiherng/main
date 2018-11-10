@@ -31,6 +31,14 @@ public class FindCommandParser implements Parser<FindCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
 
+        //Check if input to drug search is all alphabetical
+
+        if(cmdType.equals(CMDTYPE_DRUG)) {
+            if(!args.trim().matches("[a-zA-Z]+")) {
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+            }
+        }
+
         if (!cmdType.equals(CMDTYPE_PATIENT) && !cmdType.equals(CMDTYPE_APPOINTMENT)
                 && !cmdType.equals(CMDTYPE_DISEASE) && !cmdType.equals(CMDTYPE_DRUG)) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));

@@ -17,15 +17,15 @@ public class MoreInfoCommand extends Command {
 
     public static final String COMMAND_WORD = "moreinfo";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": See more "
-            + "information about a drug in the search results.\n"
-            + "Example: " + COMMAND_WORD + " 3";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Use \"moreinfo [INDEX]\""
+            + " to view extended pharmacological data about the corresponding"
+            + " search result (INDEX must be a positive integer)."
+            + "\nExample: " + COMMAND_WORD + " 3";
 
     public static final String NO_PRIOR_SEARCH = "Please carry out a search "
         + "using \"find drug [drugname]\" first.";
 
-    public static final String NO_SUCH_RESULT = "This result is not in the list. Please look through "
-            + "the results and type \"moreinfo [index]\" to see more";
+    public static final String NO_SUCH_RESULT = "This result is not in the list.";
 
     private final int index;
 
