@@ -87,8 +87,7 @@ public class FindCommand extends Command {
         } else if (this.cmdType.equals(CMDTYPE_DISEASE)) {
             Disease disease = new Disease(searchString.trim().toLowerCase());
             if (!diagnosisModel.hasDisease(disease)) {
-                throw new CommandException(UNEXPECTED_ERROR
-                        + disease.toString()
+                throw new CommandException(disease.toString()
                         + IS_NOT_PRESENT_IN_OUR_RECORD
                         + AND_ITS_RELATED_SYMPTOMS_INTO_THE_RECORD);
             }
