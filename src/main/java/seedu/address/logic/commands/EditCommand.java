@@ -145,7 +145,7 @@ public class EditCommand extends Command {
 
             // Edit the person
             try {
-                Person personToEdit = addressBookModel.getPersonById(new PersonId(target));
+                Person personToEdit = addressBookModel.getPersonById(new PersonId(target, false));
 
                 // disallow editing if person is already deleted
                 if (!personToEdit.getExists()) {
@@ -201,7 +201,7 @@ public class EditCommand extends Command {
 
             // Edit the event
             try {
-                ScheduleEvent eventToEdit = scheduleModel.getEventById(new EventId(target));
+                ScheduleEvent eventToEdit = scheduleModel.getEventById(new EventId(target, false));
                 ScheduleEvent editedEvent = createEditedEvent(eventToEdit, editScheduleEventDescriptor);
 
                 scheduleModel.updateEvent(eventToEdit, editedEvent);

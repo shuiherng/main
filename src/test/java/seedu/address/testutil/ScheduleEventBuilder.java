@@ -36,7 +36,7 @@ public class ScheduleEventBuilder {
     }
 
     public ScheduleEventBuilder() {
-        personId = new PersonId(DEFAULT_PERSON_ID);
+        personId = new PersonId(DEFAULT_PERSON_ID, false);
         dateTime = DEFAULT_VALID_DURATION;
         details = DEFAULT_DETAILS;
         tags = new HashSet<>();
@@ -56,7 +56,7 @@ public class ScheduleEventBuilder {
      * Sets the {@code PersonId} of the {@code ScheduleEvent} that we are building.
      */
     public ScheduleEventBuilder withPersonId(String personId) {
-        this.personId = new PersonId(personId);
+        this.personId = new PersonId(personId, false);
         return this;
     }
 

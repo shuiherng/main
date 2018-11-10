@@ -65,7 +65,7 @@ public class DeleteCommand extends Command {
                 throw new CommandException(MESSAGE_INVALID_PERSON_ID);
             }
             try {
-                Person foundPerson = addressBookModel.getPersonById(new PersonId(target));
+                Person foundPerson = addressBookModel.getPersonById(new PersonId(target, false));
                 addressBookModel.deletePerson(foundPerson);
                 addressBookModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_EXISTING_PERSONS);
                 PersonId personId = foundPerson.getId();
@@ -93,7 +93,7 @@ public class DeleteCommand extends Command {
                 throw new CommandException(MESSAGE_INVALID_EVENT_ID);
             }
             try {
-                scheduleModel.deleteEvent(scheduleModel.getEventById(new EventId(target)));
+                scheduleModel.deleteEvent(scheduleModel.getEventById(new EventId(target, false)));
                 scheduleModel.updateFilteredEventList(PREDICATE_SHOW_SCHEDULE_EVENTS);
             } catch (ScheduleEventNotFoundException e) {
                 throw new CommandException(String.format(MESSAGE_EVENT_ID_NOT_FOUND, target));
