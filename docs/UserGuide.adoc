@@ -326,7 +326,8 @@ Adds a new disease to the patient book.
 
 You must include one and only one `DISEASE` parameter with prefix `d/` and at least one `SYMPTOM` for that disease
 with prefix `s/`. Duplicate symptoms can be included but only one will be added into the patient book. The `DISEASE`
- and `SYMPTOM` parameter can take any characters except `comma`.
+ and `SYMPTOM` parameter can take any characters except `comma`. Both `DISEASE` and `SYMPTOM` parameters cannot exceed
+ `20` characters in length.
 
 When you try to add an existing disease into the patient book, the following error message will be shown to you:
 
@@ -341,7 +342,7 @@ Example:
 * `add disease d/alcohol misuse s/stroke s/stroke s/mouth cancer` +
 Symptom 'stroke' will be included once in our record.
 * `add disease d/obesity d/obesities` +
-This is an invalid command due to multiple occurrence of disease and zero occurrence of symptom. Hence, you will
+This is an invalid command due to multiple occurrence of disease paramters. Hence, you will
 be prompted to enter a correct command:
 
 .Error Message for Wrong Add Disease Format

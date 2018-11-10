@@ -143,7 +143,11 @@ public class AddCommand extends Command {
             + "unacceptable values should have been prompted for.";
     public static final String VALUES_SHOULD_HAVE_BEEN_CAUGHT_IN_ADD_COMMAND_PARSER = "Unexpected Values: "
             + "should have been caught in AddCommandParser.";
-
+    public static final int STRING_LENGTH_LIMIT = 20;
+    public static final String INVALID_PARAMETER_LENGTH_DISEASE = "The length of disease parameter should not be "
+            + "more than 20 chars.";
+    public static final String INVALID_PARAMETER_LENGTH_SYMPTOM = "The length of symptom parameter should not be "
+            + "more than 20 chars.";
     private final String addType;
     private final String args;
 
@@ -224,6 +228,11 @@ public class AddCommand extends Command {
                 if (disease.toString().contains(ILLEGAL_CHAR_COMMA)) {
                     throw new CommandException(ILLEGAL_CHAR_IN_DISEASE_PARAMETER);
                 }
+
+                if (disease.toString().length() > STRING_LENGTH_LIMIT) {
+                    throw new CommandException(INVALID_PARAMETER_LENGTH_DISEASE);
+                }
+
                 Set<Symptom> symptomSet = ParserUtil.parseSymptoms(argMultimap.getAllValues(PREFIX_SYMPTOM));
 
                 for (Symptom symptom : symptomSet) {
@@ -232,6 +241,9 @@ public class AddCommand extends Command {
                     }
                     if (symptom.toString().isEmpty()) {
                         throw new CommandException(EMPTY_SYMPTOM_ERROR);
+                    }
+                    if (symptom.toString().length() > STRING_LENGTH_LIMIT) {
+                        throw new CommandException(INVALID_PARAMETER_LENGTH_SYMPTOM);
                     }
                 }
 
