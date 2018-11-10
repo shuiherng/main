@@ -1,0 +1,76 @@
+= Zhou Zegang - Project Portfolio
+:site-section: AboutUs
+:imagesDir: ../images
+:stylesDir: ../stylesheets
+
+== PROJECT: PatientBook
+
+---
+
+== 1. Overview
+
+This project portfolio documents `Zhou Zegang`’s contributions to project `PatientBook`.
+
+`PatientBook` is an all-in-one convenient desktop application for medical professionals in Singapore.
+It is a `Command Line Interface(CLI)` application in which doctors can type simple commands on keyboard to store and
+manage patients’ data and appointment’ details easily. It can also be used to retrieve information about
+disease, symptoms and drugs.
+
+The `T12-2` development team consists of five year-two computer science undergraduates from School of Computing,
+`National University of Singapore`.
+
+`PatientBook` supports various important operations such as finding information about a patient,
+adding an appointment for a patient and predicting a disease from a set of symptoms.
+
+
+== 2. Summary of Contributions
+
+* *Major enhancement*: added *diagnosis model which supports add disease, find disease, list disease and predict
+disease command*.
+** What it does: This feature allows medical professionals to `add` a disease and its related symptoms,
+`find` symptoms of an existing disease,
+`list` all stored diseases and `predict` a disease from a given set of symptoms in PatientBook.
+** Justification: This feature improves the product significantly because a doctor can check up a disease’s symptoms
+and ascertain the accuracy of the diagnosis using `predict` command. Thus, this enhancement will reduce the likelihood
+of medical malpractice to a large extent.
+** Highlight: This enhancement is totally another separate model from two existing models, namely `patient model` and
+`appointment model`. As a result, it required an in-depth analysis of design and how it can integrate with the other two
+models. The implementation too was challenging as it required changes to existing project structure.
+** Credit: The `diagnosis model` uses an existing disease-symptom knowledge database
+from `Columbia University`. [http://people.dbmi.columbia.edu/~friedma/Projects/DiseaseSymptomKB/index.html[Database]]
+
+* *Minor enhancement*: designed and added a generic method which converts a list of items to an `alphabetically ordered`
+string message so that it can be clearly displayed in the application.
+
+* *Code contributed*: [https://github.com[Functional code]] [https://github.com[Test code]] TO-DO
+
+* *Other contributions*:
+
+** Project management:
+*** Managed releases `v1.3` - `v1.4` (2 releases) on GitHub
+*** Managed issue trackers on GitHub (examples:  TO-DO)
+** Enhancements to existing features:
+TO-DO
+** Documentation:
+TO-DO
+** Community:
+*** reviewed PRs (with non-trivial review comments): TO-DO
+*** Reported bugs and suggestions for other teams (examples:  TO-DO)
+
+
+== 3. Contributions to the User Guide
+
+
+|===
+|_Given below are sections I contributed to the User Guide. They showcase my ability to write documentation targeting end-users._
+|===
+
+include::../UserGuide.adoc[tag=diagnosis]
+
+== 4. Contributions to the Developer Guide
+
+|===
+|_Given below are sections I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project._
+|===
+
+include::../DeveloperGuide.adoc[tag=diagnosis]

@@ -220,6 +220,9 @@ public class AddCommand extends Command {
                 }
 
                 Disease disease = ParserUtil.parseDisease(diseaseValue.get());
+                if (disease.toString().contains(ILLEGAL_CHAR_COMMA)) {
+                    throw new CommandException(ILLEGAL_CHAR_IN_SYMPTOM_PARAMETER);
+                }
                 Set<Symptom> symptomSet = ParserUtil.parseSymptoms(argMultimap.getAllValues(PREFIX_SYMPTOM));
 
                 for (Symptom symptom : symptomSet) {
