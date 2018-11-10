@@ -9,7 +9,7 @@ image:https://img.shields.io/vscode-marketplace/r/ritwickdey.LiveServer.svg[Visu
 image:https://img.shields.io/beerpay/hashdog/scrapfy-chrome-extension.svg[Beerpay]
 
 ifdef::env-github[]
-image::docs/images/mode_appointment.PNG.PNG[width="600"]
+image::docs/images/mode_appointment.PNG[width="600"]
 endif::[]
 
 ifndef::env-github[]
