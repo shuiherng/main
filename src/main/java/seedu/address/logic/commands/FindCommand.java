@@ -114,11 +114,11 @@ public class FindCommand extends Command {
                     + CommandResult.convertListToString(symptomList);
         } else if (this.cmdType.equals(CMDTYPE_DRUG)) {
             String result = DrugSearch.find(searchString.trim().toLowerCase());
-            if (result.equals("Too generic")) {
+            if (result.equals("Too generic.")) {
                 throw new CommandException(DRUG_TOO_GENERIC);
-            } else if (result.equals("Initialization failed")) {
+            } else if (result.equals("Initialization failed.")) {
                 throw new CommandException(UNEXPECTED_ERROR + DRUG_SEARCH_INITIALIZATION_FAIL);
-            } else if (result.equals("None")){
+            } else if (result.equals("Not found.")){
                 throw new CommandException(DRUG_NOT_FOUND);
             } else {
                 cmdResult = result;

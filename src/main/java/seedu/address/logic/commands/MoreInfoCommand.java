@@ -42,9 +42,9 @@ public class MoreInfoCommand extends Command {
         String cmdResult;
 
         cmdResult = DrugSearch.moreInfo(index);
-        if (cmdResult.equals("Empty")) {
+        if (cmdResult.equals("Empty.")) {
             throw new CommandException(NO_PRIOR_SEARCH);
-        } else if (cmdResult.equals("Not in list")) {
+        } else if (cmdResult.equals("Not in cache.")) {
             throw new CommandException(NO_SUCH_RESULT);
         }
 
