@@ -15,11 +15,9 @@ public class DrugSearchTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
+    private static final String NOT_IN_DATABASE = "StarbucksCoffee";
     private static final String TOO_GENERIC_1 = "tablet";
     private static final String TOO_GENERIC_2 = "hyd";
-
-    private static final String NOT_IN_DATABASE = "StarbucksCoffee";
-
     private static final int RANDOMIZED_TEST_LENGTH = 8;
 
     @Test

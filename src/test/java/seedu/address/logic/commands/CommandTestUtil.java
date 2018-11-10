@@ -60,7 +60,10 @@ public class CommandTestUtil {
     // than 4 digits
     public static final String INVALID_MOREINFO_INDEX_NON_POSITIVE_1 = "0"; // moreinfo indices must be positive
     public static final String INVALID_MOREINFO_INDEX_NON_POSITIVE_2 = "-1"; // moreinfo indices must be positive
-    public static final String INVALID_MOREINFO_INDEX_NON_NUMERICAL = "123abc"; // moreinfo indices must be numerical
+    public static final String INVALID_MOREINFO_INDEX_NON_NUMERICAL_1 = "123abc"; // moreinfo indices not contain
+    // letters
+    public static final String INVALID_MOREINFO_INDEX_NON_NUMERICAL_2 = "contains spaces"; // moreinfo
+    // indices not contain spaces
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
 
