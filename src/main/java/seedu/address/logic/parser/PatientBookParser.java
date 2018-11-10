@@ -49,47 +49,47 @@ public class PatientBookParser {
         final String arguments = matcher.group("arguments");
         switch (commandWord) {
 
-            case AddCommand.COMMAND_WORD:
-                return new AddCommandParser().parse(arguments);
+        case AddCommand.COMMAND_WORD:
+            return new AddCommandParser().parse(arguments);
 
-            case EditCommand.COMMAND_WORD:
-                return new EditCommandParser().parse(arguments);
+        case EditCommand.COMMAND_WORD:
+            return new EditCommandParser().parse(arguments);
 
-            case SelectCommand.COMMAND_WORD:
-                return new SelectCommandParser().parse(arguments);
+        case SelectCommand.COMMAND_WORD:
+            return new SelectCommandParser().parse(arguments);
 
-            case DeleteCommand.COMMAND_WORD:
-                return new DeleteCommandParser().parse(arguments);
+        case DeleteCommand.COMMAND_WORD:
+            return new DeleteCommandParser().parse(arguments);
 
-            case ClearCommand.COMMAND_WORD:
-                return new ClearCommandParser().parse(arguments);
+        case ClearCommand.COMMAND_WORD:
+            return new ClearCommandParser().parse(arguments);
 
-            case FindCommand.COMMAND_WORD:
-                return new FindCommandParser().parse(arguments);
+        case FindCommand.COMMAND_WORD:
+            return new FindCommandParser().parse(arguments);
 
-            case ListCommand.COMMAND_WORD:
-                return new ListCommandParser().parse(arguments);
+        case ListCommand.COMMAND_WORD:
+            return new ListCommandParser().parse(arguments);
 
-            case ModeCommand.COMMAND_WORD:
-                return new ModeCommandParser().parse(arguments);
+        case ModeCommand.COMMAND_WORD:
+            return new ModeCommandParser().parse(arguments);
 
-            case MoreInfoCommand.COMMAND_WORD:
-                return new MoreInfoCommandParser().parse(arguments);
+        case MoreInfoCommand.COMMAND_WORD:
+            return new MoreInfoCommandParser().parse(arguments);
 
-            case PredictCommand.COMMAND_WORD:
-                return new PredictCommandParser().parse(arguments);
+        case PredictCommand.COMMAND_WORD:
+            return new PredictCommandParser().parse(arguments);
 
-            case HistoryCommand.COMMAND_WORD:
-                return new HistoryCommand();
+        case HistoryCommand.COMMAND_WORD:
+            return new HistoryCommand();
 
-            case ExitCommand.COMMAND_WORD:
-                return new ExitCommand();
+        case ExitCommand.COMMAND_WORD:
+            return new ExitCommand();
 
-            case HelpCommand.COMMAND_WORD:
-                return new HelpCommand();
+        case HelpCommand.COMMAND_WORD:
+            return new HelpCommand();
 
-            default:
-                throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
+        default:
+            throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
         }
     }
 
