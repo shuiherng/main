@@ -249,10 +249,11 @@ public class MainApp extends Application {
             // Create the Prompt Window Stage.
             Stage promptStage = new Stage();
             promptStage.setTitle("Prompt Window");
-            promptStage.initModality(Modality.WINDOW_MODAL);
-            promptStage.initOwner(null);
+            promptStage.initModality(Modality.APPLICATION_MODAL);
+            promptStage.initOwner(secondaryStage);
             Scene scene = new Scene(page);
             promptStage.setScene(scene);
+            promptStage.setAlwaysOnTop(true);
 
             // Set the input into the controller.
             PromptWindow controller = loader.getController();

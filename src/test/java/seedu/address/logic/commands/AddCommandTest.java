@@ -37,7 +37,12 @@ import seedu.address.model.DiagnosisModel;
 import seedu.address.model.DiagnosisModelManager;
 import seedu.address.model.ScheduleModel;
 import seedu.address.model.ScheduleModelManager;
+import seedu.address.model.person.Address;
+import seedu.address.model.person.Email;
+import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Phone;
+import seedu.address.model.tag.Tag;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.PersonUtil;
 
@@ -105,7 +110,7 @@ public class AddCommandTest {
     @Test
     public void parsePatient_incorrectNameFormat_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
-        thrown.expectMessage(MESSAGE_INVALID_PATIENT_FORMAT);
+        thrown.expectMessage(String.format(MESSAGE_INVALID_PATIENT_FORMAT, Name.MESSAGE_NAME_CONSTRAINTS));
         // no & allowed in name
         StringBuilder sb = new StringBuilder();
         sb.append(PREFIX_NAME + "James&" + " ");
@@ -118,7 +123,7 @@ public class AddCommandTest {
     @Test
     public void parsePatient_incorrectPhoneFormat_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
-        thrown.expectMessage(MESSAGE_INVALID_PATIENT_FORMAT);
+        thrown.expectMessage(String.format(MESSAGE_INVALID_PATIENT_FORMAT, Phone.MESSAGE_PHONE_CONSTRAINTS));
         // no a allowed in phone
         StringBuilder sb = new StringBuilder();
         sb.append(PREFIX_NAME + DEFAULT_NAME + " ");
@@ -131,7 +136,7 @@ public class AddCommandTest {
     @Test
     public void parsePatient_incorrectEmailFormat_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
-        thrown.expectMessage(MESSAGE_INVALID_PATIENT_FORMAT);
+        thrown.expectMessage(String.format(MESSAGE_INVALID_PATIENT_FORMAT, Email.MESSAGE_EMAIL_CONSTRAINTS));
         // no @ present in email
         StringBuilder sb = new StringBuilder();
         sb.append(PREFIX_NAME + DEFAULT_NAME + " ");
@@ -144,7 +149,7 @@ public class AddCommandTest {
     @Test
     public void parsePatient_incorrectAddressFormat_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
-        thrown.expectMessage(MESSAGE_INVALID_PATIENT_FORMAT);
+        thrown.expectMessage(String.format(MESSAGE_INVALID_PATIENT_FORMAT, Address.MESSAGE_ADDRESS_CONSTRAINTS));
         // empty string not allowed for address
         StringBuilder sb = new StringBuilder();
         sb.append(PREFIX_NAME + DEFAULT_NAME + " ");
@@ -157,7 +162,7 @@ public class AddCommandTest {
     @Test
     public void parsePatient_incorrectTagFormat_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
-        thrown.expectMessage(MESSAGE_INVALID_PATIENT_FORMAT);
+        thrown.expectMessage(String.format(MESSAGE_INVALID_PATIENT_FORMAT, Tag.MESSAGE_TAG_CONSTRAINTS));
         // * not allowed in tag
         StringBuilder sb = new StringBuilder();
         sb.append(PREFIX_NAME + DEFAULT_NAME + " ");

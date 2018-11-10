@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_DISEASE;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_DRUG;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
 
 import java.util.Arrays;
@@ -16,6 +17,7 @@ import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBookModel;
 import seedu.address.model.DiagnosisModel;
+import seedu.address.model.DrugSearch;
 import seedu.address.model.ScheduleModel;
 import seedu.address.model.event.ScheduleEventMatchesPredicate;
 import seedu.address.model.person.MatchPersonPredicate;
@@ -32,10 +34,14 @@ public class FindCommand extends Command {
 
     public static final String MESSAGE_UNEXPECTED_PARAMETER = "Unexpected Values: "
             + "Should have been caught in FindCommandParser.";
-    public static final String MESSAGE_USAGE = COMMAND_WORD + "use 'find patient' or 'find disease' "
+
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Use 'find patient'"
             + "to find all persons whose names contain any of "
-            + "the specified keywords (case-insensitive) or to find all symptoms related to a disease if it exists "
-            + "and displays them as a list with index numbers.\n"
+            + "the specified keywords (case-insensitive), use 'find disease' "
+            + "to find all symptoms related to a disease if it exists "
+            + "and display them as a list with index numbers, or use 'find drug'"
+            + "to find all drugs licensed for sale in Singapore matching this name. "
+            + "Results will be displayed as indexed list.\n"
             + "Parameters to find persons: KEYWORD [MORE_KEYWORDS]...\n"
             + "Example: "
             + COMMAND_WORD
@@ -45,7 +51,20 @@ public class FindCommand extends Command {
             + "Example: "
             + COMMAND_WORD
             + " disease"
-            + " influenza\n";
+            + " influenza\n"
+            + "Parameter to find drugs: DRUG\n"
+            + "Example: "
+            + COMMAND_WORD
+            + " drug"
+            + " Glycomet\n";
+
+    public static final String UNEXPECTED_ERROR = "Unexpected Error: ";
+    public static final String IS_NOT_PRESENT_IN_OUR_RECORD = " is not present in our record,";
+    public static final String AND_ITS_RELATED_SYMPTOMS_INTO_THE_RECORD = " please add this disease and "
+            + "its related symptoms into the record";
+    public static final String THE_FOLLOWING_SYMPTOMS_MATCHING = " is present in our record. "
+            + "Found the following symptoms matching ";
+    public static final String DRUG_SEARCH_INITIALIZATION_FAIL = "The drug search database could not initialize.";
 
     private final String cmdType;
     private final String searchString;
@@ -81,16 +100,22 @@ public class FindCommand extends Command {
         } else if (this.cmdType.equals(CMDTYPE_DISEASE)) {
             Disease disease = new Disease(searchString.trim().toLowerCase());
             if (!diagnosisModel.hasDisease(disease)) {
-                throw new CommandException("Unexpected Error: "
-                        + disease.toString()
-                        + " is not present in our record,"
-                        + " please add this disease and its related symptoms into the record");
+                throw new CommandException(disease.toString()
+                        + IS_NOT_PRESENT_IN_OUR_RECORD
+                        + AND_ITS_RELATED_SYMPTOMS_INTO_THE_RECORD);
             }
             List<Symptom> symptomList = diagnosisModel.getSymptoms(disease);
-            cmdResult = disease.toString() + " is present in our record. Found the following symptoms matching "
+            cmdResult = disease.toString() + THE_FOLLOWING_SYMPTOMS_MATCHING
                     + disease.toString() + ":\n"
                     + "\n"
                     + CommandResult.convertListToString(symptomList);
+        } else if (this.cmdType.equals(CMDTYPE_DRUG)) {
+            String result = DrugSearch.find(searchString.trim().toLowerCase());
+            if (result == null) {
+                throw new CommandException(UNEXPECTED_ERROR + DRUG_SEARCH_INITIALIZATION_FAIL);
+            } else {
+                cmdResult = result;
+            }
         } else {
             throw new CommandException(MESSAGE_UNEXPECTED_PARAMETER);
         }

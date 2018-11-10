@@ -166,6 +166,6 @@ public class ParserUtil {
      */
     public static PersonId parsePersonId(String s) {
         requireNonNull(s);
-        return new PersonId(s);
+        return new PersonId(s, false);
     }
 }

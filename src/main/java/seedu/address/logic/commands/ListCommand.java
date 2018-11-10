@@ -30,7 +30,7 @@ public class ListCommand extends Command {
     public static final String COMMAND_WORD = "list";
     public static final String GET_ALL_WORD = "all";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + "use 'list patient' or 'list disease' "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + " use 'list patient' or 'list disease' "
             + "to list all persons or diseases with index numbers.\n";
 
     public static final String MESSAGE_PERSON_SUCCESS = "Listed all existing persons";
@@ -38,7 +38,10 @@ public class ListCommand extends Command {
 
     public static final String MESSAGE_APPOINTMENT_SUCCESS = "Listed all appointments";
     public static final String MESSAGE_APPOINTMENT_ALL_SUCCESS = "Listed all appointments (including those in the"
-            + "past";
+            + " past)";
+    public static final String FOUND_THE_FOLLOWING_DISEASE = "Found the following disease:\n";
+    public static final String UNEXPECTED_VALUES_SHOULD_HAVE_BEEN_CAUGHT_IN_FIND_COMMAND_PARSER = "Unexpected Values: "
+            + "Should have been caught in FindCommandParser.";
 
     private final String cmdType;
     private final String args;
@@ -77,10 +80,10 @@ public class ListCommand extends Command {
             }
         } else if (this.cmdType.equals(CMDTYPE_DISEASE)) {
             List<Disease> diseaseList = diagnosisModel.getDiseases();
-            String cmdResult = "Found the following disease:\n" + CommandResult.convertListToString(diseaseList);
+            String cmdResult = FOUND_THE_FOLLOWING_DISEASE + CommandResult.convertListToString(diseaseList);
             return new CommandResult(cmdResult);
         } else {
-            throw new CommandException("Unexpected Values: Should have been caught in FindCommandParser.");
+            throw new CommandException(UNEXPECTED_VALUES_SHOULD_HAVE_BEEN_CAUGHT_IN_FIND_COMMAND_PARSER);
         }
 
     }

@@ -37,14 +37,14 @@ public class AppointmentMainWindow extends UiPart {
     private boolean isShowing;
 
     // Independent Ui parts residing in this Ui container
-    private BrowserPanel browserPanel;
+    private AppointmentNotePanel appointmentNotePanel;
     private AppointmentPanel appointmentPanel;
     private Config config;
     private UserPrefs prefs;
     private HelpWindow helpWindow;
 
     @FXML
-    private StackPane browserPlaceholder;
+    private StackPane notePlaceholder;
 
     @FXML
     private StackPane commandBoxPlaceholder;
@@ -117,8 +117,8 @@ public class AppointmentMainWindow extends UiPart {
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
-        browserPanel = new BrowserPanel();
-        browserPlaceholder.getChildren().add(browserPanel.getRoot());
+        appointmentNotePanel = new AppointmentNotePanel();
+        notePlaceholder.getChildren().add(appointmentNotePanel.getRoot());
 
         appointmentPanel = new AppointmentPanel(logic.getFilteredEventList());
         appointmentPanelPlaceholder.getChildren().add(appointmentPanel.getRoot());
@@ -191,6 +191,10 @@ public class AppointmentMainWindow extends UiPart {
 
     public AppointmentPanel getAppointmentPanel() {
         return appointmentPanel;
+    }
+
+    public void setNotePanelToDefault() {
+        appointmentNotePanel.loadDefaultNote();
     }
 
     @Subscribe

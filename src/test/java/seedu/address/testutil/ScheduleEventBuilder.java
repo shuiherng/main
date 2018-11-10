@@ -15,10 +15,10 @@ import seedu.address.model.util.SampleDataUtil;
  */
 public class ScheduleEventBuilder {
 
-    public static final String SAMPLE_EVENTID = "e110";
-    public static final String SAMPLE_VALID_DATETIME_EXPRESSION = "10/12/2019 10:00 - 11:00";
-    public static final String DEFAULT_PERSON = "p229";
-    public static final String DEFAULT_DATETIME = "next week";
+    public static final String SAMPLE_EVENTID = "e1";
+    public static final Pair<Calendar> DEFAULT_VALID_DURATION;
+    public static final String DEFAULT_PERSON_ID = "p1";
+    public static final String DEFAULT_DATETIME_STRING = "next week";
     public static final String DEFAULT_DETAILS = "third visit";
 
     private PersonId personId;
@@ -26,9 +26,18 @@ public class ScheduleEventBuilder {
     private String details;
     private Set<Tag> tags;
 
+    static {
+        Calendar currentTime = Calendar.getInstance();
+        Calendar sampleStart = (Calendar) currentTime.clone();
+        Calendar sampleEnd = (Calendar) currentTime.clone();
+        sampleStart.set(2018, 11, 13, 9, 30, 0);
+        sampleEnd.set(2018, 11, 13, 10, 30, 0);
+        DEFAULT_VALID_DURATION = new Pair<>(sampleStart, sampleEnd);
+    }
+
     public ScheduleEventBuilder() {
-        personId = new PersonId(DEFAULT_PERSON); // not sure if this is correct
-        //dateTime = getDateTime(SAMPLE_VALID_DATETIME_EXPRESSION); // not sure if this is correct
+        personId = new PersonId(DEFAULT_PERSON_ID, false);
+        dateTime = DEFAULT_VALID_DURATION;
         details = DEFAULT_DETAILS;
         tags = new HashSet<>();
     }
@@ -47,7 +56,7 @@ public class ScheduleEventBuilder {
      * Sets the {@code PersonId} of the {@code ScheduleEvent} that we are building.
      */
     public ScheduleEventBuilder withPersonId(String personId) {
-        this.personId = new PersonId(personId);
+        this.personId = new PersonId(personId, false);
         return this;
     }
 
@@ -62,9 +71,8 @@ public class ScheduleEventBuilder {
     /**
      * Sets the {@code dateTime} of the {@code ScheduleEvent} that we are building.
      */
-    public ScheduleEventBuilder withDateTime(String dateTime) {
-
-
+    public ScheduleEventBuilder withDurations(Pair<Calendar> duration) {
+        this.dateTime = duration;
         return this;
     }
     /**

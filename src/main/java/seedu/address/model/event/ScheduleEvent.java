@@ -24,10 +24,12 @@ public class ScheduleEvent {
     // Standard datetime String format to be used by this application
     public static final SimpleDateFormat SDF;
     public static final SimpleDateFormat STORAGE_SDF;
+    public static final SimpleDateFormat TIME_SDF;
 
     static {
         SDF = new SimpleDateFormat("dd/MM/yyyy HH:mm - HH:mm");
         STORAGE_SDF = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        TIME_SDF = new SimpleDateFormat("HH:mm");
     }
 
     /**
@@ -79,7 +81,7 @@ public class ScheduleEvent {
         StringBuilder dateBuilder = new StringBuilder();
         dateBuilder.append(STORAGE_SDF.format(getDate().getKey().getTime()))
                    .append(" to ")
-                   .append(STORAGE_SDF.format(getDate().getValue().getTime()));
+                   .append(TIME_SDF.format(getDate().getValue().getTime()));
         return dateBuilder.toString();
     }
 

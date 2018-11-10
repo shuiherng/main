@@ -29,11 +29,18 @@ public class PredictCommand extends Command {
     public static final String COMMAND_WORD = "predict";
     public static final String MESSAGE_USAGE = "Expected format for predicting a disease: \n "
             + COMMAND_WORD
-            + "[" + PREFIX_SYMPTOM + "SYMPTOM]...\n"
+            + " [" + PREFIX_SYMPTOM + "SYMPTOM]...\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_SYMPTOM + "uncoordination "
             + PREFIX_SYMPTOM + "pleuritic pain "
             + "\n";
+    public static final String CANNOT_DETERMINE_THE_IDENTITY_OF_THE_DISEASE_THE_REASON_COULD = "We cannot "
+            + "determine the identity of the disease.\nThe reason could";
+    public static final String DISEASES_THAT_YOU_MAY_BE_LOOKING_FOR = "The diseases that you may be looking for:\n";
+    public static final String ERROR_UNACCEPTABLE_VALUES_SHOULD_HAVE_BEEN_PROMPTED_FOR = "Unexpected Error: "
+            + "unacceptable values should have been prompted for.";
+    public static final String POSSIBLY_DUE_TO_AN_INVALID_COMMAND_FORMAT_PLEASE_CHECK_YOUR_FORMAT_AGAIN = " be "
+            + "possibly due to an invalid command format, please check your format again.\n";
     private final String args;
 
     public PredictCommand(String args) {
@@ -57,16 +64,16 @@ public class PredictCommand extends Command {
             Set<Symptom> symptomSet = ParserUtil.parseSymptoms(argMultimap.getAllValues(PREFIX_SYMPTOM));
             List<Disease> diseases = diagnosisModel.predictDisease(symptomSet);
             if (diseases.isEmpty()) {
-                throw new CommandException("We cannot determine the identity of the disease.\nThe reason could"
-                        + " be possibly due to an invalid command format, please check your format again.\n"
+                throw new CommandException(CANNOT_DETERMINE_THE_IDENTITY_OF_THE_DISEASE_THE_REASON_COULD
+                        + POSSIBLY_DUE_TO_AN_INVALID_COMMAND_FORMAT_PLEASE_CHECK_YOUR_FORMAT_AGAIN
                         + "\n"
                         + MESSAGE_USAGE);
             }
-            String cmdResult = "The diseases that you may be looking for:\n"
+            String cmdResult = DISEASES_THAT_YOU_MAY_BE_LOOKING_FOR
                     + CommandResult.convertListToString(diseases);
             return new CommandResult(cmdResult);
         } catch (ParseException e) {
-            throw new CommandException("Unexpected Error: unacceptable values should have been prompted for.", e);
+            throw new CommandException(ERROR_UNACCEPTABLE_VALUES_SHOULD_HAVE_BEEN_PROMPTED_FOR, e);
         }
     }
 

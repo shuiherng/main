@@ -14,7 +14,7 @@ ifdef::env-github[]
 endif::[]
 :repoURL: https://github.com/CS2103-AY1819S1-T12-2/main
 
-By: `Team T12-2`      Since: `Jun 2016`      Licence: `MIT`
+By: `Team T12-2`      Since: `Aug 2018`      Licence: `MIT`
 
 == Introduction
 
@@ -30,7 +30,7 @@ http://www.java.com/en/download/[here].
 . Copy the downloaded file to the folder you wish to use as the home folder for PatientBook.
 . Double-click the file to start PatientBook. The following GUI should appear in a few seconds.
 +
-image::PatientMode.PNG[width="790"]
+image::UI_Starting.PNG[width="790"]
 +
 .  Type the command in the command box and press kbd:[Enter] to execute it. +
 e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
@@ -75,7 +75,7 @@ enter a valid command regarding patient in appointment management mode, the appl
 mode automatically.
 
 .Patient Mode
-image::PatientMode.PNG[width="600"]
+image::mode_patient.PNG[width="600"]
 
 === Switch to appointment management mode : `mode appointment`
 
@@ -86,7 +86,7 @@ When you enter a valid command regarding appointment in patient management mode,
 appointment management mode automatically.
 
 .Appointment Mode
-image::AppointmentMode.PNG[width="600"]
+image::mode_appointment.PNG[width="600"]
 
 === Add a patient : `add patient`
 
@@ -101,6 +101,23 @@ Examples:
 
 * `add patient n/John Smith p/90516038 a/New Smith Street, Singapore 519321 e/johnsmith@gmail.com`
 * `add patient n/Alice Barker p/62353535 a/4 Pizza Road, Singapore 941023 e/alice_barker@yahoo.com.sg t/friend t/groupmate`
+
+=== Select a patient : `select patient`
+
+*Format:* `select patient PATIENT_ID`
+
+Selects an existing patient and its information will display on the right. If necessary, switches the application to patient management mode.
+
+[NOTE]
+Select command is different from clicking the patient card in the window. It enables you to select the patients who were soft deleted
+
+Examples:
+
+* `select patient p1`
+* `select patient p29`
+
+.Select a patient
+image::select_patient.PNG[width="600"]
 
 === Edit patient information : `edit patient`
 
@@ -162,14 +179,16 @@ Examples:
 
 === Add an appointment : `add appointment`
 
-*Format:* `add appointment for NAME DATE/DURATION`
+*Format:* `add appointment for NAME TIME`
+
+*Alternative Format:* `add appointment for PATIENT_ID TIME`
 
 Creates a new appointment and places it in the schedule. If necessary, switches the application to appointment management mode.
 
 [NOTE]
 Unlike other commands, this command does not require any prefixing.
 
-For `DATE/DURATION` parameter, user may choose to use natural expressions to indicate the time or period where the appointment is to be scheduled. The list of natural expressions for `DATE/DURATION`
+For `TIME` parameter, user may choose to use natural expressions to indicate the time or period where the appointment is to be scheduled. The list of natural expressions for `TIME`
 which are accepted by the program include:
 
 * `tomorrow` or `tmr`
@@ -187,10 +206,12 @@ which are accepted by the program include:
 * in `DD/MM/YYYY` format
 [NOTE]
 Asterisk (*) denotes any positive integer number.
+[NOTE]
+Adding an appointment with a time that is already past is allowed. However, this functionality should only be used when user wants to record some critical information about a past appointment that is for some reason unscheduled beforehand.
 
 After the initial input is processed by the programme, user may encounter a maximum of four prompt windows for further input, including:
 
-* A prompt window where user is required to choose the correct patient to schedule for, if the name provided in the initial input can be matched to multiple patients in the record. `Patient_ID` of the intended patient is to be entered.
+* A prompt window where user is required to choose the correct patient to schedule for, if the name provided in the initial input can be matched to multiple patients in the record. The definition of a successful match is the same as that of the command `find patient`, as explained above. `Patient_ID` of the intended patient is to be entered.
 * A prompt window where user is required to provide a specific time slot for the appointment, from a list of available time periods, in `DD/MM/YYYY hh:mm - hh:mm` format.
 * A prompt window where user may choose to provide any additional notes for the appointment.
 * A prompt window where user may choose to provide any tags for the appointment.
@@ -229,17 +250,33 @@ New appointment added: Appointment ID: e3 scheduled for patient ID: p7 during: 3
 Details:
 Tags:
 ```
+=== Select an appointment : `select appointment`
+
+*Format:* `select appointment APPOINTMENT_ID`
+
+Selects an existing appointment and its details will display on the right. If necessary, switches the application to appointment management mode.
+
+[NOTE]
+Select command is different from clicking the appointment card in the window. It enables you to select the appointment in the past.
+
+Examples:
+
+* `select appointment e5`
+* `select appointment e29`
+
+.Select an appointment
+image::select_appointment.PNG[width="600"]
 
 === Edit appointment information : `edit appointment`
 
 *Format:* `edit appointment APPOINTMENT_ID [p/PATIENT_ID] [t/TIME] [d/NOTES] [s/TAG]`
 
-Edits an existing appointment with the given field in the schedule.  If necessary, switches the application to appointment management mode.
+Edits an existing appointment with the given field(s). The constraints of each field are the same as those of the command `add appointment`. If necessary, switches the application to appointment management mode.
 
 [NOTE]
 At least one of the optional fields must be provided.
 [NOTE]
-To edit the time of the appointment, `[t/TIME]` has to be entered in `DD/MM/YYYY hh:mm - hh:mm` format
+To edit the time of the appointment, `[t/TIME]` has to be entered in `DD/MM/YYYY hh:mm - hh:mm` format, as natural expressions are not supported in this command.
 
 Examples:
 
@@ -273,11 +310,13 @@ Example:
 
 * `delete appointment e2`
 
-=== Clear all appointments : `clear schedule`
+=== Clear all appointments : `clear appointment`
 
-*Format:* `clear schedule`
+*Format:* `clear appointment`
 
 Clears all appointments scheduled in the record. If necessary, switches the application to appointment management mode.
+
+// tag::diagnosis[]
 
 === Add a disease : `add disease`
 
@@ -286,7 +325,8 @@ Clears all appointments scheduled in the record. If necessary, switches the appl
 Adds a new disease to the patient book.
 
 You must include one and only one `DISEASE` parameter with prefix `d/` and at least one `SYMPTOM` for that disease
-with prefix `s/`. Duplicate symptoms can be included but only one will be added into the patient book.
+with prefix `s/`. Duplicate symptoms can be included but only one will be added into the patient book. The `DISEASE`
+ and `SYMPTOM` parameter can take any characters except `comma`.
 
 When you try to add an existing disease into the patient book, the following error message will be shown to you:
 
@@ -311,7 +351,7 @@ image::ErrorMessageForWrongAddDiseaseCommand.png[width="600"]
 
 *Format:* `list disease`
 
-Shows a list of all diseases in the patient book.
+Shows a list of all diseases in alphabetic order in the patient book.
 
 === Locate diseases  : `find disease`
 
@@ -358,6 +398,8 @@ Returns an error message:
 .Error Message for Invalid Command 'predict s/cry'
 image::PredictInvalidDemo.png[width="600"]
 
+// end::diagnosis[]
+
 === List entered commands : `history`
 
 *Format:* `history`
@@ -381,7 +423,7 @@ Exits the program.
 
 * *Add an appointment* : `add appointment` +
 
-* *Clear All appointments* : `clear schedule` +
+* *Clear All appointments* : `clear appointment` +
 
 * *Delete a patient* : `delete patient` +
 
@@ -408,6 +450,10 @@ Exits the program.
 * *Locate patients* : `find patient` +
 
 * *Predict disease* : `predict` +
+
+* *Select a patient* : `select patient` +
+
+* *Select an appointment* : `select appointment` +
 
 * *Switch to appointment management mode* : `mode appointment` +
 
