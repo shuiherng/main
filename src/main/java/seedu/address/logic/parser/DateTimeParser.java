@@ -27,6 +27,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -129,6 +130,9 @@ public class DateTimeParser {
             try {
                 offset = Integer.parseInt(splitDateInput[1]);
             } catch (NumberFormatException e) {
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_INVALID_INTEGER));
+            }
+            if (offset == 0 ) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_INVALID_INTEGER));
             }
             switch (splitDateInput[2]) {
@@ -389,10 +393,11 @@ public class DateTimeParser {
                 Calendar nextStart = scheduledAppts.get(i + 1).getDate().getKey();
                 findAvailableSlotsBetweenTwoAppts(availableSlots, currentEnd, nextStart);
             }
-            findLastAvaialbleSlot(scheduledAppts, availableSlots);
+            findLastAvailableSlot(scheduledAppts, availableSlots);
         }
         findCompletelyAvailableDays(scheduledAppts, dateInterval, availableSlots);
-        return availableSlots; // unsorted
+        sortTimeSlots(availableSlots);
+        return availableSlots;
     }
 
     /**
@@ -450,7 +455,7 @@ public class DateTimeParser {
      * @param scheduledAppts The list of already scheduled appointments within the time range.
      * @param availableSlots The list of available time slots within the time range.
      */
-    private void findLastAvaialbleSlot(List<ScheduleEvent> scheduledAppts, List<Pair<Calendar>> availableSlots) {
+    private void findLastAvailableSlot(List<ScheduleEvent> scheduledAppts, List<Pair<Calendar>> availableSlots) {
         Calendar lastScheduleEnd = scheduledAppts.get(scheduledAppts.size() - 1).getDate().getValue();
         Calendar lastDayEnd = (Calendar) lastScheduleEnd.clone();
         lastDayEnd.set(Calendar.HOUR_OF_DAY, 18);
@@ -496,6 +501,23 @@ public class DateTimeParser {
     }
 
     /**
+     * Sorts the given list of time slots, primarily based on the start time of the slot.
+     * If two slots have the same start time, their end times and compared.
+     * @param timeSlots The list of time slots to sort.
+     */
+    private void sortTimeSlots(List<Pair<Calendar>> timeSlots) {
+        timeSlots.sort(new Comparator<Pair<Calendar>>() {
+            @Override
+            public int compare(Pair<Calendar> timeSlot1, Pair<Calendar> timeSlot2) {
+                if (timeSlot1.getKey().compareTo(timeSlot2.getKey()) == 0) {
+                    return timeSlot1.getValue().compareTo(timeSlot2.getValue());
+                }
+                return timeSlot1.getKey().compareTo(timeSlot2.getKey());
+            }
+        });
+    }
+
+    /**
      * Converts a list representation of slots to a string representation.
      * @param slots List representation of slots.
      * @return String representation of the given list of slots.
@@ -538,17 +560,17 @@ public class DateTimeParser {
     public Pair<Calendar> parseTimeSlot(String timeSlotInput) throws ParseException {
         String[] splitString = timeSlotInput.split("\\s+");
         if (splitString.length != 4) { // {"DD/YMM/YYYY", "hh:mm", "-", "hh:mm"}
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+            throw new ParseException(String.format(MESSAGE_INVALID_SLOT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
         }
         String ddmmyyyy = splitString[0];
         String startTime = splitString[1];
         String endTime = splitString[3];
         if (!isValidDateFormat(ddmmyyyy)) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+            throw new ParseException(String.format(MESSAGE_INVALID_SLOT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
         }
         Pair<Calendar> timeSlot = getDateFromSpecified(ddmmyyyy);
         if (!isValidTimeFormat(startTime) || !isValidTimeFormat(endTime)) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+            throw new ParseException(String.format(MESSAGE_INVALID_SLOT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
         }
         setSlotStartAndEnd(timeSlot, startTime, endTime);
         if (!timeSlot.getKey().before(timeSlot.getValue())) {

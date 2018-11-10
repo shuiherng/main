@@ -31,7 +31,7 @@ public class DateTimeParserTest {
     private static final String VALID_THE_DAY_AFTER_TOMORROW = "the day after tomorrow";
     private static final String VALID_IN_SOME_SMALL_DAYS = "in 5 days";
     private static final String VALID_IN_SOME_BIG_DAYS = "in 365 days";
-    private static final String VALID_IN_SOME_SMALL_WEEKS = "in 3 weeks";
+    private static final String VALID_IN_SOME_SMALL_WEEKS = "in 1 week";
     private static final String VALID_IN_SOME_BIG_WEEKS = "in 50 weeks";
     private static final String VALID_IN_SOME_SMALL_MONTHS = "in 5 months";
     private static final String VALID_IN_SOME_BIG_MONTHS = "in 99 months";
@@ -49,21 +49,27 @@ public class DateTimeParserTest {
     private static final String VALID_SPECIFIED = "13/12/2018";
 
     private static final String INVALID_SPECIFIED_FORMAT = "13.12.2018";
-    private static final String INVALID_SPECIFIED_DAY_NUMBER = "33/12/2018";
+    private static final String INVALID_SPECIFIED_DAY_NUMBER = "32/12/2018";
     private static final String INVALID_SPECIFIED_MONTH_NUMBER = "13/13/2018";
     private static final String INVALID_NON_INTEGER_NUMBER = "in 0.8 days";
+    private static final String INVALID_ZERO_NUMBER = "in 0 week";
+    private static final String INVALID_NEGATIVE_INTEGER_NUMBER = "in -1 day";
     private static final String INVALID_BIG_INTEGER_NUMBER = "in 1000000000000000000 months";
     private static final String INVALID_CAPITALIZED = "neXt Month";
     private static final String INVALID_RANDOM = "elephant";
 
-    private static final String REFINED_VALID_TIME_SLOT = "13/12/2018 9:30 - 10:30";
+    private static final String REFINED_VALID_TIME_SLOT_EARLY = "13/12/2018 9:00 - 10:30";
+    private static final String REFINED_VALID_TIME_SLOT_MIDDLE = "13/12/2018 12:00 - 14:00";
+    private static final String REFINED_VALID_TIME_SLOT_LATE = "13/12/2018 16:00 - 18:00";
     private static final String REFINED_VALID_TIME_SLOT_WITH_WHITESPACE = "13/12/2018 9:30 -   10:30";
+    private static final String REFINED_INVALID_INCOMPLETE = "13/12 11:00 -";
     private static final String REFINED_INVALID_WRONG_DATE = "32/12/2018 9:30 - 10:30";
-    private static final String REFINED_INVALID_TOO_EARLY = "13/12/2018 8:30 - 10:30";
-    private static final String REFINED_INVALID_T00_LATE = "13/12/2018 19:30 - 23:30";
+    private static final String REFINED_INVALID_WRONG_TIME = "13/12/2018 9:60 - 10:30";
+    private static final String REFINED_INVALID_TOO_EARLY = "13/12/2018 8:30 - 10:00";
+    private static final String REFINED_INVALID_T00_LATE = "13/12/2018 18:00 - 23:30";
     private static final String REFINED_INVALID_END_EARLIER_THAN_START = "13/12/2018 10:30 - 9:30";
     private static final String REFINED_INVALID_FORMAT_TIME_SLOT = "13.12.2018 9:30 - 10:30";
-    private static final String REFINED_INVALID_FORMAT_WRONG_SEQUENCE_TIME_SLOT = "9:30 - 10:30 13.12.2018";
+    private static final String REFINED_INVALID_FORMAT_WRONG_SEQUENCE_TIME_SLOT = "9:30 - 10:30 13/12/2018";
 
 
     private DateTimeParser parser;
@@ -254,17 +260,17 @@ public class DateTimeParserTest {
 
     @Test
     public void parseDate_validInput_wrapAroundMonth() throws ParseException {
-        // testing "in 3 weeks"
-        expectedCalendarStart.set(2018, 11, 3, 9, 0, 0);
-        expectedCalendarEnd.set(2018, 11, 9, 18, 0, 0);
+        // testing "in 1 week"
+        expectedCalendarStart.set(2018, 10, 19, 9, 0, 0);
+        expectedCalendarEnd.set(2018, 10, 25, 18, 0, 0);
         setFirstDayOfWeekToMonday(expectedCalendarStart, expectedCalendarEnd);
         assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd),
                 parser.parseDate(VALID_IN_SOME_SMALL_WEEKS, dummyCurrentTime));
 
-        // testing "in 3 weeks" with a Sunday time
+        // testing "in 1 week" with a Sunday time
         // as Sundays are handled a bit differently
-        expectedCalendarStart.set(2018, 11, 3, 9, 0, 0);
-        expectedCalendarEnd.set(2018, 11, 9, 18, 0, 0);
+        expectedCalendarStart.set(2018, 10, 19, 9, 0, 0);
+        expectedCalendarEnd.set(2018, 10, 25, 18, 0, 0);
         setFirstDayOfWeekToMonday(expectedCalendarStart, expectedCalendarEnd);
         assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd),
                 parser.parseDate(VALID_IN_SOME_SMALL_WEEKS, dummySundayTime));
@@ -318,12 +324,26 @@ public class DateTimeParserTest {
 
     @Test
     public void parseTimeSlot_validInput() throws ParseException {
-        // testing "13/12/2018 9:30 - 10:30"
-        expectedCalendarStart.set(2018, 11, 13, 9, 30, 0);
+        // testing "13/12/2018 9:00 - 10:30"
+        expectedCalendarStart.set(2018, 11, 13, 9, 0, 0);
         expectedCalendarEnd.set(2018, 11, 13, 10, 30, 0);
         setFirstDayOfWeekToDefault(expectedCalendarStart, expectedCalendarEnd);
         assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd),
-                parser.parseTimeSlot(REFINED_VALID_TIME_SLOT));
+                parser.parseTimeSlot(REFINED_VALID_TIME_SLOT_EARLY));
+
+        // testing "13/12/2018 12:00 - 14:00"
+        expectedCalendarStart.set(2018, 11, 13, 12, 0, 0);
+        expectedCalendarEnd.set(2018, 11, 13, 14, 0, 0);
+        setFirstDayOfWeekToDefault(expectedCalendarStart, expectedCalendarEnd);
+        assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd),
+                parser.parseTimeSlot(REFINED_VALID_TIME_SLOT_MIDDLE));
+
+        // testing "13/12/2018 16:00 - 18:00"
+        expectedCalendarStart.set(2018, 11, 13, 16, 0, 0);
+        expectedCalendarEnd.set(2018, 11, 13, 18, 0, 0);
+        setFirstDayOfWeekToDefault(expectedCalendarStart, expectedCalendarEnd);
+        assertEquals(new Pair<>(expectedCalendarStart, expectedCalendarEnd),
+                parser.parseTimeSlot(REFINED_VALID_TIME_SLOT_LATE));
 
         // testing "13/12/2018 9:30 -   10:30"
         expectedCalendarStart.set(2018, 11, 13, 9, 30, 0);
@@ -337,27 +357,35 @@ public class DateTimeParserTest {
     public void parseTimeSlot_invalidInput_throwsParseException() {
         // testing "13.12.2018 9:30 - 10:30"
         assertTimeSlotParsingFailure(REFINED_INVALID_FORMAT_TIME_SLOT,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+                String.format(MESSAGE_INVALID_SLOT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
 
-        // testing "9:30 - 10:30 13.12.2018"
+        // testing "9:30 - 10:30 13/12/2018"
         assertTimeSlotParsingFailure(REFINED_INVALID_FORMAT_WRONG_SEQUENCE_TIME_SLOT,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+                String.format(MESSAGE_INVALID_SLOT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
 
         // testing "13/12/2018 10:30 - 9:30"
         assertTimeSlotParsingFailure(REFINED_INVALID_END_EARLIER_THAN_START,
                 String.format(MESSAGE_INVALID_SLOT, MESSAGE_END_BEFORE_START));
 
-        // testing "13/12/2018 19:30 - 23:30"
+        // testing "13/12/2018 18:00 - 23:30"
         assertTimeSlotParsingFailure(REFINED_INVALID_T00_LATE,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+                String.format(MESSAGE_INVALID_SLOT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
 
-        // testing "13/12/2018 8:30 - 10:30"
+        // testing "13/12/2018 8:30 - 10:00"
         assertTimeSlotParsingFailure(REFINED_INVALID_TOO_EARLY,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+                String.format(MESSAGE_INVALID_SLOT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
 
         // testing "32/12/2018 9:30 - 10:30"
         assertTimeSlotParsingFailure(REFINED_INVALID_WRONG_DATE,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+                String.format(MESSAGE_INVALID_SLOT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+
+        // testing "13/12/2018 9:60 - 10:30"
+        assertTimeSlotParsingFailure(REFINED_INVALID_WRONG_TIME,
+                String.format(MESSAGE_INVALID_SLOT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
+
+        // testing "13/12 11:00 -"
+        assertTimeSlotParsingFailure(REFINED_INVALID_INCOMPLETE,
+                String.format(MESSAGE_INVALID_SLOT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
     }
 
     @Test
@@ -370,7 +398,7 @@ public class DateTimeParserTest {
         assertDateParsingFailure(INVALID_SPECIFIED_FORMAT, dummyCurrentTime,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE_APPOINTMENT));
 
-        // testing "33/12/2018"
+        // testing "32/12/2018"
         assertDateParsingFailure(INVALID_SPECIFIED_DAY_NUMBER, dummyCurrentTime,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE_APPOINTMENT));
 
@@ -382,6 +410,10 @@ public class DateTimeParserTest {
         assertDateParsingFailure(INVALID_CAPITALIZED, dummyCurrentTime,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE_APPOINTMENT));
 
+        // testing "in -1 day"
+        assertDateParsingFailure(INVALID_NEGATIVE_INTEGER_NUMBER, dummyCurrentTime,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE_APPOINTMENT));
+
         // testing "in 1000000000000000000 months"
         assertDateParsingFailure(INVALID_BIG_INTEGER_NUMBER, dummyCurrentTime,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_INVALID_INTEGER));
@@ -389,6 +421,11 @@ public class DateTimeParserTest {
         // testing "in 0.8 days"
         assertDateParsingFailure(INVALID_NON_INTEGER_NUMBER, dummyCurrentTime,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_INVALID_INTEGER));
+
+        // testing "in 0 week"
+        assertDateParsingFailure(INVALID_ZERO_NUMBER, dummyCurrentTime,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_INVALID_INTEGER));
+
     }
 
     @Test
@@ -452,14 +489,109 @@ public class DateTimeParserTest {
 
     @Test
     public void getAvailableTimeSlotsBetween_startWithEmptyDays() {
-
+        durationStart.set(2018, 11, 13, 9, 00, 0);
+        durationEnd.set(2018, 11, 15, 18, 00, 0);
+        scheduleEventStart.set(2018, 11, 14, 12, 00, 0);
+        scheduleEventEnd.set(2018, 11, 14, 14, 00, 0);
+        scheduledAppointments.add(new ScheduleEventBuilder().withDurations(
+                new Pair<>((Calendar) scheduleEventStart.clone(), (Calendar) scheduleEventEnd.clone())).build());
+        scheduleEventStart.set(2018, 11, 15, 15, 00, 0);
+        scheduleEventEnd.set(2018, 11, 15, 17, 30, 0);
+        scheduledAppointments.add(new ScheduleEventBuilder().withDurations(
+                new Pair<>((Calendar) scheduleEventStart.clone(), (Calendar) scheduleEventEnd.clone())).build());
+        String expected = MESSAGE_HAVE_SLOTS
+                + "\n"
+                + "13/12/2018:\n"
+                + "09:00 - 18:00\n"
+                + "\n"
+                + "14/12/2018:\n"
+                + "09:00 - 12:00\n"
+                + "14:00 - 18:00\n"
+                + "\n"
+                + "15/12/2018:\n"
+                + "09:00 - 15:00\n"
+                + "17:30 - 18:00\n";
+        assertEquals(expected, parser.getAvailableTimeSlotsBetween(scheduledAppointments, duration));
+        scheduledAppointments.clear();
     }
 
     @Test
     public void getAvailableTimeSlotsBetween_endWithEmptyDays() {
-
+        durationStart.set(2018, 11, 13, 9, 00, 0);
+        durationEnd.set(2018, 11, 15, 18, 00, 0);
+        scheduleEventStart.set(2018, 11, 14, 9, 01, 0);
+        scheduleEventEnd.set(2018, 11, 14, 9, 02, 0);
+        scheduledAppointments.add(new ScheduleEventBuilder().withDurations(
+                new Pair<>((Calendar) scheduleEventStart.clone(), (Calendar) scheduleEventEnd.clone())).build());
+        scheduleEventStart.set(2018, 11, 13, 17, 59, 0);
+        scheduleEventEnd.set(2018, 11, 13, 18, 00, 0);
+        scheduledAppointments.add(new ScheduleEventBuilder().withDurations(
+                new Pair<>((Calendar) scheduleEventStart.clone(), (Calendar) scheduleEventEnd.clone())).build());
+        String expected = MESSAGE_HAVE_SLOTS
+                + "\n"
+                + "13/12/2018:\n"
+                + "09:00 - 17:59\n"
+                + "\n"
+                + "14/12/2018:\n"
+                + "09:00 - 09:01\n"
+                + "09:02 - 18:00\n"
+                + "\n"
+                + "15/12/2018:\n"
+                + "09:00 - 18:00\n";
+        assertEquals(expected, parser.getAvailableTimeSlotsBetween(scheduledAppointments, duration));
+        scheduledAppointments.clear();
     }
 
+    @Test
+    public void getAvailableTimeSlotsBetween_emptyDaysInBetween() {
+        durationStart.set(2018, 11, 13, 9, 00, 0);
+        durationEnd.set(2018, 11, 15, 18, 00, 0);
+        scheduleEventStart.set(2018, 11, 15, 12, 27, 0);
+        scheduleEventEnd.set(2018, 11, 15, 14, 56, 0);
+        scheduledAppointments.add(new ScheduleEventBuilder().withDurations(
+                new Pair<>((Calendar) scheduleEventStart.clone(), (Calendar) scheduleEventEnd.clone())).build());
+        scheduleEventStart.set(2018, 11, 13, 9, 59, 0);
+        scheduleEventEnd.set(2018, 11, 13, 10, 30, 0);
+        scheduledAppointments.add(new ScheduleEventBuilder().withDurations(
+                new Pair<>((Calendar) scheduleEventStart.clone(), (Calendar) scheduleEventEnd.clone())).build());
+        scheduleEventStart.set(2018, 11, 13, 12, 59, 0);
+        scheduleEventEnd.set(2018, 11, 13, 13, 30, 0);
+        scheduledAppointments.add(new ScheduleEventBuilder().withDurations(
+                new Pair<>((Calendar) scheduleEventStart.clone(), (Calendar) scheduleEventEnd.clone())).build());
+        String expected = MESSAGE_HAVE_SLOTS
+                + "\n"
+                + "13/12/2018:\n"
+                + "09:00 - 09:59\n"
+                + "10:30 - 12:59\n"
+                + "13:30 - 18:00\n"
+                + "\n"
+                + "14/12/2018:\n"
+                + "09:00 - 18:00\n"
+                + "\n"
+                + "15/12/2018:\n"
+                + "09:00 - 12:27\n"
+                + "14:56 - 18:00\n";
+        assertEquals(expected, parser.getAvailableTimeSlotsBetween(scheduledAppointments, duration));
+        scheduledAppointments.clear();
+    }
+
+    @Test
+    public void getAvailableTimeSlotsBetween_allEmptyDays() {
+        durationStart.set(2018, 11, 13, 9, 00, 0);
+        durationEnd.set(2018, 11, 15, 18, 00, 0);
+        String expected = MESSAGE_HAVE_SLOTS
+                + "\n"
+                + "13/12/2018:\n"
+                + "09:00 - 18:00\n"
+                + "\n"
+                + "14/12/2018:\n"
+                + "09:00 - 18:00\n"
+                + "\n"
+                + "15/12/2018:\n"
+                + "09:00 - 18:00\n";
+        assertEquals(expected, parser.getAvailableTimeSlotsBetween(scheduledAppointments, duration));
+        scheduledAppointments.clear();
+    }
     private void zeroOutMilliseconds(Calendar... calendars) {
         for (Calendar calendar: calendars) {
             calendar.set(Calendar.MILLISECOND, 0);
@@ -479,9 +611,10 @@ public class DateTimeParserTest {
     }
 
     /**
-     *
-     * @param input
-     * @param expectedMessage
+     * Utility method for asserting that an exception has been thrown for date parsing.
+     * @param input The user input.
+     * @param currentTime The current time.
+     * @param expectedMessage The expected exception message.
      */
     private void assertDateParsingFailure(String input, Calendar currentTime, String expectedMessage) {
         try {
@@ -493,9 +626,9 @@ public class DateTimeParserTest {
     }
 
     /**
-     *
-     * @param input
-     * @param expectedMessage
+     * Utility method for asserting that an exception has been thrown for time slot parsing.
+     * @param input The user input.
+     * @param expectedMessage The expected exception message.
      */
     private void assertTimeSlotParsingFailure(String input, String expectedMessage) {
         try {
