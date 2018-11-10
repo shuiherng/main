@@ -128,7 +128,7 @@ public class AddCommand extends Command {
     public static final String MESSAGE_SUCCESS_SCHEDULE = "New appointment added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This patient already exists in the patient book";
     public static final String MESSAGE_DUPLICATE_DISEASE = "This disease already exists in the patient book";
-    public static final String MESSAGE_INVALID_PATIENT_FORMAT = "Invalid input format for patient";
+    public static final String MESSAGE_INVALID_PATIENT_FORMAT = "Invalid input format for patient: %1$s";
     public static final String NO_DISEASE_PARAMETER = "No disease value when parsing (parsing performed "
             + "during execution).";
     public static final String MULTIPLE_DISEASE_PARAMETER_ERROR = "Only one disease parameter is allowed. "
@@ -185,7 +185,7 @@ public class AddCommand extends Command {
                 EventsCenter.getInstance().post(new SwitchToPatientEvent());
                 return new CommandResult(String.format(MESSAGE_SUCCESS_ADDRESSBOOK, person.getName()));
             } catch (ParseException e) {
-                throw new CommandException(MESSAGE_INVALID_PATIENT_FORMAT, e);
+                throw new CommandException(String.format(MESSAGE_INVALID_PATIENT_FORMAT, e.getMessage()));
             }
         } else if (addType.equals(CMDTYPE_APPOINTMENT)) {
             // adds an event into the schedule

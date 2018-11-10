@@ -17,6 +17,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -174,6 +175,16 @@ public class EditCommand extends Command {
                 try {
                     Pair<Calendar> newDatetime = new DateTimeParser().parseTimeSlot(
                             argMultimap.getValue(PREFIX_DATETIME).get());
+                    List<ScheduleEvent> scheduledAppts = scheduleModel.internalGetFromEventList(unused -> true);
+                    for (ScheduleEvent appt: scheduledAppts) {
+                        if (appt.getId().toString().equals(target)) {
+                            continue;
+                        }
+                        if (appt.isClashing(newDatetime)) {
+                            throw new CommandException(String.format(DateTimeParser.MESSAGE_INVALID_SLOT,
+                                    DateTimeParser.MESSAGE_SLOT_CLASHING));
+                        }
+                    }
                     editScheduleEventDescriptor.setDate(newDatetime);
                 } catch (ParseException e) {
                     throw new CommandException("Invalid format for date input");

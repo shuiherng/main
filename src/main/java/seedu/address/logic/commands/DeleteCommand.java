@@ -6,6 +6,9 @@ import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
 import static seedu.address.model.AddressBookModel.PREDICATE_SHOW_ALL_EXISTING_PERSONS;
 import static seedu.address.model.ScheduleModel.PREDICATE_SHOW_SCHEDULE_EVENTS;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.events.ui.SwitchToAppointmentEvent;
 import seedu.address.commons.events.ui.SwitchToPatientEvent;
@@ -15,6 +18,7 @@ import seedu.address.model.AddressBookModel;
 import seedu.address.model.DiagnosisModel;
 import seedu.address.model.ScheduleModel;
 import seedu.address.model.event.EventId;
+import seedu.address.model.event.ScheduleEvent;
 import seedu.address.model.event.exceptions.ScheduleEventNotFoundException;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonId;
@@ -64,6 +68,21 @@ public class DeleteCommand extends Command {
                 Person foundPerson = addressBookModel.getPersonById(new PersonId(target));
                 addressBookModel.deletePerson(foundPerson);
                 addressBookModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_EXISTING_PERSONS);
+                PersonId personId = foundPerson.getId();
+                List<ScheduleEvent> scheduledAppts = scheduleModel.internalGetFromEventList(unused -> true);
+                List<ScheduleEvent> deletedAppointmentList = new ArrayList<>();
+
+                for (ScheduleEvent appt : scheduledAppts) {
+                    if (appt.getPersonId().equals(personId)) {
+                        deletedAppointmentList.add(appt);
+                    }
+                }
+                for (ScheduleEvent appt : deletedAppointmentList) {
+                    scheduleModel.deleteEvent(appt);
+                }
+
+                scheduleModel.updateFilteredEventList(PREDICATE_SHOW_SCHEDULE_EVENTS);
+
             } catch (PersonNotFoundException e) {
                 throw new CommandException(String.format(MESSAGE_PERSON_ID_NOT_FOUND, target));
             }
