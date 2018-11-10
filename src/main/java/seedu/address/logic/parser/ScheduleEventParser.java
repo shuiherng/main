@@ -7,6 +7,7 @@ import static seedu.address.logic.parser.Prompt.MESSAGE_PROMPT_ID;
 import static seedu.address.logic.parser.Prompt.MESSAGE_PROMPT_NOTES;
 import static seedu.address.logic.parser.Prompt.MESSAGE_PROMPT_TAGS;
 import static seedu.address.logic.parser.Prompt.MESSAGE_PROMPT_TIMESLOT;
+import static seedu.address.model.tag.Tag.MESSAGE_INVALID_TAG;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -270,7 +271,7 @@ public class ScheduleEventParser {
                 return ParserUtil.parseTags(Arrays.asList(splitString));
             }
         } catch (PromptException | ParseException e) {
-            throw new ParseException(e.getMessage());
+            throw new ParseException(String.format(MESSAGE_INVALID_TAG, e.getMessage()));
         }
     }
 
