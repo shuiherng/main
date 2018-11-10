@@ -26,12 +26,12 @@ public class PersonId {
     /**
      * Constructs a {@code PersonId} from an existing ID.
      */
-    public PersonId(String value) {
+    public PersonId(String value, boolean changeMinId) {
         requireNonNull(value);
 
         this.value = value;
         int idValue = Integer.parseInt(value.substring(1));
-        if (idValue >= idCounter) {
+        if (idValue >= idCounter && changeMinId) {
             idCounter = idValue + 1;
         }
     }

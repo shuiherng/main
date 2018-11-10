@@ -31,10 +31,10 @@ public class SelectCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Selects the patient or appointment identified by their ID.\n"
             + "Parameters: commandType(patient, appointment), patientID/appointment ID\n"
-            + "Example: " + COMMAND_WORD + " patient p/54103";
+            + "Example: " + COMMAND_WORD + " patient p5";
 
-    public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Selected Person: %1$s";
-    public static final String MESSAGE_DELETE_EVENT_SUCCESS = "Selected Event: %1$s";
+    public static final String MESSAGE_SELECT_PERSON_SUCCESS = "Selected Person: %1$s";
+    public static final String MESSAGE_SELECT_EVENT_SUCCESS = "Selected Event: %1$s";
     public static final String MESSAGE_INVALID_PERSON_ID = "Invalid Patient ID.";
     public static final String MESSAGE_INVALID_EVENT_ID = "Invalid Appointment ID.";
     public static final String MESSAGE_EVENT_ID_NOT_FOUND = "Appointment ID %1$s not found.";
@@ -61,29 +61,29 @@ public class SelectCommand extends Command {
                 throw new CommandException(MESSAGE_INVALID_PERSON_ID);
             }
             try {
-                Person foundPerson = addressBookModel.getPersonById(new PersonId(target));
+                Person foundPerson = addressBookModel.getPersonById(new PersonId(target, false));
                 EventsCenter.getInstance().post(new PersonPanelSelectionChangedEvent(foundPerson));
             } catch (PersonNotFoundException e) {
                 throw new CommandException(String.format(MESSAGE_PERSON_ID_NOT_FOUND, target));
             }
             EventsCenter.getInstance().post(new SwitchToPatientEvent());
-            Person foundPerson = addressBookModel.getPersonById(new PersonId(target));
+            Person foundPerson = addressBookModel.getPersonById(new PersonId(target, false));
             EventsCenter.getInstance().post(new PersonPanelSelectionChangedEvent(foundPerson));
-            return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, target));
+            return new CommandResult(String.format(MESSAGE_SELECT_PERSON_SUCCESS, target));
         } else if (cmdType.equals(CMDTYPE_APPOINTMENT)) {
             if (!EventId.isValidId(target)) {
                 throw new CommandException(MESSAGE_INVALID_EVENT_ID);
             }
             try {
-                ScheduleEvent foundEvent = scheduleModel.getEventById(new EventId(target));
+                ScheduleEvent foundEvent = scheduleModel.getEventById(new EventId(target, false));
                 EventsCenter.getInstance().post(new AppointmentPanelSelectionChangedEvent(foundEvent));
             } catch (ScheduleEventNotFoundException e) {
                 throw new CommandException(String.format(MESSAGE_EVENT_ID_NOT_FOUND, target));
             }
             EventsCenter.getInstance().post(new SwitchToAppointmentEvent());
-            ScheduleEvent foundEvent = scheduleModel.getEventById(new EventId(target));
+            ScheduleEvent foundEvent = scheduleModel.getEventById(new EventId(target, false));
             EventsCenter.getInstance().post(new AppointmentPanelSelectionChangedEvent(foundEvent));
-            return new CommandResult(String.format(MESSAGE_DELETE_EVENT_SUCCESS, target));
+            return new CommandResult(String.format(MESSAGE_SELECT_EVENT_SUCCESS, target));
         } else {
             throw new CommandException(MESSAGE_UNEXPECTED_CMDTYPE);
         }

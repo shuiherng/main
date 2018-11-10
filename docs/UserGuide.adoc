@@ -57,6 +57,8 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 .   Items in square brackets are optional. +
     eg. in `add patient [t/TAG]`, `TAG` is an optional parameter.
 .   Parameters with prefixes may be specified in any order, eg. all parameters for `add patient`, such as `n/NAME` and `a/ADDRESS` can be specified in any order
+.   Commands which accept only a unique value for each prefixed parameter will only accept the last one entered for each type. +
+    eg. `add patient n/John n/Sally` will add a patient with the name `Sally`, and ignore `John` altogether.
 ====
 
 === View help : `help`
@@ -326,7 +328,8 @@ Adds a new disease to the patient book.
 
 You must include one and only one `DISEASE` parameter with prefix `d/` and at least one `SYMPTOM` for that disease
 with prefix `s/`. Duplicate symptoms can be included but only one will be added into the patient book. The `DISEASE`
- and `SYMPTOM` parameter can take any characters except `comma`.
+ and `SYMPTOM` parameter can take any characters except `comma`. Both `DISEASE` and `SYMPTOM` parameters cannot exceed
+ `20` characters in length.
 
 When you try to add an existing disease into the patient book, the following error message will be shown to you:
 
@@ -341,7 +344,7 @@ Example:
 * `add disease d/alcohol misuse s/stroke s/stroke s/mouth cancer` +
 Symptom 'stroke' will be included once in our record.
 * `add disease d/obesity d/obesities` +
-This is an invalid command due to multiple occurrence of disease and zero occurrence of symptom. Hence, you will
+This is an invalid command due to multiple occurrence of disease paramters. Hence, you will
 be prompted to enter a correct command:
 
 .Error Message for Wrong Add Disease Format
@@ -351,7 +354,7 @@ image::ErrorMessageForWrongAddDiseaseCommand.png[width="600"]
 
 *Format:* `list disease`
 
-Shows a list of all diseases in the patient book.
+Shows a list of all diseases in alphabetic order in the patient book.
 
 === Locate diseases  : `find disease`
 
@@ -396,7 +399,7 @@ image::PredictDiseaseValidDemo.png[width="600"]
 Returns an error message:
 
 .Error Message for Invalid Command 'predict s/cry'
-image::PredictInvalidDemo.png[width="600"]
+image::PredictDiseaseInvalidDemo.png[width="600"]
 
 // end::diagnosis[]
 
