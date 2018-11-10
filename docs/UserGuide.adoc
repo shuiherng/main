@@ -351,7 +351,7 @@ image::ErrorMessageForWrongAddDiseaseCommand.png[width="600"]
 
 *Format:* `list disease`
 
-Shows a list of all diseases in the patient book.
+Shows a list of all diseases in alphabetic order in the patient book.
 
 === Locate diseases  : `find disease`
 
