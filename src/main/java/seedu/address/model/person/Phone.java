@@ -11,8 +11,9 @@ public class Phone {
 
 
     public static final String MESSAGE_PHONE_CONSTRAINTS =
-            "Phone numbers should only contain numbers, and it should be at least 3 digits long";
+            "Phone numbers should only contain numbers, and between 3 and 20 digits long";
     public static final String PHONE_VALIDATION_REGEX = "\\d{3,}";
+    public static final int MAX_PHONE_LENGTH = 21;
     public final String value;
 
     /**
@@ -30,7 +31,7 @@ public class Phone {
      * Returns true if a given string is a valid phone number.
      */
     public static boolean isValidPhone(String test) {
-        return test.matches(PHONE_VALIDATION_REGEX);
+        return test.matches(PHONE_VALIDATION_REGEX) && test.length() < MAX_PHONE_LENGTH;
     }
 
     @Override
