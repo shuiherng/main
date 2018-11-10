@@ -1,13 +1,13 @@
 package seedu.address.logic.commands;
 
+import static java.util.Objects.requireNonNull;
+
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBookModel;
 import seedu.address.model.DiagnosisModel;
 import seedu.address.model.DrugSearch;
 import seedu.address.model.ScheduleModel;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Shows full pharmacological information about any drug from the results of the most recent drug search.
@@ -16,8 +16,6 @@ import static java.util.Objects.requireNonNull;
 public class MoreInfoCommand extends Command {
 
     public static final String COMMAND_WORD = "moreinfo";
-
-    private final int index;
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": See more "
             + "information about a drug in the search results.\n"
@@ -28,6 +26,8 @@ public class MoreInfoCommand extends Command {
 
     public static final String NO_SUCH_RESULT = "This result is not in the list. Please look through "
             + "the results and type \"moreinfo [index]\" to see more";
+
+    private final int index;
 
     public MoreInfoCommand(String keyindex) {
         this.index = Integer.parseInt(keyindex);

@@ -1,10 +1,11 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_DISEASE;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_DRUG;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
-import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
+
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,12 +18,12 @@ import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBookModel;
 import seedu.address.model.DiagnosisModel;
+import seedu.address.model.DrugSearch;
 import seedu.address.model.ScheduleModel;
 import seedu.address.model.event.ScheduleEventMatchesPredicate;
 import seedu.address.model.person.MatchPersonPredicate;
 import seedu.address.model.symptom.Disease;
 import seedu.address.model.symptom.Symptom;
-import seedu.address.model.DrugSearch;
 
 /**
  * Finds and lists all persons in address book whose name contains any of the argument keywords.
