@@ -1,6 +1,6 @@
 package seedu.address.model;
 
-import seedu.address.commons.util.DrugCSVUtil;
+import seedu.address.commons.util.DrugCsvUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,13 +42,12 @@ public class DrugSearch {
         }
 
         try {
-            DrugCSVUtil database = new DrugCSVUtil(keyword);
+            DrugCsvUtil database = new DrugCsvUtil(keyword);
             String[] nextMatchingEntry;
             while ((nextMatchingEntry = database.nextMatchingEntry()) != null) {
                 resultsCache.add(nextMatchingEntry);
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
@@ -91,8 +90,7 @@ public class DrugSearch {
             results = results.concat("\n\n");
 
             return results;
-        }
-        catch(IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException e) {
             return "Not in list";
         }
     }

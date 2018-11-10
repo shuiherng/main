@@ -21,7 +21,7 @@ public class MoreInfoCommandParser implements Parser<MoreInfoCommand> {
          * args[0] to be a single integer.
          */
 
-        if (args.length()!=1 || !Character.isDigit(args.charAt(0))) {
+        if (args.length() != 1 || !Character.isDigit(args.charAt(0))) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MoreInfoCommand.MESSAGE_USAGE));
         }
 

@@ -1,7 +1,10 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.parser.CmdTypeCliSyntax.*;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_DISEASE;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_DRUG;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
 
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -29,7 +32,7 @@ public class FindCommandParser implements Parser<FindCommand> {
         }
 
         if (!cmdType.equals(CMDTYPE_PATIENT) && !cmdType.equals(CMDTYPE_APPOINTMENT)
-                && !cmdType.equals(CMDTYPE_DISEASE) &&!cmdType.equals(CMDTYPE_DRUG)) {
+                && !cmdType.equals(CMDTYPE_DISEASE) && !cmdType.equals(CMDTYPE_DRUG)) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
         /*

@@ -13,7 +13,7 @@ import static java.util.Objects.requireNonNull;
  * Shows full pharmacological information about any drug from the results of the most recent drug search.
  */
 
-public class MoreInfoCommand extends Command{
+public class MoreInfoCommand extends Command {
 
     public static final String COMMAND_WORD = "moreinfo";
 
@@ -21,7 +21,7 @@ public class MoreInfoCommand extends Command{
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": See more "
             + "information about a drug in the search results.\n"
-            + "Example: " +COMMAND_WORD+ " 3";
+            + "Example: " + COMMAND_WORD + " 3";
 
     public static final String NO_PRIOR_SEARCH = "Please carry out a search "
         + "using \"find drug [drugname]\" first.";
@@ -42,10 +42,9 @@ public class MoreInfoCommand extends Command{
         String cmdResult;
 
         cmdResult = DrugSearch.moreInfo(index);
-        if(cmdResult.equals("Empty")) {
+        if (cmdResult.equals("Empty")) {
             throw new CommandException(NO_PRIOR_SEARCH);
-        }
-        else if (cmdResult.equals("Not in list")) {
+        } else if (cmdResult.equals("Not in list")) {
             throw new CommandException(NO_SUCH_RESULT);
         }
 

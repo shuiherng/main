@@ -1,7 +1,10 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.parser.CmdTypeCliSyntax.*;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_DISEASE;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_DRUG;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
 
 import java.util.Arrays;
 import java.util.List;
@@ -107,17 +110,14 @@ public class FindCommand extends Command {
                     + disease.toString() + ":\n"
                     + "\n"
                     + CommandResult.convertListToString(symptomList);
-        }
-        else if (this.cmdType.equals(CMDTYPE_DRUG)) {
+        } else if (this.cmdType.equals(CMDTYPE_DRUG)) {
             String result = DrugSearch.find(searchString.trim().toLowerCase());
-            if(result == null) {
+            if (result == null) {
                 throw new CommandException(UNEXPECTED_ERROR + DRUG_SEARCH_INITIALIZATION_FAIL);
-            }
-            else {
+            } else {
                 cmdResult = result;
             }
-        }
-        else {
+        } else {
             throw new CommandException(MESSAGE_UNEXPECTED_PARAMETER);
         }
 
