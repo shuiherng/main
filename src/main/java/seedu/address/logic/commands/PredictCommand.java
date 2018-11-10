@@ -29,7 +29,7 @@ public class PredictCommand extends Command {
     public static final String COMMAND_WORD = "predict";
     public static final String MESSAGE_USAGE = "Expected format for predicting a disease: \n "
             + COMMAND_WORD
-            + "[" + PREFIX_SYMPTOM + "SYMPTOM]...\n"
+            + " [" + PREFIX_SYMPTOM + "SYMPTOM]...\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_SYMPTOM + "uncoordination "
             + PREFIX_SYMPTOM + "pleuritic pain "
