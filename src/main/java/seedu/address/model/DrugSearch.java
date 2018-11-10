@@ -49,7 +49,7 @@ public class DrugSearch {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return "Initialization failed";
         }
 
         for (int i = 0; i < resultsCache.size(); i++) {
@@ -66,7 +66,7 @@ public class DrugSearch {
         if (resultsCache.size() > 0) {
             results = results.concat("For more information about any result, enter \"moreinfo [INDEX]\"");
         } else {
-            results = results.concat("No results found. Try again with a different query.");
+            results = "none";
         }
         return results;
     }
