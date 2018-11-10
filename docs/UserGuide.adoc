@@ -87,6 +87,9 @@ Switches the application to appointment management mode. In this mode, you can v
 When you enter a valid command regarding appointment in patient management mode, the application will switch to
 appointment management mode automatically.
 
+[NOTE]
+By default, the list panel only displays appointments in the future.
+
 .Appointment Mode
 image::mode_appointment.PNG[width="600"]
 
