@@ -58,7 +58,7 @@ public class DrugSearch {
             results = results.concat("\nActive Ingredient(s): "
                     + currentRecord[10].replace("&&", ", "));
             results = results.concat("\nClassification: " + currentRecord[4]);
-            results = results.concat("\n(for more information, enter \"moreinfo " + (i + 1) + "\"");
+            results = results.concat("\n(For more information, enter \"moreinfo " + (i + 1) + "\"");
             results = results.concat("\n\n");
         }
 
