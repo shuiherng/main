@@ -8,6 +8,10 @@ import org.junit.Test;
 
 import seedu.address.logic.commands.MoreInfoCommand;
 
+/**
+ * Tests MoreInfoCommandParser.
+ */
+
 public class MoreInfoCommandParserTest {
 
     private MoreInfoCommandParser parser = new MoreInfoCommandParser();
