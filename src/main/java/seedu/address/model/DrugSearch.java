@@ -1,9 +1,9 @@
 package seedu.address.model;
 
-import seedu.address.commons.util.DrugCsvUtil;
-
 import java.io.IOException;
 import java.util.ArrayList;
+
+import seedu.address.commons.util.DrugCsvUtil;
 
 /**
  * For returning pharmacological information about drugs whose names match a certain keyword.

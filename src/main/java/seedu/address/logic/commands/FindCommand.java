@@ -6,7 +6,6 @@ import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_DISEASE;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_DRUG;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
 
-
 import java.util.Arrays;
 import java.util.List;
 

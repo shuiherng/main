@@ -1,10 +1,11 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_DISEASE;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_DRUG;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
-import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
+
 
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
