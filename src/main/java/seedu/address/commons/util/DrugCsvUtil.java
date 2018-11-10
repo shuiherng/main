@@ -34,7 +34,7 @@ public class DrugCsvUtil {
     public String[] nextMatchingEntry() throws IOException {
         String[] nextRecord;
         while ((nextRecord = csvReader.readNext()) != null) {
-            if (nextRecord[1].toLowerCase().equals(keyword)) {
+            if (nextRecord[1].toLowerCase().contains(keyword)) {
                 return nextRecord;
             }
         }
