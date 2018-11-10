@@ -99,7 +99,7 @@ public class XmlAdaptedPerson {
         if (!PersonId.isValidId(personId)) {
             throw new IllegalValueException(PersonId.MESSAGE_PERSONID_CONSTRAINTS);
         }
-        final PersonId modelPersonId = new PersonId(personId);
+        final PersonId modelPersonId = new PersonId(personId, true);
 
         if (name == null) {
             throw new IllegalValueException(

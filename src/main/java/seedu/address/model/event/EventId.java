@@ -27,12 +27,12 @@ public class EventId {
     /**
      * Constructs an {@code EventId} based on an existing ID.
      */
-    public EventId(String value) {
+    public EventId(String value, boolean updateMinId) {
         requireNonNull(value);
 
         this.value = value;
         int idValue = Integer.parseInt(value.substring(1));
-        if (idValue >= idCounter) {
+        if (idValue >= idCounter && updateMinId) {
             idCounter = idValue + 1;
         }
     }

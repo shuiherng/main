@@ -100,7 +100,7 @@ public class XmlAdaptedEvent {
         if (!EventId.isValidId(eventId)) {
             throw new IllegalValueException(EventId.MESSAGE_EVENTID_CONSTRAINTS);
         }
-        final EventId modelEventId = new EventId(eventId);
+        final EventId modelEventId = new EventId(eventId, true);
 
         if (datetimeStart == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, "Calendar Start"));
@@ -128,7 +128,7 @@ public class XmlAdaptedEvent {
         if (!PersonId.isValidId(personId)) {
             throw new IllegalValueException(PersonId.MESSAGE_PERSONID_CONSTRAINTS);
         }
-        final PersonId modelPersonId = new PersonId(personId);
+        final PersonId modelPersonId = new PersonId(personId, false);
 
         if (details == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, "Details"));

@@ -17,6 +17,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -53,18 +54,14 @@ public class EditCommand extends Command {
 
     public static final String COMMAND_WORD = "edit";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the person identified "
-            + "by the index number used in the displayed person list. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the person or appointment "
+            + "identified by ID. "
             + "Existing values will be overwritten by the input values.\n"
-            + "Parameters: INDEX (must be a positive integer) "
-            + "[" + PREFIX_NAME + "NAME] "
-            + "[" + PREFIX_PHONE + "PHONE] "
-            + "[" + PREFIX_EMAIL + "EMAIL] "
-            + "[" + PREFIX_ADDRESS + "ADDRESS] "
-            + "[" + PREFIX_TAG + "TAG]...\n"
-            + "Example: " + COMMAND_WORD + " 1 "
+            + "Example: " + COMMAND_WORD + " patient p1 "
             + PREFIX_PHONE + "91234567 "
-            + PREFIX_EMAIL + "johndoe@example.com";
+            + PREFIX_EMAIL + "johndoe@example.com\n"
+            + "Example: " + COMMAND_WORD + " appointment e1 "
+            + PREFIX_DETAILS + "This patient is in critical condition.";
 
     public static final String MESSAGE_CANNOT_EDIT_DELETED = "Cannot edit deleted person.";
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
@@ -144,7 +141,7 @@ public class EditCommand extends Command {
 
             // Edit the person
             try {
-                Person personToEdit = addressBookModel.getPersonById(new PersonId(target));
+                Person personToEdit = addressBookModel.getPersonById(new PersonId(target, false));
 
                 // disallow editing if person is already deleted
                 if (!personToEdit.getExists()) {
@@ -174,6 +171,16 @@ public class EditCommand extends Command {
                 try {
                     Pair<Calendar> newDatetime = new DateTimeParser().parseTimeSlot(
                             argMultimap.getValue(PREFIX_DATETIME).get());
+                    List<ScheduleEvent> scheduledAppts = scheduleModel.internalGetFromEventList(unused -> true);
+                    for (ScheduleEvent appt: scheduledAppts) {
+                        if (appt.getId().toString().equals(target)) {
+                            continue;
+                        }
+                        if (appt.isClashing(newDatetime)) {
+                            throw new CommandException(String.format(DateTimeParser.MESSAGE_INVALID_SLOT,
+                                    DateTimeParser.MESSAGE_SLOT_CLASHING));
+                        }
+                    }
                     editScheduleEventDescriptor.setDate(newDatetime);
                 } catch (ParseException e) {
                     throw new CommandException("Invalid format for date input");
@@ -190,7 +197,7 @@ public class EditCommand extends Command {
 
             // Edit the event
             try {
-                ScheduleEvent eventToEdit = scheduleModel.getEventById(new EventId(target));
+                ScheduleEvent eventToEdit = scheduleModel.getEventById(new EventId(target, false));
                 ScheduleEvent editedEvent = createEditedEvent(eventToEdit, editScheduleEventDescriptor);
 
                 scheduleModel.updateEvent(eventToEdit, editedEvent);
