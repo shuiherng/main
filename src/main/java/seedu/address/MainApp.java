@@ -254,7 +254,7 @@ public class MainApp extends Application {
             Scene scene = new Scene(page);
             promptStage.setScene(scene);
             promptStage.setAlwaysOnTop(true);
-            
+
             // Set the input into the controller.
             PromptWindow controller = loader.getController();
             controller.setPromptStage(promptStage);
