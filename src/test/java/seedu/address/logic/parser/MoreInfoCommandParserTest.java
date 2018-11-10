@@ -1,6 +1,10 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_MOREINFO_INDEX_NON_NUMERICAL;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_MOREINFO_INDEX_NON_POSITIVE_1;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_MOREINFO_INDEX_NON_POSITIVE_2;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_MOREINFO_INDEX_TOOLARGE;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
@@ -18,21 +22,21 @@ public class MoreInfoCommandParserTest {
 
     @Test
     public void parse_nonNumerical_throwsParseException() {
-        assertParseFailure(parser, "123abc", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+        assertParseFailure(parser, INVALID_MOREINFO_INDEX_NON_NUMERICAL, String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                 MoreInfoCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_largeInput_throwsParseException() {
-        assertParseFailure(parser, "10000", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+        assertParseFailure(parser, INVALID_MOREINFO_INDEX_TOOLARGE, String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                 MoreInfoCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_invalidIndex_throwsParseException() {
-        assertParseFailure(parser, "0", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+        assertParseFailure(parser, INVALID_MOREINFO_INDEX_NON_POSITIVE_1, String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                 MoreInfoCommand.MESSAGE_USAGE));
-        assertParseFailure(parser, "-1", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+        assertParseFailure(parser, INVALID_MOREINFO_INDEX_NON_POSITIVE_2, String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                 MoreInfoCommand.MESSAGE_USAGE));
     }
 
