@@ -30,7 +30,7 @@ public class MoreInfoCommand extends Command {
     private final int index;
 
     public MoreInfoCommand(String keyindex) {
-        this.index = Integer.parseInt(keyindex);
+        this.index = Integer.parseInt(keyindex.trim());
     }
 
     @Override
@@ -52,5 +52,10 @@ public class MoreInfoCommand extends Command {
 
     }
 
-
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof MoreInfoCommand // instanceof handles nulls
+                && index == ((MoreInfoCommand) other).index); // state check
+    }
 }

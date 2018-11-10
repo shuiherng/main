@@ -6,6 +6,7 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.logic.commands.ListCommand.GET_ALL_WORD;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_DRUG;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_EMAIL;
@@ -23,17 +24,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.*;
 
-import seedu.address.logic.commands.ClearCommand;
-import seedu.address.logic.commands.DeleteCommand;
-import seedu.address.logic.commands.EditCommand;
-import seedu.address.logic.commands.ExitCommand;
-import seedu.address.logic.commands.FindCommand;
-import seedu.address.logic.commands.HelpCommand;
-import seedu.address.logic.commands.HistoryCommand;
-import seedu.address.logic.commands.ListCommand;
-import seedu.address.logic.commands.ModeCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonId;
@@ -102,6 +94,13 @@ public class PatientBookParserTest {
     }
 
     @Test
+    public void parseCommand_findDrug () throws Exception {
+        FindCommand command = (FindCommand)parser.parseCommand(FindCommand.COMMAND_WORD + " "
+                + CMDTYPE_DRUG + " " + "drugname");
+        assertEquals(new FindCommand(CMDTYPE_DRUG,"drugname"), command);
+    }
+
+    @Test
     public void parseCommand_editPatient() throws Exception {
         Person person = new PersonBuilder().build();
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize("n/newname", PREFIX_NAME, PREFIX_PHONE,
@@ -128,6 +127,13 @@ public class PatientBookParserTest {
         ModeCommand command = (ModeCommand) parser.parseCommand(ModeCommand.COMMAND_WORD + " "
                 + CMDTYPE_PATIENT);
         assertEquals(new ModeCommand(CMDTYPE_PATIENT), command);
+    }
+
+    @Test
+    public void parseCommand_moreInfo() throws Exception {
+        MoreInfoCommand command = (MoreInfoCommand) parser.parseCommand(MoreInfoCommand.COMMAND_WORD
+                + " 3");
+        assertEquals(new MoreInfoCommand(" 3"), command);
     }
 
     @Test

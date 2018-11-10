@@ -31,6 +31,12 @@ public class FindCommandParserTest {
         FindCommand expectedFindCommand = new FindCommand(CMDTYPE_PATIENT, "search string");
         assertParseSuccess(parser, CMDTYPE_PATIENT + "     search string", expectedFindCommand);
     }
+
+    @Test
+    public void parse_findDrugNonAlphabeticalInput_throwsParseException() {
+        assertParseFailure(parser, "containsnumbers123", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                FindCommand.MESSAGE_USAGE));
+    }
     /*
     @Test
     public void parse_validArgs_returnsFindCommand() {
