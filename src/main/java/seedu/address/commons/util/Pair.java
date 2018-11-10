@@ -1,8 +1,8 @@
 package seedu.address.commons.util;
 
 /**
- *
- * @param <T>
+ * A utility class used for storing of a pair of objects of the same class.
+ * @param <T> The type of the object.
  */
 public class Pair<T> {
 
