@@ -57,6 +57,8 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 .   Items in square brackets are optional. +
     eg. in `add patient [t/TAG]`, `TAG` is an optional parameter.
 .   Parameters with prefixes may be specified in any order, eg. all parameters for `add patient`, such as `n/NAME` and `a/ADDRESS` can be specified in any order
+.   Commands which accept only a unique value for each prefixed parameter will only accept the last one entered for each type. +
+    eg. `add patient n/John n/Sally` will add a patient with the name `Sally`, and ignore `John` altogether.
 ====
 
 === View help : `help`
