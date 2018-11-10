@@ -134,6 +134,7 @@ public class AddCommand extends Command {
     public static final String MULTIPLE_DISEASE_PARAMETER_ERROR = "Only one disease parameter is allowed. "
             + "Please try again!";
     public static final String ILLEGAL_CHAR_IN_SYMPTOM_PARAMETER = "Symptom parameter should not contain comma ','.";
+    public static final String ILLEGAL_CHAR_IN_DISEASE_PARAMETER = "Disease parameter should not contain comma ','.";
     public static final String ILLEGAL_CHAR_COMMA = ",";
     public static final String EMPTY_SYMPTOM_ERROR = "Symptom should not be empty.";
     public static final String NEW_DISEASE = "New disease ";
@@ -221,7 +222,7 @@ public class AddCommand extends Command {
 
                 Disease disease = ParserUtil.parseDisease(diseaseValue.get());
                 if (disease.toString().contains(ILLEGAL_CHAR_COMMA)) {
-                    throw new CommandException(ILLEGAL_CHAR_IN_SYMPTOM_PARAMETER);
+                    throw new CommandException(ILLEGAL_CHAR_IN_DISEASE_PARAMETER);
                 }
                 Set<Symptom> symptomSet = ParserUtil.parseSymptoms(argMultimap.getAllValues(PREFIX_SYMPTOM));
 
