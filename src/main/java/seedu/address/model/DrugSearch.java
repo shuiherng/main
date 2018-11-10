@@ -18,9 +18,9 @@ public class DrugSearch {
      * keywords too generic to search for, as they will match tens of drugs
      */
     private static String[] tooGeneric = {
-            "capsule", "cream", "emulsi", "gel", "hydrochloride",
-            "injection", "lotion", "ointment", "paste", "patch", "pill", "powder",
-            "solution", "supposit", "syrup", "tablet"
+        "capsule", "cream", "emulsi", "gel", "hydrochloride",
+        "injection", "lotion", "ointment", "paste", "patch", "pill", "powder",
+        "solution", "supposit", "syrup", "tablet"
     };
 
     /**
@@ -54,16 +54,16 @@ public class DrugSearch {
 
         for (int i = 0; i < resultsCache.size(); i++) {
             String[] currentRecord = resultsCache.get(i);
-            results = results.concat((i+1)+". Name: " + currentRecord[1]);
-            results = results.concat("\n" + Spacer(i+1) + "  ");
+            results = results.concat((i + 1) + ". Name: " + currentRecord[1]);
+            results = results.concat("\n" + spacer(i + 1) + "  ");
             results = results.concat("Active Ingredient(s): "
                     + currentRecord[10].replace("&&", ", "));
-            results = results.concat("\n" + Spacer(i+1) + "  ");
+            results = results.concat("\n" + spacer(i + 1) + "  ");
             results = results.concat("Classification: " + currentRecord[4]);
             results = results.concat("\n\n");
         }
 
-        if (resultsCache.size()>0) {
+        if (resultsCache.size() > 0) {
             results = results.concat("For more information about any result, enter \"moreinfo [INDEX]\"");
         } else {
             results = results.concat("No results found. Try again with a different query.");
@@ -107,7 +107,7 @@ public class DrugSearch {
      * @return String containing spaces.
      */
 
-    private static String Spacer(int input) {
+    private static String spacer(int input) {
         if (input < 10) {
             return "  ";
         } else if (input < 100) {
