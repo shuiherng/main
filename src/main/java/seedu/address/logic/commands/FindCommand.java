@@ -35,15 +35,14 @@ public class FindCommand extends Command {
     public static final String MESSAGE_UNEXPECTED_PARAMETER = "Unexpected Values: "
             + "Should have been caught in FindCommandParser.";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Use 'find patient'"
-            + "to find all persons whose names contain any of "
-            + "the specified keywords (case-insensitive), use 'find disease' "
-            + "to find all symptoms related to a disease if it exists "
-            + "and display them as a list with index numbers, or use 'find drug'"
-            + "to find all drugs licensed for sale in Singapore matching this name. "
-            + "Results will be displayed as indexed list.\n"
-            + "Parameters to find persons: KEYWORD [MORE_KEYWORDS]...\n"
-            + "Example: "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Use 'find patient' "
+            + "to find all patients whose names contains any of the specified "
+            + "keywords (case-insensitive)."
+            + "\nUse 'find disease' to find all symptoms related to a disease (if it exists)."
+            + "\nUse 'find drug' to find all drugs licensed for sale in Singapore matching this name."
+            + "\nResults will be displayed in the form of an indexed list."
+            + "\nParameters to find persons: KEYWORD [MORE_KEYWORDS]..."
+            + "\nExample: "
             + COMMAND_WORD
             + " patient"
             + " alice bob charlie\n"
