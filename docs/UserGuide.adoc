@@ -397,7 +397,7 @@ image::PredictDiseaseValidDemo.png[width="600"]
 Returns an error message:
 
 .Error Message for Invalid Command 'predict s/cry'
-image::PredictInvalidDemo.png[width="600"]
+image::PredictDiseaseInvalidDemo.png[width="600"]
 
 // end::diagnosis[]
 
