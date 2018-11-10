@@ -30,7 +30,7 @@ http://www.java.com/en/download/[here].
 . Copy the downloaded file to the folder you wish to use as the home folder for PatientBook.
 . Double-click the file to start PatientBook. The following GUI should appear in a few seconds.
 +
-image::PatientMode.PNG[width="790"]
+image::UI_Starting.PNG[width="790"]
 +
 .  Type the command in the command box and press kbd:[Enter] to execute it. +
 e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
@@ -75,7 +75,7 @@ enter a valid command regarding patient in appointment management mode, the appl
 mode automatically.
 
 .Patient Mode
-image::PatientMode.PNG[width="600"]
+image::mode_patient.PNG[width="600"]
 
 === Switch to appointment management mode : `mode appointment`
 
@@ -86,7 +86,7 @@ When you enter a valid command regarding appointment in patient management mode,
 appointment management mode automatically.
 
 .Appointment Mode
-image::AppointmentMode.PNG[width="600"]
+image::mode_appointment.PNG[width="600"]
 
 === Add a patient : `add patient`
 
@@ -113,8 +113,11 @@ Select command is different from clicking the patient card in the window. It ena
 
 Examples:
 
-* `select patient p0`
+* `select patient p1`
 * `select patient p29`
+
+.Select a patient
+image::select_patient.PNG[width="600"]
 
 === Edit patient information : `edit patient`
 
@@ -258,8 +261,11 @@ Select command is different from clicking the appointment card in the window. It
 
 Examples:
 
-* `select appointment e0`
+* `select appointment e5`
 * `select appointment e29`
+
+.Select an appointment
+image::select_appointment.PNG[width="600"]
 
 === Edit appointment information : `edit appointment`
 
