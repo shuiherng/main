@@ -227,7 +227,7 @@ Command entered: `add appointment for Xinze tomorrow`
 // we require explicit numbering because the numbering system stops searching for further indices past
 // a fenced code block.
 
-1) There are multiple individuals named `Xinze` in the patient record, the program will request for a specific patient ID in a form similar to the following:
+1) There are multiple individuals named `Xinze` in the patient record, the program will request for a specific patient ID, in a prompt window similar to the following:
 
 .Prompt Window for Patient ID
 image::promptName.png[width="600"]
@@ -287,7 +287,7 @@ Examples:
 
 * `edit appointment e1 s/SecondVisit`
 * `edit appointment e1031 p/p5`
-* `edit appointment e41032 t/30/10/2019 4:00 - 5:30`
+* `edit appointment e41032 t/30/10/2019 10:00 - 11:30`
 
 === List all appointments : `list appointment`
 
