@@ -18,7 +18,7 @@
 
 == Summary of Contributions
 
-* *Major enhancement*: *the ability to add appointments into the schedule system using natural expressions*.
+* *Major enhancement*: added *the ability to add appointments into the schedule system using natural expressions*.
 ** What it does: This feature allows the user to add an appointment for a patient in a command format that uses natural expressions such as "next week" to indicate time.
 ** Justification: This feature improves the user-friendliness of the product, as it allows the user to issue commands in intuitive and flexible ways that simulate our natural language and natural thinking process.
 ** Highlights: TO-DO

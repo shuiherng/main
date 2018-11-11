@@ -329,7 +329,7 @@ User Input: `add appointment for David Lee next week`.
 . Generating Appointment: Results from the previous steps are used to fill the attributes of a newly created `ScheduleEvent` object which is then returned.
 
 
-The sequence diagram below illustrates this process, showing notable steps: (DIAGRAM TO BE CHANGED)
+The sequence diagram below illustrates this process, showing notable steps. Note that step 4 and 5 are omitted in the diagram as they are relatively trivial:
 
 image::NaturalLanguageProcessingSequenceDiagram.png[width="800"]
 
