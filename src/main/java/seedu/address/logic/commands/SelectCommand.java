@@ -5,7 +5,9 @@ import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
 
 import seedu.address.commons.core.EventsCenter;
+import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.ui.AppointmentPanelSelectionChangedEvent;
+import seedu.address.commons.events.ui.JumpToListRequestEvent;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.SwitchToAppointmentEvent;
 import seedu.address.commons.events.ui.SwitchToPatientEvent;
@@ -68,7 +70,8 @@ public class SelectCommand extends Command {
             }
             EventsCenter.getInstance().post(new SwitchToPatientEvent());
             Person foundPerson = addressBookModel.getPersonById(new PersonId(target, false));
-            EventsCenter.getInstance().post(new PersonPanelSelectionChangedEvent(foundPerson));
+            EventsCenter.getInstance().post(new JumpToListRequestEvent(Index.fromZeroBased
+                    (addressBookModel.getFilteredPersonList().indexOf(foundPerson))));
             return new CommandResult(String.format(MESSAGE_SELECT_PERSON_SUCCESS, target));
         } else if (cmdType.equals(CMDTYPE_APPOINTMENT)) {
             if (!EventId.isValidId(target)) {
@@ -82,7 +85,8 @@ public class SelectCommand extends Command {
             }
             EventsCenter.getInstance().post(new SwitchToAppointmentEvent());
             ScheduleEvent foundEvent = scheduleModel.getEventById(new EventId(target, false));
-            EventsCenter.getInstance().post(new AppointmentPanelSelectionChangedEvent(foundEvent));
+            EventsCenter.getInstance().post(new JumpToListRequestEvent(Index.fromZeroBased
+                    (scheduleModel.getFilteredEventList().indexOf(foundEvent))));
             return new CommandResult(String.format(MESSAGE_SELECT_EVENT_SUCCESS, target));
         } else {
             throw new CommandException(MESSAGE_UNEXPECTED_CMDTYPE);
