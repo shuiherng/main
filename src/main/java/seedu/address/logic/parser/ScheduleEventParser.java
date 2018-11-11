@@ -1,5 +1,6 @@
 package seedu.address.logic.parser;
 
+import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
 import static seedu.address.commons.core.Messages.MESSAGE_PATIENT_MATCH_FAIL;
@@ -73,6 +74,7 @@ public class ScheduleEventParser {
      * @throws ParseException If an error occurs during event parsing.
      */
     public ScheduleEvent parse(String input) throws ParseException {
+        requireNonNull(input);
         String[] splitInput = input.split("\\s+");
         int dateInputStartAt = findDateInputStart(splitInput);
         String[] patientInput = generatePatientInput(splitInput, dateInputStartAt);
@@ -91,6 +93,7 @@ public class ScheduleEventParser {
      * @throws ParseException If an error occurs during event parsing.
      */
     private int findDateInputStart(String[] input) throws ParseException {
+        requireNonNull(input);
         if (input[0].equals("for")) {
             for (int i = 2; i < input.length; i++) { // loop starts at 2 as name is at least one string long
                 if (isSomeDateInput(input, i)) {
@@ -108,6 +111,7 @@ public class ScheduleEventParser {
      * @return The string containing user input for date.
      */
     private String generateDateInput(String[] input, int dateInputStartAt) {
+        requireNonNull(input);
         StringBuilder recoveredDateInputBuilder = new StringBuilder();
         for (int j = dateInputStartAt; j < input.length; j++) {
             recoveredDateInputBuilder.append(input[j]);
@@ -123,6 +127,7 @@ public class ScheduleEventParser {
      * @return The string array containing user input for patient name or ID.
      */
     private String[] generatePatientInput(String[] input, int dateInputStartAt) {
+        requireNonNull(input);
         return Arrays.copyOfRange(input, 1, dateInputStartAt);
     }
 
@@ -133,6 +138,7 @@ public class ScheduleEventParser {
      * @throws ParseException If an error occurs during parsing.
      */
     private Pair<Calendar> parseDateInput(String dateInput) throws ParseException {
+        requireNonNull(dateInput);
         try {
             Calendar currentTime = Calendar.getInstance();
             DateTimeParser dateTimeParser = new DateTimeParser();
@@ -155,6 +161,8 @@ public class ScheduleEventParser {
      */
     private Pair<Calendar> promptForTimeSlot(Pair<Calendar> dateInterval, DateTimeParser dateTimeParser)
             throws PromptException, ParseException {
+        requireNonNull(dateInterval);
+        requireNonNull(dateTimeParser);
         List<ScheduleEvent> scheduledAppts = getAppointmentsBetween(dateInterval);
         String availableTimeSlots = dateTimeParser.getAvailableTimeSlotsBetween(scheduledAppts, dateInterval);
         String timeSlotInput = new Prompt().promptForMoreInput(MESSAGE_PROMPT_TIMESLOT, availableTimeSlots, true);
@@ -174,6 +182,9 @@ public class ScheduleEventParser {
      */
     private void verifyTimeSlotValidity(Pair<Calendar> dateInterval, List<ScheduleEvent> scheduledAppts,
                                         Pair<Calendar> timeSlot) throws ParseException {
+        requireNonNull(dateInterval);
+        requireNonNull(scheduledAppts);
+        requireNonNull(timeSlot);
         if (isTimeSlotWithinRange(timeSlot, dateInterval)) {
             for (ScheduleEvent appt: scheduledAppts) {
                 if (appt.isClashing(timeSlot)) {
@@ -194,6 +205,7 @@ public class ScheduleEventParser {
      * @throws ParseException If an error occurs during parsing.
      */
     private PersonId parsePatientInput(String[] patientInput) throws ParseException {
+        requireNonNull(patientInput);
         try {
             List<Person> matchedPatients = matchPatients(patientInput);
             if (matchedPatients.isEmpty()) {
@@ -211,6 +223,7 @@ public class ScheduleEventParser {
      * @return The list of patients that can be matched by this input.
      */
     private List<Person> matchPatients(String[] patientInput) {
+        requireNonNull(patientInput);
         return addressBookModel.internalGetFromPersonList
                         (new MatchPersonPredicate(Arrays.asList(patientInput)));
     }
@@ -224,8 +237,9 @@ public class ScheduleEventParser {
      */
     private Person promptForIntendedPatient(List<Person> matchedPatients)
             throws PromptException, ParseException {
-        // assert not null
+        assert !matchedPatients.isEmpty();
         Set<PersonId> choosablePersonIds = getChoosablePersonIds(matchedPatients);
+        assert !choosablePersonIds.isEmpty();
         while (matchedPatients.size() != 1) {
             String displayablePersons = displayPersonListAsString(matchedPatients);
             String personIdInput = new Prompt().promptForMoreInput(MESSAGE_PROMPT_ID, displayablePersons, true);
@@ -249,6 +263,7 @@ public class ScheduleEventParser {
      * @return The set of IDs obtained from taking every ID from the list.
      */
     private Set<PersonId> getChoosablePersonIds(List<Person> persons) {
+        assert !persons.isEmpty();
         Set<PersonId> choosableIds = new HashSet<>();
         for (Person person: persons) {
             choosableIds.add(person.getId());
@@ -294,6 +309,7 @@ public class ScheduleEventParser {
      * @return The list of patients represented as a String.
      */
     private String displayPersonListAsString(List<Person> patientList) {
+        assert !patientList.isEmpty();
         StringBuilder personsBuilder = new StringBuilder();
         for (Person person: patientList) {
             personsBuilder.append(person.getId());
@@ -312,6 +328,7 @@ public class ScheduleEventParser {
      * @param index The index at which the check is to start
      */
     private boolean isSomeDateInput(String[] splitString, int index) {
+        requireNonNull(splitString);
         int noOfWords = splitString.length;
         if (index == noOfWords - 1) { // we are checking starting from the last word
             switch(splitString[index]) {
@@ -382,6 +399,7 @@ public class ScheduleEventParser {
      * @return The list of appointments scheduled within the specified range.
      */
     private List<ScheduleEvent> getAppointmentsBetween(Pair<Calendar> dateInterval) {
+        requireNonNull(dateInterval);
         return scheduleModel.internalGetFromEventList(scheduleEvent ->
                 !scheduleEvent.getDate().getKey().before(dateInterval.getKey())
                         && !scheduleEvent.getDate().getValue().after(dateInterval.getValue()));
@@ -394,6 +412,8 @@ public class ScheduleEventParser {
      */
 
     private boolean isTimeSlotWithinRange(Pair<Calendar> timeSlot, Pair<Calendar> interval) {
+        requireNonNull(timeSlot);
+        requireNonNull(interval);
         Calendar dayStart = (Calendar) interval.getKey().clone();
         Calendar dayEnd = (Calendar) dayStart.clone();
         dayEnd.set(Calendar.HOUR_OF_DAY, 18);
