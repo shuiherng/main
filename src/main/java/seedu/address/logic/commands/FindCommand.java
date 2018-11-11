@@ -68,6 +68,7 @@ public class FindCommand extends Command {
     public static final String DRUG_NOT_FOUND = "No results found. Try again with a different query.";
     public static final String DRUG_TOO_GENERIC = "Your search keyword is too generic. It will lead to hundreds "
             + "of results. Try a more specific keyword instead.";
+    public static final String SPACE = "\n\n";
 
     private final String cmdType;
     private final String searchString;
@@ -105,7 +106,7 @@ public class FindCommand extends Command {
             if (!diagnosisModel.hasDisease(disease)) {
                 throw new CommandException(disease.toString()
                         + IS_NOT_PRESENT_IN_OUR_RECORD
-                        + AND_ITS_RELATED_SYMPTOMS_INTO_THE_RECORD);
+                        + AND_ITS_RELATED_SYMPTOMS_INTO_THE_RECORD + SPACE + AddCommand.MESSAGE_USAGE_DISEASE);
             }
             List<Symptom> symptomList = diagnosisModel.getSymptoms(disease);
             cmdResult = disease.toString() + THE_FOLLOWING_SYMPTOMS_MATCHING

@@ -116,7 +116,7 @@ public class AddCommand extends Command {
     public static final String MESSAGE_USAGE_DISEASE = "Expected format for adding a disease: \n "
             + COMMAND_WORD + " disease "
             + PREFIX_DISEASE + "DISEASE "
-            + "[" + PREFIX_SYMPTOM + "SYMPTOM]...\n"
+            + "" + PREFIX_SYMPTOM + "SYMPTOM...\n"
             + "Example: " + COMMAND_WORD + " "
             + "disease "
             + PREFIX_DISEASE + "acne "
