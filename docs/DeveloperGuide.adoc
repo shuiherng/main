@@ -306,7 +306,7 @@ The following is an example of a use case, and how the mechanism behaves:
 
 User Input: `add appointment for David Lee next week`.
 
-. Breaking Down: The user input string, starting with `for`, is passed into a `ScheduleEventParser` object, and broken down into meaningful substrings for patient and time respectively:
+Step 1. Breaking Down: The user input string, starting with `for`, is passed into a `ScheduleEventParser` object, and broken down into meaningful substrings for patient and time respectively:
 
 .. Programme starts with assuming that the substring for identifying the patient is only one word long, and the remaining string following that one word all the way to the end of the string is the input for time. In this case, `David` is the assumed patient substring and `Lee next week` is the assumed time substring.
 .. Programme takes the assumed time substring,`Lee next week`, and checks if it is a valid time expression.
@@ -314,22 +314,28 @@ User Input: `add appointment for David Lee next week`.
 .. As a match is found this time, it indicates that the assumption is correct. `David Lee` will be carried forward to the Patient Parsing step while `next week` will be carried forward to the Time Parsing step.
 .. In other cases where a match cannot be found after all assumptions have been tested, an exception will be thrown indicating that the user has not used an accepted expression.
 
-. Patient Parsing: The string `David Lee` is parsed and converted into the corresponding `PersonId` object:
+The activity diagram below illustrates this process:
+
+image::breakDownInputActivityDiagram.png[width="800"]
+
+Step 2. Patient Parsing: The string `David Lee` is parsed and converted into the corresponding `PersonId` object:
+
 .. Programme uses this string as the search string to create a new `MatchPersonPredicate` object which is then used to filter the list of patients.
 .. If only one patient can be matched, the `PersonId` of the patient is immediately returned.
 .. If multiple patients can be matched, programme passes the list of matched patients as a `String` into a `Prompt` object, where the list is displayed to the user in a `PromptWindow`. User is expected to enter the ID of the intended patient. The `PersonID` of the final intended patient is returned.
 
-. Time Parsing: The string `next week` is passed to a `DateTimeParser` object where it is parsed and converted into a `Pair<Calendar, Calendar>` object to represent the user's chosen time slot for the appointment:
+Step 3. Time Parsing: The string `next week` is passed to a `DateTimeParser` object where it is parsed and converted into a `Pair<Calendar, Calendar>` object to represent the user's chosen time slot for the appointment:
+
 .. Programme executes a keyword search and invokes the method `getWeekDates(currentTime, 1)`, where it converts `next week` into a datetime range, by doing relevant calculations on the `Calendar` object which represents the current time. For instance, if the command is executed on 16/10/2018, `next week` becomes a datetime range from 22/10/2018 09:00 - 28/10/2018 18:00. This range takes into consideration the doctor's working hours.
 .. Programme searches the list of already scheduled appointments within the datetime range obtained. It finds a list of available time periods by taking the complement within that range (taking into consideration the doctor's working hours), and passes the list as a `String` into a `Prompt` object, where the list is displayed to the user in a `PromptWindow`.
 .. User inputs a specific time slot from the list of available time periods. For instance, user inputs `22/10/2018 09:00 - 10:00`. The refined time slot string is then passed back to `DateTimeParser` and converted into a `Pair<Calendar, Calendar>` object that represents this time slot, by invoking the method `parseTimeSlot(timeSlotString)`.
 
-. Further Prompting: The user is presented with two more `PromptWindow`, where they can provide further inputs for tagsand additional notes for the appointment. This is done through a simple I/O mechanism.
+Step 4. Further Prompting: The user is presented with two more `PromptWindow`, where they can provide further inputs for tagsand additional notes for the appointment. This is done through a simple I/O mechanism.
 
-. Generating Appointment: Results from the previous steps are used to fill the attributes of a newly created `ScheduleEvent` object which is then returned.
+Step 5. Generating Appointment: Results from the previous steps are used to fill the attributes of a newly created `ScheduleEvent` object which is then returned.
 
 
-The sequence diagram below illustrates this process, showing notable steps. Note that step 4 and 5 are omitted in the diagram as they are relatively trivial:
+The sequence diagram below summarises this process, showing notable steps. Note that step 4 and 5 are omitted in the diagram as they are relatively trivial:
 
 image::NaturalLanguageProcessingSequenceDiagram.png[width="800"]
 
