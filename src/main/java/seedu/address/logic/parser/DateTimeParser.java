@@ -134,7 +134,7 @@ public class DateTimeParser {
             } catch (NumberFormatException e) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_INVALID_INTEGER));
             }
-            if (offset == 0 ) {
+            if (offset == 0) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_INVALID_INTEGER));
             }
             switch (splitDateInput[2]) {
