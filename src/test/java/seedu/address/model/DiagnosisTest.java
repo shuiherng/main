@@ -24,7 +24,7 @@ public class DiagnosisTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    private final Diagnosis diagnosis = new Diagnosis();
+    private Diagnosis diagnosis = new Diagnosis();
 
     private Disease influenza = new Disease("influenza");
     private Symptom lipSmacking = new Symptom("lip smacking");
@@ -35,6 +35,12 @@ public class DiagnosisTest {
     private Disease acne = new Disease("acne");
     private Symptom blackhead = new Symptom("blackhead");
     private Symptom whitehead = new Symptom("whitehead");
+
+    @Test
+    public void constructor() {
+        diagnosis = new Diagnosis();
+        assertNotNull(diagnosis);
+    }
 
     @Test
     public void hasDisease() {
