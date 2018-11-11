@@ -113,16 +113,13 @@ Examples:
 
 Selects an existing patient and its information will display on the right. If necessary, switches the application to patient management mode.
 
-[NOTE]
-Select command is different from clicking the patient card in the window. It enables you to select the patients who were soft deleted
-
 Examples:
 
 * `select patient p1`
 * `select patient p29`
 
 .Select a patient
-image::select_patient.PNG[width="600"]
+image::select_command_patient.PNG[width="600"]
 
 === Edit patient information : `edit patient`
 
@@ -261,16 +258,13 @@ Tags:
 
 Selects an existing appointment and its details will display on the right. If necessary, switches the application to appointment management mode.
 
-[NOTE]
-Select command is different from clicking the appointment card in the window. It enables you to select the appointment in the past.
-
 Examples:
 
 * `select appointment e5`
 * `select appointment e29`
 
 .Select an appointment
-image::select_appointment.PNG[width="600"]
+image::select_command_appointment.PNG[width="600"]
 
 === Edit appointment information : `edit appointment`
 

@@ -6,9 +6,7 @@ import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
 
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.index.Index;
-import seedu.address.commons.events.ui.AppointmentPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.JumpToListRequestEvent;
-import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.SwitchToAppointmentEvent;
 import seedu.address.commons.events.ui.SwitchToPatientEvent;
 import seedu.address.logic.CommandHistory;
@@ -41,6 +39,8 @@ public class SelectCommand extends Command {
     public static final String MESSAGE_INVALID_EVENT_ID = "Invalid Appointment ID.";
     public static final String MESSAGE_EVENT_ID_NOT_FOUND = "Appointment ID %1$s not found.";
     public static final String MESSAGE_PERSON_ID_NOT_FOUND = "Patient ID %1$s not found.";
+    public static final String MESSAGE_EVENT_ID_NOT_DISPLAYED = "Appointment ID %1$s is not in the panel.";
+    public static final String MESSAGE_PERSON_ID_NOT_DISPLAYED = "Patient ID %1$s is not in the panel.";
     public static final String MESSAGE_UNEXPECTED_CMDTYPE = "Unexpected values for cmdType: "
             + "should have been caught in parser.";
 
@@ -64,9 +64,12 @@ public class SelectCommand extends Command {
             }
             try {
                 Person foundPerson = addressBookModel.getPersonById(new PersonId(target, false));
-                EventsCenter.getInstance().post(new PersonPanelSelectionChangedEvent(foundPerson));
+                EventsCenter.getInstance().post(new JumpToListRequestEvent(Index.fromZeroBased
+                        (addressBookModel.getFilteredPersonList().indexOf(foundPerson))));
             } catch (PersonNotFoundException e) {
                 throw new CommandException(String.format(MESSAGE_PERSON_ID_NOT_FOUND, target));
+            } catch (IndexOutOfBoundsException e) {
+                throw new CommandException(String.format(MESSAGE_PERSON_ID_NOT_DISPLAYED, target));
             }
             EventsCenter.getInstance().post(new SwitchToPatientEvent());
             Person foundPerson = addressBookModel.getPersonById(new PersonId(target, false));
@@ -79,9 +82,12 @@ public class SelectCommand extends Command {
             }
             try {
                 ScheduleEvent foundEvent = scheduleModel.getEventById(new EventId(target, false));
-                EventsCenter.getInstance().post(new AppointmentPanelSelectionChangedEvent(foundEvent));
+                EventsCenter.getInstance().post(new JumpToListRequestEvent(Index.fromZeroBased
+                        (scheduleModel.getFilteredEventList().indexOf(foundEvent))));
             } catch (ScheduleEventNotFoundException e) {
                 throw new CommandException(String.format(MESSAGE_EVENT_ID_NOT_FOUND, target));
+            } catch (IndexOutOfBoundsException e) {
+                throw new CommandException(String.format(MESSAGE_EVENT_ID_NOT_DISPLAYED, target));
             }
             EventsCenter.getInstance().post(new SwitchToAppointmentEvent());
             ScheduleEvent foundEvent = scheduleModel.getEventById(new EventId(target, false));
