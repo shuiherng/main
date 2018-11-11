@@ -15,7 +15,9 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.util.Pair;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -58,6 +60,7 @@ public class ScheduleEventParser {
     public static final String[] PHRASE_THE_DAY_AFTER_TMR = {"the", "day", "after", "tmr"};
     public static final String[] PHRASE_THE_DAY_AFTER_TOMORROW = {"the", "day", "after", "tomorrow"};
     public static final String[] PHRASE_IN_A_FEW_DAYS = {"in", "a", "few", "days"};
+    private static final Logger logger = LogsCenter.getLogger(ScheduleEventParser.class);
     private ScheduleModel scheduleModel;
     private AddressBookModel addressBookModel;
 
@@ -75,6 +78,7 @@ public class ScheduleEventParser {
      */
     public ScheduleEvent parse(String input) throws ParseException {
         requireNonNull(input);
+        logger.info("Start ScheduleEvent parsing");
         String[] splitInput = input.split("\\s+");
         int dateInputStartAt = findDateInputStart(splitInput);
         String[] patientInput = generatePatientInput(splitInput, dateInputStartAt);
@@ -139,6 +143,7 @@ public class ScheduleEventParser {
      */
     private Pair<Calendar> parseDateInput(String dateInput) throws ParseException {
         requireNonNull(dateInput);
+        logger.info("Start time parsing");
         try {
             Calendar currentTime = Calendar.getInstance();
             DateTimeParser dateTimeParser = new DateTimeParser();
@@ -146,6 +151,7 @@ public class ScheduleEventParser {
             Pair<Calendar> timeSlot = promptForTimeSlot(dateInterval, dateTimeParser);
             return timeSlot;
         } catch (ParseException | PromptException e) {
+            logger.warning("Time parsing failed");
             throw new ParseException(e.getMessage());
         }
     }
@@ -206,6 +212,7 @@ public class ScheduleEventParser {
      */
     private PersonId parsePatientInput(String[] patientInput) throws ParseException {
         requireNonNull(patientInput);
+        logger.info("Start patient parsing");
         try {
             List<Person> matchedPatients = matchPatients(patientInput);
             if (matchedPatients.isEmpty()) {
@@ -213,6 +220,7 @@ public class ScheduleEventParser {
             }
             return promptForIntendedPatient(matchedPatients).getId();
         } catch (PromptException | ParseException e) {
+            logger.warning("Patient parsing failed");
             throw new ParseException(e.getMessage());
         }
     }
@@ -277,6 +285,7 @@ public class ScheduleEventParser {
      * @throws ParseException if an error occurs during parsing.
      */
     private Set<Tag> promptForTags() throws ParseException {
+        logger.info("Start prompting for tags");
         try {
             String tags = new Prompt().promptForMoreInput(MESSAGE_PROMPT_TAGS, "", false);
             if (tags.equals("")) {
@@ -286,6 +295,7 @@ public class ScheduleEventParser {
                 return ParserUtil.parseTags(Arrays.asList(splitString));
             }
         } catch (PromptException | ParseException e) {
+            logger.warning("Tags prompting failed");
             throw new ParseException(String.format(MESSAGE_INVALID_TAG, e.getMessage()));
         }
     }
@@ -296,9 +306,11 @@ public class ScheduleEventParser {
      * @throws ParseException if an error occurs during parsing.
      */
     private String promptForNotes() throws ParseException {
+        logger.info("Start prompting for additional notes");
         try {
             return new Prompt().promptForMoreInput(MESSAGE_PROMPT_NOTES, "", false);
         } catch (PromptException e) {
+            logger.warning("Notes prompting failed");
             throw new ParseException(e.getMessage());
         }
     }
