@@ -29,6 +29,7 @@ import seedu.address.model.symptom.Symptom;
 public class Diagnosis {
 
     private static final String pathStringForCSV = "datasetForSymptomAndDisease.csv";
+    private static final String relativePath = "/storage/datasetForSymptomAndDisease.csv";
     private HashMap<Disease, Set<Symptom>> matcher;
 
 
@@ -123,7 +124,7 @@ public class Diagnosis {
             if (!FileUtil.isFileExists(Paths.get(pathStringForCSV))) {
                 FileUtil.createFile(Paths.get(pathStringForCSV));
                 InputStream inputStream = MainApp.class
-                        .getResourceAsStream("/storage/datasetForSymptomAndDisease.csv");
+                        .getResourceAsStream(relativePath);
                 FileUtil.writeToCsvFile(Paths.get(pathStringForCSV),
                         Diagnosis.convertStreamToString(inputStream));
             }
