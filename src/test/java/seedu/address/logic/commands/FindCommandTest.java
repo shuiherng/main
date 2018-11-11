@@ -118,8 +118,8 @@ public class FindCommandTest {
     @Test
     public void findDisease_noDisease() throws Exception {
         thrown.expect(CommandException.class);
-        thrown.expectMessage("acne" + FindCommand.NO_DISEASE_FOUND);
-        testDiagnosisModel(new DiagnosisModelManager(), "acne");
+        thrown.expectMessage("sadness" + FindCommand.NO_DISEASE_FOUND);
+        testDiagnosisModel(new DiagnosisModelManager(), "sadness");
     }
 
     /**

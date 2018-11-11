@@ -29,6 +29,9 @@ import static seedu.address.testutil.PersonBuilder.DEFAULT_PHONE;
 import static seedu.address.testutil.PersonUtil.matchProperties;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -49,6 +52,8 @@ import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.PersonUtil;
+
+
 
 public class AddCommandTest {
     @Rule
@@ -180,12 +185,13 @@ public class AddCommandTest {
     @Test
     public void parseDisease_success() throws Exception {
         StringBuilder sb = new StringBuilder();
-        sb.append(PREFIX_DISEASE + "acne" + " ");
+        sb.append(PREFIX_DISEASE + "acnes" + " ");
         sb.append(PREFIX_SYMPTOM + "whitehead" + " ");
         CommandResult commandResult = new CommandResult(AddCommand.NEW_DISEASE
-                + "acne"
+                + "acnes"
                 + AddCommand.HAS_BEEN_ADDED_INTO_OUR_RECORD);
         assertEquals(commandResult, testDiagnosisModel(sb.toString()));
+        Files.deleteIfExists(Paths.get("datasetForSymptomAndDisease.csv"));
     }
 
     @Test
