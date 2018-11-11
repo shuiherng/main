@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_DISEASE;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
 
 import org.junit.Rule;
@@ -20,6 +21,7 @@ import seedu.address.model.DiagnosisModelManager;
 import seedu.address.model.ScheduleModel;
 import seedu.address.model.ScheduleModelManager;
 import seedu.address.model.person.Person;
+import seedu.address.model.symptom.Disease;
 import seedu.address.testutil.PersonBuilder;
 
 /**
@@ -81,8 +83,9 @@ public class FindCommandTest {
 
     /**
      * ensures that string is found in address book
+     *
      * @param addressBookModel model
-     * @param searchString search string
+     * @param searchString     search string
      * @throws Exception
      */
     private void assertFoundInAddressBook(AddressBookModel addressBookModel, String searchString)
@@ -97,5 +100,41 @@ public class FindCommandTest {
         assertEquals(cmd.execute(addressBookModel, scheduleModel, diagnosisModel, commandHistory),
                 new CommandResult(String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW,
                         addressBookModel.getFilteredPersonList().size())));
+    }
+
+    @Test
+    public void findDisease_success() throws Exception {
+        StringBuilder sb = new StringBuilder();
+        sb.append("influenza");
+        DiagnosisModel diagnosisModel = new DiagnosisModelManager();
+        CommandResult commandResult = new CommandResult("influenza"
+                + FindCommand.THE_FOLLOWING_SYMPTOMS_MATCHING
+                + "influenza" + ":\n"
+                + "\n"
+                + CommandResult.convertListToString(diagnosisModel.getSymptoms(new Disease("influenza"))));
+        assertEquals(commandResult, testDiagnosisModel(diagnosisModel, sb.toString()));
+    }
+
+    @Test
+    public void findDisease_noDisease() throws Exception {
+        thrown.expect(CommandException.class);
+        thrown.expectMessage("acne" + FindCommand.NO_DISEASE_FOUND);
+        testDiagnosisModel(new DiagnosisModelManager(), "acne");
+    }
+
+    /**
+     * Tests diagnosis model
+     *
+     * @param toAdd string that needs to be added
+     * @throws Exception
+     */
+    private CommandResult testDiagnosisModel(DiagnosisModel diagnosisModel, String toAdd) throws Exception {
+        AddressBookModel addressBookModel = new AddressBookModelManager();
+        ScheduleModel scheduleModel = new ScheduleModelManager();
+        CommandHistory commandHistory = new CommandHistory();
+
+        FindCommand cmd = new FindCommand(CMDTYPE_DISEASE, toAdd);
+
+        return cmd.execute(addressBookModel, scheduleModel, diagnosisModel, commandHistory);
     }
 }
