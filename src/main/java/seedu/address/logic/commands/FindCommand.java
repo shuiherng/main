@@ -62,7 +62,8 @@ public class FindCommand extends Command {
     public static final String NO_DISEASE_FOUND = " is not present in our record,"
             + " please add this disease and "
             + "its related symptoms into the record"
-            + "\n\n";
+            + "\n\n"
+            + AddCommand.MESSAGE_USAGE_DISEASE;
     public static final String THE_FOLLOWING_SYMPTOMS_MATCHING = " is present in our record. "
             + "Found the following symptoms matching ";
     public static final String DRUG_SEARCH_INITIALIZATION_FAIL = "The drug search database could not be initialized.";
