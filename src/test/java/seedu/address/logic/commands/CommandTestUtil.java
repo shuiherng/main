@@ -56,6 +56,15 @@ public class CommandTestUtil {
     public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS; // empty string not allowed for addresses
     public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "hubby*"; // '*' not allowed in tags
 
+    public static final String INVALID_MOREINFO_INDEX_TOOLARGE = "10000"; // moreinfo rejects indices greater
+    // than 4 digits
+    public static final String INVALID_MOREINFO_INDEX_NON_POSITIVE_1 = "0"; // moreinfo indices must be positive
+    public static final String INVALID_MOREINFO_INDEX_NON_POSITIVE_2 = "-1"; // moreinfo indices must be positive
+    public static final String INVALID_MOREINFO_INDEX_NON_NUMERICAL_1 = "123abc"; // moreinfo indices not contain
+    // letters
+    public static final String INVALID_MOREINFO_INDEX_NON_NUMERICAL_2 = "contains spaces"; // moreinfo
+    // indices not contain spaces
+
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
 
     public static final EditCommand.EditPersonDescriptor DESC_AMY;

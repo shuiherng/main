@@ -36,8 +36,7 @@ public class DrugSearch {
 
         for (String i: tooGeneric) {
             if (i.toLowerCase().contains(keyword.toLowerCase())) {
-                return "Your entered keyword " + keyword + " is too generic, and will lead to too many results."
-                        + "Try a longer keyword, or a more specific one.";
+                return "Too generic.";
             }
         }
 
@@ -49,24 +48,22 @@ public class DrugSearch {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return "Initialization failed.";
         }
 
         for (int i = 0; i < resultsCache.size(); i++) {
             String[] currentRecord = resultsCache.get(i);
-            results = results.concat((i + 1) + ". Name: " + currentRecord[1]);
-            results = results.concat("\n" + spacer(i + 1) + "  ");
-            results = results.concat("Active Ingredient(s): "
-                    + currentRecord[10].replace("&&", ", "));
-            results = results.concat("\n" + spacer(i + 1) + "  ");
-            results = results.concat("Classification: " + currentRecord[4]);
+            results = results.concat(String.format("%5s %s", (i + 1) + ".", "Name: " + currentRecord[1]));
+            results = results.concat("\n" + String.format("%5s %s", "", " Active Ingredient(s): "
+                    + currentRecord[10].replace("&&", ", ")));
+            results = results.concat("\n" + String.format("%5s %s", "", " Classification: " + currentRecord[4]));
             results = results.concat("\n\n");
         }
 
         if (resultsCache.size() > 0) {
             results = results.concat("For more information about any result, enter \"moreinfo [INDEX]\"");
         } else {
-            results = results.concat("No results found. Try again with a different query.");
+            results = "Not found.";
         }
         return results;
     }
@@ -80,7 +77,7 @@ public class DrugSearch {
         String results = "";
         try {
             if (resultsCache.isEmpty()) {
-                return "Empty";
+                return "Empty.";
             }
 
             index--;
@@ -96,24 +93,7 @@ public class DrugSearch {
 
             return results;
         } catch (IndexOutOfBoundsException e) {
-            return "Not in list";
-        }
-    }
-
-    /**
-     * Returns a sequence of spaces whose length is equivalent to the numnber of digits
-     * in its argument integer.
-     *
-     * @return String containing spaces.
-     */
-
-    private static String spacer(int input) {
-        if (input < 10) {
-            return "  ";
-        } else if (input < 100) {
-            return "   ";
-        } else {
-            return "     ";
+            return "Not in cache.";
         }
     }
 }

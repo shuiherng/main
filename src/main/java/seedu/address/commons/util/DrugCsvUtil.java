@@ -29,7 +29,7 @@ public class DrugCsvUtil {
     }
 
     /**
-     * Returns entries matching a certain keyword one by one.
+     * Returns entries from the drug database one at a time, which match the given keyword.
      */
     public String[] nextMatchingEntry() throws IOException {
         String[] nextRecord;
@@ -38,7 +38,6 @@ public class DrugCsvUtil {
                 return nextRecord;
             }
         }
-
         return null;
     }
 }

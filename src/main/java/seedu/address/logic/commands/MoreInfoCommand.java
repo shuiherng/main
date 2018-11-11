@@ -17,20 +17,20 @@ public class MoreInfoCommand extends Command {
 
     public static final String COMMAND_WORD = "moreinfo";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": See more "
-            + "information about a drug in the search results.\n"
-            + "Example: " + COMMAND_WORD + " 3";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Use \"moreinfo [INDEX]\""
+            + " to view extended pharmacological data about the corresponding"
+            + " search result (INDEX must be a positive integer)."
+            + "\nExample: " + COMMAND_WORD + " 3";
 
     public static final String NO_PRIOR_SEARCH = "Please carry out a search "
         + "using \"find drug [drugname]\" first.";
 
-    public static final String NO_SUCH_RESULT = "This result is not in the list. Please look through "
-            + "the results and type \"moreinfo [index]\" to see more";
+    public static final String NO_SUCH_RESULT = "This result is not in the list.";
 
     private final int index;
 
     public MoreInfoCommand(String keyindex) {
-        this.index = Integer.parseInt(keyindex);
+        this.index = Integer.parseInt(keyindex.trim());
     }
 
     @Override
@@ -42,9 +42,9 @@ public class MoreInfoCommand extends Command {
         String cmdResult;
 
         cmdResult = DrugSearch.moreInfo(index);
-        if (cmdResult.equals("Empty")) {
+        if (cmdResult.equals("Empty.")) {
             throw new CommandException(NO_PRIOR_SEARCH);
-        } else if (cmdResult.equals("Not in list")) {
+        } else if (cmdResult.equals("Not in cache.")) {
             throw new CommandException(NO_SUCH_RESULT);
         }
 
@@ -52,5 +52,10 @@ public class MoreInfoCommand extends Command {
 
     }
 
-
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof MoreInfoCommand // instanceof handles nulls
+                && index == ((MoreInfoCommand) other).index); // state check
+    }
 }
