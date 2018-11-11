@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.Random;
@@ -28,7 +29,8 @@ public class DrugSearchTest {
 
     @Test
     public void correctResponseNotInDatabase() {
-        assertEquals(DrugSearch.find(NOT_IN_DATABASE), "Not found.");
+        assertEquals(DrugSearch.find(NOT_IN_DATABASE),
+                "Not found.");
     }
 
     @Test
@@ -36,6 +38,19 @@ public class DrugSearchTest {
         for (int i = 1; i <= 20; i++) {
             assertNotNull(DrugSearch.find(randomStringGenerator(RANDOMIZED_TEST_LENGTH)));
         }
+    }
+
+    @Test
+    public void moreInfoCacheEmpty() {
+        // no drug search has been run yet, therefore results cache is empty
+        assertEquals(DrugSearch.moreInfo(1), "Empty.");
+    }
+
+    @Test
+    public void moreInfoOutOfBounds() {
+        DrugSearch.find("glycomet"); // 'Glycomet' is known to be in the database, and to produce
+        // fewer than 10 results when searched for
+        assertEquals(DrugSearch.moreInfo(11), "Not in cache.");
     }
 
     /**

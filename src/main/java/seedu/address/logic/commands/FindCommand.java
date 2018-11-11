@@ -118,7 +118,7 @@ public class FindCommand extends Command {
             if (result.equals("Too generic.")) {
                 throw new CommandException(DRUG_TOO_GENERIC);
             } else if (result.equals("Initialization failed.")) {
-                throw new CommandException(UNEXPECTED_ERROR + DRUG_SEARCH_INITIALIZATION_FAIL);
+                throw new CommandException(UNEXPECTED_ERROR + " " + DRUG_SEARCH_INITIALIZATION_FAIL);
             } else if (result.equals("Not found.")) {
                 throw new CommandException(DRUG_NOT_FOUND);
             } else {
