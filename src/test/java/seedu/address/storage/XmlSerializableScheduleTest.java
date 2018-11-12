@@ -51,7 +51,7 @@ public class XmlSerializableScheduleTest {
     }
 
     @Test
-    public void toModelType_InvalidEventsFile_throwsIllegalValueException() throws Exception {
+    public void toModelType_invalidEventsFile_throwsIllegalValueException() throws Exception {
         XmlSerializableSchedule dataFromFile = XmlUtil.getDataFromFile(INVALID_EVENTS_FILE,
                 XmlSerializableSchedule.class);
         thrown.expect(IllegalValueException.class);

@@ -24,7 +24,6 @@ import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_TAGS;
 import static seedu.address.testutil.PersonUtil.matchProperties;
 import static seedu.address.testutil.ScheduleEventUtil.matchEventProperties;
 
-import org.assertj.core.internal.bytebuddy.asm.Advice;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
