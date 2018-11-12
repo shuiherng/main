@@ -71,7 +71,10 @@ public class ScheduleEventUtil {
      * match, but is not a requirement.
      */
     public static boolean matchEventProperties(ScheduleEvent event, ScheduleEvent otherEvent) {
-        return event.getDate().equals(otherEvent.getDate())
+        return ScheduleEvent.STORAGE_SDF.format(event.getDate().getKey().getTime())
+                .compareTo(ScheduleEvent.STORAGE_SDF.format(otherEvent.getDate().getKey().getTime())) == 0
+                && ScheduleEvent.STORAGE_SDF.format(event.getDate().getValue().getTime())
+                .compareTo(ScheduleEvent.STORAGE_SDF.format(otherEvent.getDate().getValue().getTime())) == 0
                 && event.getDetails().equals(otherEvent.getDetails())
                 && event.getPersonId().equals(otherEvent.getPersonId())
                 && event.getTags().equals(otherEvent.getTags());

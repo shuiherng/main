@@ -11,16 +11,14 @@ This portfolio serves to document my contributions to https://github.com/CS2103-
 
 == 1. Overview
 
-*PatientBook* is an all-in-one convenient desktop application for medical professionals in Singapore.
-It utilizes a Command Line Interface application where doctors can type simple commands on keyboard to store and
-manage patient data and appointment details. It can also be used to retrieve information about
-diseases, symptoms and drugs.
+*PatientBook* is a desktop application for doctors in Singapore.
+Its objective is to help streamline their workflow by managing their patient data and appointment schedules. It can also be used to find information on diseases, symptoms and drugs. *PatientBook* features a Command Line Interface, which makes it convenient for doctors to interact with the application since it is done solely via the keyboard.
 
-This project is developed by the T12-2 development team, comprising five year-two computer science undergraduates from School of Computing,
+The application supports various important operations such as finding information on and adding appointments for a patient, predicting a disease from a set of symptoms, and querying for details on drugs approved for distribution in Singapore.
+
+
+This project is conceptualized and produced by the T12-2 development team, comprising five year-two computer science undergraduates from the School of Computing,
 National University of Singapore.
-
-*PatientBook* supports various important operations such as finding information about a patient,
-adding an appointment for a patient and predicting a disease from a set of symptoms.
 
 == 2. Summary of Contributions
 

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <schedule>
 
-    <persons>
-        <personId>e0</personId>
+    <events>
+        <eventId>e0</eventId>
         <datetimeStart>30/10/2018 09:00</datetimeStart>
         <datetimeEnd>30/10/2018 10:00</datetimeEnd>
         <personId>p58</personId>
         <details>some details</details>
-    </persons>
+    </events>
 
     <!-- Event with identical ID, even though details differ -->
     <events>
