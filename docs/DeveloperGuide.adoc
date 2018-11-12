@@ -353,6 +353,9 @@ These operations are exposed in the `DiagnosisModel` interface as
 `DiagnosisModel#addMatcher(Disease disease, Set<Symptom> symptoms)` and
 `DiagnosisModel#predictDisease(Set<Symptom> symptoms)` respectively.
 
+.Diagnosis Class Diagram
+image::DiagnosisClassDiagram.png[width="800"]
+
 Given below is an example usage scenario and how the `diagnosis` mechanism behaves at each step:
 
 .Sequence Diagram
