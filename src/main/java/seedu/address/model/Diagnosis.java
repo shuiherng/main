@@ -91,7 +91,7 @@ public class Diagnosis {
         requireAllNonNull(symptoms);
         boolean hasDisease = this.hasDisease(disease);
         if (!hasDisease) {
-            this.matcher = writeDataFromCsvFile(disease, symptoms);
+            this.matcher = writeDataToCsvFile(disease, symptoms);
         }
     }
 
@@ -105,7 +105,6 @@ public class Diagnosis {
         requireAllNonNull(symptoms);
         List<Disease> diseases = this.matcher.keySet().stream()
                 .filter(disease -> this.matcher.get(disease).containsAll(symptoms)).collect(Collectors.toList());
-        //Disease[] diseaseArray = new Disease[diseases.size()];
         diseases.sort(Comparator.comparing(Disease::toString));
         return diseases;
     }
@@ -165,7 +164,7 @@ public class Diagnosis {
      *
      * @return a new ashMap object which its key is the disease and value is its related symptoms.
      */
-    private static HashMap<Disease, Set<Symptom>> writeDataFromCsvFile(Disease disease, Set<Symptom> symptoms) {
+    private static HashMap<Disease, Set<Symptom>> writeDataToCsvFile(Disease disease, Set<Symptom> symptoms) {
 
         try {
             String data = Diagnosis.stringConverter(disease.toString(), symptoms);

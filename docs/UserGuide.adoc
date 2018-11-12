@@ -346,14 +346,30 @@ Hence, you may try command `find disease NAME` to find related symptoms of this 
 Example:
 
 * `add disease d/acne s/pustules s/blackheads`
+
+.Message for Adding Disease Successfully
+image::SuccessfulAddDisease.png[width="600"]
+
 * `add disease d/alcohol misuse s/stroke s/stroke s/mouth cancer` +
 Symptom 'stroke' will be included once in our record.
 * `add disease d/obesity d/obesities s/overweight` +
 This is an invalid command due to multiple occurrence of disease paramters. Hence, you will
 be prompted to enter a correct command:
 
-.Error Message for Wrong Add Disease Format
+.Error Message for Duplicate Disease Parameter
 image::ErrorMessageForWrongAddDiseaseCommand.png[width="600"]
+
+* `add disease d/averylongdiseaseparameter s/dummySymptom` +
+Returns an error message:
+
+.Error Message for Long Disease Parameter
+image::AddDiseaseLimit.png[width="600"]
+
+* `add disease d/invalid,disease s/dummySymptom` +
+Returns an error message:
+
+.Error Message for Invalid Disease Parameter
+image::AddDiseaseComma.png[width="600"]
 
 === List all diseases : `list disease`
 
@@ -369,6 +385,10 @@ Finds the disease which its name is specified in the command and returns its rel
 displayed in alphabetic order.
 
 * The search is case insensitive; e.g. ‘HIV’, ‘hIV’ and ‘hiv’ are all equivalent.
+
+.Display for find disease hIV
+image::FindHiv.png[width="600"]
+
 * Only full words will be matched; e.g. ‘confus’ will not match ‘confusion’.
 
 Example:
@@ -407,6 +427,12 @@ Returns an error message:
 
 .Error Message for Command 'predict s/cry'
 image::PredictDiseaseInvalidDemo.png[width="600"]
+
+* `predict s/` +
+Returns an error message:
+
+.Error Message for Empty Symptom Parameter
+image::PredictEmptySymptom.png[width="600"]
 
 // end::diagnosis[]
 
