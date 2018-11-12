@@ -24,6 +24,8 @@ import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_TAGS;
 import static seedu.address.testutil.PersonUtil.matchProperties;
 import static seedu.address.testutil.ScheduleEventUtil.matchEventProperties;
 
+import java.util.Calendar;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -49,8 +51,6 @@ import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.ScheduleEventBuilder;
-
-import java.util.Calendar;
 
 /**
  * Tests the edit command.
