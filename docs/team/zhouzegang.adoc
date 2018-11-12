@@ -221,3 +221,4 @@ related symptoms, then maintain a `list` of `Match` objects.
 calculating the similarity of its pre-existing set of symptoms and the set of symptoms given by users.
 ** Pros: More accurate in determining the correct diseases.
 ** Cons: Hard to implement and understand.
+
