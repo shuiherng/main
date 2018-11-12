@@ -30,7 +30,7 @@ All my pull requests (code contributions) may be found https://github.com/CS2103
 I contributed to *PatientBook*'s backend code, by providing support for both appointment and patient information commands, as well as implementing many of the commands themselves. The following enumerated section contain the details of my contribution:
 
 1. *Support for all appointment scheduling operations*
-** *What it does:* Implements an entirely new infrastructure (including command and storage level) code upon which my other project members can implement their appointment scheduling features.
+** *What it does:* Implements an entirely new infrastructure (including command and storage level) upon which my other project members can implement their appointment scheduling features.
 ** *Justification:* This feature is a crucial first step as it will support almost half of *PatientBook*'s functionality in the form of a scheduler for appointments.
 ** *Highlights:* As almost everyone's code would depend on this new infrastructure, I had to design and implement this change extremely early on in the project (less than a week after our first project meeting), so that my other project mates have time to work on their features.
 ** *Notable Code Contributions:* https://github.com/CS2103-AY1819S1-T12-2/main/pull/12[Command], https://github.com/CS2103-AY1819S1-T12-2/main/pull/34[Storage], https://github.com/CS2103-AY1819S1-T12-2/main/pull/72[Integration]
