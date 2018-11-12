@@ -40,7 +40,7 @@ Responsibilities: In Charge of Model, CSV Expert
 
 === Quek Shui Herng
 image::shuiherng.png[width="150", align="left"]
-{empty}[http://github.com/shuiherng[github]] [<<QuekShuiHerng#, portfolio>>]
+{empty}[http://github.com/shuiherng[github]] [<<quekshuiherng#, portfolio>>]
 
 Role: Architect +
 Responsibilities: DevOps, Integration, Testing
