@@ -1203,7 +1203,16 @@ These instructions only provide a starting point for testers to work on; testers
 .. Re-launch the app by double-clicking the jar file. +
    Expected: The most recent window size and location is retained.
 
-=== Addition
+=== Add
+
+. Adding a patient
+
+.. Test case: `add patient n/Jonathan Smith p/98014555 e/jonathansmith@gmail.com a/10 New Bridge Street, Singapore 510319` +
+   Expected: Patient with name Jonathan Smith is added to the displayed list. Timestamp in the status bar is updated.
+.. Test case: `add n/Jonathan Smith p/98014555 e/jonathansmith@gmail.com a/10 New Bridge Street, Singapore 510319` +
+   Expected: No patient is added. Error details are shown in the status message. Status bar remains the same.
+.. Other incorrect delete commands to try: `add patient n/Jonathan Smith`, `add` +
+   Expected: Similar to previous.
 
 . Adding an appointment (initial input in command box)
 
@@ -1250,7 +1259,7 @@ These instructions only provide a starting point for testers to work on; testers
 ... For tag prompt window: `[]` `,yes` +
    Expected: Similar to previous.
 
-=== Deletion
+=== Delete
 
 . Deleting a patient
 
@@ -1270,5 +1279,44 @@ These instructions only provide a starting point for testers to work on; testers
 .. Other incorrect delete commands to try: `delete appointment 0` `delete appointment ex` (where x is larger than the the largest shown appointment ID) +
    Expected: Similar to previous.
 
+=== Clear
 
+. Clearing the appointment schedule
 
+.. Test case: `clear appointment` +
+   Expected: All appointments are removed from the displayed list. Timestamp in the status bar is updated.
+.. Test case: `clear patient` +
+   Expected: No effect. Patient list is not cleared, and error details are shown in the status message. Status bar remains the same.
+
+=== Edit
+
+. Editing a patient
+
+.. Test case: `edit patient p5 n/Jonah Smith p/90885132` +
+   Expected: Patient with ID p5 now takes the name Jonah Smith, and his phone number is now changed to 90885132. Changes are reflected in the displayed list. Timestamp in the status bar is updated.
+.. Test case: `edit patient n/Jonah Smith p/90885132` +
+   Expected: No patient is modified. Error details are shown in the status message. Status bar remains the same.
+.. Test case: `edit patient p5 n/Jonah Smith p/51029310 a/` +
+   Expected: No patient is modified. Error details are shown in the status message. Status bar remains the same.
+
+. Editing an appointment
+
+.. Test case: `edit appointment e53 p/p5 t/11/01/2019 12:00 - 13:30`
+   Expected: Appointment with ID e53 is now scheduled for patient with ID p5, and (if the new date does not clash with an existing appointment and takes place after the time now) will schedule it for 11th January 2019, from 1200 to 1330 hrs.
+.. Test case: `edit appointment p/p5 t/11/01/2019 12:00 - 13:30`
+   Expected: No appointment is modified. Error details are shown in the status message. Status bar remains the same.
+
+=== List
+. Listing patients
+
+.. Test case: `list patient` +
+   Expected: Displays the list of patients which have not been deleted.
+.. Test case: `list patient all` +
+   Expected: Lists all patients, including deleted ones.
+
+. Listing appointments
+
+.. Test case: `list appointment` +
+   Expected: Displays the list of appointments which take place from now.
+.. Test case: `list appointment all` +
+   Expected: List all appointments, including those that took place in the past.
