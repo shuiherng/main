@@ -1184,12 +1184,12 @@ These instructions only provide a starting point for testers to work on; testers
    Expected: A prompt window appears, displaying a list of available time slots during next week (actual dates based on the execution time of the command).
 .. Test case: `add appointment for Alex in 3 days` +
    Expected: A prompt window appears, displaying a list of available time slots in 3 days (actual date based on the execution time of the command).
-.. Test case: `add appointment for Alex in 999999999999999999 weeks` +
-   Expected: No prompt window appears. Error details shown in the status message.
+.. Test case: `add appointment for Alex in 99999999999999999999999 weeks` +
+   Expected: No prompt window appears. Error details are shown in the status message.
 .. Test case: `add appointment for Lizhi next week` +
-   Expected: No prompt window appears. Error details shown in the status message.
+   Expected: No prompt window appears. Error details are shown in the status message.
 .. Test case: `add appointment for Alex Yeoh elephant` +
-   Expected: No prompt window appears. Error details shown in the status message.
+   Expected: No prompt window appears. Error details are shown in the status message.
 .. Other incorrect add appointment commands to try: `add for Alex Yeoh tomorrow` `add appointment Alex Yeoh tomorrow` `add appointment to Alex Yeoh tomorrow` +
    Expected: Similar to previous.
 
@@ -1204,16 +1204,16 @@ These instructions only provide a starting point for testers to work on; testers
 ... For the third prompt window showing `Any additional notes for this appointment? Otherwise, press enter to continue`, press `Enter` without typing anything. +
     Expected: Appointment is created and displayed in the appointment list. Details of the appointment is shown in the status message. Timestamp in the status bar is updated.
 .. Test case:
-... For the first prompt window showing the list of available time slots, enter a valid time slot that is within the list shown, strictly in `DD/MM/YYYY hh:mm - hh:mm` format. For example, if `17/11/2018 09:00 - 18:00` is shown, enter `17/11/2018 9:00 - 10:00`. +
+... For the first prompt window showing the list of available time slots, enter a valid time slot that is within the list shown, strictly in `DD/MM/YYYY hh:mm - hh:mm` format. For example, if `17/11/2018 10:00 - 18:00` is shown, enter `17/11/2018 11:00 - 12:00`. +
     Expected: Another prompt window appears, showing `Any tags for this appointment? Otherwise, press enter to continue`.
 ... For the second prompt window showing `Any tags for this appointment? Otherwise, press enter to continue`, enter `ThisIsAVeryLongTagThatIsNotActuallyAcceptedByTheProgramme`. +
-    Expected: No further prompt window appears. No appointment is created. Error details shown in the status message.
+    Expected: No further prompt window appears. No appointment is created. Error details are shown in the status message.
 .. Test case:
-... For the first prompt window showing the list of available time slots, enter a time slot that is not within the list shown, strictly in `DD/MM/YYYY hh:mm - hh:mm` format. For example, if `17/11/2018 09:00 - 18:00` is shown, enter `17/11/2018 06:00 - 08:00`. +
-    Expected: No further prompt window appears. No appointment is created. Error details shown in the status message.
+... For the first prompt window showing the list of available time slots, enter a time slot that is not within the list shown, strictly in `DD/MM/YYYY hh:mm - hh:mm` format. For example, if `17/11/2018 10:00 - 18:00` is shown, enter `17/11/2018 06:00 - 08:00`. +
+    Expected: No further prompt window appears. No appointment is created. Error details are shown in the status message.
 .. Test case:
-... For the first prompt window showing the list of available time slots, enter a time slot that is within the range, but with start time later than the end time, strictly in `DD/MM/YYYY hh:mm - hh:mm` format. For example, if `17/11/2018 09:00 - 18:00` is shown, enter `17/11/2018 11:00 - 10:00`. +
-    Expected: No further prompt window appears. No appointment is created. Error details shown in the status message.
+... For the first prompt window showing the list of available time slots, enter a time slot that is within the the list shown, but with start time later than the end time, strictly in `DD/MM/YYYY hh:mm - hh:mm` format. For example, if `17/11/2018 10:00 - 18:00` is shown, enter `17/11/2018 11:00 - 10:00`. +
+    Expected: No further prompt window appears. No appointment is created. Error details are shown in the status message.
 .. Other incorrect prompt window inputs to try:
 ... For time slot prompt window: `35/12/2018 12:00 - 13:00` `15/15/2018 12:00 - 13:00` `17/11/2018 12:88 - 14:00` `17/11 10:00 - 12:` +
    Expected: Similar to previous.
@@ -1227,7 +1227,7 @@ These instructions only provide a starting point for testers to work on; testers
 .. Test case: `delete patient p0` +
    Expected: Patient with ID p0 is deleted from the displayed list. Timestamp in the status bar is updated.
 .. Test case: `delete p0` +
-   Expected: No patient is deleted. Error details shown in the status message. Status bar remains the same.
+   Expected: No patient is deleted. Error details are shown in the status message. Status bar remains the same.
 .. Other incorrect delete commands to try: `delete patient 0` `delete patient px` (where x is larger than the the largest shown patient ID) +
    Expected: Similar to previous.
 
@@ -1236,7 +1236,7 @@ These instructions only provide a starting point for testers to work on; testers
 .. Test case: `delete appointment e0` +
    Expected: Appointment with ID e0 is deleted from the displayed list. Timestamp in the status bar is updated.
 .. Test case: `delete e0` +
-   Expected: No appointment is deleted. Error details shown in the status message. Status bar remains the same.
+   Expected: No appointment is deleted. Error details are shown in the status message. Status bar remains the same.
 .. Other incorrect delete commands to try: `delete appointment 0` `delete appointment ex` (where x is larger than the the largest shown appointment ID) +
    Expected: Similar to previous.
 
