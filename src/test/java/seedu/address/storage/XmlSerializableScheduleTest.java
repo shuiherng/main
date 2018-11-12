@@ -6,11 +6,12 @@ import static seedu.address.testutil.ScheduleEventUtil.matchEventProperties;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import javafx.collections.ObservableList;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import javafx.collections.ObservableList;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.XmlUtil;
@@ -19,7 +20,7 @@ import seedu.address.model.event.ScheduleEvent;
 import seedu.address.testutil.TypicalEvents;
 
 
-public class  XmlSerializableScheduleTest {
+public class XmlSerializableScheduleTest {
 
     private static final Path TEST_DATA_FOLDER = Paths.get("src", "test", "data",
             "XmlSerializableScheduleTest");
