@@ -112,6 +112,10 @@ Examples:
 *Format:* `select patient PATIENT_ID`
 
 Selects an existing patient and its information will display on the right. If necessary, switches the application to patient management mode.
+Selecting patient replaces physically clicking an patient card. Hence, you can only select a patient that is displayed on the left.
+
+[NOTE]
+You may select a deleted patient by first typing `list patient all`.
 
 Examples:
 
@@ -257,6 +261,10 @@ Tags:
 *Format:* `select appointment APPOINTMENT_ID`
 
 Selects an existing appointment and its details will display on the right. If necessary, switches the application to appointment management mode.
+Selecting appointment replaces physically clicking an appointment card. Hence, you can only select an appointment that is displayed on the left.
+
+[NOTE]
+You may select a past appointment by first typing `list appointment all`.
 
 Examples:
 

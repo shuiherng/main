@@ -251,6 +251,8 @@ This section describes some noteworthy details on how certain features are imple
 
 === On-the-fly Switching between Modes
 
+==== Current Implementation
+
 This feature enables the software to separate patient information from appointment information clearly. The two modes
 are `patient management mode` and `appointment management mode`. Users can switch between one mode to the other mode using
 `mode command`. In addition, the feature supports auto-switch function. In other words, when user type in a valid command
@@ -283,6 +285,31 @@ event center to switch to the corresponding mode. The way switch method is imple
 not to be checked. For now, when user switch from patient mode to patient mode, the method will still be called but
 it does not reflect any change in the UI. One way to refine is to allow software to check the current showing state and
 if user switch from one mode to the same mode, an exception will be thrown. This implementation is, however, not very necessary.
+
+.Sequence diagram when user inputs "mode appointment"
+image::mode_command_sequence.PNG[width="800"]
+
+==== Design Considerations
+
+===== Aspect: Switching mode or switching panel
+* **Alternative 1 (current choice):** Having an entire set of UI, in this case `Appointment Main Window`to hold the
+appointment related data.
+** Pros: It is more flexible for future change. It would be easier to add more modes in the future if needed.
+The design of the UI for various modes can be modified because they are independent from one another.
+** Cons: It is more difficult to implement.
+* **Alternative 2 :** Only adding in an appointment panel and switching the panel if necessary.
+** Pros:It is easier to implement.
+** Cons: The program would be constrained if more modes are to be added in the future.
+
+===== Aspect: Execution of mode command
+* **Alternative 1 (current choice):** Posting the switch mode event regardless of the current mode that user is in.
+** Pros: The logic do not have to be aware of the UI component and hence reduce coupling.
+** Cons: Users can switch from one mode to the same mode.
+* **Alternative 2 :** The mode command maintains an instance of the UiManager and keep tracks of the current window
+that is showing. When user requires to switch mode, identifies the current mode and generate exception if the user is
+already in this mode.
+** Pros: It can respond more accurately when user wish to switch mode.
+** Cons: It increases dependency on the code unnecessarily.
 
 // tag::nlp[]
 
