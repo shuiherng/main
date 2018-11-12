@@ -9,36 +9,34 @@
 
 == 1. Overview
 
-. TO-DO (two to three paragraphs)
-. state the objective of the PPP in the very first line
-. state this is not an individual work
-. why this project? who is targeted?
-. it is okay to have a brief summary of contribution here
-. MUST NUMBER THE SECTIONS!
+This Project Portfolio documents my contribution to the software project PatientBook, a group project collectively done by five Computer Science Undergraduate students in National University of Singapore.
+
+PatientBook is a Command Line Interface (CLI) desktop application targeted at medical professionals in Singapore. It aims to provide convenience and assurance for doctors, by allowing efficient management of patients and appointments. Doctors can also retrieve information from the built-in disease-symptom database and drug database.
+
+My main contribution to the project includes adding the ability to add appointments into the system in natural expressions.
 
 == 2. Summary of Contributions
 
-* *Major enhancement*: added *the ability to add appointments into the schedule system using natural expressions*.
-** What it does: This feature allows the user to add an appointment for a patient in a command format that uses natural expressions such as "next week" to indicate time.
+* *Code contributed*: [https://nus-cs2103-ay1819s1.github.io/cs2103-dashboard/#=undefined&search=kumuwu[Code]]
+
+* *Main feature implemented*: added *the ability to add appointments into the schedule system using natural expressions and in a conversational process*.
+** What it does: This feature allows the user to add an appointment in a command format that uses natural expressions such as "next week" to indicate time. It also provides the user with a list of available time slots within the range for user to choose from.
 ** Justification: This feature improves the user-friendliness of the product, as it allows the user to issue commands in intuitive and flexible ways that simulate our natural language and natural thinking process.
-** Highlights: TO-DO
-
-* *Minor enhancement*: TO-DO
-
-* *Code contributed*: [https://github.com[Functional code]] [https://github.com[Test code]] TO-DO
+** Highlights: This feature involves several challenging algorithms such as the keyword search algorithm to find expressions that indicate time and the algorithm to find available time periods within a time range. Manipulating `java.util.Calendar` also requires in-depth analysis as there are a number of edge cases to consider.
 
 * *Other contributions*:
 
+** Minor enhancements:
+*** Wrote utility classes such as a generic class `Pair` and `ScheduleEventBuilder` class.
 ** Project management:
-*** Managed releases `v1.3` - `v1.4` (2 releases) on GitHub
-*** Managed issue trackers on GitHub (examples:  TO-DO)
+*** Managed milestones `v1.1` - `v1.4` (4 milestones) on GitHub
+*** Managed releases `v1.3` - `v1.4` (3 releases) on GitHub
+*** Managed issue trackers on GitHub (examples:  https://github.com/CS2103-AY1819S1-T12-2/main/issues/31[#31], https://github.com/CS2103-AY1819S1-T12-2/main/issues/47[#47], https://github.com/CS2103-AY1819S1-T12-2/main/issues/148[#148])
 ** Enhancements to existing features:
-TO-DO
-** Documentation:
-TO-DO
+*** Added constraints for `Tag` (pull request: https://github.com/CS2103-AY1819S1-T12-2/main/pull/180[#180])
 ** Community:
-*** reviewed PRs (with non-trivial review comments): TO-DO
-*** Reported bugs and suggestions for other teams (examples:  TO-DO)
+*** Reviewed or commented pull requests (with non-trivial comments): (examples: https://github.com/CS2103-AY1819S1-T12-2/main/pull/158[#158], https://github.com/CS2103-AY1819S1-T12-2/main/pull/167[#167])
+*** Reported bugs and suggestions for other teams (examples:  https://github.com/CS2103-AY1819S1-W17-4/main/issues/235[1], https://github.com/CS2103-AY1819S1-W17-4/main/issues/237[2], https://github.com/CS2103-AY1819S1-W17-4/main/issues/257[3], https://github.com/CS2103-AY1819S1-W17-4/main/issues/253[4])
 
 
 == 3. Contributions to the User Guide
