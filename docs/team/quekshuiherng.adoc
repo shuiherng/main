@@ -53,7 +53,7 @@ I refactored much of the original *AddressBook 4* codebase, and implemented a ne
 ** *Code Contributions:* https://github.com/CS2103-AY1819S1-T12-2/main/pull/9[Soft-Delete]
 
 2. *Use of ID as unique identifiers*
-** *What is does:* Uses Patient ID and Appointment ID to uniquely identify a patient and an appointment respectively.
+** *What it does:* Uses Patient ID and Appointment ID to uniquely identify a patient and an appointment respectively.
 ** *Justification:* The existing code in AddressBook 4 identifies if two people are identical by comparing every property of the two `Person` objects. This is tedious, especially since the appointment entries have to be tied to a unique individual, which implies all the attributes of the patient will have to be stored.
 ** *Code Contributions:* https://github.com/CS2103-AY1819S1-T12-2/main/pull/9[Person ID], https://github.com/CS2103-AY1819S1-T12-2/main/pull/12[Appointment ID]
 
