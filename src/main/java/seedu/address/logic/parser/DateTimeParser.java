@@ -1,5 +1,6 @@
 package seedu.address.logic.parser;
 
+import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.Prompt.MESSAGE_PROMPT_TIMESLOT_FORMAT;
 import static seedu.address.logic.parser.ScheduleEventParser.WORD_DAY;
@@ -76,6 +77,8 @@ public class DateTimeParser {
      * @throws ParseException if an error occurs during parsing.
      */
     public Pair<Calendar> parseDate(String input, Calendar currentTime) throws ParseException {
+        requireNonNull(input);
+        requireNonNull(currentTime);
         zeroOutExtraPrecision(currentTime);
         return getResultantDate(currentTime, input.trim());
     }
@@ -89,7 +92,6 @@ public class DateTimeParser {
      * @throws ParseException if an error occurs during parsing.
      */
     private Pair<Calendar> getResultantDate(Calendar currentTime, String dateInput) throws ParseException {
-
         if (dateInput.startsWith(WORD_IN)) {
             return parseIn(currentTime, dateInput);
         } else if (dateInput.startsWith(WORD_THIS) || dateInput.startsWith(WORD_NEXT)) {
@@ -132,7 +134,7 @@ public class DateTimeParser {
             } catch (NumberFormatException e) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_INVALID_INTEGER));
             }
-            if (offset == 0 ) {
+            if (offset == 0) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_INVALID_INTEGER));
             }
             switch (splitDateInput[2]) {
@@ -234,6 +236,7 @@ public class DateTimeParser {
      * @return The date intended with working hours applied.
      */
     private Pair<Calendar> getWeekDayDate(Calendar currentTime, int dayOfWeek, int offset) {
+        assert dayOfWeek != -1;
         Calendar date = (Calendar) currentTime.clone();
         date.setFirstDayOfWeek(Calendar.MONDAY);
         date.add(Calendar.WEEK_OF_YEAR, offset);
@@ -372,6 +375,8 @@ public class DateTimeParser {
      * @return The list of available time slots represented as a String.
      */
     public String getAvailableTimeSlotsBetween(List<ScheduleEvent> scheduledAppointments, Pair<Calendar> dateInterval) {
+        requireNonNull(scheduledAppointments);
+        requireNonNull(dateInterval);
         List<Pair<Calendar>> availableSlotList = getAvailableSlotList(scheduledAppointments, dateInterval);
         return slotListToString(availableSlotList);
     }
@@ -408,6 +413,8 @@ public class DateTimeParser {
      * @param availableSlots The list of available time slots within the time range.
      */
     private void findFirstAvailableSlot(List<ScheduleEvent> scheduledAppts, List<Pair<Calendar>> availableSlots) {
+        assert !scheduledAppts.isEmpty();
+        requireNonNull(availableSlots);
         Calendar firstScheduleStart = scheduledAppts.get(0).getDate().getKey();
         Calendar firstDayStart = (Calendar) firstScheduleStart.clone();
         firstDayStart.set(Calendar.HOUR_OF_DAY, 9);
@@ -426,6 +433,9 @@ public class DateTimeParser {
      */
     private void findAvailableSlotsBetweenTwoAppts(List<Pair<Calendar>> availableSlots,
                                                    Calendar currentEnd, Calendar nextStart) {
+        requireNonNull(availableSlots);
+        requireNonNull(currentEnd);
+        requireNonNull(nextStart);
         if (nextStart.get(Calendar.DATE) != currentEnd.get(Calendar.DATE)) {
             // the next appointment is on a different date already
             // the remaining (if applicable) current day will be free all the way till day end
@@ -456,6 +466,8 @@ public class DateTimeParser {
      * @param availableSlots The list of available time slots within the time range.
      */
     private void findLastAvailableSlot(List<ScheduleEvent> scheduledAppts, List<Pair<Calendar>> availableSlots) {
+        assert !scheduledAppts.isEmpty();
+        requireNonNull(availableSlots);
         Calendar lastScheduleEnd = scheduledAppts.get(scheduledAppts.size() - 1).getDate().getValue();
         Calendar lastDayEnd = (Calendar) lastScheduleEnd.clone();
         lastDayEnd.set(Calendar.HOUR_OF_DAY, 18);
@@ -473,12 +485,13 @@ public class DateTimeParser {
      */
     private void findCompletelyAvailableDays(List<ScheduleEvent> scheduledAppts,
                                              Pair<Calendar> dateInterval, List<Pair<Calendar>> availableSlots) {
+        requireNonNull(availableSlots);
         Calendar dayPointer = (Calendar) dateInterval.getKey().clone();
-        // since the maximum interval is one month, using DAY_OF_YEAR will always be safe
         while (!dayPointer.after(dateInterval.getValue())) {
             boolean isEmptyDay = true;
             if (!scheduledAppts.isEmpty()) {
                 for (ScheduleEvent appt: scheduledAppts) {
+                    // since the maximum interval is one month, using DAY_OF_YEAR will always be safe
                     if (appt.getDate().getKey().get(Calendar.DAY_OF_YEAR) == dayPointer.get(Calendar.DAY_OF_YEAR)) {
                         isEmptyDay = false;
                         break;
@@ -506,6 +519,7 @@ public class DateTimeParser {
      * @param timeSlots The list of time slots to sort.
      */
     private void sortTimeSlots(List<Pair<Calendar>> timeSlots) {
+        requireNonNull(timeSlots);
         timeSlots.sort(new Comparator<Pair<Calendar>>() {
             @Override
             public int compare(Pair<Calendar> timeSlot1, Pair<Calendar> timeSlot2) {
@@ -523,6 +537,7 @@ public class DateTimeParser {
      * @return String representation of the given list of slots.
      */
     private String slotListToString(List<Pair<Calendar>> slots) {
+        requireNonNull(slots);
         if (slots.isEmpty()) {
             return MESSAGE_NO_SLOTS;
         }
@@ -558,6 +573,7 @@ public class DateTimeParser {
      * @throws ParseException if an error occurs during parsing.
      */
     public Pair<Calendar> parseTimeSlot(String timeSlotInput) throws ParseException {
+        requireNonNull(timeSlotInput);
         String[] splitString = timeSlotInput.split("\\s+");
         if (splitString.length != 4) { // {"DD/YMM/YYYY", "hh:mm", "-", "hh:mm"}
             throw new ParseException(String.format(MESSAGE_INVALID_SLOT, MESSAGE_PROMPT_TIMESLOT_FORMAT));
@@ -585,6 +601,7 @@ public class DateTimeParser {
      * @param time Input string.
      */
     private boolean isValidTimeFormat(String time) {
+        requireNonNull(time);
         String[] splitString = time.split(":");
         if (splitString.length != 2) { // {"hh", "mm"}
             return false;
@@ -615,6 +632,9 @@ public class DateTimeParser {
      * @throws ParseException if an error occurs during parsing.
      */
     private void setSlotStartAndEnd(Pair<Calendar> timeSlot, String startTime, String endTime) throws ParseException {
+        requireNonNull(timeSlot);
+        requireNonNull(startTime);
+        requireNonNull(endTime);
         String[] startHourMin = startTime.split(":");
         String[] endHourMin = endTime.split(":");
         try {
@@ -631,6 +651,7 @@ public class DateTimeParser {
      * Seconds and milliseconds of the given Calendar object are zeroed out as precision is only required up to minute.
      */
     private void zeroOutExtraPrecision(Calendar calendar) {
+        requireNonNull(calendar);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
     }
@@ -642,6 +663,8 @@ public class DateTimeParser {
      * @param end The end time.
      */
     private void setDateStartAndEnd(Calendar start, Calendar end) {
+        requireNonNull(start);
+        requireNonNull(end);
         start.set(Calendar.HOUR_OF_DAY, 9);
         start.set(Calendar.MINUTE, 0);
         start.set(Calendar.SECOND, 0);

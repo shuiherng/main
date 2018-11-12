@@ -288,15 +288,17 @@ if user switch from one mode to the same mode, an exception will be thrown. This
 
 === Natural Language Processing for Adding an Appointment
 
+==== Current Implementation
+
 This feature facilitates scheduling, which enables the user to add appointments into the schedule system with user input phrased in natural expressions, and does so in a conversational process enabled by several prompt windows. It mainly implements a `ScheduleEvent` parser which parses natural language user input, and creates the intended `ScheduleEvent` object to be stored.
 
 There are five steps involved in the processing of this feature:
 
-Step 1. Breaking Down: User input is broken down into sub-fields, namely, name and date/duration.
+Step 1. Breaking Down: User input is broken down into sub-fields, namely, patient and time.
 
-Step 2. Patient Parsing:  User input for patient name is parsed into the corresponding `PersonId` object.
+Step 2. Patient Parsing:  User input for patient is parsed into the corresponding `PersonId` object.
 
-Step 3. Date/duration Parsing:  User input for date/duration is parsed into a `Pair<Calendar, Calendar>` object.
+Step 3. Time Parsing:  User input for time is parsed into a `Pair<Calendar>` object.
 
 Step 4. Further Prompting: User is prompted with two prompt windows where tags and additional notes can be added.
 
@@ -306,31 +308,77 @@ The following is an example of a use case, and how the mechanism behaves:
 
 User Input: `add appointment for David Lee next week`.
 
-. Breaking Down: The user input string, starting with `for`, is passed into a `ScheduleEventParser` object, and broken down into meaningful substrings for name and date/duration respectively:
+Step 1. Breaking Down: The user input string, starting with `for`, is passed into a `ScheduleEventParser` object, and broken down into meaningful substrings for patient and time respectively:
 
-.. Programme starts with assuming that the substring for name is only one word long, and the remaining string following the name word all the way to the end of the string is the input for date/duration. In this case, `David` is the assumed name substring and `Lee next week` is the assumed date/duration substring.
-.. It takes the assumed date/duration substring,`Lee next week`, and checks if it is a valid date/duration expression.
-.. As a match cannot be found, it means that the assumed demarcation between name and date/duration inputs is incorrect. Programme makes another attempt by assuming the name substring is longer by one word (i.e. `David Lee`) and the date/duration substring is shorter by one word (i.e. `next week`). It takes the new assumed date/duration substring and checks its validity again.
-.. As a match is found this time, it indicates that the assumption is correct. `David Lee` will be carried forward to the Patient Parsing step while `next week` will be carried forward to the Date/duration Parsing step.
+.. Programme starts with assuming that the substring for identifying the patient is only one word long, and the remaining string following that one word all the way to the end of the string is the input for time. In this case, `David` is the assumed patient substring and `Lee next week` is the assumed time substring.
+.. Programme takes the assumed time substring,`Lee next week`, and checks if it is a valid time expression.
+.. As a match cannot be found, it means that the assumed demarcation between patient and time inputs is incorrect. Programme makes another attempt by assuming the patient substring is longer by one word (i.e. `David Lee`) and the time substring is shorter by one word (i.e. `next week`). It takes the new assumed time substring and checks its validity again.
+.. As a match is found this time, it indicates that the assumption is correct. `David Lee` will be carried forward to the Patient Parsing step while `next week` will be carried forward to the Time Parsing step.
 .. In other cases where a match cannot be found after all assumptions have been tested, an exception will be thrown indicating that the user has not used an accepted expression.
 
-. Patient Parsing: The string `David Lee` is parsed and converted into the corresponding `PersonId` object:
-.. TO-DO
+The activity diagram below illustrates this process:
 
-. Date/duration Parsing: The string `next week` is passed to a `DateTimeParser` object where it is parsed and converted into a `Pair<Calendar, Calendar>` object to represent the user's chosen time slot for the appointment:
+image::breakDownInputActivityDiagram.png[width="800"]
+
+Step 2. Patient Parsing: The string `David Lee` is parsed and converted into the corresponding `PersonId` object:
+
+.. Programme uses this string as the search string to create a new `MatchPersonPredicate` object which is then used to filter the list of patients.
+.. If only one patient can be matched, the `PersonId` of the patient is immediately returned.
+.. If multiple patients can be matched, programme passes the list of matched patients as a `String` into a `Prompt` object, where the list is displayed to the user in a `PromptWindow`. User is expected to enter the ID of the intended patient. The `PersonID` of the final intended patient is returned.
+
+Step 3. Time Parsing: The string `next week` is passed to a `DateTimeParser` object where it is parsed and converted into a `Pair<Calendar>` object to represent the user's chosen time slot for the appointment:
+
 .. Programme executes a keyword search and invokes the method `getWeekDates(currentTime, 1)`, where it converts `next week` into a datetime range, by doing relevant calculations on the `Calendar` object which represents the current time. For instance, if the command is executed on 16/10/2018, `next week` becomes a datetime range from 22/10/2018 09:00 - 28/10/2018 18:00. This range takes into consideration the doctor's working hours.
-.. Programme searches the list of already scheduled appointments within the datetime range obtained. It finds a list of available time periods by taking the complement within that range, and passes the list as a `String` into a `Prompt` object, where the list is displayed to the user in a `PromptWindow`.
-.. User inputs a specific time slot from the list of available time periods. For instance, user inputs `22/10/2018 09:00 - 10:00`. The refined time slot string is then passed back to `DateTimeParser` and converted into a `Pair<Calendar, Calendar>` object that represents this time slot, by invoking the method `parseTimeSlot(timeSlotString)`.
+.. Programme searches the list of already scheduled appointments within the datetime range obtained. It finds a list of available time periods by taking the complement within that range (taking into consideration the doctor's working hours), and passes the list as a `String` into a `Prompt` object, where the list is displayed to the user in a `PromptWindow`.
+.. User inputs a specific time slot from the list of available time periods. For instance, user inputs `22/10/2018 09:00 - 10:00`. The refined time slot string is then passed back to `DateTimeParser` and converted into a `Pair<Calendar>` object that represents this time slot, by invoking the method `parseTimeSlot(timeSlotString)`.
 
-. Further Prompting: The user is presented with two more `PromptWindow`, where they can provide further inputs for tag and additional notes for the appointment. This is done through a simple I/O mechanism.
+Step 4. Further Prompting: The user is presented with two more `PromptWindow`, where they can provide further inputs for tagsand additional notes for the appointment. This is done through a simple I/O mechanism.
 
-. Generating Appointment: Results from the previous steps are used to fill the attributes of a newly created `ScheduleEvent` object which is then returned.
+Step 5. Generating Appointment: Results from the previous steps are used to fill the attributes of a newly created `ScheduleEvent` object which is then returned.
 
 
-The sequence diagram below illustrates this process, showing notable steps: (DIAGRAM TO BE CHANGED)
+The sequence diagram below summarises this feature, showing notable steps. Note that step 4 and 5 are omitted in the diagram as they are relatively trivial:
 
 image::NaturalLanguageProcessingSequenceDiagram.png[width="800"]
 
+==== Design Considerations
+
+===== Aspect: Abstraction over time slot
+
+* **Alternative 1 (current choice):** Use a `Pair<Calendar>` where the `key` and `value` represent the start time and end time of a time slot respectively.
+** Pros: It is easy to implement.
+** Cons: `key` and `value` are not intuitive in this context, hence it is difficult for other developers to understand.
+* **Alternative 2:** Define a `Duration` class which has the `Pair<Calendar>` as an attribute, providing an additional layer of abstraction.
+** Pros: It is easy for new developers to understand the context by defining methods such as `getStartTime()`, at the same time not exposing the internal implementation.
+** Cons: Defining this class may be not worth the effort as it has only one use case (as an attribute in `ScheduleEvent`) in the application.
+
+===== Aspect: Algorithm to find available time slots given a list of already scheduled appointments in an interval
+
+* **Alternative 1 (current choice):** Loop through the list of appointments twice. The first time is to find available time slots in days where there are scheduled appointments. The second time is to find completely free days. The code snippets show the two loops.
+
+    private List<Pair<Calendar>> getAvailableSlotList(List<ScheduleEvent> scheduledAppts, Pair<Calendar> dateInterval) {
+        // ...
+        for (int i = 0; i < scheduledAppts.size() - 1; i++) {
+            // ...
+            findAvailableSlotsBetweenTwoAppts(availableSlots, currentEnd, nextStart);
+        }
+        // ...
+        findCompletelyAvailableDays(scheduledAppts, dateInterval, availableSlots);
+    }
+
+    private void findCompletelyAvailableDays(List<ScheduleEvent> scheduledAppts, Pair<Calendar> dateInterval, List<Pair<Calendar>> availableSlots) {
+        // ...
+        for (ScheduleEvent appt: scheduledAppts) {
+            // ...
+        }
+        // ...
+    }
+
+** Pros: It is easy to implement.
+** Cons: Performance is adversely affected because the list has to be searched through twice.
+* **Alternative 2:** Keep a day pointer and loop through the list of appointments only once to find all available time slots.
+** Pros: It enhances performance because the list is searched through only once.
+** Cons: It is harder to implement, due to the difficulties in manipulating `java.util.Calendar` as a day pointer. Edge cases such as crossing the year boundaries are difficult to handle.
 // end::nlp[]
 
 // tag::diagnosis[]
@@ -1128,26 +1176,72 @@ These instructions only provide a starting point for testers to work on; testers
 .. Re-launch the app by double-clicking the jar file. +
    Expected: The most recent window size and location is retained.
 
-_{ more test cases ... }_
+=== Addition
 
-=== Deleting a person
+. Adding an appointment (initial input in command box)
 
-. Deleting a person while all persons are listed
-
-.. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
-.. Test case: `delete 1` +
-   Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
-.. Test case: `delete 0` +
-   Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
-.. Other incorrect delete commands to try: `delete`, `delete x` (where x is larger than the list size) _{give more}_ +
+.. Prerequisite: Patient with patient ID p0 and name Alex Yeoh is present. Patient with name Lizhi is not present.
+.. Test case: `add appointment for Alex Yeoh tomorrow` +
+   Expected: A prompt window appears, displaying a list of available time slots during tomorrow (actual date based on the execution time of the command).
+.. Test case: `add appointment for p0 next week` +
+   Expected: A prompt window appears, displaying a list of available time slots during next week (actual dates based on the execution time of the command).
+.. Test case: `add appointment for Alex in 3 days` +
+   Expected: A prompt window appears, displaying a list of available time slots in 3 days (actual date based on the execution time of the command).
+.. Test case: `add appointment for Alex in 99999999999999999999999 weeks` +
+   Expected: No prompt window appears. Error details are shown in the status message.
+.. Test case: `add appointment for Lizhi next week` +
+   Expected: No prompt window appears. Error details are shown in the status message.
+.. Test case: `add appointment for Alex Yeoh elephant` +
+   Expected: No prompt window appears. Error details are shown in the status message.
+.. Other incorrect add appointment commands to try: `add for Alex Yeoh tomorrow` `add appointment Alex Yeoh tomorrow` `add appointment to Alex Yeoh tomorrow` +
    Expected: Similar to previous.
 
-_{ more test cases ... }_
+. Adding an appointment (further input in prompt windows)
 
-=== Saving data
+.. Prerequisite: entered `add appointment for Alex Yeoh tomorrow` in the command box, and a prompt window showing the list of available time slots during tomorrow (actual date based on the execution time of the command) has appeared.
+.. Test case:
+... For the first prompt window showing the list of available time slots, enter a valid time slot that is within the list shown, strictly in `DD/MM/YYYY hh:mm - hh:mm` format. For example, if `17/11/2018 09:00 - 18:00` is shown, enter `17/11/2018 09:00 - 10:00`. +
+    Expected: Another prompt window appears, showing `Any tags for this appointment? Otherwise, press enter to continue`.
+... For the second prompt window showing `Any tags for this appointment? Otherwise, press enter to continue`, enter `secondVisit`. +
+    Expected: Another prompt window appears, showing `Any additional notes for this appointment? Otherwise, press enter to continue`.
+... For the third prompt window showing `Any additional notes for this appointment? Otherwise, press enter to continue`, press `Enter` without typing anything. +
+    Expected: Appointment is created and displayed in the appointment list. Details of the appointment is shown in the status message. Timestamp in the status bar is updated.
+.. Test case:
+... For the first prompt window showing the list of available time slots, enter a valid time slot that is within the list shown, strictly in `DD/MM/YYYY hh:mm - hh:mm` format. For example, if `17/11/2018 10:00 - 18:00` is shown, enter `17/11/2018 11:00 - 12:00`. +
+    Expected: Another prompt window appears, showing `Any tags for this appointment? Otherwise, press enter to continue`.
+... For the second prompt window showing `Any tags for this appointment? Otherwise, press enter to continue`, enter `ThisIsAVeryLongTagThatIsNotActuallyAcceptedByTheProgramme`. +
+    Expected: No further prompt window appears. No appointment is created. Error details are shown in the status message.
+.. Test case:
+... For the first prompt window showing the list of available time slots, enter a time slot that is not within the list shown, strictly in `DD/MM/YYYY hh:mm - hh:mm` format. For example, if `17/11/2018 10:00 - 18:00` is shown, enter `17/11/2018 06:00 - 08:00`. +
+    Expected: No further prompt window appears. No appointment is created. Error details are shown in the status message.
+.. Test case:
+... For the first prompt window showing the list of available time slots, enter a time slot that is within the the list shown, but with start time later than the end time, strictly in `DD/MM/YYYY hh:mm - hh:mm` format. For example, if `17/11/2018 10:00 - 18:00` is shown, enter `17/11/2018 11:00 - 10:00`. +
+    Expected: No further prompt window appears. No appointment is created. Error details are shown in the status message.
+.. Other incorrect prompt window inputs to try:
+... For time slot prompt window: `35/12/2018 12:00 - 13:00` `15/15/2018 12:00 - 13:00` `17/11/2018 12:88 - 14:00` `17/11 10:00 - 12:` +
+   Expected: Similar to previous.
+... For tag prompt window: `[]` `,yes` +
+   Expected: Similar to previous.
 
-. Dealing with missing/corrupted data files
+=== Deletion
 
-.. _{explain how to simulate a missing/corrupted file and the expected behavior}_
+. Deleting a patient
 
-_{ more test cases ... }_
+.. Test case: `delete patient p0` +
+   Expected: Patient with ID p0 is deleted from the displayed list. Timestamp in the status bar is updated.
+.. Test case: `delete p0` +
+   Expected: No patient is deleted. Error details are shown in the status message. Status bar remains the same.
+.. Other incorrect delete commands to try: `delete patient 0` `delete patient px` (where x is larger than the the largest shown patient ID) +
+   Expected: Similar to previous.
+
+. Deleting an appointment
+
+.. Test case: `delete appointment e0` +
+   Expected: Appointment with ID e0 is deleted from the displayed list. Timestamp in the status bar is updated.
+.. Test case: `delete e0` +
+   Expected: No appointment is deleted. Error details are shown in the status message. Status bar remains the same.
+.. Other incorrect delete commands to try: `delete appointment 0` `delete appointment ex` (where x is larger than the the largest shown appointment ID) +
+   Expected: Similar to previous.
+
+
+
