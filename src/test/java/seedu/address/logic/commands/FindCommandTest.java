@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
+import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_APPOINTMENT;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_DISEASE;
 import static seedu.address.logic.parser.CmdTypeCliSyntax.CMDTYPE_PATIENT;
 
@@ -23,6 +24,7 @@ import seedu.address.model.ScheduleModelManager;
 import seedu.address.model.person.Person;
 import seedu.address.model.symptom.Disease;
 import seedu.address.testutil.PersonBuilder;
+import seedu.address.testutil.TypicalEvents;
 
 /**
  * Tests the find command.
@@ -71,6 +73,16 @@ public class FindCommandTest {
     }
 
     @Test
+    public void find_appointment_success() throws Exception {
+        ScheduleModel model = new ScheduleModelManager();
+        model.resetData(TypicalEvents.getTypicalSchedule());
+
+        assertFoundInSchedule(model, TypicalEvents.e1.getId().toString());
+        assertTrue(model.getFilteredEventList().size() == 1);
+        assertEquals(model.getFilteredEventList().get(0), TypicalEvents.e1);
+    }
+
+    @Test
     public void find_invalidParameter() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(FindCommand.MESSAGE_UNEXPECTED_PARAMETER);
@@ -79,6 +91,26 @@ public class FindCommandTest {
                 new ScheduleModelManager(),
                 new DiagnosisModelManager(),
                 new CommandHistory());
+    }
+
+    @Test
+    public void findDisease_success() throws Exception {
+        StringBuilder sb = new StringBuilder();
+        sb.append("influenza");
+        DiagnosisModel diagnosisModel = new DiagnosisModelManager();
+        CommandResult commandResult = new CommandResult("influenza"
+                + FindCommand.THE_FOLLOWING_SYMPTOMS_MATCHING
+                + "influenza" + ":\n"
+                + "\n"
+                + CommandResult.convertListToString(diagnosisModel.getSymptoms(new Disease("influenza"))));
+        assertEquals(commandResult, testDiagnosisModel(diagnosisModel, sb.toString()));
+    }
+
+    @Test
+    public void findDisease_noDisease() throws Exception {
+        thrown.expect(CommandException.class);
+        thrown.expectMessage("sadness" + FindCommand.NO_DISEASE_FOUND);
+        testDiagnosisModel(new DiagnosisModelManager(), "sadness");
     }
 
     /**
@@ -102,24 +134,24 @@ public class FindCommandTest {
                         addressBookModel.getFilteredPersonList().size())));
     }
 
-    @Test
-    public void findDisease_success() throws Exception {
-        StringBuilder sb = new StringBuilder();
-        sb.append("influenza");
+    /**
+     * ensures that id is found in events schedule
+     *
+     * @param scheduleModel model
+     * @param searchString  search String
+     * @throws Exception
+     */
+    private void assertFoundInSchedule(ScheduleModel scheduleModel, String searchString)
+            throws Exception {
+        AddressBookModel addressBookModel = new AddressBookModelManager();
         DiagnosisModel diagnosisModel = new DiagnosisModelManager();
-        CommandResult commandResult = new CommandResult("influenza"
-                + FindCommand.THE_FOLLOWING_SYMPTOMS_MATCHING
-                + "influenza" + ":\n"
-                + "\n"
-                + CommandResult.convertListToString(diagnosisModel.getSymptoms(new Disease("influenza"))));
-        assertEquals(commandResult, testDiagnosisModel(diagnosisModel, sb.toString()));
-    }
+        CommandHistory commandHistory = new CommandHistory();
 
-    @Test
-    public void findDisease_noDisease() throws Exception {
-        thrown.expect(CommandException.class);
-        thrown.expectMessage("sadness" + FindCommand.NO_DISEASE_FOUND);
-        testDiagnosisModel(new DiagnosisModelManager(), "sadness");
+        FindCommand cmd = new FindCommand(CMDTYPE_APPOINTMENT, searchString);
+        assertEquals(cmd.execute(addressBookModel, scheduleModel, diagnosisModel, commandHistory),
+                new CommandResult(String.format(Messages.MESSAGE_EVENTS_LISTED_OVERVIEW,
+                        scheduleModel.getFilteredEventList().size())));
+
     }
 
     /**

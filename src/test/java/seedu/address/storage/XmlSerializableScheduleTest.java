@@ -1,10 +1,24 @@
 package seedu.address.storage;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static seedu.address.testutil.ScheduleEventUtil.matchEventProperties;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import javafx.collections.ObservableList;
+
+import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.commons.util.XmlUtil;
+import seedu.address.model.Schedule;
+import seedu.address.model.event.ScheduleEvent;
+import seedu.address.testutil.TypicalEvents;
+
 
 public class XmlSerializableScheduleTest {
 
@@ -17,7 +31,7 @@ public class XmlSerializableScheduleTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    /*
+
     @Test
     public void toModelType_typicalEventsFile_success() throws Exception {
         XmlSerializableSchedule dataFromFile = XmlUtil.getDataFromFile(TYPICAL_EVENTS_FILE,
@@ -26,19 +40,18 @@ public class XmlSerializableScheduleTest {
         Schedule typicalEventsSchedule = TypicalEvents.getTypicalSchedule();
 
         ObservableList<ScheduleEvent> eventList = scheduleFromFile.getAllEventList();
-        eventList.sort((a, b) -> a.getDate().getKey().compareTo(b.getDate().getKey()));
         ObservableList<ScheduleEvent> sampleList = typicalEventsSchedule.getAllEventList();
-        sampleList.sort((a, b) -> a.getDate().getKey().compareTo(b.getDate().getKey()));
 
         assertEquals(eventList.size(), sampleList.size());
-        // we have to match properties since they will have different IDs
-        for (int i = 0; i < eventList.size(); ++i) {
-            assertTrue(matchEventProperties(eventList.get(i), sampleList.get(i)));
+
+        for (ScheduleEvent event: eventList) {
+            assertTrue(sampleList.filtered(e -> matchEventProperties(e, event)).size() == 1);
         }
+
     }
 
     @Test
-    public void toModelType_InvalidEventsFile_throwsIllegalValueException() throws Exception {
+    public void toModelType_invalidEventsFile_throwsIllegalValueException() throws Exception {
         XmlSerializableSchedule dataFromFile = XmlUtil.getDataFromFile(INVALID_EVENTS_FILE,
                 XmlSerializableSchedule.class);
         thrown.expect(IllegalValueException.class);
@@ -52,5 +65,5 @@ public class XmlSerializableScheduleTest {
         thrown.expect(IllegalValueException.class);
         thrown.expectMessage(XmlSerializableSchedule.MESSAGE_DUPLICATE_EVENT);
         dataFromFile.toModelType();
-    }*/
+    }
 }

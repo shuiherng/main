@@ -1,0 +1,184 @@
+= Quek Shui Herng - Project Portfolio
+:site-section: AboutUs
+:imagesDir: ../images
+:stylesDir: ../stylesheets
+
+== PROJECT: PatientBook
+
+---
+
+This portfolio serves to document my contributions to https://github.com/CS2103-AY1819S1-T12-2/main[*_PatientBook_*], my team's product for our software engineering project.
+
+== 1. Overview
+
+*PatientBook* is a desktop application for doctors in Singapore.
+Its objective is to help streamline their workflow by managing their patient data and appointment schedules. It can also be used to find information on diseases, symptoms and drugs. *PatientBook* features a Command Line Interface, which makes it convenient for doctors to interact with the application since it is done solely via the keyboard.
+
+The application supports various important operations such as finding information on and adding appointments for a patient, predicting a disease from a set of symptoms, and querying for details on drugs approved for distribution in Singapore.
+
+
+This project is conceptualized and produced by the T12-2 development team, comprising five year-two computer science undergraduates from the School of Computing,
+National University of Singapore.
+
+== 2. Summary of Contributions
+
+This section provides an overview of my contributions to *PatientBook*.
+All my pull requests (code contributions) may be found https://github.com/CS2103-AY1819S1-T12-2/main/pulls?q=is%3Apr+author%3Ashuiherng[here].
+
+=== Major Enhancements
+
+I contributed to *PatientBook*'s backend code, by providing support for both appointment and patient information commands, as well as implementing many of the commands themselves. The following enumerated section contain the details of my contribution:
+
+1. *Support for all appointment scheduling operations*
+** *What it does:* Implements an entirely new infrastructure (including command and storage level) code upon which my other project members can implement their appointment scheduling features.
+** *Justification:* This feature is a crucial first step as it will support almost half of *PatientBook*'s functionality in the form of a scheduler for appointments.
+** *Highlights:* As almost everyone's code would depend on this new infrastructure, I had to design and implement this change extremely early on in the project (less than a week after our first project meeting), so that my other project mates have time to work on their features.
+** *Notable Code Contributions:* https://github.com/CS2103-AY1819S1-T12-2/main/pull/12[Command], https://github.com/CS2103-AY1819S1-T12-2/main/pull/34[Storage], https://github.com/CS2103-AY1819S1-T12-2/main/pull/72[Integration]
+
+2. *New command operations*
+** *What it does:* Morphs the existing command set to support our new appointment scheduling feature, while retaining its `person` management (now patient management) functionality. Added and tested all appointment schedule operations besides backend code for `add appointment`.
+** *Justification:* Implementation of an entirely new command set just for the appointment scheduler render the usage of all commands extremely unintuitive.
+** *Highlights:* I had to strike a balance between the ease of use of the commands and the ease of implementation. The following were the two possibilities considered:
+*** My implementation: I added `patient` and `appointment` as identifiers for commands, so users can simply enter commands like `add patient` or `edit appointment` to perform the desired operations.
+*** Alternative implementation considered: I could have had separate commands to perform operations on the patient database and appointment schedule. For instance, to add an entry, I would use one of the two different commands `addPatient` and `addAppointment`, depending on what I wanted to add. However, this meant that for every single operation, I would have to implement two different commands, which was not only tedious to do, but also unintuitive for the user.
+** *Notable Code Contributions:* https://github.com/CS2103-AY1819S1-T12-2/main/pull/63[Command], https://github.com/CS2103-AY1819S1-T12-2/main/pu[Integration 1], https://github.com/CS2103-AY1819S1-T12-2/main/pull/88[Integration 2]
+
+=== Minor Enhancements
+
+I refactored much of the original *AddressBook 4* codebase, and implemented a new patient and appointment tracking system to support our project:
+
+1. *Use of 'soft-delete' for patients*
+** *What it does:* Marks deleted patients as absent, rather than removing them altogether.
+** *Justification:* A patient's information is sensitive, so it is appropriate to keep their information stored rather than deleting it even if it is no longer required.
+** *Code Contributions:* https://github.com/CS2103-AY1819S1-T12-2/main/pull/9[Soft-Delete]
+
+2. *Use of ID as unique identifiers*
+** *What is does:* Uses Patient ID and Appointment ID to uniquely identify a patient and an appointment respectively.
+** *Justification:* The existing code in AddressBook 4 identifies if two people are identical by comparing every property of the two `Person` objects. This is tedious, especially since the appointment entries have to be tied to a unique individual, which implies all the attributes of the patient will have to be stored.
+** *Code Contributions:* https://github.com/CS2103-AY1819S1-T12-2/main/pull/9[Person ID], https://github.com/CS2103-AY1819S1-T12-2/main/pull/12[Appointment ID]
+
+=== Other Contributions
+
+The following are other notable contributions to the project which do not fall into the two categories above:
+
+1. *Project Management*
+** Coordinated integration between components to ensure that they worked correctly: https://github.com/CS2103-AY1819S1-T12-2/main/pull/72[link 1], https://github.com/CS2103-AY1819S1-T12-2/main/pull/88[link 2]
+** Managed issue tracker and release `v1.3` on Github
+2. *Documentation*
+** Updated model class diagrams to incorporate new `AddressBookModel` and `ScheduleModel` classes: https://github.com/CS2103-AY1819S1-T12-2/main/pull/39[link]
+** Added and updated implementation details in the Developer Guide: https://github.com/CS2103-AY1819S1-T12-2/main/pull/39[link]
+** Added details for new patient management commands in User Guide: https://github.com/CS2103-AY1819S1-T12-2/main/pull/45[link]
+3. *Community*
+** Reviewed issues: https://github.com/CS2103-AY1819S1-T12-2/main/issues/37[37], https://github.com/CS2103-AY1819S1-T12-2/main/issues/47[47], https://github.com/CS2103-AY1819S1-T12-2/main/issues/133[133]
+
+== 3. Contributions to the User Guide
+
+|===
+|_Given below are sections I contributed to the User Guide. They showcase my ability to write documentation targeting end-users._
+|===
+
+=== Add a patient : `add patient`
+
+*Format:* `add patient n/NAME p/PHONE a/ADDRESS e/EMAIL [t/TAG]`
+
+Creates a new patient record and saves it in the list of all patient records. If necessary, switches the application to patient management mode.
+
+[NOTE]
+Any number of tags may be included, or none at all.
+
+Examples:
+
+* `add patient n/John Smith p/90516038 a/New Smith Street, Singapore 519321 e/johnsmith@gmail.com`
+* `add patient n/Alice Barker p/62353535 a/4 Pizza Road, Singapore 941023 e/alice_barker@yahoo.com.sg t/friend t/groupmate`
+
+=== Edit patient information : `edit patient`
+
+*Format:* `edit patient PATIENT_ID [n/NAME] [p/PHONE] [a/ADDRESS] [e/EMAIL] [t/TAG]`
+
+Edits an existing patient record. If necessary, switches the application to patient management mode.
+
+[NOTE]
+At least one of the optional fields must be provided.
+
+[TIP]
+Editing tags will remove all existing tags from the patient and replace them with the new tags. To remove all tags from a patient, use `t/` without any further input after the `/`.
+
+Example:
+
+* `edit patient p229 n/Bob Ross p/95106202`
+* `edit patient p24 t/replacedTag t/friend`
+* `edit patient p510 a/New Address Road, Singapore 401914 t/`
+
+=== List all patients : `list patient`
+
+*Format:* `list patient [all]`
+
+Shows a list of all patients in the patient record. Using `all` will display all patients deleted in the past. If necessary, switches the application to appointment management mode.
+
+=== Locate patients : `find patient`
+
+*Format:* `find patient KEYWORD [MORE_KEYWORDS]`
+
+*Alternative Format:* `find patient PATIENT_ID`
+
+Notable Behaviour:
+
+* The search is case insensitive, eg. `hans` will match `Hans`
+* The order of keywords do not matter, eg. `Hans Bo` will match `Bo Hans`
+* Only names in the patient record are searched
+* Patients which are marked as deleted can only be found by looking up their Patient ID explicitly. They may not be found via keyword search
+* Only full words will be searched, eg. `Han` will *not* match `Hans`
+* Patient which match at least one of the keywords will be displayed after running the search, eg. `Hans Bo` will match `Hans Gruber` and `Bo Yang`
+* Finding a patient via their ID will match and display patients who have the exact same ID as the search term, unless the ID is for some reason part of another patient's name, in which case they will be displayed as well
+
+Examples:
+
+* `find patient john`
+* `find patient Alice bob`
+* `find patient p510`
+
+=== Delete a patient record : `delete patient`
+
+*Format:* `delete patient PATIENT_ID`
+
+[NOTE]
+Patient records will only be marked as deleted, rather than being removed altogether. This is due to the sensitive nature of patient information
+
+Examples:
+
+* `delete patient p510`
+* `delete patient p29`
+
+== 4. Contributions to the Developer Guide
+
+|===
+|_Given below are sections I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project._
+|===
+
+The following 2 diagrams showcase the new images used in the developer guide to illustrate the data structures and mechanisms present in PatientBook:
+
+.Structure of the Model Component
+image::ModelClassDiagram.png[width="800"]
+.Structure of the Storage Component
+image::StorageClassDiagram.png[width="800"]
+
+
+=== Deletion of Entries from Working Dataset
+
+==== Current Implementation
+
+Instances of `Person` are currently being deleted via soft-delete: setting the instance variable `exists` to `false`.
+
+Instances of `ScheduleEvent` are currently being deleted directly: removing the objects themselves altogether from the
+data structure encapsulated within `Schedule`.
+
+==== Design Considerations
+
+===== Aspect: Deletion of Person or ScheduleEvent Entries
+
+* **Alternative 1:** Deletion is accomplished via soft-delete.
+** This was chosen for deleting patients from the address book in order to ensure that a patient can never be permanently removed. Preventing deletion ensures that even deceased patients may have their information accessed, and guarantees that accidental deletion will never lead to important patient data being lost. Implementation is done via the addition of an `exists` field in the Person class.
+** Using this approach for deleting appointments from the schedule will work but is unnecessary as appointment information is not nearly as sensitive as patient data.
+* **Alternative 2:** Person deletion is accomplished via actual deletion from the person list.
+** Patient data is no longer recoverable after deletion (unless undo/redo is implemented). This is the approach chosen for deleting appointments from the schedule instead, since this information may easily be recovered and is not nearly as sensitive as a patient's medical information.
+

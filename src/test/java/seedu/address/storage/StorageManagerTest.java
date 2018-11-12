@@ -3,7 +3,8 @@ package seedu.address.storage;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-//import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.address.testutil.TypicalEvents.getTypicalSchedule;
+import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -18,6 +19,8 @@ import seedu.address.commons.events.model.AddressBookChangedEvent;
 import seedu.address.commons.events.storage.DataSavingExceptionEvent;
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.ReadOnlySchedule;
+import seedu.address.model.Schedule;
 import seedu.address.model.UserPrefs;
 import seedu.address.ui.testutil.EventsCollectorRule;
 
@@ -57,20 +60,29 @@ public class StorageManagerTest {
         assertEquals(original, retrieved);
     }
 
-    /*
+
     @Test
     public void addressBookReadSave() throws Exception {
 
-         * Note: This is an integration test that verifies the StorageManager is properly wired to the
+        /* Note: This is an integration test that verifies the StorageManager is properly wired to the
          * {@link XmlAddressBookStorage} class.
          * More extensive testing of UserPref saving/reading is done in {@link XmlAddressBookStorageTest} class.
-
+         */
         AddressBook original = getTypicalAddressBook();
         storageManager.saveAddressBook(original);
         ReadOnlyAddressBook retrieved = storageManager.readAddressBook().get();
         assertEquals(original, new AddressBook(retrieved));
     }
-    */
+
+    @Test
+    public void scheduleReadSave() throws Exception {
+        Schedule original = getTypicalSchedule();
+        storageManager.saveSchedule(original);
+        ReadOnlySchedule retrieved = storageManager.readSchedule().get();
+        assertEquals(original, new Schedule(retrieved));
+
+    }
+
 
     @Test
     public void getAddressBookFilePath() {

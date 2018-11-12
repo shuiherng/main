@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static org.junit.Assert.assertTrue;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
@@ -16,17 +17,25 @@ import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.PersonCliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_DATETIME;
 import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_DETAILS;
+import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_PERSON;
+import static seedu.address.logic.parser.ScheduleEventCliSyntax.PREFIX_TAGS;
 import static seedu.address.testutil.PersonUtil.matchProperties;
+import static seedu.address.testutil.ScheduleEventUtil.matchEventProperties;
+
+import java.util.Calendar;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import seedu.address.commons.util.Pair;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.ArgumentMultimap;
 import seedu.address.logic.parser.ArgumentTokenizer;
+import seedu.address.logic.parser.DateTimeParser;
 import seedu.address.model.AddressBookModel;
 import seedu.address.model.AddressBookModelManager;
 import seedu.address.model.DiagnosisModel;
@@ -41,6 +50,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 import seedu.address.testutil.PersonBuilder;
+import seedu.address.testutil.ScheduleEventBuilder;
 
 /**
  * Tests the edit command.
@@ -72,6 +82,13 @@ public class EditCommandTest {
         editedPerson = new PersonBuilder().withEmail(VALID_EMAIL_AMY).build();
         argMultimap = ArgumentTokenizer.tokenize(PREFIX_EMAIL
                 + VALID_EMAIL_AMY, PREFIX_EMAIL);
+        assertTrue(matchProperties(editedPerson, testAddressBookModel(person, argMultimap)));
+
+        // edit address
+        person = new PersonBuilder().build();
+        editedPerson = new PersonBuilder().withAddress(VALID_ADDRESS_AMY).build();
+        argMultimap = ArgumentTokenizer.tokenize(PREFIX_ADDRESS
+                + VALID_ADDRESS_AMY, PREFIX_ADDRESS);
         assertTrue(matchProperties(editedPerson, testAddressBookModel(person, argMultimap)));
 
         // add tag
@@ -184,6 +201,50 @@ public class EditCommandTest {
     // --- start of schedule tests ---
 
     @Test
+    public void parse_appointment_success() throws Exception {
+        // edit person
+        ScheduleEvent event = new ScheduleEventBuilder().build();
+        ScheduleEvent editedEvent = new ScheduleEventBuilder()
+                .withPersonId("p229").build();
+        ArgumentMultimap argMultimap = ArgumentTokenizer
+                .tokenize(PREFIX_PERSON + "p229", PREFIX_PERSON);
+        assertTrue(matchEventProperties(editedEvent, testScheduleModel(event, argMultimap)));
+
+        // edit dateTime
+        event = new ScheduleEventBuilder().build();
+        Calendar newStart = Calendar.getInstance();
+        newStart.set(2019, Calendar.APRIL, 1, 10, 0, 0);
+        Calendar newEnd = Calendar.getInstance();
+        newEnd.set(2019, Calendar.APRIL, 1, 11, 0, 0);
+        editedEvent = new ScheduleEventBuilder()
+                .withDurations(new Pair<>(newStart, newEnd)).build();
+        argMultimap = ArgumentTokenizer
+                .tokenize(PREFIX_DATETIME + "01/04/2019 10:00 - 11:00", PREFIX_DATETIME);
+        assertTrue(matchEventProperties(editedEvent, testScheduleModel(event, argMultimap)));
+
+        // edit details
+        event = new ScheduleEventBuilder().build();
+        editedEvent = new ScheduleEventBuilder().withDetails("edited details").build();
+        argMultimap = ArgumentTokenizer
+                .tokenize(PREFIX_DETAILS + "edited details", PREFIX_DETAILS);
+        assertTrue(matchEventProperties(editedEvent, testScheduleModel(event, argMultimap)));
+
+        // add tag
+        event = new ScheduleEventBuilder().build();
+        editedEvent = new ScheduleEventBuilder().withTags("newtag").build();
+        argMultimap = ArgumentTokenizer.tokenize(PREFIX_TAGS + "newtag", PREFIX_TAGS);
+        assertTrue(matchEventProperties(editedEvent, testScheduleModel(event, argMultimap)));
+
+        // remove tags
+        event = new ScheduleEventBuilder().withTags("tag1", "tag2").build();
+        editedEvent = new ScheduleEventBuilder().build();
+        argMultimap = ArgumentTokenizer.tokenize(PREFIX_TAGS.toString(), PREFIX_TAGS);
+        assertTrue(matchEventProperties(editedEvent, testScheduleModel(event, argMultimap)));
+
+
+    }
+
+    @Test
     public void parseAppointment_invalidEventId() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(EditCommand.MESSAGE_INVALID_EVENT_ID);
@@ -194,6 +255,74 @@ public class EditCommandTest {
                 new DiagnosisModelManager(),
                 new CommandHistory());
     }
+
+    @Test
+    public void parseAppointment_invalidDateTimeFormat() throws Exception {
+        thrown.expect(CommandException.class);
+        thrown.expectMessage("Invalid format for date input");
+
+        ScheduleEvent event = new ScheduleEventBuilder().build();
+        Calendar newStart = Calendar.getInstance();
+        newStart.set(2019, Calendar.APRIL, 1, 10, 0, 0);
+        Calendar newEnd = Calendar.getInstance();
+        newEnd.set(2019, Calendar.APRIL, 1, 11, 0, 0);
+        ScheduleEvent editedEvent = new ScheduleEventBuilder()
+                .withDurations(new Pair<>(newStart, newEnd)).build();
+        ArgumentMultimap argMultimap = ArgumentTokenizer
+                .tokenize(PREFIX_DATETIME + "01/04/2019 11:00", PREFIX_DATETIME);
+        assertTrue(matchEventProperties(editedEvent, testScheduleModel(event, argMultimap)));
+
+    }
+
+    @Test
+    public void parseAppointment_invalidTagFormat() throws Exception {
+        thrown.expect(CommandException.class);
+        thrown.expectMessage("Invalid format for tags.");
+
+        ScheduleEvent event = new ScheduleEventBuilder().build();
+        ScheduleEvent editedEvent = new ScheduleEventBuilder().build();
+        ArgumentMultimap argMultimap = ArgumentTokenizer
+                .tokenize(PREFIX_TAGS + "tag*", PREFIX_TAGS);
+        assertTrue(matchEventProperties(editedEvent, testScheduleModel(event, argMultimap)));
+
+    }
+
+    @Test
+    public void parseAppointment_clashingDateTime() throws Exception {
+        thrown.expect(CommandException.class);
+        thrown.expectMessage(String.format(DateTimeParser.MESSAGE_INVALID_SLOT,
+                DateTimeParser.MESSAGE_SLOT_CLASHING));
+
+        AddressBookModel addressBookModel = new AddressBookModelManager();
+        ScheduleModel scheduleModel = new ScheduleModelManager();
+        DiagnosisModel diagnosisModel = new DiagnosisModelManager();
+        CommandHistory commandHistory = new CommandHistory();
+
+        Calendar e1Start = Calendar.getInstance();
+        e1Start.set(2019, Calendar.APRIL, 1, 10, 0, 0);
+        Calendar e1End = Calendar.getInstance();
+        e1End.set(2019, Calendar.APRIL, 1, 11, 0, 0);
+        ScheduleEvent e1 = new ScheduleEventBuilder()
+                .withDurations(new Pair<>(e1Start, e1End)).build();
+
+        scheduleModel.addEvent(e1);
+
+        Calendar e2Start = Calendar.getInstance();
+        e1Start.set(2019, Calendar.APRIL, 1, 11, 0, 0);
+        Calendar e2End = Calendar.getInstance();
+        e1End.set(2019, Calendar.APRIL, 1, 12, 0, 0);
+        ScheduleEvent e2 = new ScheduleEventBuilder()
+                .withDurations(new Pair<>(e2Start, e2End)).build();
+
+        scheduleModel.addEvent(e2);
+
+        ArgumentMultimap argMultimap = ArgumentTokenizer
+                .tokenize(PREFIX_DATETIME + "01/04/2019 10:30 - 11:30", PREFIX_DATETIME);
+
+        EditCommand cmd = new EditCommand(CMDTYPE_APPOINTMENT, e2.getId().toString(), argMultimap);
+        cmd.execute(addressBookModel, scheduleModel, diagnosisModel, commandHistory);
+    }
+
 
     // --- end of schedule tests ---
 

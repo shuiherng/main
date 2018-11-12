@@ -506,7 +506,7 @@ data structure encapsulated within `Schedule`.
 // end::delete[]
 
 // tag::undoredo[]
-=== Undo/Redo (Coming in v1.4)
+=== Undo/Redo (Coming in v2.0)
 
 ==== Proposed Implementation
 
