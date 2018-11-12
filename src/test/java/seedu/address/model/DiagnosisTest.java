@@ -6,6 +6,8 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -24,7 +26,7 @@ public class DiagnosisTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    private final Diagnosis diagnosis = new Diagnosis();
+    private Diagnosis diagnosis = new Diagnosis();
 
     private Disease influenza = new Disease("influenza");
     private Symptom lipSmacking = new Symptom("lip smacking");
@@ -35,6 +37,12 @@ public class DiagnosisTest {
     private Disease acne = new Disease("acne");
     private Symptom blackhead = new Symptom("blackhead");
     private Symptom whitehead = new Symptom("whitehead");
+
+    @Test
+    public void constructor() {
+        diagnosis = new Diagnosis();
+        assertNotNull(diagnosis);
+    }
 
     @Test
     public void hasDisease() {
@@ -62,7 +70,7 @@ public class DiagnosisTest {
     }
 
     @Test
-    public void addMatcher() {
+    public void addMatcher() throws Exception {
 
         Set<Symptom> symptomSet = new HashSet<>();
         symptomSet.add(blackhead);
@@ -73,7 +81,7 @@ public class DiagnosisTest {
         assertNotEquals(Collections.emptyList(), diagnosis.getSymptoms(acne));
         assertTrue(diagnosis.getSymptoms(acne).contains(blackhead));
         assertFalse(diagnosis.getSymptoms(acne).contains(fever));
-
+        Files.deleteIfExists(Paths.get("datasetForSymptomAndDisease.csv"));
     }
 
     @Test
