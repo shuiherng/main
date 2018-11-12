@@ -9,7 +9,7 @@
 
 == 1. Overview
 
-This project portfolio documents `Zhou Zegang`’s contributions to project `PatientBook`.
+This project portfolio documents `Zhou Zegang`’s contributions to project `PatientBook`. [https://github.com/CS2103-AY1819S1-T12-2/main[PatientBook]]
 
 `PatientBook` is an all-in-one convenient desktop application for medical professionals in Singapore.
 It is a `Command Line Interface(CLI)` application in which doctors can type simple commands on keyboard to store and
@@ -25,6 +25,8 @@ adding an appointment for a patient and predicting a disease from a set of sympt
 
 == 2. Summary of Contributions
 
+* *Code contributed*: Code From Dashboard [https://nus-cs2103-ay1819s1.github.io/cs2103-dashboard/#=undefined&search=zzg229&sort=displayName&since=2018-09-12&until=2018-11-12&timeframe=day&reverse=false&repoSort=true[Code]]
+
 * *Major enhancement*: added *diagnosis model which supports add disease, find disease, list disease and predict
 disease command*.
 ** What it does: This feature allows medical professionals to `add` a disease and its related symptoms,
@@ -39,32 +41,23 @@ models. The implementation too was challenging as it required changes to existin
 ** Credit: The `diagnosis model` uses an existing disease-symptom knowledge database
 from `Columbia University`. [http://people.dbmi.columbia.edu/~friedma/Projects/DiseaseSymptomKB/index.html[Database]]
 
-* *Minor enhancement*: designed and added a generic method which converts a list of items to an `alphabetically ordered`
-string message so that it can be clearly displayed in the application.
-
-* *Code contributed*: [https://github.com[Functional code]] [https://github.com[Test code]] TO-DO
-
 * *Other contributions*:
-
+** Minor enhancement:
+*** designed and added a generic method which converts a list of items to an `alphabetically ordered`
+string message so that it can be clearly displayed in the application.
+*** Resolved CSV file reading for drug utility function. (Pull request: [https://github.com/CS2103-AY1819S1-T12-2/main/pull/184[#184]])
 ** Project management:
-*** Managed releases `v1.3` - `v1.4` (2 releases) on GitHub
-*** Managed issue trackers on GitHub (examples:  TO-DO)
-** Enhancements to existing features:
-TO-DO
+*** Set up Travis for team project on Travis CI
+*** Assigned issue to teammates (example: [https://github.com/CS2103-AY1819S1-T12-2/main/issues/65[#65]] )
+*** Included labels for issue tracker (example: [https://github.com/CS2103-AY1819S1-T12-2/main/labels[Label]])
 ** Documentation:
-TO-DO
+*** Updated the AboutUs.page (Pull requests: [https://github.com/CS2103-AY1819S1-T12-2/main/pull/1[#1]][https://github.com/CS2103-AY1819S1-T12-2/main/pull/172[#172]])
 ** Community:
-*** reviewed PRs (with non-trivial review comments): TO-DO
-*** Reported bugs and suggestions for other teams (examples:  TO-DO)
+*** reviewed PRs (with non-trivial review comments): [https://github.com/CS2103-AY1819S1-T12-2/main/pull/52[#52]][https://github.com/CS2103-AY1819S1-T12-2/main/pull/177[#177]]
+*** Reported bugs and suggestions for other teams (examples: [https://github.com/CS2103-AY1819S1-T16-3/main/issues/132[#132]][https://github.com/CS2103-AY1819S1-T16-3/main/issues/136[#136]][https://github.com/CS2103-AY1819S1-T16-3/main/issues/145[#145]][https://github.com/CS2103-AY1819S1-T16-3/main/issues/150[#150]])
 
 
 == 3. Contributions to the User Guide
-
-
-|===
-|_Given below are sections I contributed to the User Guide. They showcase my ability to write documentation targeting end-users._
-|===
-
 
 === Add a disease : `add disease`
 
@@ -74,7 +67,8 @@ Adds a new disease to the patient book.
 
 You must include one and only one `DISEASE` parameter with prefix `d/` and at least one `SYMPTOM` for that disease
 with prefix `s/`. Duplicate symptoms can be included but only one will be added into the patient book. The `DISEASE`
- and `SYMPTOM` parameter can take any characters except `comma`.
+ and `SYMPTOM` parameter can take any characters except `comma`. Both `DISEASE` and `SYMPTOM` parameters cannot exceed
+ `20` characters in length.
 
 When you try to add an existing disease into the patient book, the following error message will be shown to you:
 
@@ -86,29 +80,49 @@ Hence, you may try command `find disease NAME` to find related symptoms of this 
 Example:
 
 * `add disease d/acne s/pustules s/blackheads`
+
+.Message for Adding Disease Successfully
+image::SuccessfulAddDisease.png[width="600"]
+
 * `add disease d/alcohol misuse s/stroke s/stroke s/mouth cancer` +
 Symptom 'stroke' will be included once in our record.
-* `add disease d/obesity d/obesities` +
-This is an invalid command due to multiple occurrence of disease and zero occurrence of symptom. Hence, you will
+* `add disease d/obesity d/obesities s/overweight` +
+This is an invalid command due to multiple occurrence of disease paramters. Hence, you will
 be prompted to enter a correct command:
 
-.Error Message for Wrong Add Disease Format
+.Error Message for Duplicate Disease Parameter
 image::ErrorMessageForWrongAddDiseaseCommand.png[width="600"]
+
+* `add disease d/averylongdiseaseparameter s/dummySymptom` +
+Returns an error message:
+
+.Error Message for Long Disease Parameter
+image::AddDiseaseLimit.png[width="600"]
+
+* `add disease d/invalid,disease s/dummySymptom` +
+Returns an error message:
+
+.Error Message for Invalid Disease Parameter
+image::AddDiseaseComma.png[width="600"]
 
 === List all diseases : `list disease`
 
 *Format:* `list disease`
 
-Shows a list of all diseases in the patient book.
+Shows a list of all diseases in alphabetic order in the patient book.
 
 === Locate diseases  : `find disease`
 
 *Format:* `find disease NAME`
 
-Finds the disease which its name is specified in the command and return its related symptoms
+Finds the disease which its name is specified in the command and returns its related symptoms
 displayed in alphabetic order.
 
 * The search is case insensitive; e.g. ‘HIV’, ‘hIV’ and ‘hiv’ are all equivalent.
+
+.Display for find disease hIV
+image::FindHiv.png[width="600"]
+
 * Only full words will be matched; e.g. ‘confus’ will not match ‘confusion’.
 
 Example:
@@ -122,6 +136,8 @@ image::FindDiseaseInfluenza.png[width="600"]
 === Predict disease  : `predict`
 
 *Format:* `predict s/SYMPTOM`
+
+Predicts a disease from a given set of symptoms.
 
 You must include at least one `SYMPTOM` parameter with prefix `s/` to predict a disease. All
 diseases that contain the set of symptoms will be returned and displayed in alphabetic order.
@@ -143,8 +159,15 @@ image::PredictDiseaseValidDemo.png[width="600"]
 * `predict s/cry` +
 Returns an error message:
 
-.Error Message for Invalid Command 'predict s/cry'
-image::PredictInvalidDemo.png[width="600"]
+.Error Message for Command 'predict s/cry'
+image::PredictDiseaseInvalidDemo.png[width="600"]
+
+* `predict s/` +
+Returns an error message:
+
+.Error Message for Empty Symptom Parameter
+image::PredictEmptySymptom.png[width="600"]
+
 
 == 4. Contributions to the Developer Guide
 
@@ -171,6 +194,9 @@ These operations are exposed in the `DiagnosisModel` interface as
 `DiagnosisModel#addMatcher(Disease disease, Set<Symptom> symptoms)` and
 `DiagnosisModel#predictDisease(Set<Symptom> symptoms)` respectively.
 
+.Diagnosis Class Diagram
+image::DiagnosisClassDiagram.png[width="800"]
+
 Given below is an example usage scenario and how the `diagnosis` mechanism behaves at each step:
 
 .Sequence Diagram
@@ -190,6 +216,27 @@ Now, the `add disease` command calls `DiagnosisModel#addMatcher(Disease disease,
 Now it will call the `static` method `writeDataFromCsvFile(Disease disease, Set<Symptom> symptoms)` which returns
 a `Hashmap` of type `HashMap<Disease, Set<Symptom>>` and assigns it to `this.matcher` to update the `private` attribute.
 
+.Add Command Code Snippet
+[source,java]
+----
+    /**
+     * Adds a disease and its related symptoms into the database
+     *
+     * @param disease  disease input.
+     * @param symptoms related symptoms.
+     */
+
+
+    public void addMatcher(Disease disease, Set<Symptom> symptoms) {
+        requireNonNull(disease);
+        requireAllNonNull(symptoms);
+        boolean hasDisease = this.hasDisease(disease);
+        if (!hasDisease) {
+            this.matcher = writeDataToCsvFile(disease, symptoms);
+        }
+    }
+----
+
 Step 4. The user executes `list disease` command to get a list of diseases stored in the patient book.
 The `list disease` command calls `DiagnosisModel#getDiseases()` which returns a `list` of diseases present in the
 `key set of matcher`.
@@ -197,6 +244,25 @@ The `list disease` command calls `DiagnosisModel#getDiseases()` which returns a 
 Step 5. Now the user decides to execute the command `predict` to search for a `disease` in database that
 matches with input symptoms. This command calls `DiasnosisModel#predictDisease(Set<Symptom>)` which returns a `list`
 of diseases that are mapped to a set of symptoms containing the given set.
+
+
+.Predict Command Code Snippet
+[source,java]
+----
+    /**
+     * Predicts a disease with a given set of symptoms.
+     *
+     * @param symptoms symptoms input.
+     * @return a list of qualified diseases.
+     */
+    public List<Disease> predictDisease(Set<Symptom> symptoms) {
+        requireAllNonNull(symptoms);
+        List<Disease> diseases = this.matcher.keySet().stream()
+                .filter(disease -> this.matcher.get(disease).containsAll(symptoms)).collect(Collectors.toList());
+        diseases.sort(Comparator.comparing(Disease::toString));
+        return diseases;
+    }
+----
 
 
 ==== Design Considerations
@@ -221,4 +287,3 @@ related symptoms, then maintain a `list` of `Match` objects.
 calculating the similarity of its pre-existing set of symptoms and the set of symptoms given by users.
 ** Pros: More accurate in determining the correct diseases.
 ** Cons: Hard to implement and understand.
-
