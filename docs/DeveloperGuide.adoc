@@ -288,6 +288,8 @@ if user switch from one mode to the same mode, an exception will be thrown. This
 
 === Natural Language Processing for Adding an Appointment
 
+==== Current Implementation
+
 This feature facilitates scheduling, which enables the user to add appointments into the schedule system with user input phrased in natural expressions, and does so in a conversational process enabled by several prompt windows. It mainly implements a `ScheduleEvent` parser which parses natural language user input, and creates the intended `ScheduleEvent` object to be stored.
 
 There are five steps involved in the processing of this feature:
@@ -339,6 +341,25 @@ The sequence diagram below summarises this process, showing notable steps. Note 
 
 image::NaturalLanguageProcessingSequenceDiagram.png[width="800"]
 
+==== Design Considerations
+
+===== Aspect: Abstraction over time slot
+
+* **Alternative 1 (current choice):** Use a `Pair<Calendar>` where the `key` and `value` represent the start time and end time of a time slot respectively.
+** Pros: It is easy to implement.
+** Cons: `key` and `value` are not intuitive in this context, hence it is difficult for other developers to understand.
+* **Alternative 2:** Define a `Duration` class which has the `Pair<Calendar>` as an attribute, providing an additional layer of abstraction.
+** Pros: It is easy for new developers to understand the context by defining methods such as `getStartTime()`, at the same time not exposing the internal implementation.
+** Cons: Defining this class may be not worth the effort as it has only one use case (as an attribute in `ScheduleEvent`) in the application.
+
+===== Aspect: Algorithm to find available time slots given a list of already scheduled appointments in an interval
+
+* **Alternative 1 (current choice):** Loop through the list of appointments twice. The first time is to find available time slots in days where there are scheduled appointments. The second time is to find completely free days.
+** Pros: It is easy to implement.
+** Cons: Performance is adversely affected because the list has to be searched through twice.
+* **Alternative 2:** Keep a day pointer and loop through the list of appointments only once to find all available time slots.
+** Pros: It enhances performance because the list is searched through only once.
+** Cons: It is harder to implement, due to the difficulties in manipulating `java.util.Calendar` as a day pointer. Edge cases such as crossing the year boundaries are difficult to handle.
 // end::nlp[]
 
 // tag::diagnosis[]
