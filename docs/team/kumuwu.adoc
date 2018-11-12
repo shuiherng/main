@@ -9,6 +9,12 @@
 
 == 1. Overview
 
+This Project Portfolio documents my contribution to the software project PatientBook, a group project collectively done by five Computer Science Undergraduate students in National University of Singapore.
+
+PatientBook is a Command Line Interface (CLI) desktop application targeted at medical professionals in Singapore. It aims to provide convenience and assurance for doctors, by allowing efficient management of patients and appointments. Doctors can also retrieve information from the built-in disease-symptom database and drug database.
+
+My main contribution to the project includes adding the ability to add appointments into the system in natural expressions.
+
 == 2. Summary of Contributions
 
 * *Code contributed*: [https://nus-cs2103-ay1819s1.github.io/cs2103-dashboard/#=undefined&search=kumuwu[Code]]
