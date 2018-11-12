@@ -31,7 +31,7 @@ Responsibilities: In Charge of Utilities
 
 === Zhou Zegang
 image::zzg229.png[width="150", align="left"]
-{empty}[http://github.com/zzg229[github]] [https://github.com/CS2103-AY1819S1-T12-2/main/blob/master/docs/team/ZhouZegang.adoc[portfolio]]
+{empty}[http://github.com/zzg229[github]] [<<zhouzegang#, portfolio>>]
 
 Role: Developer +
 Responsibilities: In Charge of Model, CSV Expert
