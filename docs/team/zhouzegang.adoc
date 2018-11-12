@@ -25,6 +25,7 @@ adding an appointment for a patient and predicting a disease from a set of sympt
 
 
 == 2. Summary of Contributions
+* *Code contributed*: [https://nus-cs2103-ay1819s1.github.io/cs2103-dashboard/#=undefined&search=zzg229&sort=displayName&since=2018-09-12&until=2018-11-12&timeframe=day&reverse=false&repoSort=true[Code From Dashboard]]
 
 * *Major enhancement*: added *diagnosis model which supports add disease, find disease, list disease and predict
 disease command*.
@@ -40,19 +41,17 @@ models. The implementation too was challenging as it required changes to existin
 ** Credit: The `diagnosis model` uses an existing disease-symptom knowledge database
 from `Columbia University`. [http://people.dbmi.columbia.edu/~friedma/Projects/DiseaseSymptomKB/index.html[Database]]
 
-* *Minor enhancement*: designed and added a generic method which converts a list of items to an `alphabetically ordered`
-string message so that it can be clearly displayed in the application.
-
-* *Code contributed*: [https://github.com[Functional code]] [https://github.com[Test code]] TO-DO
-
 * *Other contributions*:
 
+** Minor enhancements:
+*** designed and added a generic method which converts a list of items to an `alphabetically ordered`
+                        string message so that it can be clearly displayed in the application.
+*** Resolved CSV file reading in Jar for drug utility function (Pull requests [https://github.com/CS2103-AY1819S1-T12-2/main/pull/184[#184]])
 ** Project management:
+*** Set up Travis for team project on Travis CI
 *** Added labels in issue tracker on GitHub (Label list [https://github.com/CS2103-AY1819S1-T12-2/main/labels[Label]])
 *** Assigned issues to teammates on GitHub (Issues [https://github.com/CS2103-AY1819S1-T12-2/main/issues/65[#65]])
 ** Bug fix: Resolved bugs that other teams assigned (Issues [https://github.com/CS2103-AY1819S1-T12-2/main/issues/126[#126]] [https://github.com/CS2103-AY1819S1-T12-2/main/issues/129[#129]])
-** Enhancements to other features:
-*** Resolved CSV file reading in Jar for drug utility function (Pull requests [https://github.com/CS2103-AY1819S1-T12-2/main/pull/184[#184]])
 ** Documentation:
 Update the AboutUs Page (Pull requests [https://github.com/CS2103-AY1819S1-T12-2/main/pull/1[#1]] [https://github.com/CS2103-AY1819S1-T12-2/main/pull/172[#172]])
 ** Community:
