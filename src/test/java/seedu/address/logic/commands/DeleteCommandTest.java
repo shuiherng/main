@@ -124,4 +124,5 @@ public class DeleteCommandTest {
         cmd.execute(addressBookModel, scheduleModel, diagnosisModel, commandHistory);
 
     }
+
 }
