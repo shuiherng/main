@@ -59,9 +59,11 @@ public class FindCommand extends Command {
             + " Glycomet\n";
 
     public static final String UNEXPECTED_ERROR = "Unexpected Error: ";
-    public static final String IS_NOT_PRESENT_IN_OUR_RECORD = " is not present in our record,";
-    public static final String AND_ITS_RELATED_SYMPTOMS_INTO_THE_RECORD = " please add this disease and "
-            + "its related symptoms into the record";
+    public static final String NO_DISEASE_FOUND = " is not present in our record,"
+            + " please add this disease and "
+            + "its related symptoms into the record"
+            + "\n\n"
+            + AddCommand.MESSAGE_USAGE_DISEASE;
     public static final String THE_FOLLOWING_SYMPTOMS_MATCHING = " is present in our record. "
             + "Found the following symptoms matching ";
     public static final String DRUG_SEARCH_INITIALIZATION_FAIL = "The drug search database could not be initialized.";
@@ -104,8 +106,7 @@ public class FindCommand extends Command {
             Disease disease = new Disease(searchString.trim().toLowerCase());
             if (!diagnosisModel.hasDisease(disease)) {
                 throw new CommandException(disease.toString()
-                        + IS_NOT_PRESENT_IN_OUR_RECORD
-                        + AND_ITS_RELATED_SYMPTOMS_INTO_THE_RECORD);
+                        + NO_DISEASE_FOUND);
             }
             List<Symptom> symptomList = diagnosisModel.getSymptoms(disease);
             cmdResult = disease.toString() + THE_FOLLOWING_SYMPTOMS_MATCHING

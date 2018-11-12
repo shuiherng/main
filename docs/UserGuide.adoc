@@ -348,7 +348,7 @@ Example:
 * `add disease d/acne s/pustules s/blackheads`
 * `add disease d/alcohol misuse s/stroke s/stroke s/mouth cancer` +
 Symptom 'stroke' will be included once in our record.
-* `add disease d/obesity d/obesities` +
+* `add disease d/obesity d/obesities s/overweight` +
 This is an invalid command due to multiple occurrence of disease paramters. Hence, you will
 be prompted to enter a correct command:
 
@@ -365,7 +365,7 @@ Shows a list of all diseases in alphabetic order in the patient book.
 
 *Format:* `find disease NAME`
 
-Finds the disease which its name is specified in the command and return its related symptoms
+Finds the disease which its name is specified in the command and returns its related symptoms
 displayed in alphabetic order.
 
 * The search is case insensitive; e.g. ‘HIV’, ‘hIV’ and ‘hiv’ are all equivalent.
@@ -382,6 +382,8 @@ image::FindDiseaseInfluenza.png[width="600"]
 === Predict disease  : `predict`
 
 *Format:* `predict s/SYMPTOM`
+
+Predicts a disease from a given set of symptoms.
 
 You must include at least one `SYMPTOM` parameter with prefix `s/` to predict a disease. All
 diseases that contain the set of symptoms will be returned and displayed in alphabetic order.
@@ -403,7 +405,7 @@ image::PredictDiseaseValidDemo.png[width="600"]
 * `predict s/cry` +
 Returns an error message:
 
-.Error Message for Invalid Command 'predict s/cry'
+.Error Message for Command 'predict s/cry'
 image::PredictDiseaseInvalidDemo.png[width="600"]
 
 // end::diagnosis[]

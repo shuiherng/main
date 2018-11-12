@@ -116,7 +116,7 @@ public class AddCommand extends Command {
     public static final String MESSAGE_USAGE_DISEASE = "Expected format for adding a disease: \n "
             + COMMAND_WORD + " disease "
             + PREFIX_DISEASE + "DISEASE "
-            + "[" + PREFIX_SYMPTOM + "SYMPTOM]...\n"
+            + "" + PREFIX_SYMPTOM + "SYMPTOM...\n"
             + "Example: " + COMMAND_WORD + " "
             + "disease "
             + PREFIX_DISEASE + "acne "
@@ -129,8 +129,7 @@ public class AddCommand extends Command {
     public static final String MESSAGE_DUPLICATE_PERSON = "This patient already exists in the patient book";
     public static final String MESSAGE_DUPLICATE_DISEASE = "This disease already exists in the patient book";
     public static final String MESSAGE_INVALID_PATIENT_FORMAT = "Invalid input format for patient: %1$s";
-    public static final String NO_DISEASE_PARAMETER = "No disease value when parsing (parsing performed "
-            + "during execution).";
+    public static final String NO_DISEASE_PARAMETER = "Disease should not be empty.";
     public static final String MULTIPLE_DISEASE_PARAMETER_ERROR = "Only one disease parameter is allowed. "
             + "Please try again!";
     public static final String ILLEGAL_CHAR_IN_SYMPTOM_PARAMETER = "Symptom parameter should not contain comma ','.";
@@ -214,7 +213,7 @@ public class AddCommand extends Command {
 
             try {
                 Optional<String> diseaseValue = argMultimap.getValue(PREFIX_DISEASE);
-                if (!diseaseValue.isPresent()) {
+                if (!diseaseValue.isPresent() || diseaseValue.get().isEmpty()) {
                     throw new CommandException(NO_DISEASE_PARAMETER);
                 }
 
@@ -250,6 +249,7 @@ public class AddCommand extends Command {
                 if (diagnosisModel.hasDisease(disease)) {
                     throw new CommandException(MESSAGE_DUPLICATE_DISEASE);
                 }
+
                 diagnosisModel.addMatcher(disease, symptomSet);
                 String cmdResult = NEW_DISEASE
                         + disease.toString()
